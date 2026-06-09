@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Send · Repertorio delle trasmissioni</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Repertorio</span>
+        <span class="sep">·</span>
+        <span>Trasmissioni Send</span>
+      </div>
+      <a href="dashboard.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
+        <a href="notarizza.html">Sigillo</a>
+        <a href="invia.html">Send</a>
+        <a href="mail.html">Mail</a>
+        <a href="firma.html">Firma</a>
+        <a href="garanzie.html">Garanzie</a>
+        <a href="onboarding.html">KYC</a>
+        <a href="tag.html">Tag</a>
+        <a href="cert.html">Cert</a>
+        <a href="trasmissioni.html" class="current">Trasmissioni</a>
+        <a href="archivio.html">Archivio</a>
+        <a href="verifica.html">Verifica</a>
+        <a href="#" id="logout" class="nav-aux">Esci</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Titolare: <strong style="color: var(--ink);" id="hdrUser">-</strong> · sessione autenticata</span>
+        <span>Esibire repertorio in copia conforme &mdash; <a href="#" style="color: var(--seal); border-bottom: 1px solid var(--seal);">richiedi estratto</a></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col" style="padding: 56px 32px 96px;">
+
+    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
+      <span class="section-num">Repertorio Send · esercizio 2026</span>
+      <span class="roman">vi</span>
+    </div>
+
+    <div class="row-between" style="align-items: flex-end; gap: 48px; flex-wrap: wrap; margin-bottom: 48px;">
+      <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 16ch;">
+        Registro delle <em class="serif-italic" style="color: var(--seal);">trasmissioni.</em>
+      </h1>
+      <a class="btn seal" href="invia.html">Nuova trasmissione <span class="arrow"></span></a>
+    </div>
+
+    <!-- Cruscotto sintetico -->
+    <div class="dashboard">
+      <div class="dash-cell">
+        <div class="eyebrow">Trasmissioni</div>
+        <div class="dash-num" id="kTotal">-</div>
+        <div class="dash-foot">Nel repertorio</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Aperte</div>
+        <div class="dash-num" id="kAperta"><span class="verify-c">-</span></div>
+        <div class="dash-foot">Decifrate dal destinatario</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">In attesa</div>
+        <div class="dash-num" id="kInviate"><span class="seal-c">-</span></div>
+        <div class="dash-foot">Inviate / consegnate</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Non consegnate</div>
+        <div class="dash-num" id="kBounce"><span class="seal-c">-</span></div>
+        <div class="dash-foot">Bounce SMTP</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Revocate</div>
+        <div class="dash-num" id="kRevoke">-</div>
+        <div class="dash-foot">Link disattivato</div>
+      </div>
+    </div>
+
+    <!-- Strumenti registro -->
+    <div class="reg-tools">
+      <div class="reg-search">
+        <span class="eyebrow ink-3" style="margin-right: 14px;">Cerca</span>
+        <input type="text" placeholder="codice, destinatario, nome file..." id="search"/>
+      </div>
+      <div class="reg-filter">
+        <button class="filt active" data-f="all">Tutti</button>
+        <button class="filt" data-f="inviata">Inviate</button>
+        <button class="filt" data-f="consegnata">Consegnate</button>
+        <button class="filt" data-f="aperta">Aperte</button>
+        <button class="filt" data-f="revocata">Revocate</button>
+        <button class="filt" data-f="non_consegnata">Bounce</button>
+      </div>
+    </div>
+
+    <!-- TABELLA -->
+    <div class="reg-wrap">
+      <table class="register" id="register">
+        <thead>
+          <tr>
+            <th class="col-num">N&deg;</th>
+            <th>Codice &amp; destinatario</th>
+            <th style="width: 220px;">Stato &amp; data</th>
+            <th style="width: 130px;">Aperture</th>
+            <th style="width: 220px;" class="right">Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5" style="text-align:center; padding:48px 0; color:var(--ink-3); font-style:italic;">Caricamento repertorio...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="reg-closing">
+      <div class="ornament" style="margin-bottom: 24px;">&#x204B;</div>
+      <p class="serif" style="font-style: italic; color: var(--ink-3); margin: 0; text-align: center; font-size: 18px;">
+        Si dichiara che il presente repertorio e' conservato in conformita' all'articolo 8-ter della Legge 11.02.2019 n. 12<br/>
+        e che ciascun sigillo e' verificabile in modo indipendente sul registro pubblico Bitcoin.
+      </p>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l. &middot; Servizio fiduciario digitale</span>
+      <span>Sezione VI &mdash; Send</span>
+    </div>
+  </footer>
+
+  <style>
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 48px;
+  }
+  .dash-cell { padding: 28px 24px; border-right: 1px solid var(--rule); }
+  .dash-cell:last-child { border-right: 0; }
+  .dash-num { font-family: var(--serif); font-size: 44px; line-height: 1; margin: 14px 0 12px; letter-spacing: -0.015em; }
+  .dash-foot { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .reg-tools { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 12px; padding: 12px 0; flex-wrap: wrap; }
+  .reg-search { display: flex; align-items: center; flex: 1; min-width: 300px; border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
+  .reg-search input { border: 0; background: transparent; font: inherit; font-size: 15px; width: 100%; outline: none; padding: 4px 0; color: var(--ink); }
+  .reg-search input::placeholder { color: var(--ink-4); font-style: italic; }
+  .reg-filter { display: flex; gap: 0; border: 1px solid var(--rule); flex-wrap: wrap; }
+  .filt { padding: 10px 16px; border: 0; background: transparent; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-right: 1px solid var(--rule); cursor: pointer; }
+  .filt:last-child { border-right: 0; }
+  .filt:hover { color: var(--ink); }
+  .filt.active { background: var(--ink); color: var(--paper); }
+  .reg-wrap { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .register tbody td { vertical-align: top; padding: 18px 8px; border-bottom: 1px solid var(--rule-2); }
+  .register tbody td.cell-doc { padding-right: 32px; }
+  .doc-title { font-family: var(--serif); font-size: 18px; line-height: 1.2; color: var(--ink); }
+  .doc-hash { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.04em; }
+  .doc-proto { font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); margin-top: 4px; letter-spacing: 0.1em; }
+  .actions-cell { display: flex; gap: 12px; justify-content: flex-end; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; flex-wrap: wrap; }
+  .actions-cell a, .actions-cell button { color: var(--ink-3); border: 0; background: transparent; cursor: pointer; padding: 2px 0; border-bottom: 1px solid transparent; font: inherit; text-transform: uppercase; }
+  .actions-cell a:hover, .actions-cell button:hover { color: var(--seal); border-bottom-color: var(--seal); }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); }
+  .status.aperta .dot { background: var(--verify); }
+  .status.consegnata .dot { background: var(--verify); }
+  .status.inviata .dot { background: var(--amber); }
+  .status.non_consegnata .dot { background: var(--seal); }
+  .status.revocata .dot { background: var(--ink-3); }
+  .status.creata .dot { background: var(--amber); }
+  .status.scaduta .dot { background: var(--ink-3); }
+  .when { font-family: var(--mono); font-size: 11px; color: var(--ink-2); margin-top: 6px; }
+  .reg-closing { margin-top: 56px; padding-top: 32px; border-top: 3px double var(--rule); }
+  @media (max-width: 980px) {
+    .dashboard { grid-template-columns: repeat(2, 1fr); }
+    .dash-cell:nth-child(2n) { border-right: 0; }
+    .dash-cell { border-bottom: 1px solid var(--rule); }
+    .register thead { display: none; }
+    .register tbody td { display: block; padding: 8px 0; border: 0; }
+    .register tbody tr { display: block; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  }
+  </style>
+
+  <script type="module">
+  // VEYLON SEND - trasmissioni.html
+  // Fetch via PostgREST con JWT utente. RLS garantisce che vediamo solo le proprie.
+
+  const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+  const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+  const REST_BASE = `${SUPABASE_URL}/rest/v1`;
+  const FN_BASE = `${SUPABASE_URL}/functions/v1`;
+
+  function getJwt() {
+    try {
+      const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
+      return session?.access_token ?? null;
+    } catch { return null; }
+  }
+  function getUserEmail() {
+    try {
+      const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
+      return session?.user?.email ?? '-';
+    } catch { return '-'; }
+  }
+  function escapeHtml(s) {
+    return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function fmtDate(iso) {
+    if (!iso) return '-';
+    return new Date(iso).toLocaleString('it-IT', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  const tbody = document.getElementById('tbody');
+  const state = { rows: [], filter: 'all', query: '' };
+
+  document.getElementById('hdrUser').textContent = getUserEmail();
+
+  async function loadRows() {
+    const jwt = getJwt();
+    if (!jwt) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:48px 0;">Effettuare l\'accesso per visualizzare il repertorio. <a href="login.html" style="color:var(--seal);">Accedi</a></td></tr>';
+      return;
+    }
+    try {
+      const res = await fetch(`${REST_BASE}/trasmissioni?select=id,codice_verifica,destinatario_email,nome_file_originale,sha256_originale,stato,conta_aperture,max_aperture,created_at,opened_at,consegnata_il,delivery_bounce_reason,expires_at&order=created_at.desc`, {
+        headers: {
+          'Authorization': 'Bearer ' + jwt,
+          'apikey': SUPABASE_ANON_KEY,
+        },
+      });
+      if (!res.ok) throw new Error('http_' + res.status);
+      const rows = await res.json();
+      state.rows = rows;
+      renderCounters();
+      render();
+    } catch (err) {
+      console.error('load_failed:', err);
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:48px 0; color:var(--seal);">Errore caricamento: ' + escapeHtml(err.message) + '</td></tr>';
+    }
+  }
+
+  function renderCounters() {
+    const total = state.rows.length;
+    const aperta = state.rows.filter(r => r.stato === 'aperta').length;
+    const inviate = state.rows.filter(r => r.stato === 'inviata' || r.stato === 'consegnata' || r.stato === 'creata').length;
+    const bounce = state.rows.filter(r => r.stato === 'non_consegnata').length;
+    const revoke = state.rows.filter(r => r.stato === 'revocata').length;
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('kTotal').textContent = pad(total);
+    document.getElementById('kAperta').innerHTML = '<span class="verify-c">' + pad(aperta) + '</span>';
+    document.getElementById('kInviate').innerHTML = '<span class="seal-c">' + pad(inviate) + '</span>';
+    document.getElementById('kBounce').innerHTML = '<span class="seal-c">' + pad(bounce) + '</span>';
+    document.getElementById('kRevoke').textContent = pad(revoke);
+  }
+
+  function render() {
+    const items = state.rows.filter(r => {
+      if (state.filter !== 'all' && r.stato !== state.filter) return false;
+      if (state.query) {
+        const s = (r.codice_verifica + ' ' + r.destinatario_email + ' ' + (r.nome_file_originale || '') + ' ' + r.sha256_originale).toLowerCase();
+        return s.includes(state.query.toLowerCase());
+      }
+      return true;
+    });
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:48px 0; color:var(--ink-3); font-style:italic;">Nessuna trasmissione corrisponde ai filtri.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = items.map((r, i) => {
+      const n = String(state.rows.length - state.rows.indexOf(r)).padStart(3, '0');
+      const stato = r.stato || 'creata';
+      const statoLbl = ({
+        creata: 'In formazione',
+        inviata: 'Inviata',
+        consegnata: 'Consegnata',
+        aperta: 'Aperta',
+        non_consegnata: 'Non consegnata',
+        scaduta: 'Scaduta',
+        revocata: 'Revocata',
+      })[stato] || stato;
+      const aperture = (r.conta_aperture ?? 0) + ' / ' + (r.max_aperture ?? 0);
+      const canRevoke = ['creata','inviata','consegnata','aperta'].includes(stato);
+      const certUrl = `${FN_BASE}/send-certificato?codice=${encodeURIComponent(r.codice_verifica)}&tipo=invio`;
+      return `
+        <tr>
+          <td class="col-num">${n}</td>
+          <td class="cell-doc">
+            <div class="doc-title">${escapeHtml(r.nome_file_originale || 'documento')}</div>
+            <div class="doc-hash">${escapeHtml(r.destinatario_email)}</div>
+            <div class="doc-proto">${r.codice_verifica}</div>
+          </td>
+          <td>
+            <span class="status ${stato}"><span class="dot"></span>${statoLbl}</span>
+            <div class="when">${fmtDate(r.created_at)}</div>
+            ${r.delivery_bounce_reason ? `<div class="when" style="color:var(--seal)">bounce: ${escapeHtml(r.delivery_bounce_reason)}</div>` : ''}
+          </td>
+          <td><span class="mono" style="font-size:13px;">${aperture}</span></td>
+          <td>
+            <div class="actions-cell">
+              <a href="${certUrl}" target="_blank">Certificato</a>
+              <a href="verifica.html?codice=${encodeURIComponent(r.codice_verifica)}">Verifica</a>
+              ${canRevoke ? `<button data-revoke="${r.id}">Revoca</button>` : ''}
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    // Bind revoca
+    tbody.querySelectorAll('button[data-revoke]').forEach(b => {
+      b.addEventListener('click', () => revoke(b.getAttribute('data-revoke')));
+    });
+  }
+
+  async function revoke(trasmissioneId) {
+    if (!confirm("Revocare la trasmissione? Il link smettera' di funzionare immediatamente. I sigilli BTC gia' apposti restano.")) return;
+    try {
+      const jwt = getJwt();
+      const res = await fetch(`${FN_BASE}/send-revoke`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + jwt,
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({ trasmissione_id: trasmissioneId }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error || 'http_' + res.status);
+      await loadRows();
+    } catch (err) {
+      alert('Errore revoca: ' + (err?.message ?? 'sconosciuto'));
+    }
+  }
+
+  // Filtri / ricerca
+  document.querySelectorAll('.filt').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.filt').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      state.filter = b.dataset.f;
+      render();
+    });
+  });
+  document.getElementById('search').addEventListener('input', e => { state.query = e.target.value; render(); });
+
+  loadRows();
+  </script>
+  <script>
+  document.getElementById('logout')?.addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('veylon_session');
+    location.href = 'login.html';
+  });
+  </script>
+</body>
+</html>

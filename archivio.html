@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Registro dei sigilli</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Repertorio</span>
+        <span class="sep">·</span>
+        <span>Vol. II — 2026</span>
+      </div>
+      <a href="dashboard.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
+        <a href="notarizza.html">Sigillo</a>
+        <a href="invia.html">Send</a>
+        <a href="mail.html">Mail</a>
+        <a href="firma.html">Firma</a>
+        <a href="garanzie.html">Garanzie</a>
+        <a href="onboarding.html">KYC</a>
+        <a href="tag.html">Tag</a>
+        <a href="cert.html">Cert</a>
+        <a href="archivio.html" class="current">Archivio</a>
+        <a href="verifica.html">Verifica</a>
+        <a href="#" id="logout" class="nav-aux">Esci</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Titolare: <strong style="color: var(--ink);">Studio Notarile Bertolaso &amp; Associati</strong> · sessione autenticata</span>
+        <span>Esibire repertorio in copia conforme &mdash; <a href="#" style="color: var(--seal); border-bottom: 1px solid var(--seal);">richiedi estratto</a></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col" style="padding: 56px 32px 96px;">
+
+    <!-- Intestazione -->
+    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
+      <span class="section-num">Repertorio · vol. II · esercizio 2026</span>
+      <span class="roman">iii</span>
+    </div>
+
+    <div class="row-between" style="align-items: flex-end; gap: 48px; flex-wrap: wrap; margin-bottom: 48px;">
+      <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 16ch;">
+        Registro dei <em class="serif-italic" style="color: var(--seal);">sigilli.</em>
+      </h1>
+      <a class="btn seal" href="notarizza.html">Apponi nuovo sigillo <span class="arrow"></span></a>
+    </div>
+
+    <!-- Cruscotto sintetico -->
+    <div class="dashboard">
+      <div class="dash-cell">
+        <div class="eyebrow">Sigilli totali</div>
+        <div class="dash-num" id="kTotal">—</div>
+        <div class="dash-foot">In repertorio</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Confermati</div>
+        <div class="dash-num" id="kConf"><span class="verify-c">—</span></div>
+        <div class="dash-foot">Inscritti su Bitcoin</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">In attesa</div>
+        <div class="dash-num" id="kPend"><span class="seal-c">—</span></div>
+        <div class="dash-foot">Conferma entro ~2h</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Condivisioni attive</div>
+        <div class="dash-num" id="kShare">7</div>
+        <div class="dash-foot">Link a scadenza</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Ultima conferma</div>
+        <div class="dash-num mono" style="font-size: 22px;">blocco<br/><span style="font-size: 28px;">874.201</span></div>
+        <div class="dash-foot">12 min fa</div>
+      </div>
+    </div>
+
+    <!-- Strumenti registro -->
+    <div class="reg-tools">
+      <div class="reg-search">
+        <span class="eyebrow ink-3" style="margin-right: 14px;">Cerca</span>
+        <input type="text" placeholder="impronta, denominazione, codice di protocollo…" id="search"/>
+      </div>
+      <div class="reg-filter">
+        <button class="filt active" data-f="all">Tutti</button>
+        <button class="filt" data-f="confirmed">Confermati</button>
+        <button class="filt" data-f="pending">In attesa</button>
+      </div>
+    </div>
+
+    <!-- TABELLA REGISTRO -->
+    <div class="reg-wrap">
+      <table class="register" id="register">
+        <thead>
+          <tr>
+            <th class="col-num">N°</th>
+            <th>Documento &amp; impronta</th>
+            <th style="width: 200px;">Stato &amp; data certa</th>
+            <th style="width: 160px;">Blocco</th>
+            <th style="width: 160px;" class="right">Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Riga di chiusura registro -->
+    <div class="reg-closing">
+      <div class="ornament" style="margin-bottom: 24px;">⁂</div>
+      <p class="serif" style="font-style: italic; color: var(--ink-3); margin: 0; text-align: center; font-size: 18px;">
+        Si dichiara che il presente repertorio è conservato in conformità all'articolo 8-ter della Legge 11.02.2019 n. 12<br/>
+        e che ciascun sigillo è verificabile in modo indipendente sul registro pubblico Bitcoin.
+      </p>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
+      <span>Sezione III &mdash; Registro</span>
+    </div>
+  </footer>
+
+  <style>
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 48px;
+  }
+  .dash-cell {
+    padding: 28px 24px;
+    border-right: 1px solid var(--rule);
+  }
+  .dash-cell:last-child { border-right: 0; }
+  .dash-num {
+    font-family: var(--serif);
+    font-size: 44px;
+    line-height: 1;
+    margin: 14px 0 12px;
+    letter-spacing: -0.015em;
+  }
+  .dash-foot {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .reg-tools {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 12px;
+    padding: 12px 0;
+    flex-wrap: wrap;
+  }
+  .reg-search {
+    display: flex; align-items: center;
+    flex: 1; min-width: 300px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 6px;
+  }
+  .reg-search input {
+    border: 0; background: transparent;
+    font: inherit; font-size: 15px;
+    width: 100%; outline: none;
+    padding: 4px 0;
+    color: var(--ink);
+  }
+  .reg-search input::placeholder { color: var(--ink-4); font-style: italic; }
+
+  .reg-filter { display: flex; gap: 0; border: 1px solid var(--rule); }
+  .filt {
+    padding: 10px 16px;
+    border: 0;
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+  }
+  .filt:last-child { border-right: 0; }
+  .filt:hover { color: var(--ink); }
+  .filt.active { background: var(--ink); color: var(--paper); }
+
+  .reg-wrap {
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .register tbody td.cell-doc { padding-right: 32px; }
+  .register tbody td .doc-title {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .register tbody td .doc-hash {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+  .register tbody td .doc-proto {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-2);
+    margin-top: 4px;
+    letter-spacing: 0.1em;
+  }
+  .register tbody td .when {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    margin-top: 6px;
+  }
+  .register tbody td .block {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .register tbody td .block-sub {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-3);
+    margin-top: 6px;
+    letter-spacing: 0.1em;
+  }
+  .actions-cell { display: flex; gap: 14px; justify-content: flex-end; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .actions-cell a { color: var(--ink-3); border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  .actions-cell a:hover { color: var(--seal); border-bottom-color: var(--seal); }
+
+  .reg-closing {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 3px double var(--rule);
+  }
+
+  @media (max-width: 980px) {
+    .dashboard { grid-template-columns: repeat(2, 1fr); }
+    .dash-cell:nth-child(2n) { border-right: 0; }
+    .dash-cell { border-bottom: 1px solid var(--rule); }
+    .register thead { display: none; }
+    .register tbody td { display: block; padding: 10px 0; border: 0; }
+    .register tbody tr { display: block; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  }
+  </style>
+
+  <script>
+  // Dati seed (per la demo, mostriamo sempre un repertorio popolato)
+  const SEED = [
+    { proto: 'VLN-2026-248917-AC4F', doc: 'Atto di mandato — Rep. n. 14.882/2026', holder: 'Studio Notarile Bertolaso & Associati', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', date: '2026-06-07T14:38:02', status: 'confirmed', block: '874.201' },
+    { proto: 'VLN-2026-248912-D71B', doc: 'Verbale di assemblea straordinaria — Soc. Lemania S.p.A.', holder: '—', hash: 'd71b7e6c8a9f3210ab44ce91024f5e6a7c8b9d0e1f2034567890abcdef123456', date: '2026-06-07T11:22:18', status: 'confirmed', block: '874.198' },
+    { proto: 'VLN-2026-248904-9F02', doc: 'Contratto preliminare di compravendita — immobile Via Po 14, Torino', holder: '—', hash: '9f02ac1d3b5e7c9f8a6b4d2e1c3a5f7b9d8e6c4a2b1f3e5d7c9b8a6f4e2d1c3a', date: '2026-06-06T17:04:55', status: 'confirmed', block: '874.182' },
+    { proto: 'VLN-2026-248900-7E4A', doc: 'Procura speciale a vendere — Sig. Marco Vitali', holder: '—', hash: '7e4a3c8b1f9d2e6a5b8c4f7d1e3a9b6c2d5f8e1a4b7c0d3e6f9a2b5c8d1e4f7a', date: '2026-06-06T10:48:11', status: 'confirmed', block: '874.174' },
+    { proto: 'VLN-2026-248890-3C71', doc: 'Capitolato tecnico — Gara CIG 9876543210, Lotto III', holder: '—', hash: '3c71b8a2f4d6e9c1b3a5d7e9f1c2a4b6d8e0f2a4c6b8d0e2f4a6c8b0d2e4f6a8', date: '2026-06-05T15:30:42', status: 'confirmed', block: '874.151' },
+    { proto: 'VLN-2026-248887-5B92', doc: 'Verbale di sopralluogo tecnico — Sito Mortara, lotto VII', holder: '—', hash: '5b92a1c3e5d7f9b1a3c5e7d9f1b3a5c7e9d1f3b5a7c9e1d3f5b7a9c1e3d5f7b9', date: '2026-06-05T09:18:00', status: 'confirmed', block: '874.144' },
+    { proto: 'VLN-2026-248872-2D81', doc: 'Convenzione di tirocinio — Università degli Studi di Bologna', holder: '—', hash: '2d81f4b6a8c0e2d4f6b8a0c2e4d6f8b0a2c4e6d8f0b2a4c6e8d0f2b4a6c8e0d2', date: '2026-06-04T13:55:27', status: 'confirmed', block: '874.120' },
+    { proto: 'VLN-2026-248861-1A4E', doc: 'Lettera di diffida — Mandato n. 21/2026', holder: '—', hash: '1a4e8b2d5f7c9a3b6d8e1f4a7c0b3e6d9f2a5c8b1e4d7f0a3c6b9e2d5f8a1c4e', date: '2026-06-03T16:02:38', status: 'confirmed', block: '874.099' },
+    { proto: 'VLN-2026-248855-8C30', doc: 'Atto costitutivo S.r.l. — Hekla Studio S.r.l.', holder: '—', hash: '8c30d5b7a9c1e3f5b7a9c1e3f5b7a9c1e3f5b7a9c1e3f5b7a9c1e3f5b7a9c1e3', date: '2026-06-03T11:14:09', status: 'confirmed', block: '874.088' }
+  ];
+
+  // Carica registro: locale (notarizzazioni recenti) + seed
+  const local = JSON.parse(localStorage.getItem('veylon_ledger') || '[]');
+  const ledger = [...local, ...SEED];
+
+  // Conteggi
+  const conf = ledger.filter(x => x.status === 'confirmed').length;
+  const pend = ledger.filter(x => x.status === 'pending').length;
+  document.getElementById('kTotal').textContent = ledger.length.toString().padStart(2, '0');
+  document.getElementById('kConf').innerHTML = '<span class="verify-c">' + conf.toString().padStart(2, '0') + '</span>';
+  document.getElementById('kPend').innerHTML = '<span class="seal-c">' + pend.toString().padStart(2, '0') + '</span>';
+
+  // Render righe
+  const tbody = document.getElementById('tbody');
+  function render(filter = 'all', q = '') {
+    const items = ledger.filter(x => {
+      if (filter !== 'all' && x.status !== filter) return false;
+      if (q) {
+        const s = (x.proto + ' ' + x.doc + ' ' + x.hash).toLowerCase();
+        return s.includes(q.toLowerCase());
+      }
+      return true;
+    });
+    tbody.innerHTML = items.map((x, i) => {
+      const n = String(ledger.length - ledger.indexOf(x)).padStart(3, '0');
+      const date = new Date(x.date);
+      const dateStr = date.toLocaleString('it-IT', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      const statusHtml = x.status === 'confirmed'
+        ? '<span class="status confirmed"><span class="dot"></span>Confermato</span>'
+        : '<span class="status pending"><span class="dot"></span>In attesa</span>';
+      const blockHtml = x.status === 'confirmed'
+        ? '<div class="block">#&nbsp;' + x.block + '</div><div class="block-sub">Bitcoin mainnet</div>'
+        : '<div class="block" style="color: var(--ink-3);">' + x.block + '</div><div class="block-sub">previsto</div>';
+      return `
+        <tr>
+          <td class="col-num">${n}</td>
+          <td class="cell-doc">
+            <div class="doc-title">${escapeHtml(x.doc)}</div>
+            <div class="doc-hash">${x.hash.slice(0, 24)} … ${x.hash.slice(-12)}</div>
+            <div class="doc-proto">${x.proto}</div>
+          </td>
+          <td>
+            ${statusHtml}
+            <div class="when">${dateStr}</div>
+          </td>
+          <td>${blockHtml}</td>
+          <td>
+            <div class="actions-cell">
+              <a href="certificato.html">Certificato</a>
+              <a href="verifica.html">Verifica</a>
+              <a href="condivisione.html">Condividi</a>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // Filtri
+  let currentFilter = 'all';
+  document.querySelectorAll('.filt').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.filt').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      currentFilter = b.dataset.f;
+      render(currentFilter, document.getElementById('search').value);
+    });
+  });
+  document.getElementById('search').addEventListener('input', e => render(currentFilter, e.target.value));
+
+  render();
+  </script>
+<script>
+  document.getElementById('logout')?.addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('veylon_session');
+    location.href = 'login.html';
+  });
+  </script>
+</body>
+</html>

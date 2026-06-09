@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="it" data-palette="navy">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon · Verifica un documento · Appaltare.com</title>
+  <meta name="description" content="Verifica l'autenticità e la data certa di un documento sigillato su Appaltare. La verifica è pubblica e indipendente: la prova è ancorata a Bitcoin via OpenTimestamps."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"/>
+  <style>
+:root{
+  --bg:oklch(0.985 0.005 250); --surface:#fff; --surface-2:oklch(0.97 0.008 250);
+  --ink:oklch(0.22 0.03 250); --ink-2:oklch(0.42 0.03 250); --ink-3:oklch(0.55 0.025 250);
+  --line:oklch(0.90 0.012 250); --line-strong:oklch(0.82 0.02 250);
+  --brand-700:oklch(0.32 0.08 250); --brand-600:oklch(0.42 0.10 250); --brand-500:oklch(0.55 0.16 250);
+  --ok-600:oklch(0.52 0.14 150); --ok-50:oklch(0.97 0.025 150); --ok-line:oklch(0.62 0.14 150);
+  --amber-600:oklch(0.66 0.16 75); --amber-50:oklch(0.97 0.035 80);
+  --red-600:oklch(0.56 0.20 25); --red-50:oklch(0.97 0.025 25);
+  --font-sans:"Geist",system-ui,sans-serif; --font-mono:"Geist Mono",ui-monospace,monospace;
+  --r-md:8px; --r-lg:12px; --r-xl:16px;
+  --shadow:0 2px 4px rgba(15,23,42,.06),0 12px 32px -8px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-500)}
+h1{font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:8px 0 12px;color:var(--brand-700)}
+.lead{font-size:17px;color:var(--ink-2);max-width:58ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:28px;box-shadow:var(--shadow);margin-top:32px}
+.drop{border:2px dashed var(--line-strong);border-radius:var(--r-lg);padding:40px 24px;text-align:center;cursor:pointer;transition:.18s;background:var(--surface-2)}
+.drop:hover,.drop.over{border-color:var(--brand-500);background:#fff}
+.drop strong{color:var(--brand-700)} .drop p{margin:6px 0 0;color:var(--ink-3);font-size:14px}
+input[type=file]{display:none}
+.or{text-align:center;color:var(--ink-3);font-size:13px;margin:16px 0}
+input[type=text]{width:100%;padding:11px 13px;border:1px solid var(--line-strong);border-radius:var(--r-md);font:inherit;font-size:14px;font-family:var(--font-mono)}
+.btn{margin-top:18px;width:100%;padding:14px;border:0;border-radius:var(--r-md);background:var(--brand-600);color:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.15s}
+.btn:hover{background:var(--brand-700)} .btn:disabled{opacity:.5;cursor:not-allowed}
+.result{margin-top:24px;border-radius:var(--r-lg);padding:24px}
+.result.ok{border:1px solid var(--ok-line);background:var(--ok-50)}
+.result.no{border:1px solid var(--red-600);background:var(--red-50)}
+.result h3{margin:0 0 14px;font-size:20px}
+.result.ok h3{color:var(--ok-600)} .result.no h3{color:var(--red-600)}
+.kv{display:flex;gap:10px;font-size:14px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.kv span:first-child{min-width:150px;color:var(--ink-3);font-weight:600}
+.kv code{font-family:var(--font-mono);font-size:13px;word-break:break-all}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600}
+.badge.conf{background:var(--ok-600);color:#fff} .badge.pend{background:var(--amber-600);color:#fff}
+.links{margin-top:16px} .links a{color:var(--brand-600);font-weight:600;font-size:14px;text-decoration:none}
+.links a:hover{text-decoration:underline}
+.alert{padding:12px 14px;border-radius:var(--r-md);font-size:14px;margin-top:16px;background:var(--red-50);color:var(--red-600)}
+.foot{margin-top:40px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:20px}
+.foot a{color:var(--brand-600)}
+.spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:8px}
+@keyframes s{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav style="display:flex;gap:18px;margin-bottom:20px;font-size:14px">
+      <a href="/veylon.html" onclick="if(history.length>1){history.back();return false}" style="color:var(--brand-600);text-decoration:none;font-weight:600">← Indietro</a>
+      <a href="/veylon.html" style="margin-left:auto;color:var(--brand-600);text-decoration:none;font-weight:600">Veylon · home</a>
+    </nav>
+    <div class="eyebrow">Veylon · Appaltare</div>
+    <h1>Verifica un documento</h1>
+    <p class="lead">Controlla se un documento è stato sigillato e ottieni la sua <strong>data certa ancorata a Bitcoin</strong>. La verifica è <strong>pubblica e indipendente</strong>: il file resta sul tuo dispositivo, si confronta solo l'impronta SHA-256.</p>
+
+    <div class="card">
+      <div class="drop" id="drop">
+        <strong>Trascina qui il documento da verificare</strong> o clicca per selezionarlo
+        <p>Nulla viene caricato: l'hash è calcolato in locale.</p>
+      </div>
+      <input type="file" id="file"/>
+      <div class="or">— oppure incolla direttamente l'impronta SHA-256 —</div>
+      <input type="text" id="hashinput" placeholder="64 caratteri esadecimali"/>
+      <button class="btn" id="go">Verifica</button>
+      <div id="msg"></div>
+      <div id="result"></div>
+    </div>
+
+    <div class="foot">
+      Vuoi sigillare un documento? <a href="/notarizza.html">Notarizza qui</a>.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+  <script>
+const SUPABASE_URL = 'https://efhdooeqscqncgvhqfyu.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmaGRvb2Vxc2NxbmNndmhxZnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDA3NTcsImV4cCI6MjA5MDYxNjc1N30.wtvxgipTgEPpz40Vo6qZBsPXQO1vQuz4F1GwF9bCNlM';
+const FN_VERIFICA = SUPABASE_URL + '/functions/v1/veylon-verifica';
+const FN_CERT = SUPABASE_URL + '/functions/v1/veylon-certificato';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const el = (id)=>document.getElementById(id);
+
+async function sha256File(file){
+  const buf = await file.arrayBuffer();
+  const d = await crypto.subtle.digest('SHA-256', buf);
+  return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+const drop = el('drop');
+drop.addEventListener('click', ()=> el('file').click());
+el('file').addEventListener('change', async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  el('hashinput').value='calcolo…';
+  el('hashinput').value = await sha256File(f);
+});
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop', async e=>{
+  const f=e.dataTransfer.files[0]; if(!f) return;
+  el('hashinput').value = await sha256File(f);
+});
+
+async function verify(hash){
+  el('msg').innerHTML=''; el('result').innerHTML='';
+  hash = (hash||'').trim().toLowerCase();
+  if(!/^[0-9a-f]{64}$/.test(hash)){ el('msg').innerHTML='<div class="alert">Impronta SHA-256 non valida (servono 64 caratteri esadecimali).</div>'; return; }
+  const btn=el('go'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Verifica in corso…';
+  try{
+    const res = await fetch(FN_VERIFICA,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON},
+      body: JSON.stringify({ sha256: hash })
+    });
+    const j = await res.json();
+    if(!j.success) throw new Error(j.error||'errore');
+    if(!j.valido){
+      el('result').innerHTML = `<div class="result no"><h3>Nessun veylon trovato</h3>
+        <p>Questo documento non risulta sigillato su Appaltare.</p>
+        <div class="kv"><span>SHA-256</span><code>${j.sha256}</code></div></div>`;
+      return;
+    }
+    const conf = j.ancorato_su_bitcoin;
+    el('result').innerHTML = `<div class="result ok"><h3>✓ Documento autentico</h3>
+      <div class="kv"><span>Documento</span><code>${escapeHtml(j.doc_name||'—')}</code></div>
+      <div class="kv"><span>SHA-256</span><code>${j.sha256}</code></div>
+      <div class="kv"><span>Ancoraggio</span>${conf?'<span class="badge conf">Confermato su Bitcoin</span>':'<span class="badge pend">In conferma</span>'}</div>
+      ${j.btc_block_height?`<div class="kv"><span>Blocco Bitcoin</span><code>#${j.btc_block_height}</code></div>`:''}
+      <div class="kv"><span>Data certa</span><code>${j.data_certa?new Date(j.data_certa).toLocaleString('it-IT'):'—'}</code></div>
+      <div class="links"><a href="${FN_CERT}?h=${j.sha256}" target="_blank">Scarica certificato PDF →</a></div>
+    </div>`;
+  }catch(err){
+    el('msg').innerHTML = `<div class="alert">Errore: ${escapeHtml(String(err.message||err))}</div>`;
+  }finally{
+    btn.disabled=false; btn.textContent='Verifica';
+  }
+}
+
+el('go').addEventListener('click', ()=>verify(el('hashinput').value));
+function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+// Supporto deep-link ?h=<sha256> (dal QR del certificato)
+const qp = new URLSearchParams(location.search).get('h');
+if(qp){ el('hashinput').value = qp; verify(qp); }
+  </script>
+</body>
+</html>

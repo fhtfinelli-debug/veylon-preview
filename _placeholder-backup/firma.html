@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="it" data-palette="navy">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Firma · Richiedi una firma · Appaltare.com</title>
+  <meta name="description" content="Richiedi la firma elettronica avanzata di un documento: OTP al firmatario, audit trail e atto di firma notarizzato su Bitcoin."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"/>
+  <style>
+:root{
+  --bg:oklch(0.985 0.005 250);--surface:#fff;--surface-2:oklch(0.97 0.008 250);
+  --ink:oklch(0.22 0.03 250);--ink-2:oklch(0.42 0.03 250);--ink-3:oklch(0.55 0.025 250);
+  --line:oklch(0.90 0.012 250);--line-strong:oklch(0.82 0.02 250);
+  --brand-700:oklch(0.32 0.08 250);--brand-600:oklch(0.42 0.10 250);--brand-500:oklch(0.55 0.16 250);
+  --ok-600:oklch(0.52 0.14 150);--ok-50:oklch(0.97 0.025 150);--amber-600:oklch(0.66 0.16 75);--amber-50:oklch(0.97 0.035 80);
+  --red-600:oklch(0.56 0.20 25);--red-50:oklch(0.97 0.025 25);
+  --font-sans:"Geist",system-ui,sans-serif;--font-mono:"Geist Mono",ui-monospace,monospace;
+  --r-md:8px;--r-lg:12px;--r-xl:16px;--shadow:0 2px 4px rgba(15,23,42,.06),0 12px 32px -8px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-500)}
+h1{font-size:clamp(28px,3vw,38px);font-weight:700;letter-spacing:-.02em;margin:8px 0 12px;color:var(--brand-700)}
+.lead{font-size:16px;color:var(--ink-2);max-width:60ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px;box-shadow:var(--shadow);margin-top:24px}
+h2{font-size:18px;margin:0 0 16px;color:var(--brand-700)}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin:14px 0 6px}
+input{width:100%;padding:10px 12px;border:1px solid var(--line-strong);border-radius:var(--r-md);font:inherit;font-size:14px}
+.drop{border:2px dashed var(--line-strong);border-radius:var(--r-md);padding:22px;text-align:center;cursor:pointer;font-size:14px;color:var(--ink-3);background:var(--surface-2)}
+.drop strong{color:var(--brand-700)} .drop:hover{border-color:var(--brand-500)} input[type=file]{display:none}
+.hashbox{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);margin-top:8px;word-break:break-all}
+.btn{margin-top:18px;padding:13px 20px;border:0;border-radius:var(--r-md);background:var(--brand-600);color:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+.btn:hover{background:var(--brand-700)}.btn:disabled{opacity:.5}
+.alert{padding:12px 14px;border-radius:var(--r-md);font-size:14px;margin-top:14px}
+.alert.warn{background:var(--amber-50);color:oklch(0.40 0.12 70)}.alert.ok{background:var(--ok-50);color:var(--ok-600)}.alert.err{background:var(--red-50);color:var(--red-600)}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line)}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.b-in_attesa{background:var(--amber-50);color:var(--amber-600)}.b-firmato{background:var(--ok-50);color:var(--ok-600)}
+.b-annullato,.b-scaduto{background:var(--surface-2);color:var(--ink-3)}
+a.copy{color:var(--brand-600);font-size:13px;text-decoration:none}
+.muted{color:var(--ink-3)}.foot{margin-top:36px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:20px}.foot a{color:var(--brand-600)}
+.note{font-size:13px;color:var(--ink-3);margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav style="display:flex;gap:18px;margin-bottom:20px;font-size:14px">
+      <a href="/veylon.html" onclick="if(history.length>1){history.back();return false}" style="color:var(--brand-600);text-decoration:none;font-weight:600">← Indietro</a>
+      <a href="/veylon.html" style="margin-left:auto;color:var(--brand-600);text-decoration:none;font-weight:600">Veylon · home</a>
+    </nav>
+    <div class="eyebrow">Firma · Appaltare</div>
+    <h1>Richiedi una firma</h1>
+    <p class="lead">Firma elettronica avanzata con OTP al firmatario, audit trail e <strong>atto di firma notarizzato su Bitcoin</strong>. <span class="muted">(Non è firma qualificata eIDAS.)</span></p>
+
+    <div id="auth-warn" class="alert warn" style="display:none">Devi essere autenticato. <a href="/index.html">Accedi</a> e ricarica.</div>
+
+    <div class="card">
+      <h2>Nuovo documento da far firmare</h2>
+      <label>Documento</label>
+      <div class="drop" id="drop"><strong>Trascina o seleziona il file</strong> — resta locale, si invia solo l'hash</div>
+      <input type="file" id="file"/>
+      <div class="hashbox" id="hash"></div>
+      <label>Email del firmatario</label>
+      <input type="email" id="email" placeholder="firmatario@impresa.it"/>
+      <label>Nome del firmatario (opzionale)</label>
+      <input type="text" id="nome"/>
+      <button class="btn" id="go" disabled>Invia richiesta di firma</button>
+      <div id="msg"></div>
+    </div>
+
+    <div class="card">
+      <h2>Richieste inviate</h2>
+      <div id="list"><p class="muted">Caricamento…</p></div>
+    </div>
+    <div class="foot">Sei il firmatario? La firma si applica da <a href="/firma-applica.html">firma-applica.html</a></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+  <script>
+const SUPABASE_URL='https://efhdooeqscqncgvhqfyu.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmaGRvb2Vxc2NxbmNndmhxZnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDA3NTcsImV4cCI6MjA5MDYxNjc1N30.wtvxgipTgEPpz40Vo6qZBsPXQO1vQuz4F1GwF9bCNlM';
+const FN=SUPABASE_URL+'/functions/v1/firma-richiedi';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+const el=id=>document.getElementById(id);
+let docHash=null,docFile=null;
+async function sha256File(file){const buf=await file.arrayBuffer();const d=await crypto.subtle.digest('SHA-256',buf);return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('');}
+const drop=el('drop');drop.addEventListener('click',()=>el('file').click());
+el('file').addEventListener('change',async e=>{docFile=e.target.files[0];if(!docFile)return;el('hash').textContent='calcolo…';docHash=await sha256File(docFile);el('hash').textContent='SHA-256: '+docHash;el('go').disabled=false;});
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.borderColor='var(--brand-500)'}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.borderColor=''}));
+drop.addEventListener('drop',async e=>{docFile=e.dataTransfer.files[0];if(!docFile)return;docHash=await sha256File(docFile);el('hash').textContent='SHA-256: '+docHash;el('go').disabled=false;});
+
+el('go').addEventListener('click',async()=>{
+  el('msg').innerHTML='';
+  const {data:s}=await sb.auth.getSession();if(!s.session){el('auth-warn').style.display='block';return;}
+  if(!docHash||!el('email').value){el('msg').innerHTML='<div class="alert err">Documento ed email firmatario sono obbligatori.</div>';return;}
+  const btn=el('go');btn.disabled=true;btn.textContent='Invio…';
+  try{
+    const res=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.session.access_token,'apikey':SUPABASE_ANON},body:JSON.stringify({doc_sha256:docHash,doc_name:docFile.name,firmatario_email:el('email').value,firmatario_nome:el('nome').value||null})});
+    const j=await res.json();
+    if(!j.success)throw new Error(j.error||'errore');
+    el('msg').innerHTML=`<div class="alert ok">✓ Richiesta creata. ${j.email_inviata?'OTP inviato via email.':esc(j.nota)}<br>Link firma: <a href="${j.sign_url}" target="_blank">${j.sign_url}</a> · codice <b>${j.codice}</b></div>`;
+    el('email').value='';el('nome').value='';docHash=null;docFile=null;el('hash').textContent='';btn.disabled=true;loadList();
+  }catch(err){el('msg').innerHTML=`<div class="alert err">Errore: ${esc(String(err.message||err))}</div>`;}
+  finally{btn.textContent='Invia richiesta di firma';}
+});
+
+async function loadList(){
+  const {data:s}=await sb.auth.getSession();
+  if(!s.session){el('list').innerHTML='<p class="muted">Accedi per vedere le richieste.</p>';return;}
+  const {data,error}=await sb.from('firme').select('doc_name,firmatario_email,stato,codice,signed_at,created_at').order('created_at',{ascending:false});
+  if(error){el('list').innerHTML='<p class="muted">Errore.</p>';return;}
+  if(!data.length){el('list').innerHTML='<p class="muted">Nessuna richiesta.</p>';return;}
+  el('list').innerHTML='<table><thead><tr><th>Documento</th><th>Firmatario</th><th>Stato</th><th>Firmato il</th></tr></thead><tbody>'+
+    data.map(f=>`<tr><td>${esc(f.doc_name)}</td><td>${esc(f.firmatario_email)}</td><td><span class="badge b-${f.stato}">${f.stato.replace('_',' ')}</span></td><td>${f.signed_at?new Date(f.signed_at).toLocaleString('it-IT'):'—'}</td></tr>`).join('')+'</tbody></table>';
+}
+function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+(async()=>{const {data:s}=await sb.auth.getSession();if(!s.session)el('auth-warn').style.display='block';loadList();})();
+  </script>
+</body>
+</html>

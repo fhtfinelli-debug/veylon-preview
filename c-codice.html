@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0f0f0e"/>
+  <title>VEYLON · Verifica certificato</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* ---------- Mobile-first vista QR ----------------------------- */
+    body { background: var(--surface); }
+    .qr-wrap { max-width: 480px; margin: 0 auto; padding: 24px 18px 64px; }
+    .qr-mast {
+      display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 1px solid var(--ink); padding-bottom: 14px; margin-bottom: 28px;
+    }
+    .qr-mast a {
+      font-family: var(--serif); font-size: 22px; letter-spacing: 0.12em;
+      color: var(--ink); text-decoration: none;
+    }
+    .qr-mast .meta {
+      font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .qr-banner {
+      border-left: 4px solid var(--seal);
+      padding: 18px 18px;
+      background: var(--panel);
+      margin-bottom: 22px;
+    }
+    .qr-banner .lbl {
+      font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .qr-banner h1 {
+      font-family: var(--serif); font-size: 22px; line-height: 1.2;
+      margin: 6px 0 4px;
+    }
+    .qr-banner p { margin: 0; font-size: 13px; color: var(--ink-2); }
+    .qr-banner.ko { border-left-color: #b00020; }
+    .qr-banner.warn { border-left-color: #a06600; }
+
+    .qr-card {
+      border-top: 1px solid var(--ink);
+      padding: 18px 0;
+    }
+    .qr-card:last-child { border-bottom: 1px solid var(--rule); }
+    .qr-card .lbl {
+      font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .qr-card .val { font-size: 15px; color: var(--ink); word-break: break-word; }
+    .qr-card .val.mono { font-family: var(--mono); font-size: 12px; }
+
+    .qr-codice {
+      font-family: var(--mono); font-size: 15px; letter-spacing: 0.08em;
+      background: var(--ink); color: var(--surface);
+      padding: 12px 14px; display: inline-block; word-break: break-all;
+    }
+
+    .qr-btn {
+      display: block; width: 100%; text-align: center;
+      padding: 14px; margin-top: 12px;
+      background: var(--ink); color: var(--surface);
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border: 1px solid var(--ink);
+    }
+    .qr-btn.ghost { background: transparent; color: var(--ink); }
+
+    .qr-footer {
+      margin-top: 36px; padding-top: 18px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono); font-size: 10px;
+      color: var(--ink-3); text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="qr-wrap">
+
+    <header class="qr-mast">
+      <a href="index.html">VEYLON</a>
+      <span class="meta">Cert · scheda QR</span>
+    </header>
+
+    <div id="loading" class="qr-banner">
+      <span class="lbl">§ Verifica</span>
+      <h1>Sto verificando il codice&hellip;</h1>
+      <p>Un istante.</p>
+    </div>
+
+    <div id="noCode" class="qr-banner ko" style="display: none;">
+      <span class="lbl">§ Codice mancante</span>
+      <h1>Nessun codice nell'URL.</h1>
+      <p>Apri questa pagina dal QR di un certificato Veylon oppure
+         inserisci manualmente il codice qui sotto.</p>
+      <form onsubmit="vaiAlCodice(event)" style="margin-top: 14px;">
+        <input id="manualCode" class="field-input mono" placeholder="VLN-CERT-2026-XXXX-XXXX" style="width: 100%;"/>
+        <button class="qr-btn" type="submit" style="margin-top: 10px;">Verifica</button>
+      </form>
+    </div>
+
+    <div id="esito" style="display: none;"></div>
+
+    <footer class="qr-footer">
+      Sigillo append-only su Bitcoin · 21 CFR Part 11 · GMP Annex 11 · GDPR art. 9
+    </footer>
+  </div>
+
+  <script>
+    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
+
+    function headers() {
+      const h = { 'Content-Type': 'application/json' };
+      if (SUPABASE_ANON_KEY) {
+        h['apikey'] = SUPABASE_ANON_KEY;
+        h['Authorization'] = 'Bearer ' + SUPABASE_ANON_KEY;
+      }
+      return h;
+    }
+
+    // Codice viene da:
+    //   1) ?c=VLN-CERT-...
+    //   2) ?codice=VLN-CERT-...
+    //   3) ultimo segmento di path: /c/VLN-CERT-...
+    function leggiCodice() {
+      const q = new URLSearchParams(location.search);
+      let c = (q.get('c') || q.get('codice') || '').trim().toUpperCase();
+      if (!c) {
+        const parts = location.pathname.split('/').filter(Boolean);
+        const last = parts[parts.length - 1] || '';
+        if (/^VLN-CERT-\d{4}-[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/i.test(last)) {
+          c = last.toUpperCase();
+        }
+      }
+      return c;
+    }
+
+    function vaiAlCodice(e) {
+      e.preventDefault();
+      const v = (document.getElementById('manualCode').value || '').trim().toUpperCase();
+      if (!v) return;
+      location.search = '?c=' + encodeURIComponent(v);
+    }
+
+    function fmtData(d) {
+      if (!d) return '—';
+      try { return new Date(d).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' }); }
+      catch { return d; }
+    }
+    function fmtDateTime(d) {
+      if (!d) return '—';
+      try { return new Date(d).toLocaleString('it-IT'); }
+      catch { return d; }
+    }
+
+    function bannerHtml(data) {
+      if (!data.valido) {
+        return `
+          <div class="qr-banner ko">
+            <span class="lbl">§ Nessun riscontro</span>
+            <h1>Codice non trovato.</h1>
+            <p>Veylon non ha un certificato con questo codice.</p>
+          </div>`;
+      }
+      const c = data.certificato || {};
+      const stato = c.stato;
+      if (stato === 'revocato') {
+        return `
+          <div class="qr-banner ko">
+            <span class="lbl">§ Revocato</span>
+            <h1>Certificato revocato.</h1>
+            <p>L'istituzione emittente ha revocato questo certificato. Non considerarlo valido.</p>
+          </div>`;
+      }
+      if (stato === 'scaduto') {
+        return `
+          <div class="qr-banner warn">
+            <span class="lbl">§ Scaduto</span>
+            <h1>Certificato scaduto.</h1>
+            <p>Esistente, non revocato, ma oltre la data di scadenza.</p>
+          </div>`;
+      }
+      return `
+        <div class="qr-banner">
+          <span class="lbl">§ Valido</span>
+          <h1>Certificato valido.</h1>
+          <p>Emesso e ancorato a Bitcoin. Audit trail GxP append-only.</p>
+        </div>`;
+    }
+
+    function dettagliHtml(data) {
+      const c = data.certificato || {};
+      const ist = data.istituzione || {};
+      const tpl = data.template || {};
+      const btc = data.bitcoin || {};
+
+      const verifyUrl = `cert-verifica.html?codice=${encodeURIComponent(c.codice_pubblico || '')}`;
+      const norm = Array.isArray(ist.normative_applicabili) && ist.normative_applicabili.length
+        ? ist.normative_applicabili.join(' · ') : '—';
+      const benef = [c.beneficiario_nome, c.beneficiario_email_masked].filter(Boolean).join(' · ');
+      const tplLine = tpl && tpl.nome ? `<div class="qr-card"><div class="lbl">Template</div><div class="val">${tpl.nome} · <span class="mono">${tpl.tipo}</span></div></div>` : '';
+
+      const datiKeys = c.dati_certificato && typeof c.dati_certificato === 'object'
+        ? Object.keys(c.dati_certificato) : [];
+      let datiHtml = '';
+      if (datiKeys.length) {
+        datiHtml = '<div class="qr-card"><div class="lbl">Dati certificato</div>'
+          + datiKeys.map(k => `<div style="margin-top:6px;"><span class="lbl">${k}</span><div class="val mono">${String(c.dati_certificato[k])}</div></div>`).join('')
+          + '</div>';
+      }
+
+      const btcLine = btc.ancorato
+        ? `Confermato (blocco ${btc.btc_block_height ?? '—'})`
+        : `In attesa di conferma (${btc.ots_status || 'pending'})`;
+
+      const pdfLine = data.pdf_download_url
+        ? `<a class="qr-btn" href="${data.pdf_download_url}" target="_blank">Scarica PDF certificato</a>`
+        : '';
+
+      return `
+        <div class="qr-card">
+          <div class="lbl">Codice pubblico</div>
+          <div class="val"><span class="qr-codice">${c.codice_pubblico || '—'}</span></div>
+        </div>
+
+        <div class="qr-card">
+          <div class="lbl">Beneficiario</div>
+          <div class="val">${benef || '—'}</div>
+        </div>
+
+        <div class="qr-card">
+          <div class="lbl">Istituzione emittente</div>
+          <div class="val">${ist.ragione_sociale || '—'}</div>
+          <div class="lbl" style="margin-top:8px;">P.IVA · KYC · settore</div>
+          <div class="val mono">${ist.p_iva || '—'} · ${ist.livello_kyc || 'light'} · ${ist.settore || '—'}</div>
+          <div class="lbl" style="margin-top:8px;">Normative dichiarate</div>
+          <div class="val mono">${norm}</div>
+        </div>
+
+        ${tplLine}
+
+        <div class="qr-card">
+          <div class="lbl">Emissione · scadenza</div>
+          <div class="val mono">${fmtData(c.data_emissione)} → ${c.data_scadenza ? fmtData(c.data_scadenza) : 'senza scadenza'}</div>
+        </div>
+
+        <div class="qr-card">
+          <div class="lbl">Impronta SHA-256</div>
+          <div class="val mono" style="font-size: 11px;">${c.doc_sha256 || '—'}</div>
+        </div>
+
+        <div class="qr-card">
+          <div class="lbl">Sigillo Bitcoin</div>
+          <div class="val mono">${btcLine}</div>
+          ${btc.btc_block_time ? `<div class="lbl" style="margin-top:8px;">Timestamp BTC</div><div class="val mono">${fmtDateTime(btc.btc_block_time)}</div>` : ''}
+        </div>
+
+        ${datiHtml}
+
+        ${pdfLine}
+        <a class="qr-btn ghost" href="${verifyUrl}">Apri scheda completa</a>
+        <a class="qr-btn ghost" href="cert.html">Cosa &egrave; Veylon Cert</a>
+      `;
+    }
+
+    async function verifica(codice) {
+      try {
+        const res = await fetch(`${FUNCTIONS_BASE}/cert-verifica`, {
+          method: 'POST', headers: headers(), body: JSON.stringify({ codice }),
+        });
+        const data = await res.json().catch(() => ({}));
+        document.getElementById('loading').style.display = 'none';
+        const esito = document.getElementById('esito');
+        esito.style.display = 'block';
+        if (!res.ok || !data.success) {
+          esito.innerHTML = `
+            <div class="qr-banner ko">
+              <span class="lbl">§ Errore</span>
+              <h1>Verifica fallita.</h1>
+              <p>${data.error || ('HTTP ' + res.status)}</p>
+            </div>`;
+          return;
+        }
+        esito.innerHTML = bannerHtml(data) + dettagliHtml(data);
+      } catch (e) {
+        document.getElementById('loading').style.display = 'none';
+        const esito = document.getElementById('esito');
+        esito.style.display = 'block';
+        esito.innerHTML = `
+          <div class="qr-banner ko">
+            <span class="lbl">§ Errore di rete</span>
+            <h1>Non sono riuscito a contattare Veylon.</h1>
+            <p>${e?.message ?? e}</p>
+          </div>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const c = leggiCodice();
+      if (!c) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('noCode').style.display = 'block';
+        return;
+      }
+      verifica(c);
+    });
+  </script>
+
+</body>
+</html>

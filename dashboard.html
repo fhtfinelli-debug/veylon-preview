@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Cruscotto operativo</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Area riservata</span>
+        <span class="sep">·</span>
+        <span>Cruscotto operativo</span>
+      </div>
+      <a href="dashboard.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav full">
+        <a href="dashboard.html" class="current">Cruscotto</a>
+        <a href="notarizza.html">Sigillo</a>
+        <a href="invia.html">Send</a>
+        <a href="mail.html">Mail</a>
+        <a href="firma.html">Firma</a>
+        <a href="garanzie.html">Garanzie</a>
+        <a href="onboarding.html">KYC</a>
+        <a href="tag.html">Tag</a>
+        <a href="cert.html">Cert</a>
+        <a href="archivio.html">Archivio</a>
+        <a href="verifica.html">Verifica</a>
+        <a href="#" id="logout" class="nav-aux">Esci</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Sessione cifrata aperta &middot; <span id="sessTime" class="mono">testé</span> &middot; SPID Liv. 2 &middot; <span id="sessCode" class="mono">S-2026-3F84·A21B</span></span>
+        <span>Bitcoin #&nbsp;<span class="mono">874.201</span> &middot; <span class="verify-c">operativo</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col" style="padding: 40px 32px 96px;">
+
+    <!-- ============================================================
+         INTESTAZIONE
+    ============================================================= -->
+    <section class="head-row">
+      <div>
+        <span class="section-num">Cruscotto &middot; sabato 7 giugno 2026 &middot; ore 14:38</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Buongiorno, <em class="serif-italic" style="color: var(--seal);">Avv. Bertolaso.</em>
+        </h1>
+        <p class="lede" style="font-size: 18px; margin: 0;">
+          Quattro atti emessi quest'oggi. Due firme da sollecitare, una garanzia in scadenza.
+        </p>
+      </div>
+      <aside class="tess-card">
+        <div class="row" style="gap: 14px; align-items: flex-start;">
+          <div class="seal-mark" style="width: 56px; height: 56px;">
+            <span class="glyph" style="font-size: 24px;">V</span>
+          </div>
+          <div style="min-width: 0; flex: 1;">
+            <div class="eyebrow seal-c">Soggetto autenticato</div>
+            <div class="serif" style="font-size: 19px; line-height: 1.2; margin-top: 4px;">Avv. Mario Bertolaso</div>
+            <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.06em;">Studio Notarile Bertolaso &amp; Associati</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         §I — MENU SERVIZI (tutti, raggruppati per ambito)
+    ============================================================= -->
+    <section style="margin-top: 56px;">
+      <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
+        <div>
+          <span class="section-num">§ I &mdash; Servizi</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 10px;">
+            Tutti i servizi <em class="serif-italic" style="color: var(--seal);">disponibili.</em>
+          </h2>
+        </div>
+        <span class="roman">i</span>
+      </div>
+
+      <!-- A. CERTIFICAZIONE DOCUMENTALE -->
+      <div class="service-group">
+        <div class="sg-label">
+          <span class="sg-letter">A</span>
+          <div>
+            <div class="eyebrow seal-c">Ambito A</div>
+            <div class="serif" style="font-size: 19px; margin-top: 2px;">Certificazione documentale</div>
+          </div>
+        </div>
+        <div class="sg-services">
+          <a href="notarizza.html" class="svc">
+            <div class="svc-num">i</div>
+            <div class="svc-body">
+              <div class="svc-name">Sigillo</div>
+              <div class="svc-desc">Apponi marca temporale su un documento</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="invia.html" class="svc">
+            <div class="svc-num">ii</div>
+            <div class="svc-body">
+              <div class="svc-name">Send</div>
+              <div class="svc-desc">Trasmissione cifrata end-to-end</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="mail.html" class="svc">
+            <div class="svc-num">iii</div>
+            <div class="svc-body">
+              <div class="svc-name">Mail</div>
+              <div class="svc-desc">Email certificate (BCC · Relay · Vault)</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="firma.html" class="svc">
+            <div class="svc-num">iv</div>
+            <div class="svc-body">
+              <div class="svc-name">Firma elettronica</div>
+              <div class="svc-desc">Richiedi una FEA con OTP</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- B. APPALTI & OPERATORI -->
+      <div class="service-group">
+        <div class="sg-label">
+          <span class="sg-letter">B</span>
+          <div>
+            <div class="eyebrow seal-c">Ambito B</div>
+            <div class="serif" style="font-size: 19px; margin-top: 2px;">Appalti &amp; operatori economici</div>
+          </div>
+        </div>
+        <div class="sg-services">
+          <a href="garanzie.html" class="svc">
+            <div class="svc-num">v</div>
+            <div class="svc-body">
+              <div class="svc-name">Garanzie</div>
+              <div class="svc-desc">Fideiussioni d'appalto verificabili</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="onboarding.html" class="svc">
+            <div class="svc-num">vi</div>
+            <div class="svc-body">
+              <div class="svc-name">KYC</div>
+              <div class="svc-desc">Qualifica operatore economico</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- C. AUTENTICITÀ MATERIALE -->
+      <div class="service-group">
+        <div class="sg-label">
+          <span class="sg-letter">C</span>
+          <div>
+            <div class="eyebrow seal-c">Ambito C</div>
+            <div class="serif" style="font-size: 19px; margin-top: 2px;">Autenticità materiale &amp; titoli</div>
+          </div>
+        </div>
+        <div class="sg-services">
+          <a href="tag.html" class="svc">
+            <div class="svc-num">vii</div>
+            <div class="svc-body">
+              <div class="svc-name">Tag</div>
+              <div class="svc-desc">QR/NFC sui prodotti fisici · DPP UE</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="cert.html" class="svc">
+            <div class="svc-num">viii</div>
+            <div class="svc-body">
+              <div class="svc-name">Cert</div>
+              <div class="svc-desc">Diplomi, ECM, GxP, attestati istituzionali</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- D. CONSULTAZIONE & VERIFICA -->
+      <div class="service-group" style="border-bottom: 0;">
+        <div class="sg-label">
+          <span class="sg-letter">D</span>
+          <div>
+            <div class="eyebrow seal-c">Ambito D</div>
+            <div class="serif" style="font-size: 19px; margin-top: 2px;">Consultazione &amp; verifica</div>
+          </div>
+        </div>
+        <div class="sg-services">
+          <a href="archivio.html" class="svc">
+            <div class="svc-num">ix</div>
+            <div class="svc-body">
+              <div class="svc-name">Archivio</div>
+              <div class="svc-desc">Repertorio completo dei sigilli</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="verifica.html" class="svc">
+            <div class="svc-num">x</div>
+            <div class="svc-body">
+              <div class="svc-name">Verifica documento</div>
+              <div class="svc-desc">Riscontro pubblico su Bitcoin</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="verifica-garanzia.html" class="svc">
+            <div class="svc-num">xi</div>
+            <div class="svc-body">
+              <div class="svc-name">Verifica garanzia</div>
+              <div class="svc-desc">Per la stazione appaltante</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+          <a href="certificazioni.html" class="svc">
+            <div class="svc-num">xii</div>
+            <div class="svc-body">
+              <div class="svc-name">Trust center</div>
+              <div class="svc-desc">Conformità, audit, accreditamenti</div>
+            </div>
+            <div class="svc-arrow">→</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         §II — INDICATORI CHIAVE
+    ============================================================= -->
+    <section style="margin-top: 64px;">
+      <div class="row-between" style="align-items: flex-end; margin-bottom: 20px;">
+        <div>
+          <span class="section-num">§ II &mdash; Indicatori</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 10px;">
+            Attività di <em class="serif-italic" style="color: var(--seal);">questo mese.</em>
+          </h2>
+        </div>
+        <span class="roman">ii</span>
+      </div>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-lbl">Sigilli</div>
+          <div class="kpi-num">218</div>
+          <div class="kpi-foot mono"><span class="verify-c">+12%</span> vs mese prec.</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Trasmissioni</div>
+          <div class="kpi-num">23</div>
+          <div class="kpi-foot mono"><span class="verify-c">+4</span> oggi</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Email</div>
+          <div class="kpi-num">218</div>
+          <div class="kpi-foot mono">tutte consegnate</div>
+        </div>
+        <div class="kpi alert">
+          <div class="kpi-lbl">Garanzie</div>
+          <div class="kpi-num">47</div>
+          <div class="kpi-foot mono"><span class="seal-c">1 in scadenza</span></div>
+        </div>
+        <div class="kpi alert">
+          <div class="kpi-lbl">Firme aperte</div>
+          <div class="kpi-num">12</div>
+          <div class="kpi-foot mono"><span class="seal-c">2 da sollecitare</span></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Verifiche di terzi</div>
+          <div class="kpi-num">128</div>
+          <div class="kpi-foot mono"><span class="verify-c">+38</span> in 30gg</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         §III — DUE COLONNE: DA FARE / ATTIVITÀ
+    ============================================================= -->
+    <section style="margin-top: 64px;">
+      <div class="row-between" style="align-items: flex-end; margin-bottom: 20px;">
+        <div>
+          <span class="section-num">§ III &mdash; Operazioni</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 10px;">
+            Da fare e <em class="serif-italic" style="color: var(--seal);">registro attività.</em>
+          </h2>
+        </div>
+        <span class="roman">iii</span>
+      </div>
+
+      <div class="grid-main">
+
+        <!-- DA FARE -->
+        <article class="panel-card">
+          <div class="pc-head">
+            <div>
+              <div class="eyebrow seal-c">Richiede la vostra attenzione</div>
+              <h3 class="serif" style="font-size: 22px; line-height: 1.1; margin: 6px 0 0;">5 azioni in attesa</h3>
+            </div>
+            <span class="pc-badge">5</span>
+          </div>
+          <ul class="todo">
+            <li class="todo-item urgent">
+              <span class="todo-tag mono">Garanzia</span>
+              <div class="todo-body">
+                <div class="todo-title serif">Fideiussione APT-GAR-2026-AB12CD &mdash; scadenza prossima</div>
+                <div class="todo-meta mono">Comune di Mortara &middot; €&nbsp;842.500 &middot; scade fra <strong style="color: var(--seal);">37 giorni</strong></div>
+              </div>
+              <a href="garanzie.html" class="todo-cta">Apri →</a>
+            </li>
+            <li class="todo-item">
+              <span class="todo-tag mono">Firma</span>
+              <div class="todo-body">
+                <div class="todo-title serif">Mandato professionale &mdash; Sig. Vitali in attesa di firma</div>
+                <div class="todo-meta mono">Inviata 6 giu &middot; nessuna autenticazione &middot; scade fra 6 g</div>
+              </div>
+              <a href="firma.html" class="todo-cta">Sollecita →</a>
+            </li>
+            <li class="todo-item">
+              <span class="todo-tag mono">Firma</span>
+              <div class="todo-body">
+                <div class="todo-title serif">Consenso al trattamento dati &mdash; pratica n. 0382/2026</div>
+                <div class="todo-meta mono">Magic link aperto, non firmato</div>
+              </div>
+              <a href="firma.html" class="todo-cta">Apri →</a>
+            </li>
+            <li class="todo-item">
+              <span class="todo-tag mono">KYC</span>
+              <div class="todo-body">
+                <div class="todo-title serif">Costruzioni Lemania S.p.A. &mdash; documenti mancanti</div>
+                <div class="todo-meta mono">2 di 5 allegati &middot; 3 da fornire per concludere</div>
+              </div>
+              <a href="onboarding.html" class="todo-cta">Continua →</a>
+            </li>
+            <li class="todo-item">
+              <span class="todo-tag mono">Mail</span>
+              <div class="todo-body">
+                <div class="todo-title serif">Email a ASL Roma 2 &mdash; consegna fallita</div>
+                <div class="todo-meta mono">Bounce SMTP &middot; casella inesistente &middot; 6 giu 09:18</div>
+              </div>
+              <a href="mail.html" class="todo-cta">Rivedi →</a>
+            </li>
+          </ul>
+        </article>
+
+        <!-- ATTIVITÀ -->
+        <article class="panel-card">
+          <div class="pc-head">
+            <div>
+              <div class="eyebrow seal-c">Registro delle ultime operazioni</div>
+              <h3 class="serif" style="font-size: 22px; line-height: 1.1; margin: 6px 0 0;">Attività recente</h3>
+            </div>
+          </div>
+          <ol class="feed">
+            <li>
+              <span class="feed-time mono">14:38</span>
+              <span class="feed-mark sigillo"></span>
+              <div class="feed-body">
+                <div class="feed-line"><strong>Sigillo apposto</strong> &mdash; Atto di mandato</div>
+                <div class="feed-meta mono">VLN-2026-248917-AC4F · attesa #&nbsp;874.203</div>
+              </div>
+            </li>
+            <li>
+              <span class="feed-time mono">14:38</span>
+              <span class="feed-mark mail"></span>
+              <div class="feed-body">
+                <div class="feed-line">Email <strong>consegnata</strong> a avv.romagnoli@studiormg.it</div>
+                <div class="feed-meta mono">Atto di diffida &middot; tutte e 3 ricevute &middot; 2.1 sec</div>
+              </div>
+            </li>
+            <li>
+              <span class="feed-time mono">11:22</span>
+              <span class="feed-mark sigillo"></span>
+              <div class="feed-body">
+                <div class="feed-line">Sigillo &mdash; <strong>Verbale assemblea</strong>, Lemania S.p.A.</div>
+                <div class="feed-meta mono">VLN-2026-248912-D71B &middot; blocco #&nbsp;874.198</div>
+              </div>
+            </li>
+            <li>
+              <span class="feed-time mono">10:04</span>
+              <span class="feed-mark send"></span>
+              <div class="feed-body">
+                <div class="feed-line">Plico cifrato <strong>aperto</strong> da Avv. Romagnoli</div>
+                <div class="feed-meta mono">VLN-TX-3F84A21B · SPID L2 · ricevuta #&nbsp;874.201</div>
+              </div>
+            </li>
+            <li>
+              <span class="feed-time mono">09:48</span>
+              <span class="feed-mark firma"></span>
+              <div class="feed-body">
+                <div class="feed-line"><strong>Firma apposta</strong> &mdash; Atto transattivo</div>
+                <div class="feed-meta mono">OTP SMS · 2/2 firmatari · sigillo #&nbsp;874.174</div>
+              </div>
+            </li>
+            <li>
+              <span class="feed-time mono">09:18</span>
+              <span class="feed-mark verify"></span>
+              <div class="feed-body">
+                <div class="feed-line">Verifica pubblica &mdash; esito <strong>autentico</strong></div>
+                <div class="feed-meta mono">Atto di mandato &middot; IP 185.42.&hellip;</div>
+              </div>
+            </li>
+          </ol>
+          <div class="pc-foot">
+            <a href="archivio.html" class="link-seal small">Apri il registro completo →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         §IV — SCADENZE + STATO SISTEMA
+    ============================================================= -->
+    <section style="margin-top: 64px;">
+      <div class="row-between" style="align-items: flex-end; margin-bottom: 20px;">
+        <div>
+          <span class="section-num">§ IV &mdash; Stato</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 10px;">
+            Scadenze e <em class="serif-italic" style="color: var(--seal);">stato del servizio.</em>
+          </h2>
+        </div>
+        <span class="roman">iv</span>
+      </div>
+
+      <div class="grid-bottom">
+
+        <!-- SCADENZE -->
+        <article class="panel-card">
+          <div class="pc-head">
+            <div>
+              <div class="eyebrow seal-c">Calendario operativo</div>
+              <h3 class="serif" style="font-size: 22px; line-height: 1.1; margin: 6px 0 0;">Scadenze imminenti</h3>
+            </div>
+          </div>
+          <ul class="cal">
+            <li>
+              <div class="cal-day"><div class="cal-dnum">13</div><div class="cal-dmon mono">giu</div></div>
+              <div class="cal-body">
+                <div class="cal-title">Magic link scade &mdash; Sig. Vitali</div>
+                <div class="cal-meta mono">Mandato professionale &middot; firma non apposta</div>
+              </div>
+            </li>
+            <li>
+              <div class="cal-day"><div class="cal-dnum">14</div><div class="cal-dmon mono">giu</div></div>
+              <div class="cal-body">
+                <div class="cal-title">Magic link scade &mdash; pratica 0382/2026</div>
+                <div class="cal-meta mono">Consenso al trattamento dati</div>
+              </div>
+            </li>
+            <li>
+              <div class="cal-day urgent"><div class="cal-dnum">14</div><div class="cal-dmon mono">lug</div></div>
+              <div class="cal-body">
+                <div class="cal-title">Garanzia APT-GAR-2026-AB12CD &mdash; scade</div>
+                <div class="cal-meta mono">Comune di Mortara &middot; €&nbsp;842.500</div>
+              </div>
+            </li>
+            <li>
+              <div class="cal-day"><div class="cal-dnum">28</div><div class="cal-dmon mono">ago</div></div>
+              <div class="cal-body">
+                <div class="cal-title">Garanzia APT-GAR-2026-9E4F02 &mdash; scade</div>
+                <div class="cal-meta mono">ASL Roma 2 &middot; €&nbsp;38.200</div>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+        <!-- STATO SISTEMA -->
+        <article class="panel-card">
+          <div class="pc-head">
+            <div>
+              <div class="eyebrow seal-c">Servizio fiduciario</div>
+              <h3 class="serif" style="font-size: 22px; line-height: 1.1; margin: 6px 0 0;">Stato del sistema</h3>
+            </div>
+            <span class="status confirmed" style="margin-left: auto;"><span class="dot"></span>Operativo</span>
+          </div>
+          <div class="sys-grid">
+            <div class="sys-row"><div class="sys-k">Bitcoin mainnet</div><div class="sys-v mono">#&nbsp;874.201 &middot; <span class="verify-c">12 min fa</span></div></div>
+            <div class="sys-row"><div class="sys-k">Calendar alice</div><div class="sys-v mono"><span class="verify-c">attivo</span> &middot; 89 ms</div></div>
+            <div class="sys-row"><div class="sys-k">Calendar bob</div><div class="sys-v mono"><span class="verify-c">attivo</span> &middot; 102 ms</div></div>
+            <div class="sys-row"><div class="sys-k">Calendar finney</div><div class="sys-v mono"><span class="verify-c">attivo</span> &middot; 124 ms</div></div>
+            <div class="sys-row"><div class="sys-k">Cron di conferma</div><div class="sys-v mono">eseguito 14:30 · +12</div></div>
+            <div class="sys-row" style="border-bottom: 0;"><div class="sys-k">Uptime 90gg</div><div class="sys-v mono">99,98%</div></div>
+          </div>
+          <div class="pc-foot">
+            <a href="certificazioni.html" class="link-seal small">Apri trust center · conformità &amp; audit →</a>
+          </div>
+        </article>
+
+        <!-- PIANO -->
+        <article class="panel-card">
+          <div class="pc-head">
+            <div>
+              <div class="eyebrow seal-c">Piano di servizio</div>
+              <h3 class="serif" style="font-size: 22px; line-height: 1.1; margin: 6px 0 0;">Piano <em class="serif-italic" style="color: var(--seal);">Professionale</em></h3>
+            </div>
+          </div>
+          <div class="plan-grid">
+            <div class="plan-row">
+              <div style="flex: 1;">
+                <div class="plan-lbl">Sigilli</div>
+                <div class="plan-bar"><div class="plan-fill" style="width: 21.8%;"></div></div>
+              </div>
+              <div class="plan-num mono">218 / 1.000</div>
+            </div>
+            <div class="plan-row">
+              <div style="flex: 1;">
+                <div class="plan-lbl">Trasmissioni</div>
+                <div class="plan-bar"><div class="plan-fill" style="width: 23%;"></div></div>
+              </div>
+              <div class="plan-num mono">23 / 100</div>
+            </div>
+            <div class="plan-row">
+              <div style="flex: 1;">
+                <div class="plan-lbl">Email</div>
+                <div class="plan-bar"><div class="plan-fill" style="width: 43.6%;"></div></div>
+              </div>
+              <div class="plan-num mono">218 / 500</div>
+            </div>
+            <div class="plan-row">
+              <div style="flex: 1;">
+                <div class="plan-lbl">Archivio</div>
+                <div class="plan-bar"><div class="plan-fill" style="width: 62%;"></div></div>
+              </div>
+              <div class="plan-num mono">6,2 / 10 GB</div>
+            </div>
+          </div>
+          <p class="small" style="margin-top: 16px; color: var(--ink-3);">
+            Rinnovo automatico il <strong style="color: var(--ink);">1 luglio 2026</strong>. <a class="link-seal" href="#">Gestisci</a>
+          </p>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
+      <span>Cruscotto operativo</span>
+    </div>
+  </footer>
+
+  <style>
+  /* ============================================================
+     HEAD ROW
+  ============================================================= */
+  .head-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    align-items: end;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .tess-card {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    padding: 22px 24px;
+  }
+
+  /* ============================================================
+     §I — MENU SERVIZI
+  ============================================================= */
+  .service-group {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: start;
+  }
+  .service-group:first-of-type { padding-top: 12px; }
+  .sg-label {
+    display: flex; align-items: center; gap: 16px;
+    position: sticky; top: 24px;
+  }
+  .sg-letter {
+    font-family: var(--serif); font-style: italic;
+    font-size: 32px; color: var(--seal);
+    border: 1px solid var(--seal);
+    width: 52px; height: 52px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .sg-services {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--rule);
+  }
+  .svc {
+    display: grid;
+    grid-template-columns: 44px 1fr 24px;
+    gap: 14px;
+    padding: 18px 20px;
+    border-right: 1px solid var(--rule-2);
+    border-bottom: 1px solid var(--rule-2);
+    align-items: center;
+    color: inherit;
+    transition: background .15s;
+  }
+  .svc:nth-child(2n) { border-right: 0; }
+  /* remove the bottom border on the last row */
+  .svc:nth-last-child(-n+2) { border-bottom: 0; }
+  /* when there's an odd number, the last item spans only first column */
+  .sg-services:has(.svc:nth-child(odd):last-child) .svc:last-child { border-right: 0; }
+  .svc:hover { background: var(--paper-2); }
+  .svc-num {
+    font-family: var(--serif); font-style: italic;
+    color: var(--seal); font-size: 22px;
+  }
+  .svc-name {
+    font-family: var(--serif); font-size: 21px;
+    line-height: 1.15; color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .svc-desc {
+    font-family: var(--serif); font-style: italic;
+    font-size: 14px; color: var(--ink-2);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+  .svc-arrow {
+    font-family: var(--mono); font-size: 16px;
+    color: var(--ink-3); text-align: right;
+  }
+  .svc:hover .svc-arrow { color: var(--seal); }
+
+  /* ============================================================
+     §II — KPI
+  ============================================================= */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .kpi {
+    padding: 22px 20px 18px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .kpi:last-child { border-right: 0; }
+  .kpi.alert::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--seal);
+  }
+  .kpi-lbl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: 14px;
+  }
+  .kpi-num {
+    font-family: var(--serif); font-size: 38px;
+    line-height: 1; letter-spacing: -0.015em;
+    margin-bottom: 10px;
+  }
+  .kpi-foot {
+    font-size: 10.5px; color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+
+  /* ============================================================
+     §III / §IV — GRID
+  ============================================================= */
+  .grid-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .grid-bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .panel-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 24px 26px;
+  }
+  .pc-head {
+    display: flex; justify-content: space-between; align-items: end;
+    padding-bottom: 18px; margin-bottom: 18px;
+    border-bottom: 1px solid var(--rule-2);
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .pc-badge {
+    background: var(--seal); color: var(--paper);
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.08em;
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+  }
+  .pc-foot {
+    margin-top: 18px; padding-top: 14px;
+    border-top: 1px solid var(--rule-2);
+    text-align: right;
+  }
+
+  /* ============================================================
+     DA FARE
+  ============================================================= */
+  .todo { list-style: none; padding: 0; margin: 0; }
+  .todo-item {
+    display: grid;
+    grid-template-columns: 70px 1fr 80px;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: center;
+  }
+  .todo-item:last-child { border-bottom: 0; }
+  .todo-tag {
+    font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--seal);
+  }
+  .todo-title { font-size: 15px; line-height: 1.3; color: var(--ink); }
+  .todo-meta { font-size: 11px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em; }
+  .todo-cta {
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-3); text-align: right;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .todo-cta:hover { color: var(--seal); border-bottom-color: var(--seal); }
+  .todo-item.urgent { background: var(--seal-50); margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
+
+  /* ============================================================
+     FEED
+  ============================================================= */
+  .feed { list-style: none; padding: 0; margin: 0; }
+  .feed li {
+    display: grid;
+    grid-template-columns: 50px 14px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: start;
+  }
+  .feed li:last-child { border-bottom: 0; }
+  .feed-time {
+    font-size: 11px; color: var(--ink-3);
+    letter-spacing: 0.06em; text-align: right;
+  }
+  .feed-mark {
+    width: 10px; height: 10px; border-radius: 50%; margin-top: 5px;
+  }
+  .feed-mark.sigillo { background: var(--seal); }
+  .feed-mark.mail    { background: var(--verify); }
+  .feed-mark.send    { background: oklch(0.55 0.13 250); }
+  .feed-mark.firma   { background: var(--gold); }
+  .feed-mark.verify  { background: var(--ink); }
+  .feed-line { font-family: var(--serif); font-size: 14px; line-height: 1.35; color: var(--ink); }
+  .feed-line strong { font-weight: 500; font-style: italic; }
+  .feed-meta { font-size: 10.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.05em; }
+
+  /* ============================================================
+     SCADENZE
+  ============================================================= */
+  .cal { list-style: none; padding: 0; margin: 0; }
+  .cal li {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: start;
+  }
+  .cal li:last-child { border-bottom: 0; }
+  .cal-day {
+    border: 1px solid var(--ink);
+    padding: 6px 0 8px;
+    text-align: center;
+  }
+  .cal-day.urgent { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+  .cal-dnum {
+    font-family: var(--serif); font-size: 20px; line-height: 1; color: inherit;
+  }
+  .cal-dmon {
+    font-size: 9.5px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: inherit;
+    margin-top: 4px; opacity: 0.7;
+  }
+  .cal-title { font-family: var(--serif); font-size: 14px; line-height: 1.3; color: var(--ink); }
+  .cal-meta { font-size: 10.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em; }
+
+  /* ============================================================
+     STATO SISTEMA
+  ============================================================= */
+  .sys-grid { display: flex; flex-direction: column; }
+  .sys-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: baseline;
+  }
+  .sys-k {
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .sys-v { font-size: 12px; }
+
+  /* ============================================================
+     PIANO
+  ============================================================= */
+  .plan-grid { display: flex; flex-direction: column; gap: 18px; }
+  .plan-row { display: flex; gap: 16px; align-items: end; }
+  .plan-lbl {
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: 6px;
+  }
+  .plan-bar { height: 6px; background: var(--rule-2); }
+  .plan-fill { height: 100%; background: var(--seal); }
+  .plan-num { font-size: 11.5px; color: var(--ink); letter-spacing: 0.06em; white-space: nowrap; }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================= */
+  @media (max-width: 1100px) {
+    .head-row { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+    .service-group { grid-template-columns: 1fr; gap: 20px; }
+    .sg-label { position: static; }
+    .sg-services { grid-template-columns: 1fr; }
+    .svc { border-right: 0; border-bottom: 1px solid var(--rule-2); }
+    .svc:last-child { border-bottom: 0; }
+    .kpis { grid-template-columns: repeat(3, 1fr); }
+    .kpi:nth-child(3n) { border-right: 0; }
+    .kpi:nth-child(-n+3) { border-bottom: 1px solid var(--rule); }
+    .grid-main { grid-template-columns: 1fr; }
+    .grid-bottom { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .kpi { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .kpi:nth-child(2n) { border-right: 0; }
+    .todo-item { grid-template-columns: 60px 1fr; }
+    .todo-cta { grid-column: 2; text-align: left; }
+  }
+  </style>
+
+  <script>
+  try {
+    const s = JSON.parse(localStorage.getItem('veylon_session') || 'null');
+    const since = s ? new Date(s.since) : new Date(Date.now() - 14 * 60000);
+    const updateSess = () => {
+      const min = Math.round((Date.now() - since.getTime()) / 60000);
+      document.getElementById('sessTime').textContent =
+        min < 1 ? 'testé' : ('aperta da ' + min + ' min');
+    };
+    updateSess();
+    setInterval(updateSess, 60000);
+  } catch(e){}
+
+  document.getElementById('logout').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('veylon_session');
+    location.href = 'login.html';
+  });
+  </script>
+</body>
+</html>

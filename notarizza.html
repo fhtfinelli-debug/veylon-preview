@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Apposizione di sigillo</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Sezione&nbsp;I &mdash; Sigillo</span>
+        <span class="sep">·</span>
+        <span>Apposizione</span>
+      </div>
+      <a href="dashboard.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
+        <a href="notarizza.html" class="current">Sigillo</a>
+        <a href="invia.html">Send</a>
+        <a href="mail.html">Mail</a>
+        <a href="firma.html">Firma</a>
+        <a href="garanzie.html">Garanzie</a>
+        <a href="onboarding.html">KYC</a>
+        <a href="tag.html">Tag</a>
+        <a href="cert.html">Cert</a>
+        <a href="archivio.html">Archivio</a>
+        <a href="verifica.html">Verifica</a>
+        <a href="#" id="logout" class="nav-aux">Esci</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>← <a href="index.html" style="color: inherit; border-bottom: 1px solid var(--rule);">Torna all'indice generale</a></span>
+        <span>Calendar OTS · alice · bob · finney &mdash; <span class="verify-c">operativi</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col" style="padding: 64px 32px 96px;">
+
+    <!-- Intestazione atto -->
+    <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
+      <div>
+        <span class="section-num">Atto n. <span class="tabular">248,918</span> · in formazione</span>
+      </div>
+      <span class="roman">i</span>
+    </div>
+
+    <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 18ch;">
+      Apposizione di <em class="serif-italic" style="color: var(--seal);">sigillo</em> su documento.
+    </h1>
+    <p class="lede" style="margin-top: 28px;">
+      Il documento resta sul vostro dispositivo. Viene calcolata e trasmessa
+      la sola impronta crittografica SHA&#8209;256, ancorata al registro
+      Bitcoin tramite OpenTimestamps.
+    </p>
+
+    <hr class="rule" style="margin: 56px 0 0;"/>
+
+    <!-- Layout a due colonne: atto principale + colonna laterale didascalica -->
+    <div style="display: grid; grid-template-columns: 1fr 280px; gap: 64px; margin-top: 56px;" id="layout">
+
+      <!-- ========== COLONNA PRINCIPALE ========== -->
+      <section class="stack-48" id="main">
+
+        <!-- PASSO 1: Documento -->
+        <div id="step1">
+          <div class="step-head">
+            <span class="step-mark">01</span>
+            <div>
+              <div class="eyebrow">Passo primo</div>
+              <h2 class="serif" style="font-size: 30px; line-height: 1.1;">Designazione del documento</h2>
+            </div>
+          </div>
+
+          <div class="drop" id="drop">
+            <div class="icon"></div>
+            <div class="title">Selezionare o trascinare un documento</div>
+            <div class="sub">PDF · DOCX · Immagini · Qualsiasi formato — nessun caricamento</div>
+          </div>
+          <input type="file" id="file" style="display:none"/>
+
+          <div id="docInfo" style="display:none; margin-top: 32px;">
+            <div class="row-between" style="padding-bottom: 18px; border-bottom: var(--hairline);">
+              <div style="display: flex; gap: 16px; align-items: center; min-width: 0;">
+                <div class="doc-icon">
+                  <span class="ext mono" id="docExt">PDF</span>
+                </div>
+                <div style="min-width: 0;">
+                  <div class="mono" style="font-size: 11px; color: var(--ink-3); letter-spacing: 0.14em; text-transform: uppercase;">Documento selezionato</div>
+                  <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;" id="docName">—</div>
+                  <div class="mono" style="font-size: 12px; color: var(--ink-2); margin-top: 4px;" id="docSize">—</div>
+                </div>
+              </div>
+              <button class="btn ghost" id="changeBtn">Cambia</button>
+            </div>
+
+            <div style="margin-top: 24px;">
+              <label class="field-label" for="docTitle">Denominazione formale dell'atto</label>
+              <input class="field-input" id="docTitle" type="text" placeholder="Es. Atto di mandato — Rep. n. 14.882/2026"/>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 24px;">
+              <div>
+                <label class="field-label" for="docHolder">Titolare</label>
+                <input class="field-input" id="docHolder" type="text" placeholder="Studio / ente / persona"/>
+              </div>
+              <div>
+                <label class="field-label" for="docRef">Riferimento interno</label>
+                <input class="field-input mono" id="docRef" type="text" placeholder="Protocollo interno"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASSO 2: Impronta -->
+        <div id="step2" style="display:none;">
+          <div class="step-head">
+            <span class="step-mark">02</span>
+            <div>
+              <div class="eyebrow">Passo secondo</div>
+              <h2 class="serif" style="font-size: 30px; line-height: 1.1;">Calcolo dell'impronta crittografica</h2>
+            </div>
+          </div>
+
+          <div class="panel" style="padding: 32px;">
+            <div class="row-between" style="margin-bottom: 20px;">
+              <div class="eyebrow">Algoritmo · SHA-256 / RFC 6234</div>
+              <div id="hashStatus" class="status pending"><span class="dot"></span>Calcolo in corso</div>
+            </div>
+            <div class="hash-art" id="hashView" style="min-height: 100px;">
+              <span class="ink-3" id="hashPlaceholder">— calcolo in corso —</span>
+            </div>
+            <hr class="rule-2" style="margin: 24px 0 18px;"/>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;">
+              <div class="meta-cell">
+                <div class="eyebrow">Lunghezza</div>
+                <div class="mono" style="font-size: 13px; margin-top: 4px;">256&nbsp;bit · 64&nbsp;hex</div>
+              </div>
+              <div class="meta-cell">
+                <div class="eyebrow">Bytes esaminati</div>
+                <div class="mono" style="font-size: 13px; margin-top: 4px;" id="bytesCount">—</div>
+              </div>
+              <div class="meta-cell" style="border-right: 0;">
+                <div class="eyebrow">Tempo</div>
+                <div class="mono" style="font-size: 13px; margin-top: 4px;" id="computeTime">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASSO 3: Sigillatura -->
+        <div id="step3" style="display:none;">
+          <div class="step-head">
+            <span class="step-mark">03</span>
+            <div>
+              <div class="eyebrow">Passo terzo</div>
+              <h2 class="serif" style="font-size: 30px; line-height: 1.1;">Apposizione del sigillo</h2>
+            </div>
+          </div>
+
+          <p class="body" style="margin-bottom: 24px; max-width: 56ch;">
+            L'impronta sarà trasmessa ai calendar server OpenTimestamps e
+            inscritta in un blocco Bitcoin. La conferma definitiva avviene
+            automaticamente entro poche ore, senza alcuna azione da parte vostra.
+          </p>
+
+          <button class="btn seal lg" id="sealBtn" style="width: 100%; justify-content: center; padding: 22px;">
+            <span id="sealBtnLabel">Apponi il sigillo</span>
+            <span class="arrow"></span>
+          </button>
+
+          <p class="small" style="margin-top: 14px; text-align: center;">
+            Per procedere è richiesta autenticazione · <a class="link-seal" href="#">accedi al servizio</a>
+          </p>
+        </div>
+
+        <!-- RISULTATO -->
+        <div id="result" style="display:none;">
+          <div class="ornament" style="margin: 0 0 40px;">⁂</div>
+
+          <div class="receipt">
+            <div class="receipt-head">
+              <div class="seal-mark seal-mark-lg" style="margin: 0 auto 24px;">
+                <span class="glyph">V</span>
+              </div>
+              <div class="eyebrow seal-c" style="text-align: center;">Apposto · in attesa di conferma su Bitcoin</div>
+              <h2 class="serif" style="text-align: center; margin-top: 12px; font-size: 44px; line-height: 1.05;">
+                Sigillo <em class="serif-italic" style="color: var(--seal);">apposto.</em>
+              </h2>
+            </div>
+
+            <hr class="rule" style="margin: 40px 0;"/>
+
+            <div class="receipt-grid">
+              <div class="receipt-row">
+                <div class="receipt-key">Protocollo</div>
+                <div class="receipt-val mono" id="rProto">VLN-2026-248918-AC4F</div>
+              </div>
+              <div class="receipt-row">
+                <div class="receipt-key">Documento</div>
+                <div class="receipt-val serif-italic" id="rDoc">—</div>
+              </div>
+              <div class="receipt-row">
+                <div class="receipt-key">Data di apposizione</div>
+                <div class="receipt-val mono" id="rDate">—</div>
+              </div>
+              <div class="receipt-row">
+                <div class="receipt-key">Impronta SHA-256</div>
+                <div class="receipt-val mono" id="rHash" style="word-break: break-all; line-height: 1.6;">—</div>
+              </div>
+              <div class="receipt-row">
+                <div class="receipt-key">Stato</div>
+                <div class="receipt-val">
+                  <span class="status pending"><span class="dot"></span>In attesa di blocco Bitcoin</span>
+                </div>
+              </div>
+              <div class="receipt-row">
+                <div class="receipt-key">Conferma attesa</div>
+                <div class="receipt-val mono" id="rEta">entro ~2h · blocco previsto # 874.203</div>
+              </div>
+              <div class="receipt-row" style="border-bottom: 0;">
+                <div class="receipt-key">Standard</div>
+                <div class="receipt-val mono">OpenTimestamps · Bitcoin mainnet</div>
+              </div>
+            </div>
+
+            <div class="row row-gap" style="margin-top: 40px; justify-content: center; flex-wrap: wrap;">
+              <a class="btn" href="certificato.html">Apri certificato di autenticità</a>
+              <a class="btn ghost" href="archivio.html">Vai all'archivio</a>
+              <a class="btn ghost" id="newSealBtn">Apponi un altro sigillo</a>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========== COLONNA LATERALE DIDASCALICA ========== -->
+      <aside class="sidebar">
+        <div class="sidebar-block">
+          <div class="eyebrow seal-c">Privacy nativa</div>
+          <p class="body" style="font-size: 13px; margin-top: 8px;">
+            Il file <em class="serif-italic">non lascia il vostro dispositivo.</em>
+            Viene trasmessa la sola impronta crittografica, una sequenza
+            di 64 caratteri.
+          </p>
+        </div>
+        <hr class="rule-2"/>
+        <div class="sidebar-block">
+          <div class="eyebrow seal-c">Riferimenti normativi</div>
+          <ul class="sidebar-list">
+            <li>eIDAS &mdash; Reg. UE 910/2014, art. 41</li>
+            <li>L. 11.02.2019 n. 12, art. 8-ter</li>
+            <li>D.Lgs. 82/2005 &mdash; CAD</li>
+          </ul>
+        </div>
+        <hr class="rule-2"/>
+        <div class="sidebar-block">
+          <div class="eyebrow seal-c">Effetto giuridico</div>
+          <p class="body" style="font-size: 13px; margin-top: 8px;">
+            Marca temporale ammissibile come prova in procedimenti giudiziali.
+            Non costituisce firma elettronica qualificata.
+          </p>
+        </div>
+        <hr class="rule-2"/>
+        <div class="sidebar-block">
+          <div class="eyebrow">Atto in formazione</div>
+          <div class="mono" style="font-size: 12px; margin-top: 8px; color: var(--ink-2); line-height: 1.7;">
+            Protocollo: <span class="tabular">248,918</span><br/>
+            Sessione: <span class="tabular" id="sessionId">5F4A·2026</span><br/>
+            Sede: Roma
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
+      <span>Sezione I &mdash; Sigillo</span>
+    </div>
+  </footer>
+
+  <style>
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: var(--hairline);
+  }
+  .step-mark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--seal);
+    letter-spacing: 0.2em;
+    border: 1px solid var(--seal);
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .step-head h2 { margin-top: 4px; }
+
+  .doc-icon {
+    width: 52px; height: 64px;
+    background: var(--paper-2);
+    border: 1px solid var(--ink);
+    display: grid; place-items: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .doc-icon::before {
+    content: ""; position: absolute;
+    top: 0; right: 0;
+    width: 14px; height: 14px;
+    background: linear-gradient(225deg, var(--paper) 50%, var(--ink) 50%);
+  }
+  .doc-icon .ext {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+  }
+
+  .meta-cell {
+    padding: 0 16px;
+    border-right: 1px solid var(--rule-2);
+  }
+  .meta-cell:first-child { padding-left: 0; }
+
+  .sidebar {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    border-left: 1px solid var(--rule);
+    padding-left: 24px;
+  }
+  .sidebar-block { padding: 16px 0; }
+  .sidebar-block:first-child { padding-top: 0; }
+  .sidebar-list {
+    list-style: none;
+    padding: 0; margin: 10px 0 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .sidebar-list li { padding: 4px 0; }
+
+  .receipt {
+    background: var(--paper-2);
+    border: var(--hairline-strong);
+    border-top: 3px double var(--seal);
+    border-bottom: 3px double var(--seal);
+    padding: 56px 48px;
+    position: relative;
+  }
+  .receipt::before, .receipt::after {
+    content: "";
+    position: absolute;
+    width: 14px; height: 14px;
+    border: 1px solid var(--seal);
+  }
+  .receipt::before { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+  .receipt::after  { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+
+  .receipt-grid { display: flex; flex-direction: column; }
+  .receipt-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: var(--hairline);
+    align-items: baseline;
+  }
+  .receipt-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .receipt-val { font-size: 15px; color: var(--ink); }
+  .receipt-val.mono { font-family: var(--mono); font-size: 13px; }
+  .receipt-val.serif-italic { font-family: var(--serif); font-style: italic; font-size: 22px; }
+
+  /* Animazione del calcolo hash (effetto macchina) */
+  @keyframes typeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .hash-art .group.appear { animation: typeIn .15s ease-out both; }
+
+  /* Sigillatura in corso */
+  .sealing #sealBtnLabel::after {
+    content: ""; display: inline-block;
+    width: 12px; height: 12px;
+    border: 1.5px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    margin-left: 12px;
+    vertical-align: -2px;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 900px) {
+    #layout { grid-template-columns: 1fr !important; }
+    .sidebar { position: static; border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 32px; }
+    .receipt-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+  </style>
+
+  <script>
+  // ======================================================
+  // STATO
+  // ======================================================
+  const state = {
+    file: null,
+    hash: null,
+    computeStart: null
+  };
+
+  const el = (id) => document.getElementById(id);
+
+  // ======================================================
+  // SELEZIONE FILE
+  // ======================================================
+  const drop = el('drop');
+  const fileInput = el('file');
+
+  drop.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', e => onFile(e.target.files[0]));
+  ['dragover','dragenter'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => { e.preventDefault(); onFile(e.dataTransfer.files[0]); });
+
+  el('changeBtn').addEventListener('click', () => fileInput.click());
+
+  async function onFile(file) {
+    if (!file) return;
+    state.file = file;
+
+    // Mostra info documento
+    drop.style.display = 'none';
+    el('docInfo').style.display = 'block';
+    el('docName').textContent = file.name;
+    el('docSize').textContent = formatSize(file.size) + ' · ' + (file.type || 'application/octet-stream');
+    el('docExt').textContent = (file.name.split('.').pop() || 'BIN').slice(0,4).toUpperCase();
+
+    if (!el('docTitle').value) {
+      el('docTitle').value = file.name.replace(/\.[^.]+$/, '');
+    }
+
+    // Mostra passo 2 e calcola hash
+    el('step2').style.display = 'block';
+    el('step2').classList.add('fade-in');
+    state.computeStart = performance.now();
+    el('hashView').innerHTML = '<span class="ink-3" id="hashPlaceholder">— calcolo in corso —</span>';
+    el('hashStatus').className = 'status pending';
+    el('hashStatus').innerHTML = '<span class="dot"></span>Calcolo in corso';
+
+    try {
+      const buf = await file.arrayBuffer();
+      const digest = await crypto.subtle.digest('SHA-256', buf);
+      const hex = [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+      state.hash = hex;
+
+      // Rivela hash a gruppi (effetto macchina da scrivere)
+      await renderHashAnimated(hex);
+
+      const elapsed = ((performance.now() - state.computeStart) / 1000).toFixed(2);
+      el('bytesCount').textContent = file.size.toLocaleString('it-IT');
+      el('computeTime').textContent = elapsed + ' s';
+      el('hashStatus').className = 'status confirmed';
+      el('hashStatus').innerHTML = '<span class="dot"></span>Calcolato';
+
+      // Mostra passo 3
+      el('step3').style.display = 'block';
+      el('step3').classList.add('fade-in');
+      el('step3').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      el('hashStatus').className = 'status failed';
+      el('hashStatus').innerHTML = '<span class="dot"></span>Errore';
+      console.error(err);
+    }
+  }
+
+  async function renderHashAnimated(hex) {
+    const groups = [];
+    for (let i = 0; i < hex.length; i += 8) groups.push(hex.slice(i, i + 8));
+    const view = el('hashView');
+    view.innerHTML = '';
+    for (let i = 0; i < groups.length; i++) {
+      const g = groups[i];
+      const span = document.createElement('span');
+      span.className = 'group appear';
+      span.textContent = g.slice(0,4) + '\u00a0' + g.slice(4);
+      view.appendChild(span);
+      await new Promise(r => setTimeout(r, 35));
+    }
+  }
+
+  function formatSize(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+    return (b/1024/1024).toFixed(2) + ' MB';
+  }
+
+  // ======================================================
+  // APPOSIZIONE SIGILLO (simulata)
+  // ======================================================
+  el('sealBtn').addEventListener('click', async () => {
+    if (!state.hash) return;
+    const btn = el('sealBtn');
+    btn.disabled = true;
+    btn.classList.add('sealing');
+    el('sealBtnLabel').textContent = 'Trasmissione ai calendar OpenTimestamps…';
+
+    await new Promise(r => setTimeout(r, 1100));
+    el('sealBtnLabel').textContent = 'Registrazione del protocollo…';
+    await new Promise(r => setTimeout(r, 900));
+    el('sealBtnLabel').textContent = 'Sigillo apposto.';
+    await new Promise(r => setTimeout(r, 500));
+
+    // Compila ricevuta
+    const now = new Date();
+    const fmt = now.toLocaleString('it-IT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' CEST';
+    const proto = 'VLN-' + now.getFullYear() + '-' + String(248918).padStart(6,'0') + '-' + state.hash.slice(0,4).toUpperCase();
+    el('rProto').textContent = proto;
+    el('rDoc').textContent = el('docTitle').value || state.file.name;
+    el('rDate').textContent = fmt;
+    el('rHash').textContent = state.hash.match(/.{1,4}/g).join('\u00a0');
+
+    // Nascondi pannelli di input, mostra ricevuta
+    ['step1','step2','step3'].forEach(id => el(id).style.display = 'none');
+    el('result').style.display = 'block';
+    el('result').classList.add('rise');
+    el('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Persisti nel registro locale (per archivio.html)
+    try {
+      const ledger = JSON.parse(localStorage.getItem('veylon_ledger') || '[]');
+      ledger.unshift({
+        proto, hash: state.hash, doc: el('docTitle').value || state.file.name,
+        holder: el('docHolder').value || 'Studio Notarile Bertolaso & Associati',
+        ref: el('docRef').value || '',
+        size: state.file.size, mime: state.file.type,
+        date: now.toISOString(), status: 'pending', block: '~ 874.203'
+      });
+      localStorage.setItem('veylon_ledger', JSON.stringify(ledger.slice(0, 50)));
+    } catch(e) {}
+  });
+
+  el('newSealBtn').addEventListener('click', () => location.reload());
+
+  // Session id casuale
+  el('sessionId').textContent = (Math.random().toString(16).slice(2,6).toUpperCase()) + '·2026';
+  </script>
+<script>
+  document.getElementById('logout')?.addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('veylon_session');
+    location.href = 'login.html';
+  });
+  </script>
+</body>
+</html>

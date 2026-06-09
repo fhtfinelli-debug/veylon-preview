@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Tag · Onboarding produttore</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Sezione VI &middot; Tag</span>
+        <span class="sep">·</span>
+        <span>Onboarding produttore</span>
+      </div>
+      <a href="dashboard.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="tag.html">Tag</a>
+        <a href="tag-emetti.html">Emetti</a>
+        <a href="tag-storico.html">Storico</a>
+        <a href="#" id="logout" class="nav-aux">Esci</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="col-narrow" style="padding: 56px 32px 96px;">
+
+    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
+      <span class="section-num">&sect; I &mdash; Profilo</span>
+      <span class="roman">i</span>
+    </div>
+
+    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
+      Registra il <em class="serif-italic" style="color: var(--seal);">produttore.</em>
+    </h1>
+    <p class="lede" style="margin: 12px 0 40px; max-width: 50ch;">
+      KYC light: validiamo P.IVA italiana e salviamo i contatti. Per emissioni in
+      grande scala o per settori regolati (DPP, DOP, GIA) passeremo poi a KYC
+      standard o strong.
+    </p>
+
+    <form id="onboardingForm" class="panel" style="padding: 32px;" onsubmit="onboard(event)">
+
+      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
+        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">A</span> Identit&agrave;</legend>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="ragioneSociale">Ragione sociale</label>
+          <input id="ragioneSociale" class="field-input" required placeholder="Maison Gen&egrave;ve S.r.l."/>
+        </div>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="pIva">Partita IVA (11 cifre)</label>
+          <input id="pIva" class="field-input mono" required pattern="\d{11}" placeholder="12345678901"/>
+        </div>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="codiceFiscale">Codice fiscale (opzionale)</label>
+          <input id="codiceFiscale" class="field-input mono" placeholder="es. RSSMRA80A01H501Z"/>
+        </div>
+      </fieldset>
+
+      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
+        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">B</span> Segmento</legend>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="segmento">Segmento merceologico</label>
+          <select id="segmento" class="field-input mono" required>
+            <option value="">— scegli —</option>
+            <option value="lusso_orologi">Orologi &middot; gioielli &middot; alta moda</option>
+            <option value="sneakers">Sneakers &middot; streetwear</option>
+            <option value="vino_olio_food">Vino &middot; olio &middot; food premium</option>
+            <option value="auto_collezione">Auto &middot; moto da collezione</option>
+            <option value="arte">Arte &middot; collezionismo</option>
+            <option value="design">Design &middot; mobili iconici</option>
+            <option value="b2b_dpp">B2B &middot; DPP UE (batterie, edilizia, automotive)</option>
+            <option value="sostenibilita_tessile">Sostenibilit&agrave; tessile</option>
+            <option value="religioso">Religioso &middot; reliquie</option>
+          </select>
+        </div>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="settoreDpp">Settore DPP (opzionale)</label>
+          <input id="settoreDpp" class="field-input mono" placeholder="es. tessile, batterie, edilizia"/>
+        </div>
+      </fieldset>
+
+      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
+        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">C</span> Contatti</legend>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="sitoWeb">Sito web (opzionale)</label>
+          <input id="sitoWeb" class="field-input" type="url" placeholder="https://miosito.it"/>
+        </div>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="emailContatto">Email contatto</label>
+          <input id="emailContatto" class="field-input" type="email" placeholder="info@miosito.it"/>
+        </div>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="telefonoContatto">Telefono</label>
+          <input id="telefonoContatto" class="field-input mono" placeholder="+39 02 1234567"/>
+        </div>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="indirizzo">Indirizzo</label>
+          <input id="indirizzo" class="field-input" placeholder="Via Montenapoleone 1, 20121 Milano"/>
+        </div>
+
+        <div class="ff-row" style="margin-top: 18px;">
+          <label class="field-label" for="legaleRapp">Legale rappresentante</label>
+          <input id="legaleRapp" class="field-input" placeholder="Nome e cognome"/>
+        </div>
+      </fieldset>
+
+      <button id="submitBtn" class="btn seal lg" type="submit" style="width: 100%; justify-content: center; padding: 18px;">
+        Registra produttore <span class="arrow"></span>
+      </button>
+
+      <p id="formMsg" class="small" style="margin-top: 16px; text-align: center;"></p>
+    </form>
+
+    <!-- Risultato -->
+    <section id="result" style="display: none; margin-top: 32px;" class="panel">
+      <div class="eyebrow verify-c" style="margin-bottom: 12px;">Profilo registrato</div>
+      <div class="serif" style="font-size: 24px; line-height: 1.2;">
+        Sei pronto a emettere certificati.
+      </div>
+      <div class="hist-meta" style="margin-top: 20px;">
+        <div class="hist-meta-k">ID produttore</div>
+        <div class="hist-meta-v mono" id="rProduttoreId">—</div>
+        <div class="hist-meta-k">Segmento</div>
+        <div class="hist-meta-v" id="rSegmento">—</div>
+        <div class="hist-meta-k">Livello KYC</div>
+        <div class="hist-meta-v" id="rKyc">—</div>
+      </div>
+      <div class="row" style="gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+        <a href="tag-emetti.html" class="btn seal">Emetti il primo certificato <span class="arrow"></span></a>
+        <a href="tag-storico.html" class="btn ghost">Vai allo storico</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Sezione VI &mdash; Tag &middot; Onboarding</span>
+    </div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
+
+    function getJwt() {
+      try {
+        const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
+        return session?.access_token ?? null;
+      } catch { return null; }
+    }
+
+    document.getElementById('logout')?.addEventListener('click', e => {
+      e.preventDefault();
+      localStorage.removeItem('veylon_session');
+      location.href = 'login.html';
+    });
+
+    async function onboard(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('formMsg');
+      msg.textContent = '';
+      msg.style.color = '';
+
+      const jwt = getJwt();
+      if (!jwt) {
+        msg.style.color = 'var(--seal)';
+        msg.textContent = 'Accesso richiesto. Vai al login e ritorna.';
+        return;
+      }
+
+      const payload = {
+        ragione_sociale: document.getElementById('ragioneSociale').value.trim(),
+        p_iva: document.getElementById('pIva').value.trim(),
+        codice_fiscale: document.getElementById('codiceFiscale').value.trim() || undefined,
+        segmento: document.getElementById('segmento').value,
+        settore_dpp: document.getElementById('settoreDpp').value.trim() || undefined,
+        sito_web: document.getElementById('sitoWeb').value.trim() || undefined,
+        contatti: {
+          email: document.getElementById('emailContatto').value.trim() || undefined,
+          telefono: document.getElementById('telefonoContatto').value.trim() || undefined,
+          indirizzo: document.getElementById('indirizzo').value.trim() || undefined,
+          legale_rappresentante: document.getElementById('legaleRapp').value.trim() || undefined,
+        },
+        livello_kyc: 'light',
+      };
+
+      btn.disabled = true;
+      btn.innerHTML = 'Registrazione in corso…';
+
+      try {
+        const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt };
+        if (SUPABASE_ANON_KEY) headers['apikey'] = SUPABASE_ANON_KEY;
+        const res = await fetch(`${FUNCTIONS_BASE}/tag-produttore-onboarding`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (!res.ok || !json.success) {
+          throw new Error(json.error || ('http_' + res.status));
+        }
+
+        // Successo
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('rProduttoreId').textContent = json.produttore_id;
+        document.getElementById('rSegmento').textContent = json.segmento;
+        document.getElementById('rKyc').textContent = json.livello_kyc;
+
+        localStorage.setItem('veylon_tag_produttore_id', json.produttore_id);
+
+        btn.innerHTML = '✓ Registrato';
+        btn.style.background = 'var(--verify)';
+        btn.style.borderColor = 'var(--verify)';
+        msg.style.color = 'var(--verify)';
+        msg.textContent = json.updated ? 'Profilo aggiornato.' : 'Profilo creato.';
+
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = 'Registra produttore <span class="arrow"></span>';
+        msg.style.color = 'var(--seal)';
+        msg.textContent = 'Errore: ' + (err.message || err);
+      }
+    }
+  </script>
+</body>
+</html>

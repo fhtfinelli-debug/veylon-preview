@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Apporre la propria firma</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Sottoscrizione</span>
+        <span class="sep">·</span>
+        <span>Magic link valido</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3);">
+        <span>codice <strong style="color: var(--ink);">VLN-FRM-2026-7C1B98</strong></span>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Firma elettronica avanzata &mdash; <strong style="color: var(--ink);">CAD art. 20-21</strong> &middot; eIDAS art. 26</span>
+        <span>Magic link valido fino al <span class="mono">13&nbsp;giu&nbsp;2026 · 15:42</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col-narrow" style="padding: 56px 32px 96px;">
+
+    <div class="row-between" style="margin-bottom: 32px;">
+      <span class="section-num">Sottoscrizione &middot; firmatario 2 di 2</span>
+      <span class="roman">i</span>
+    </div>
+
+    <!-- BARRA DI AVANZAMENTO -->
+    <ol class="sig-progress">
+      <li class="done"><div class="sp-circle"><span>I</span></div><div class="sp-lbl">Identificazione</div></li>
+      <li class="current"><div class="sp-circle"><span>II</span></div><div class="sp-lbl">Esame</div></li>
+      <li><div class="sp-circle"><span>III</span></div><div class="sp-lbl">OTP</div></li>
+      <li><div class="sp-circle"><span>IV</span></div><div class="sp-lbl">Firma</div></li>
+    </ol>
+
+    <!-- ============================================================
+         STATO 1 — Identificazione
+    ============================================================= -->
+    <section id="state-auth">
+      <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
+        Vi è richiesta una <em class="serif-italic" style="color: var(--seal);">firma elettronica.</em>
+      </h1>
+      <p class="lede" style="margin-bottom: 40px;">
+        Sottoscrivere un atto comporta effetti giuridici. Procedete con calma:
+        potete annullare in qualsiasi momento prima dell'apposizione.
+      </p>
+
+      <!-- Richiedente -->
+      <div class="from-card">
+        <div class="seal-mark"><span class="glyph">V</span></div>
+        <div style="flex: 1; min-width: 0;">
+          <div class="eyebrow">Richiesta proveniente da</div>
+          <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 6px;">Avv. Mario Bertolaso</div>
+          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.04em;">
+            Studio Notarile Bertolaso &amp; Associati &middot; CF BRT MRA 70S30 H501Z
+          </div>
+          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em;">
+            Trasmessa il 6 giu 2026 &middot; ore 15:42 CEST
+          </div>
+        </div>
+      </div>
+
+      <h3 class="serif" style="font-size: 22px; margin: 40px 0 20px;">Identificare il sottoscrittore</h3>
+      <p class="body" style="margin-bottom: 24px;">
+        Selezionare uno strumento per accertare la vostra identità prima di prendere visione dell'atto.
+      </p>
+      <div class="auth-options">
+        <button class="auth-opt" onclick="goAuth('spid')">
+          <div class="ao-letter">A</div>
+          <div class="ao-body">
+            <div class="ao-title">SPID</div>
+            <div class="ao-desc">Sistema Pubblico di Identità Digitale &middot; livello richiesto: <strong>L2</strong></div>
+          </div>
+          <div class="ao-arrow">→</div>
+        </button>
+        <button class="auth-opt selected" onclick="goAuth('email')">
+          <div class="ao-letter">B</div>
+          <div class="ao-body">
+            <div class="ao-title">Email + OTP</div>
+            <div class="ao-desc">Accertamento sul vostro indirizzo <span class="mono">m.vitali@vitalicostruzioni.it</span></div>
+          </div>
+          <div class="ao-arrow">→</div>
+        </button>
+        <button class="auth-opt" onclick="goAuth('cie')">
+          <div class="ao-letter">C</div>
+          <div class="ao-body">
+            <div class="ao-title">CIE</div>
+            <div class="ao-desc">Carta d'Identità Elettronica con app o lettore NFC</div>
+          </div>
+          <div class="ao-arrow">→</div>
+        </button>
+      </div>
+      <p class="small" style="margin-top: 20px;">
+        Annullando, sarete reindirizzati alla pagina di rifiuto. La mancata firma sarà notificata al richiedente.
+        <a href="#" class="link-seal small">Rifiuta la richiesta</a>
+      </p>
+    </section>
+
+    <!-- ============================================================
+         STATO 2 — Esame del documento
+    ============================================================= -->
+    <section id="state-review" style="display: none;">
+      <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
+        Esaminare l'<em class="serif-italic" style="color: var(--seal);">atto da firmare.</em>
+      </h1>
+      <p class="lede" style="margin-bottom: 40px;">
+        Leggete attentamente il documento. Spuntate la dichiarazione di consenso al
+        termine, poi procedete con il codice OTP.
+      </p>
+
+      <!-- Anteprima documento -->
+      <div class="doc-frame">
+        <div class="doc-frame-head row-between">
+          <div class="row" style="gap: 14px;">
+            <div class="doc-icon-lg">
+              <span class="ext mono">PDF</span>
+            </div>
+            <div>
+              <div class="serif" style="font-size: 20px; line-height: 1.2;">Mandato professionale &mdash; rev. 02</div>
+              <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em;">
+                412&nbsp;KB &middot; SHA-256 e3b0&nbsp;c442 … b855 &middot; sigillato #&nbsp;874.198
+              </div>
+            </div>
+          </div>
+          <div class="row row-gap" style="gap: 8px;">
+            <button class="btn ghost" style="padding: 8px 14px;">Scarica</button>
+            <button class="btn ghost" style="padding: 8px 14px;">Stampa</button>
+          </div>
+        </div>
+        <!-- Anteprima sintetica -->
+        <div class="doc-preview">
+          <div class="dp-page">
+            <div class="eyebrow" style="margin-bottom: 14px; letter-spacing: 0.28em;">Mandato professionale</div>
+            <h4 class="serif" style="font-size: 26px; line-height: 1.1; margin: 0 0 28px;">
+              Conferimento di mandato a Studio Bertolaso &amp; Associati
+            </h4>
+            <p class="serif" style="font-size: 15px; line-height: 1.7; color: var(--ink); margin: 0 0 14px;">
+              Il sottoscritto <strong>Marco Vitali</strong>, nato a Mortara (PV) il 30.11.1970,
+              codice fiscale <span class="mono">VTLMRC70S30H501Z</span>, in qualità di legale
+              rappresentante della società <em>Costruzioni Lemania S.p.A.</em>, con sede in
+              Mortara (PV), Via Roma 14, P.IVA <span class="mono">04812960015</span>,
+            </p>
+            <p class="serif" style="font-size: 15px; line-height: 1.7; color: var(--ink); margin: 0 0 14px;">
+              <strong>conferisce mandato professionale</strong> all'Avv. Mario Bertolaso, del foro
+              di Roma, affinché lo assista e rappresenti nelle controversie afferenti l'esecuzione
+              del contratto di subfornitura n. 0148/2026, ivi compreso il giudizio dinanzi al
+              Tribunale di Pavia &mdash; Sezione Specializzata Imprese.
+            </p>
+            <p class="serif" style="font-size: 15px; line-height: 1.7; color: var(--ink); margin: 0 0 14px;">
+              Il presente mandato è conferito a titolo oneroso, secondo le condizioni
+              economiche separatamente concordate. È compreso il potere di transigere,
+              conciliare, rinunciare e accettare rinunce, riscuotere somme&hellip;
+            </p>
+            <p class="small" style="text-align: center; margin-top: 32px; color: var(--ink-3);">
+              [pag. 1 di 3 &middot; <a href="#" class="link-seal small">apri il documento integrale</a>]
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dichiarazione di consenso -->
+      <div class="consent">
+        <label>
+          <input type="checkbox" id="consent"/>
+          <div>
+            <div class="serif" style="font-size: 17px; line-height: 1.35; color: var(--ink);">
+              Dichiaro di aver letto l'atto, di averne compreso il contenuto e di voler
+              <em class="serif-italic" style="color: var(--seal);">apporre la mia firma elettronica avanzata</em>
+              al medesimo, ai sensi degli articoli 20 e 21 del Codice dell'Amministrazione Digitale.
+            </div>
+            <div class="mono" style="font-size: 10.5px; color: var(--ink-3); margin-top: 12px; letter-spacing: 0.06em;">
+              L'identità è già stata accertata: <strong style="color: var(--ink);">Marco Vitali</strong> &middot;
+              <strong style="color: var(--ink);">m.vitali@vitalicostruzioni.it</strong> &middot;
+              accesso via email + OTP
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <button class="btn seal lg" id="goOtpBtn" disabled style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
+        Procedere alla firma <span class="arrow"></span>
+      </button>
+    </section>
+
+    <!-- ============================================================
+         STATO 3 — OTP
+    ============================================================= -->
+    <section id="state-otp" style="display: none;">
+      <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
+        Inserire il codice <em class="serif-italic" style="color: var(--seal);">a uso singolo.</em>
+      </h1>
+      <p class="lede" style="margin-bottom: 40px;">
+        Abbiamo inviato un codice di sei cifre all'indirizzo email del firmatario.
+        Il codice è valido per cinque minuti.
+      </p>
+
+      <div class="otp-card">
+        <div class="row-between" style="margin-bottom: 24px;">
+          <div>
+            <div class="eyebrow">Codice trasmesso a</div>
+            <div class="mono" style="font-size: 15px; margin-top: 4px; color: var(--ink);">m.vitali@vitalicostruzioni.it</div>
+          </div>
+          <div class="mono" style="font-size: 12px; color: var(--seal); letter-spacing: 0.12em;">
+            scade fra <span id="otpClock">04:58</span>
+          </div>
+        </div>
+
+        <div class="otp-inputs">
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
+          <span class="otp-sep">·</span>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
+        </div>
+
+        <p class="small" style="margin-top: 18px; text-align: center;">
+          Non avete ricevuto il codice? <a href="#" id="resend" class="link-seal">Reinvia tra <span id="resendIn">30</span> sec</a>
+        </p>
+      </div>
+
+      <button class="btn seal lg" id="signBtn" disabled style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
+        <span id="signLabel">Apporre la firma</span> <span class="arrow"></span>
+      </button>
+    </section>
+
+    <!-- ============================================================
+         STATO 4 — Atto sigillato
+    ============================================================= -->
+    <section id="state-done" style="display: none;">
+      <div class="ornament" style="margin: 0 0 32px;">⁂</div>
+      <div class="receipt">
+        <div class="row" style="gap: 24px; justify-content: center; margin-bottom: 24px;">
+          <div class="seal-mark seal-mark-lg"><span class="glyph">V</span></div>
+        </div>
+        <div class="eyebrow verify-c" style="text-align: center; letter-spacing: 0.32em;">Atto sottoscritto</div>
+        <h2 class="serif" style="text-align: center; margin-top: 12px; font-size: 44px; line-height: 1.05;">
+          Firma <em class="serif-italic" style="color: var(--seal);">apposta.</em>
+        </h2>
+        <p class="lede" style="text-align: center; margin: 24px auto 0; max-width: 38ch;">
+          L'atto di firma è inscritto sul registro pubblico Bitcoin. La controparte
+          è stata notificata.
+        </p>
+
+        <hr class="rule" style="margin: 40px 0;"/>
+
+        <div class="receipt-grid">
+          <div class="receipt-row">
+            <div class="receipt-key">Sottoscrittore</div>
+            <div class="receipt-val">Sig. Marco Vitali &middot; <span class="mono">VTLMRC70S30H501Z</span></div>
+          </div>
+          <div class="receipt-row">
+            <div class="receipt-key">Atto firmato</div>
+            <div class="receipt-val serif-italic">Mandato professionale &mdash; rev. 02</div>
+          </div>
+          <div class="receipt-row">
+            <div class="receipt-key">Data e ora di firma</div>
+            <div class="receipt-val mono" id="signedAt">—</div>
+          </div>
+          <div class="receipt-row">
+            <div class="receipt-key">Modalità</div>
+            <div class="receipt-val mono">FEA &middot; identità email accertata &middot; OTP da email</div>
+          </div>
+          <div class="receipt-row">
+            <div class="receipt-key">Impronta atto firmato</div>
+            <div class="receipt-val mono" style="word-break: break-all; line-height: 1.6;">e3b0&nbsp;c442&nbsp;98fc&nbsp;1c14 &hellip; 7852&nbsp;b855</div>
+          </div>
+          <div class="receipt-row" style="border-bottom: 0;">
+            <div class="receipt-key">Sigillo su Bitcoin</div>
+            <div class="receipt-val mono">in attesa di blocco &middot; previsto #&nbsp;874.203</div>
+          </div>
+        </div>
+
+        <div class="row row-gap" style="margin-top: 40px; justify-content: center; flex-wrap: wrap;">
+          <a class="btn" href="certificato.html">Apri atto di firma &middot; certificato</a>
+          <button class="btn ghost" id="dlBtn">Scarica documento firmato</button>
+        </div>
+
+        <p class="small" style="margin-top: 32px; text-align: center;">
+          Una copia dell'atto e del certificato è stata inviata anche al vostro indirizzo email.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Sottoscrizione &middot; sessione effimera</span>
+    </div>
+  </footer>
+
+  <style>
+  /* Barra avanzamento */
+  .sig-progress {
+    list-style: none; padding: 0; margin: 0 0 56px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .sig-progress li {
+    padding: 18px 14px;
+    border-right: 1px solid var(--rule-2);
+    display: flex; align-items: center; gap: 12px;
+    color: var(--ink-3);
+  }
+  .sig-progress li:last-child { border-right: 0; }
+  .sp-circle {
+    width: 30px; height: 30px;
+    border: 1px solid var(--rule);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: italic; font-size: 13px;
+    color: var(--ink-3); flex-shrink: 0;
+  }
+  .sig-progress li.done .sp-circle { background: var(--verify); border-color: var(--verify); color: var(--paper); }
+  .sig-progress li.current .sp-circle { background: var(--seal); border-color: var(--seal); color: var(--paper); }
+  .sig-progress li.done, .sig-progress li.current { color: var(--ink); }
+  .sp-lbl {
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+
+  /* Richiedente card */
+  .from-card {
+    display: flex; gap: 24px; align-items: center;
+    padding: 24px 28px;
+    background: var(--paper-2);
+    border: var(--hairline-strong);
+  }
+
+  /* Opzioni autenticazione (riutilizzo della stessa palette di ricevi) */
+  .auth-options { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--ink); }
+  .auth-opt {
+    display: grid; grid-template-columns: 56px 1fr 36px;
+    gap: 20px; padding: 18px 22px;
+    background: transparent; border: 0;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer; align-items: center; text-align: left;
+    transition: background .15s;
+  }
+  .auth-opt:last-child { border-bottom: 0; }
+  .auth-opt:hover { background: var(--paper-2); }
+  .auth-opt.selected { background: var(--paper-2); border-left: 4px solid var(--seal); padding-left: 18px; }
+  .ao-letter {
+    width: 44px; height: 44px; border: 1px solid var(--ink);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--ink);
+  }
+  .auth-opt.selected .ao-letter { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+  .ao-title { font-family: var(--serif); font-size: 20px; line-height: 1.2; color: var(--ink); }
+  .ao-desc { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+  .ao-arrow { font-family: var(--mono); font-size: 18px; color: var(--ink-3); text-align: right; }
+  .auth-opt:hover .ao-arrow { color: var(--seal); }
+
+  /* Documento anteprima */
+  .doc-frame { border: 1px solid var(--ink); background: var(--paper); margin-bottom: 32px; }
+  .doc-frame-head {
+    padding: 18px 22px;
+    border-bottom: var(--hairline-strong);
+    background: var(--paper-2);
+  }
+  .doc-icon-lg {
+    width: 44px; height: 56px;
+    background: var(--paper); border: 1px solid var(--ink);
+    display: grid; place-items: center; position: relative; flex-shrink: 0;
+  }
+  .doc-icon-lg::before {
+    content: ""; position: absolute; top: 0; right: 0;
+    width: 14px; height: 14px;
+    background: linear-gradient(225deg, var(--paper-2) 50%, var(--ink) 50%);
+  }
+  .doc-icon-lg .ext { font-size: 10px; letter-spacing: 0.1em; color: var(--ink); }
+  .doc-preview {
+    padding: 36px;
+    background: oklch(from var(--paper) calc(l - 0.005) c h);
+    max-height: 360px; overflow: hidden; position: relative;
+  }
+  .doc-preview::after {
+    content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 90px;
+    background: linear-gradient(transparent, var(--paper));
+  }
+  .dp-page {
+    background: var(--paper); border: 1px solid var(--rule);
+    padding: 36px 40px;
+    box-shadow: 0 1px 0 var(--rule-2);
+  }
+
+  /* Consenso */
+  .consent { padding: 22px 24px; background: var(--paper-2); border: var(--hairline-strong); border-left: 4px solid var(--seal); }
+  .consent label { display: flex; gap: 16px; cursor: pointer; align-items: flex-start; }
+  .consent input[type=checkbox] {
+    margin: 4px 0 0; width: 20px; height: 20px;
+    accent-color: var(--seal); flex-shrink: 0;
+  }
+
+  /* OTP */
+  .otp-card { padding: 28px 30px; border: var(--hairline-strong); background: var(--paper-2); }
+  .otp-inputs {
+    display: flex; gap: 8px; justify-content: center;
+    margin: 12px 0 0;
+  }
+  .otp-cell {
+    width: 56px; height: 64px;
+    text-align: center; font-size: 26px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    color: var(--ink);
+    letter-spacing: 0;
+    outline: none;
+  }
+  .otp-cell:focus { border-color: var(--seal); }
+  .otp-sep { color: var(--ink-3); align-self: center; font-size: 22px; padding: 0 2px; }
+
+  /* Ricevuta */
+  .receipt {
+    background: var(--paper-2); border: var(--hairline-strong);
+    border-top: 3px double var(--seal); border-bottom: 3px double var(--seal);
+    padding: 56px 48px; position: relative;
+  }
+  .receipt-grid { display: flex; flex-direction: column; }
+  .receipt-row {
+    display: grid; grid-template-columns: 200px 1fr; gap: 24px;
+    padding: 14px 0; border-bottom: var(--hairline); align-items: baseline;
+  }
+  .receipt-key {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .receipt-val { font-size: 15px; color: var(--ink); }
+  .receipt-val.mono { font-family: var(--mono); font-size: 13px; }
+  .receipt-val.serif-italic { font-family: var(--serif); font-style: italic; font-size: 20px; }
+
+  /* Spinner per la fase di apposizione */
+  .signing #signLabel::after {
+    content: ""; display: inline-block; width: 12px; height: 12px;
+    border: 1.5px solid currentColor; border-top-color: transparent;
+    border-radius: 50%; margin-left: 12px; vertical-align: -2px;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 700px) {
+    .from-card { flex-direction: column; text-align: center; }
+    .sig-progress li { padding: 12px 8px; }
+    .sp-lbl { font-size: 9.5px; }
+    .otp-cell { width: 36px; height: 44px; font-size: 18px; }
+    .receipt { padding: 36px 24px; }
+    .receipt-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+  </style>
+
+  <script>
+  // STATO 1 → STATO 2 (con animazione)
+  function goAuth(method) {
+    document.querySelectorAll('.auth-opt').forEach(o => o.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    setTimeout(() => {
+      document.getElementById('state-auth').style.display = 'none';
+      document.getElementById('state-review').style.display = 'block';
+      document.getElementById('state-review').classList.add('rise');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 500);
+  }
+
+  // Consenso → abilita pulsante
+  document.getElementById('consent').addEventListener('change', e => {
+    document.getElementById('goOtpBtn').disabled = !e.target.checked;
+  });
+
+  // STATO 2 → STATO 3
+  document.getElementById('goOtpBtn').addEventListener('click', () => {
+    document.getElementById('state-review').style.display = 'none';
+    document.querySelectorAll('.sig-progress li')[1].classList.remove('current');
+    document.querySelectorAll('.sig-progress li')[1].classList.add('done');
+    document.querySelectorAll('.sig-progress li')[2].classList.add('current');
+    document.getElementById('state-otp').style.display = 'block';
+    document.getElementById('state-otp').classList.add('rise');
+    document.querySelector('.otp-cell').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Avvio countdown OTP
+    let secs = 298;
+    const tick = () => {
+      const m = String(Math.floor(secs / 60)).padStart(2,'0');
+      const s = String(secs % 60).padStart(2,'0');
+      document.getElementById('otpClock').textContent = m + ':' + s;
+      if (secs-- > 0) setTimeout(tick, 1000);
+    };
+    tick();
+
+    // Resend countdown
+    let r = 30;
+    const tickR = () => {
+      document.getElementById('resendIn').textContent = r;
+      if (r-- > 0) setTimeout(tickR, 1000);
+      else document.getElementById('resend').textContent = 'Reinvia il codice';
+    };
+    tickR();
+  });
+
+  // OTP cells handling
+  const cells = document.querySelectorAll('.otp-cell');
+  cells.forEach((c, i) => {
+    c.addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0,1);
+      if (e.target.value && cells[i+1]) cells[i+1].focus();
+      checkOtp();
+    });
+    c.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !e.target.value && cells[i-1]) cells[i-1].focus();
+    });
+  });
+  function checkOtp() {
+    const filled = [...cells].every(c => c.value);
+    document.getElementById('signBtn').disabled = !filled;
+  }
+
+  // STATO 3 → STATO 4 (apposizione firma)
+  document.getElementById('signBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('signBtn');
+    btn.disabled = true; btn.classList.add('signing');
+    document.getElementById('signLabel').textContent = 'Verifica OTP…';
+    await new Promise(r => setTimeout(r, 800));
+    document.getElementById('signLabel').textContent = 'Cifratura dell\'atto di firma…';
+    await new Promise(r => setTimeout(r, 900));
+    document.getElementById('signLabel').textContent = 'Apposizione sigillo su Bitcoin…';
+    await new Promise(r => setTimeout(r, 1000));
+    document.getElementById('signLabel').textContent = 'Notifica al richiedente…';
+    await new Promise(r => setTimeout(r, 500));
+
+    // Vai allo stato 4
+    document.getElementById('state-otp').style.display = 'none';
+    document.querySelectorAll('.sig-progress li')[2].classList.remove('current');
+    document.querySelectorAll('.sig-progress li')[2].classList.add('done');
+    document.querySelectorAll('.sig-progress li')[3].classList.add('done');
+
+    const now = new Date();
+    document.getElementById('signedAt').textContent =
+      now.toLocaleString('it-IT', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' CEST';
+
+    document.getElementById('state-done').style.display = 'block';
+    document.getElementById('state-done').classList.add('rise');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  </script>
+</body>
+</html>

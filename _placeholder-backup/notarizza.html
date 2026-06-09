@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="it" data-palette="navy">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon · Notarizza un documento · Appaltare.com</title>
+  <meta name="description" content="Apponi un veylon digitale con data certa ancorata a Bitcoin. Il documento non lascia il tuo dispositivo: viene inviata solo l'impronta SHA-256."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"/>
+  <style>
+:root{
+  --bg:oklch(0.985 0.005 250); --surface:#fff; --surface-2:oklch(0.97 0.008 250);
+  --ink:oklch(0.22 0.03 250); --ink-2:oklch(0.42 0.03 250); --ink-3:oklch(0.55 0.025 250);
+  --line:oklch(0.90 0.012 250); --line-strong:oklch(0.82 0.02 250);
+  --brand-700:oklch(0.32 0.08 250); --brand-600:oklch(0.42 0.10 250); --brand-500:oklch(0.55 0.16 250);
+  --ok-600:oklch(0.52 0.14 150); --ok-50:oklch(0.97 0.025 150);
+  --amber-600:oklch(0.66 0.16 75); --amber-50:oklch(0.97 0.035 80);
+  --red-600:oklch(0.56 0.20 25);
+  --font-sans:"Geist",system-ui,sans-serif; --font-mono:"Geist Mono",ui-monospace,monospace;
+  --r-md:8px; --r-lg:12px; --r-xl:16px;
+  --shadow:0 2px 4px rgba(15,23,42,.06),0 12px 32px -8px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-500)}
+h1{font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-.02em;margin:8px 0 12px;color:var(--brand-700)}
+.lead{font-size:17px;color:var(--ink-2);max-width:56ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:28px;box-shadow:var(--shadow);margin-top:32px}
+.drop{border:2px dashed var(--line-strong);border-radius:var(--r-lg);padding:44px 24px;text-align:center;cursor:pointer;transition:.18s;background:var(--surface-2)}
+.drop:hover,.drop.over{border-color:var(--brand-500);background:#fff}
+.drop strong{color:var(--brand-700)} .drop p{margin:6px 0 0;color:var(--ink-3);font-size:14px}
+input[type=file]{display:none}
+.field{margin-top:18px} label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+input[type=text]{width:100%;padding:11px 13px;border:1px solid var(--line-strong);border-radius:var(--r-md);font:inherit;font-size:15px}
+.hashbox{margin-top:14px;font-family:var(--font-mono);font-size:13px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;word-break:break-all;color:var(--ink-2)}
+.btn{margin-top:22px;width:100%;padding:14px;border:0;border-radius:var(--r-md);background:var(--brand-600);color:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.15s}
+.btn:hover{background:var(--brand-700)} .btn:disabled{opacity:.5;cursor:not-allowed}
+.note{font-size:13px;color:var(--ink-3);margin-top:14px}
+.alert{padding:12px 14px;border-radius:var(--r-md);font-size:14px;margin-top:16px}
+.alert.warn{background:var(--amber-50);color:oklch(0.40 0.12 70)}
+.alert.err{background:oklch(0.97 0.025 25);color:var(--red-600)}
+.result{margin-top:24px;border:1px solid var(--ok-600);background:var(--ok-50);border-radius:var(--r-lg);padding:22px}
+.result h3{margin:0 0 10px;color:var(--ok-600)}
+.kv{display:flex;gap:10px;font-size:14px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.kv span:first-child{min-width:140px;color:var(--ink-3);font-weight:600}
+.kv code{font-family:var(--font-mono);font-size:13px;word-break:break-all}
+.links{margin-top:16px;display:flex;gap:14px;flex-wrap:wrap}
+.links a{color:var(--brand-600);font-weight:600;font-size:14px;text-decoration:none}
+.links a:hover{text-decoration:underline}
+.foot{margin-top:40px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:20px}
+.foot a{color:var(--brand-600)}
+.spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:8px}
+@keyframes s{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav style="display:flex;gap:18px;margin-bottom:20px;font-size:14px">
+      <a href="/veylon.html" onclick="if(history.length>1){history.back();return false}" style="color:var(--brand-600);text-decoration:none;font-weight:600">← Indietro</a>
+      <a href="/veylon.html" style="margin-left:auto;color:var(--brand-600);text-decoration:none;font-weight:600">Veylon · home</a>
+    </nav>
+    <div class="eyebrow">Veylon · Appaltare</div>
+    <h1>Notarizza un documento</h1>
+    <p class="lead">Apponi un veylon digitale con <strong>data certa di valore legale</strong> (marca temporale ammissibile come prova, eIDAS art. 41 + L. 12/2019), <strong>ancorata a Bitcoin</strong>. Il file <strong>non lascia il tuo dispositivo</strong>: viene calcolata e inviata solo l'impronta crittografica (SHA-256).</p>
+
+    <div class="card">
+      <div id="auth-warn" class="alert warn" style="display:none">
+        Devi essere autenticato per apporre un veylon. <a href="/index.html">Accedi</a> e ricarica la pagina.
+      </div>
+
+      <div class="drop" id="drop">
+        <strong>Trascina qui un documento</strong> oppure clicca per selezionarlo
+        <p>PDF, DOCX, immagini… nulla viene caricato: si calcola solo l'hash in locale.</p>
+      </div>
+      <input type="file" id="file"/>
+
+      <div class="field">
+        <label for="docname">Nome del documento</label>
+        <input type="text" id="docname" placeholder="Es. Contratto appalto lavori — Rev. 3"/>
+      </div>
+
+      <div id="hashwrap" style="display:none">
+        <div class="field"><label>Impronta SHA-256 calcolata</label></div>
+        <div class="hashbox" id="hash"></div>
+      </div>
+
+      <button class="btn" id="go" disabled>Apponi veylon</button>
+      <p class="note">Il veylon viene inviato ai calendar OpenTimestamps e confermato su Bitcoin entro poche ore. La conferma non richiede alcuna azione da parte tua.</p>
+
+      <div id="msg"></div>
+      <div id="result"></div>
+    </div>
+
+    <div class="foot">
+      Hai già un documento sigillato? <a href="/verifica.html">Verificalo qui</a> — la verifica è pubblica e indipendente da Appaltare.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+  <script>
+const SUPABASE_URL = 'https://efhdooeqscqncgvhqfyu.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmaGRvb2Vxc2NxbmNndmhxZnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDA3NTcsImV4cCI6MjA5MDYxNjc1N30.wtvxgipTgEPpz40Vo6qZBsPXQO1vQuz4F1GwF9bCNlM';
+const FN_NOTARIZZA = SUPABASE_URL + '/functions/v1/veylon-notarizza';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const el = (id) => document.getElementById(id);
+let currentHash = null, currentFile = null;
+
+async function sha256File(file){
+  const buf = await file.arrayBuffer();
+  const d = await crypto.subtle.digest('SHA-256', buf);
+  return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function pickFile(file){
+  if(!file) return;
+  currentFile = file;
+  if(!el('docname').value) el('docname').value = file.name;
+  el('hashwrap').style.display='block';
+  el('hash').textContent = 'calcolo in corso…';
+  currentHash = await sha256File(file);
+  el('hash').textContent = currentHash;
+  el('go').disabled = false;
+}
+
+const drop = el('drop');
+drop.addEventListener('click', ()=> el('file').click());
+el('file').addEventListener('change', e => pickFile(e.target.files[0]));
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop', e => pickFile(e.dataTransfer.files[0]));
+
+el('go').addEventListener('click', async ()=>{
+  el('msg').innerHTML=''; el('result').innerHTML='';
+  const { data:s } = await sb.auth.getSession();
+  if(!s.session){ el('auth-warn').style.display='block'; return; }
+  if(!currentHash){ return; }
+
+  const btn = el('go'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Apposizione veylon…';
+  try{
+    const res = await fetch(FN_NOTARIZZA,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.session.access_token,'apikey':SUPABASE_ANON},
+      body: JSON.stringify({
+        sha256: currentHash,
+        doc_name: el('docname').value || (currentFile && currentFile.name) || 'documento',
+        doc_mime: currentFile ? currentFile.type : null,
+        doc_size: currentFile ? currentFile.size : null
+      })
+    });
+    const j = await res.json();
+    if(!j.success) throw new Error(j.error||'errore');
+    el('result').innerHTML = `
+      <div class="result">
+        <h3>✓ Veylon apposto</h3>
+        <div class="kv"><span>Documento</span><code>${escapeHtml(el('docname').value)}</code></div>
+        <div class="kv"><span>SHA-256</span><code>${j.sha256}</code></div>
+        <div class="kv"><span>Stato</span><code>${j.ots_status==='pending'?'In conferma su Bitcoin':j.ots_status}</code></div>
+        <div class="links">
+          <a href="/verifica.html?h=${j.sha256}">Verifica pubblica →</a>
+          <a href="${SUPABASE_URL}/functions/v1/veylon-certificato?h=${j.sha256}" target="_blank">Scarica certificato PDF →</a>
+        </div>
+      </div>`;
+  }catch(err){
+    el('msg').innerHTML = `<div class="alert err">Errore: ${escapeHtml(String(err.message||err))}</div>`;
+  }finally{
+    btn.disabled=false; btn.textContent='Apponi veylon';
+  }
+});
+
+function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+(async()=>{ const {data:s}=await sb.auth.getSession(); if(!s.session) el('auth-warn').style.display='block'; })();
+  </script>
+</body>
+</html>

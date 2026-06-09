@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Documento condiviso</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Documento condiviso</span>
+        <span class="sep">·</span>
+        <span>Sigillato &amp; verificabile</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3);">
+        <span>link n. <strong style="color: var(--ink);">SHR-2026-8C30D5B7</strong></span>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Accesso pubblico per il destinatario del link</span>
+        <span>Link valido fino al <span class="mono">14&nbsp;giu&nbsp;2026 · 14:38</span> &middot; <span id="cd" class="mono seal-c">6&nbsp;g&nbsp;23&nbsp;h</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col-narrow" style="padding: 64px 32px 96px;">
+
+    <div class="row-between" style="margin-bottom: 32px;">
+      <span class="section-num">Documento sigillato &middot; in sola lettura</span>
+      <span class="roman">i</span>
+    </div>
+
+    <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0; max-width: 22ch;">
+      Vi è stato condiviso un <em class="serif-italic" style="color: var(--seal);">documento sigillato.</em>
+    </h1>
+    <p class="lede" style="margin-top: 24px;">
+      Potete consultarlo, scaricarlo e verificarne l'integrità.
+      Ogni accesso è registrato in modo anonimo a tutela del titolare.
+    </p>
+
+    <hr class="rule" style="margin: 48px 0;"/>
+
+    <!-- Mittente -->
+    <div class="from-card">
+      <div class="seal-mark"><span class="glyph">V</span></div>
+      <div style="flex: 1; min-width: 0;">
+        <div class="eyebrow">Condiviso da</div>
+        <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;">Studio Notarile Bertolaso &amp; Associati</div>
+        <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.04em;">
+          avv.bertolaso@studiobertolaso.it &middot; titolare del sigillo
+        </div>
+        <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em;">
+          Link condiviso il 7 giu 2026 &middot; ore 14:38 CEST
+        </div>
+      </div>
+    </div>
+
+    <!-- Documento principale -->
+    <div class="doc-frame">
+      <div class="doc-frame-head">
+        <div class="row" style="gap: 18px;">
+          <div class="doc-icon-lg"><span class="ext mono">PDF</span></div>
+          <div style="flex: 1;">
+            <div class="eyebrow seal-c" style="margin-bottom: 4px;">Documento</div>
+            <div class="serif" style="font-size: 24px; line-height: 1.2;">Atto di mandato &mdash; Rep. n. 14.882/2026</div>
+            <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 8px; letter-spacing: 0.04em;">
+              application/pdf &middot; 412&nbsp;KB
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div class="status confirmed" style="margin-bottom: 8px;"><span class="dot"></span>Confermato</div>
+            <div class="mono" style="font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.06em;">Iscritto su Bitcoin</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dati sigillo -->
+      <div class="doc-data">
+        <div class="dd-row">
+          <div class="dd-key">Codice di protocollo</div>
+          <div class="dd-val mono" style="font-size: 14px;">VLN-2026-248917-AC4F</div>
+        </div>
+        <div class="dd-row">
+          <div class="dd-key">Impronta SHA-256</div>
+          <div class="dd-val mono" style="word-break: break-all; line-height: 1.6;">
+            e3b0&nbsp;c442&nbsp;98fc&nbsp;1c14&nbsp;9afb&nbsp;f4c8&nbsp;996f&nbsp;b924&nbsp;27ae&nbsp;41e4&nbsp;649b&nbsp;934c&nbsp;a495&nbsp;991b&nbsp;7852&nbsp;b855
+          </div>
+        </div>
+        <div class="dd-row">
+          <div class="dd-key">Data certa</div>
+          <div class="dd-val mono">12 maggio 2026 &middot; ore 09:14 CEST</div>
+        </div>
+        <div class="dd-row">
+          <div class="dd-key">Blocco Bitcoin</div>
+          <div class="dd-val mono">#&nbsp;871.508 &middot; merkle path 12 livelli</div>
+        </div>
+        <div class="dd-row" style="border-bottom: 0;">
+          <div class="dd-key">Standard</div>
+          <div class="dd-val mono">OpenTimestamps · Bitcoin mainnet</div>
+        </div>
+      </div>
+
+      <!-- Azioni -->
+      <div class="doc-actions">
+        <a class="btn seal lg" href="#" id="dlBtn" style="flex: 1; justify-content: center;">Scarica il documento <span class="arrow"></span></a>
+        <a class="btn ghost lg" href="certificato.html">Apri certificato</a>
+        <a class="btn ghost lg" href="verifica.html?h=e3b0c44298fc1c14">Verifica indipendente</a>
+      </div>
+    </div>
+
+    <!-- Cosa c'è di garantito -->
+    <section style="margin-top: 56px;">
+      <div class="row-between" style="align-items: end; margin-bottom: 20px;">
+        <span class="section-num">§ Cosa è garantito</span>
+        <span class="roman">ii</span>
+      </div>
+      <ul class="guarantees">
+        <li>
+          <div class="g-mark">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7 L6 10 L11 4"/></svg>
+          </div>
+          <div>
+            <div class="serif" style="font-size: 17px; color: var(--ink);">Esistenza alla data certa</div>
+            <div class="body small" style="margin-top: 4px;">Il documento esiste in forma identica almeno dal 12 maggio 2026, ore 09:14 CEST.</div>
+          </div>
+        </li>
+        <li>
+          <div class="g-mark">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7 L6 10 L11 4"/></svg>
+          </div>
+          <div>
+            <div class="serif" style="font-size: 17px; color: var(--ink);">Integrità del contenuto</div>
+            <div class="body small" style="margin-top: 4px;">Il file ricevuto è identico, bit per bit, a quello sigillato. Ogni modifica, anche minima, sarebbe rilevata immediatamente.</div>
+          </div>
+        </li>
+        <li>
+          <div class="g-mark">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7 L6 10 L11 4"/></svg>
+          </div>
+          <div>
+            <div class="serif" style="font-size: 17px; color: var(--ink);">Indipendenza della verifica</div>
+            <div class="body small" style="margin-top: 4px;">La prova vive sul registro pubblico Bitcoin. Resta valida e verificabile anche in assenza di VEYLON.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Nota sul link -->
+    <section style="margin-top: 56px; padding: 24px 28px; background: var(--paper-2); border-left: 3px solid var(--seal);">
+      <div class="eyebrow seal-c" style="margin-bottom: 10px;">Nota sul link di condivisione</div>
+      <p class="body" style="margin: 0; font-size: 14px;">
+        Il titolare del sigillo può <em class="serif-italic">revocare</em> questo link in qualsiasi momento.
+        Allo scadere, l'accesso al documento non è più consentito tramite la presente pagina.
+        Per consultarlo nuovamente sarà necessario richiedere un nuovo link.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Condivisione &middot; accesso pubblico al destinatario</span>
+    </div>
+  </footer>
+
+  <style>
+  .from-card {
+    display: flex; gap: 24px; align-items: center;
+    padding: 28px 32px;
+    background: var(--paper-2); border: var(--hairline-strong);
+  }
+
+  /* Documento principale */
+  .doc-frame {
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    margin-top: 32px;
+  }
+  .doc-frame-head {
+    padding: 28px 32px;
+    border-bottom: var(--hairline-strong);
+    background: var(--paper-2);
+  }
+  .doc-icon-lg {
+    width: 52px; height: 66px;
+    background: var(--paper); border: 1px solid var(--ink);
+    display: grid; place-items: center; position: relative; flex-shrink: 0;
+  }
+  .doc-icon-lg::before {
+    content: ""; position: absolute; top: 0; right: 0;
+    width: 14px; height: 14px;
+    background: linear-gradient(225deg, var(--paper-2) 50%, var(--ink) 50%);
+  }
+  .doc-icon-lg .ext { font-size: 10px; letter-spacing: 0.1em; color: var(--ink); }
+
+  .doc-data { padding: 8px 32px; display: flex; flex-direction: column; }
+  .dd-row {
+    display: grid; grid-template-columns: 200px 1fr; gap: 24px;
+    padding: 14px 0; border-bottom: 1px solid var(--rule-2);
+    align-items: baseline;
+  }
+  .dd-key {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .dd-val { font-size: 14px; color: var(--ink); }
+  .dd-val.mono { font-family: var(--mono); }
+
+  .doc-actions {
+    display: flex; gap: 12px;
+    padding: 24px 32px;
+    border-top: var(--hairline-strong);
+    background: var(--paper-2);
+    flex-wrap: wrap;
+  }
+
+  /* Guarantees */
+  .guarantees {
+    list-style: none; padding: 0; margin: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .guarantees li {
+    display: grid; grid-template-columns: 32px 1fr;
+    gap: 18px; padding: 18px 0;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: start;
+  }
+  .guarantees li:last-child { border-bottom: 0; }
+  .g-mark {
+    width: 26px; height: 26px;
+    border: 1px solid var(--verify);
+    background: var(--verify); color: var(--paper);
+    display: grid; place-items: center;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 700px) {
+    .from-card { flex-direction: column; text-align: center; }
+    .doc-frame-head .row { flex-direction: column; align-items: flex-start; }
+    .doc-data { padding: 8px 22px; }
+    .doc-actions { padding: 18px 22px; }
+    .dd-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+  </style>
+
+  <script>
+  // Countdown semplice
+  const expiry = Date.now() + (6 * 86400 + 23 * 3600) * 1000;
+  function tick() {
+    const left = expiry - Date.now();
+    const d = Math.floor(left / 86400000);
+    const h = Math.floor((left % 86400000) / 3600000);
+    document.getElementById('cd').textContent = d + ' g ' + h + ' h';
+  }
+  tick();
+  setInterval(tick, 60000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Cert &middot; Verifica pubblica</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Sezione VII &middot; Cert</span>
+        <span class="sep">&middot;</span>
+        <span>Verifica pubblica</span>
+      </div>
+      <a href="dashboard.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="cert.html">Cert</a>
+        <a href="cert-istituzione.html">Istituzione</a>
+        <a href="cert-emetti.html">Emetti</a>
+        <a href="cert-mio.html">Miei</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="col-narrow" style="padding: 56px 32px 96px;">
+
+    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
+      <span class="section-num">&sect; V &mdash; Verifica</span>
+      <span class="roman">v</span>
+    </div>
+
+    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
+      Verifica <em class="serif-italic" style="color: var(--seal);">pubblica.</em>
+    </h1>
+    <p class="lede" style="margin: 12px 0 40px; max-width: 60ch;">
+      Inserisci il codice <span class="mono">VLN-CERT-...</span>, oppure incolla
+      l'impronta SHA-256, oppure trascina qui il PDF: Veylon controlla l'integrit&agrave;
+      crittografica e, se il certificato &egrave; ancorato a Bitcoin, conferma il sigillo
+      sulla blockchain.
+    </p>
+
+    <!-- =========================================================
+         INPUT VERIFICA
+    ========================================================== -->
+    <form id="verForm" class="panel" style="padding: 28px;" onsubmit="verifica(event)">
+      <div class="ff-row">
+        <label class="field-label" for="codice">Codice pubblico</label>
+        <input id="codice" class="field-input mono" placeholder="VLN-CERT-2026-XXXX-XXXX" autocomplete="off"/>
+      </div>
+
+      <div class="row" style="margin: 18px 0; color: var(--ink-3); font-family: var(--mono); font-size: 11px;">
+        oppure
+      </div>
+
+      <div class="ff-row">
+        <label class="field-label" for="sha256">Impronta SHA-256 (64 caratteri hex)</label>
+        <input id="sha256" class="field-input mono" placeholder="es. 3a7b1cf2..." autocomplete="off"/>
+      </div>
+
+      <div class="row" style="margin: 18px 0; color: var(--ink-3); font-family: var(--mono); font-size: 11px;">
+        oppure trascina/carica il PDF
+      </div>
+
+      <div id="drop" style="border: 2px dashed var(--rule); padding: 24px; text-align: center; cursor: pointer;">
+        <div class="mono" style="font-size: 12px;">Trascina qui il PDF certificato</div>
+        <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 4px;">oppure clicca per selezionare</div>
+        <input id="pdfFile" type="file" accept="application/pdf" style="display: none;"/>
+      </div>
+      <div id="pdfMsg" class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 8px;"></div>
+
+      <div class="row" style="gap: 16px; align-items: center; margin-top: 24px;">
+        <button id="submitBtn" type="submit" class="btn seal lg">Verifica <span class="arrow"></span></button>
+        <span id="formMsg" class="mono" style="font-size: 12px; color: var(--ink-3);"></span>
+      </div>
+    </form>
+
+    <!-- =========================================================
+         RISULTATO
+    ========================================================== -->
+    <section id="result" style="display: none; margin-top: 56px;">
+
+      <div id="banner" class="panel" style="padding: 24px; margin-bottom: 24px; border-left: 4px solid var(--seal);">
+        <div class="section-num" id="bannerKicker">&sect; Esito</div>
+        <h2 class="serif" id="bannerTitle" style="margin: 8px 0 6px;">&mdash;</h2>
+        <p class="body small" id="bannerMsg" style="margin: 0;">&mdash;</p>
+      </div>
+
+      <div class="receipt-grid">
+
+        <div class="receipt-row">
+          <span class="receipt-key">Codice pubblico</span>
+          <span class="receipt-val mono" id="rCodice">&mdash;</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="receipt-key">Stato</span>
+          <span class="receipt-val mono" id="rStato">&mdash;</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="receipt-key">Impronta SHA-256</span>
+          <span class="receipt-val mono" id="rSha" style="word-break: break-all; font-size: 11px;">&mdash;</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="receipt-key">Data emissione</span>
+          <span class="receipt-val mono" id="rEmissione">&mdash;</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="receipt-key">Data scadenza</span>
+          <span class="receipt-val mono" id="rScadenza">&mdash;</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="receipt-key">Beneficiario</span>
+          <span class="receipt-val mono" id="rBenef">&mdash;</span>
+        </div>
+
+      </div>
+
+      <div class="receipt-grid" style="margin-top: 24px;">
+        <div class="receipt-row">
+          <span class="receipt-key">Istituzione emittente</span>
+          <span class="receipt-val" id="rIstNome">&mdash;</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">P.IVA / KYC</span>
+          <span class="receipt-val mono" id="rIstKyc">&mdash;</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Settore</span>
+          <span class="receipt-val mono" id="rIstSettore">&mdash;</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Normative dichiarate</span>
+          <span class="receipt-val mono" id="rIstNorm" style="font-size: 11px;">&mdash;</span>
+        </div>
+        <div class="receipt-row" id="rTplRow" style="display: none;">
+          <span class="receipt-key">Template</span>
+          <span class="receipt-val mono" id="rTpl">&mdash;</span>
+        </div>
+      </div>
+
+      <div class="receipt-grid" style="margin-top: 24px;">
+        <div class="receipt-row">
+          <span class="receipt-key">Sigillo Bitcoin</span>
+          <span class="receipt-val mono" id="rBtc">&mdash;</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Blocco BTC</span>
+          <span class="receipt-val mono" id="rBtcHeight">&mdash;</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Timestamp BTC</span>
+          <span class="receipt-val mono" id="rBtcTime">&mdash;</span>
+        </div>
+        <div class="receipt-row" id="rPdfRow" style="display: none;">
+          <span class="receipt-key">PDF certificato</span>
+          <span class="receipt-val mono"><a id="rPdf" href="#" target="_blank">scarica (URL temporaneo)</a></span>
+        </div>
+      </div>
+
+      <div id="datiBlock" style="display: none; margin-top: 32px;" class="panel">
+        <div style="padding: 24px;">
+          <div class="section-num">&sect; Dati certificato</div>
+          <pre id="rDati" class="mono" style="font-size: 11px; margin-top: 8px; white-space: pre-wrap; word-break: break-word;"></pre>
+        </div>
+      </div>
+
+      <div class="row" style="gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+        <a href="cert-verifica.html" class="btn seal" onclick="location.reload(); return false;">Verifica un altro <span class="arrow"></span></a>
+        <a href="cert.html" class="btn ghost">Torna all'hub</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Sezione VII &mdash; Cert &middot; Verifica</span>
+    </div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
+
+    function headers() {
+      const h = { 'Content-Type': 'application/json' };
+      if (SUPABASE_ANON_KEY) {
+        h['apikey'] = SUPABASE_ANON_KEY;
+        h['Authorization'] = 'Bearer ' + SUPABASE_ANON_KEY;
+      }
+      return h;
+    }
+
+    // Drag&drop PDF -> SHA-256
+    const drop = document.getElementById('drop');
+    const pdfFile = document.getElementById('pdfFile');
+    drop.addEventListener('click', () => pdfFile.click());
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.style.background = 'var(--panel)'; });
+    drop.addEventListener('dragleave', () => { drop.style.background = ''; });
+    drop.addEventListener('drop', e => {
+      e.preventDefault(); drop.style.background = '';
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        pdfFile.files = e.dataTransfer.files;
+        calcolaShaPdf();
+      }
+    });
+    pdfFile.addEventListener('change', calcolaShaPdf);
+
+    async function calcolaShaPdf() {
+      const f = pdfFile.files[0];
+      if (!f) return;
+      const buf = await f.arrayBuffer();
+      const dig = await crypto.subtle.digest('SHA-256', buf);
+      const hex = [...new Uint8Array(dig)].map(b => b.toString(16).padStart(2, '0')).join('');
+      document.getElementById('sha256').value = hex;
+      document.getElementById('pdfMsg').textContent = 'PDF "' + f.name + '" - SHA-256 calcolato in locale.';
+    }
+
+    function fmtData(d) {
+      if (!d) return '&mdash;';
+      try { return new Date(d).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' }); }
+      catch { return d; }
+    }
+    function fmtDateTime(d) {
+      if (!d) return '&mdash;';
+      try { return new Date(d).toLocaleString('it-IT'); }
+      catch { return d; }
+    }
+
+    function bannerEsito(valido, certificato) {
+      const banner = document.getElementById('banner');
+      const t = document.getElementById('bannerTitle');
+      const m = document.getElementById('bannerMsg');
+      const k = document.getElementById('bannerKicker');
+      if (!valido) {
+        banner.style.borderLeftColor = '#b00020';
+        k.textContent = '§ Nessun riscontro';
+        t.textContent = 'Codice o impronta non trovati.';
+        m.textContent = 'Veylon non ha trovato un certificato corrispondente. Controlla il codice e riprova.';
+        return;
+      }
+      const stato = certificato.stato;
+      if (stato === 'revocato') {
+        banner.style.borderLeftColor = '#b00020';
+        k.textContent = '§ Revocato';
+        t.textContent = 'Certificato REVOCATO dall\'emittente.';
+        m.textContent = 'L\'istituzione ha revocato questo certificato. Non considerarlo valido per gli scopi originali.';
+      } else if (stato === 'scaduto') {
+        banner.style.borderLeftColor = '#a06600';
+        k.textContent = '§ Scaduto';
+        t.textContent = 'Certificato scaduto.';
+        m.textContent = 'Il certificato esisteva e non &egrave; stato revocato, ma &egrave; oltre la data di scadenza.';
+      } else if (stato === 'ritirato') {
+        banner.style.borderLeftColor = 'var(--seal)';
+        k.textContent = '§ Ritirato';
+        t.textContent = 'Certificato valido e ritirato dal beneficiario.';
+        m.textContent = 'Esistente, ancora valido, gi&agrave; consegnato.';
+      } else {
+        banner.style.borderLeftColor = 'var(--seal)';
+        k.textContent = '§ Valido';
+        t.textContent = 'Certificato VALIDO.';
+        m.textContent = 'Esistente, integro, emesso dall\'istituzione indicata. Audit trail GxP append-only.';
+      }
+    }
+
+    function render(data) {
+      document.getElementById('result').style.display = 'block';
+      bannerEsito(data.valido, data.certificato || {});
+
+      if (!data.valido) {
+        document.getElementById('rCodice').textContent = '—';
+        document.getElementById('rStato').textContent  = '—';
+        document.getElementById('rSha').textContent    = '—';
+        document.getElementById('rEmissione').textContent = '—';
+        document.getElementById('rScadenza').textContent  = '—';
+        document.getElementById('rBenef').textContent     = '—';
+        document.getElementById('rIstNome').textContent   = '—';
+        document.getElementById('rIstKyc').textContent    = '—';
+        document.getElementById('rIstSettore').textContent = '—';
+        document.getElementById('rIstNorm').textContent    = '—';
+        document.getElementById('rBtc').textContent        = '—';
+        document.getElementById('rBtcHeight').textContent  = '—';
+        document.getElementById('rBtcTime').textContent    = '—';
+        return;
+      }
+
+      const c = data.certificato || {};
+      const ist = data.istituzione || {};
+      const tpl = data.template || {};
+      const btc = data.bitcoin || {};
+
+      document.getElementById('rCodice').textContent = c.codice_pubblico || '—';
+      document.getElementById('rStato').textContent  = (c.stato || '').toUpperCase();
+      document.getElementById('rSha').textContent    = c.doc_sha256 || '—';
+      document.getElementById('rEmissione').innerHTML = fmtData(c.data_emissione);
+      document.getElementById('rScadenza').innerHTML  = c.data_scadenza ? fmtData(c.data_scadenza) : 'senza scadenza';
+
+      const benef = [c.beneficiario_nome, c.beneficiario_email_masked].filter(Boolean).join(' &middot; ');
+      document.getElementById('rBenef').innerHTML = benef || '—';
+
+      document.getElementById('rIstNome').textContent = ist.ragione_sociale || '—';
+      const verifLabel = ist.verified ? 'verificata' : 'dichiarata';
+      document.getElementById('rIstKyc').textContent = (ist.p_iva ? 'P.IVA ' + ist.p_iva + ' · ' : '') + 'KYC ' + (ist.livello_kyc || 'light') + ' · ' + verifLabel;
+      document.getElementById('rIstSettore').textContent = (ist.settore || '—') + (ist.tipo ? ' · ' + ist.tipo : '');
+      document.getElementById('rIstNorm').textContent = Array.isArray(ist.normative_applicabili) && ist.normative_applicabili.length
+        ? ist.normative_applicabili.join(' · ')
+        : '—';
+
+      if (tpl && tpl.nome) {
+        document.getElementById('rTplRow').style.display = '';
+        const norm = Array.isArray(tpl.normative_riferimento) && tpl.normative_riferimento.length
+          ? ' (' + tpl.normative_riferimento.join(', ') + ')' : '';
+        document.getElementById('rTpl').textContent = tpl.nome + ' · ' + tpl.tipo + norm;
+      }
+
+      document.getElementById('rBtc').textContent = btc.ancorato
+        ? 'Confermato (' + (btc.ots_status || 'confirmed') + ')'
+        : 'Sigillo in attesa di conferma (' + (btc.ots_status || 'pending') + ')';
+      document.getElementById('rBtcHeight').textContent = btc.btc_block_height ?? '—';
+      document.getElementById('rBtcTime').innerHTML = fmtDateTime(btc.btc_block_time);
+
+      if (data.pdf_download_url) {
+        document.getElementById('rPdfRow').style.display = '';
+        document.getElementById('rPdf').href = data.pdf_download_url;
+      }
+      if (c.dati_certificato && Object.keys(c.dati_certificato).length) {
+        document.getElementById('datiBlock').style.display = 'block';
+        document.getElementById('rDati').textContent = JSON.stringify(c.dati_certificato, null, 2);
+      }
+      window.scrollTo({ top: document.getElementById('result').offsetTop - 40, behavior: 'smooth' });
+    }
+
+    async function verifica(e) {
+      e?.preventDefault?.();
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('formMsg');
+      msg.textContent = ''; msg.style.color = '';
+
+      const codice = (document.getElementById('codice').value || '').trim().toUpperCase();
+      const sha256 = (document.getElementById('sha256').value || '').trim().toLowerCase();
+
+      if (!codice && !sha256) {
+        msg.style.color = 'var(--seal)';
+        msg.textContent = 'Inserisci almeno un codice o una impronta SHA-256.';
+        return;
+      }
+
+      const payload = {};
+      if (codice) payload.codice = codice;
+      else        payload.sha256 = sha256;
+
+      btn.disabled = true; btn.innerHTML = 'Verifica in corso&hellip;';
+      try {
+        const res = await fetch(`${FUNCTIONS_BASE}/cert-verifica`, {
+          method: 'POST', headers: headers(), body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        btn.disabled = false; btn.innerHTML = 'Verifica <span class="arrow"></span>';
+        if (!res.ok || !data.success) {
+          msg.style.color = 'var(--seal)';
+          msg.textContent = data.error || ('Errore HTTP ' + res.status);
+          return;
+        }
+        render(data);
+      } catch (err) {
+        btn.disabled = false; btn.innerHTML = 'Verifica <span class="arrow"></span>';
+        msg.style.color = 'var(--seal)';
+        msg.textContent = 'Errore di rete: ' + (err?.message ?? err);
+      }
+    }
+
+    // Auto-verifica via ?codice=... oppure ?sha256=...
+    document.addEventListener('DOMContentLoaded', () => {
+      const q = new URLSearchParams(location.search);
+      const c = q.get('codice'); const s = q.get('sha256');
+      if (c) document.getElementById('codice').value = c;
+      if (s) document.getElementById('sha256').value = s;
+      if (c || s) verifica();
+    });
+  </script>
+
+</body>
+</html>

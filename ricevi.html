@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Ricezione di plico cifrato</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Ricezione plico</span>
+        <span class="sep">·</span>
+        <span>Magic link valido</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3);">
+        <span class="mono">codice <strong style="color: var(--ink);">VLN-TX-2026-A8F4C2D1</strong></span>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Trasmissione cifrata end-to-end &mdash; <strong style="color: var(--ink);">solo voi potete decifrare il documento</strong></span>
+        <span>Magic link &middot; valido fino al <span class="mono">14 giu 2026 · 14:38</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col-narrow" style="padding: 64px 32px 96px;">
+
+    <!-- Intestazione -->
+    <div class="row-between" style="margin-bottom: 32px;">
+      <span class="section-num">Plico cifrato in ricezione</span>
+      <span class="roman">i</span>
+    </div>
+
+    <!-- AVANZAMENTO -->
+    <ol class="rcv-progress">
+      <li class="done" data-step="1">
+        <div class="rp-circle"><span>I</span></div>
+        <div class="rp-lbl">Accertamento</div>
+      </li>
+      <li class="current" data-step="2">
+        <div class="rp-circle"><span>II</span></div>
+        <div class="rp-lbl">Decifratura</div>
+      </li>
+      <li data-step="3">
+        <div class="rp-circle"><span>III</span></div>
+        <div class="rp-lbl">Apertura</div>
+      </li>
+    </ol>
+
+    <!-- ============================================================
+         STATO 1 — Identificazione (visibile inizialmente)
+    ============================================================= -->
+    <section id="state-auth" style="display: none;">
+      <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
+        Vi è stato trasmesso un <em class="serif-italic" style="color: var(--seal);">documento riservato.</em>
+      </h1>
+      <p class="lede" style="margin-bottom: 40px;">
+        Per aprirlo è necessario accertare la vostra identità. Il documento
+        sarà decifrato esclusivamente sul vostro dispositivo.
+      </p>
+
+      <div class="rcv-from">
+        <div class="seal-mark"><span class="glyph">V</span></div>
+        <div>
+          <div class="eyebrow">Mittente</div>
+          <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;">Studio Notarile Bertolaso &amp; Associati</div>
+          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.06em;">
+            avv.bertolaso@studiobertolaso.it &middot; verificato SPID Liv. 2
+          </div>
+          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.06em;">
+            Trasmesso il 7 giu 2026 &middot; ore 14:38 CEST
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-options">
+        <button class="auth-opt selected" onclick="goAuth('spid')">
+          <div class="ao-letter">A</div>
+          <div class="ao-body">
+            <div class="ao-title">Accedi con SPID</div>
+            <div class="ao-desc">Livello richiesto dal mittente: <em>Standard</em></div>
+          </div>
+          <div class="ao-arrow">→</div>
+        </button>
+        <button class="auth-opt" onclick="goAuth('cie')">
+          <div class="ao-letter">B</div>
+          <div class="ao-body">
+            <div class="ao-title">Accedi con CIE</div>
+            <div class="ao-desc">Carta d'Identità Elettronica</div>
+          </div>
+          <div class="ao-arrow">→</div>
+        </button>
+        <button class="auth-opt" onclick="goAuth('cns')">
+          <div class="ao-letter">C</div>
+          <div class="ao-body">
+            <div class="ao-title">Accedi con CNS</div>
+            <div class="ao-desc">Carta Nazionale dei Servizi (smart card)</div>
+          </div>
+          <div class="ao-arrow">→</div>
+        </button>
+      </div>
+
+      <p class="small" style="margin-top: 32px; text-align: center;">
+        L'apertura sarà inscritta su Bitcoin come <em class="serif-italic">ricevuta di apertura</em>,
+        a tutela del mittente e vostra.
+      </p>
+    </section>
+
+    <!-- ============================================================
+         STATO 2 — Decifratura (animazione)
+    ============================================================= -->
+    <section id="state-decrypt" style="display: none;">
+      <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
+        Identità <em class="serif-italic" style="color: var(--verify);">accertata.</em>
+      </h1>
+      <p class="lede" style="margin-bottom: 40px;">
+        Il documento si sta decifrando sul vostro dispositivo. Non lascia mai
+        questa pagina.
+      </p>
+
+      <div class="panel">
+        <div class="row" style="gap: 18px; align-items: center;">
+          <div class="dot-spinner"></div>
+          <div>
+            <div class="eyebrow">Decifratura locale in corso</div>
+            <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;" id="decryptStep">Apertura busta cifrata&hellip;</div>
+          </div>
+        </div>
+        <ol class="checklist" id="decryptList">
+          <li data-step="1">Recupero della chiave privata del destinatario</li>
+          <li data-step="2">Scambio Diffie-Hellman X25519</li>
+          <li data-step="3">Decifratura AES-GCM-256 in memoria</li>
+          <li data-step="4">Verifica di integrità (SHA-256)</li>
+          <li data-step="5">Apposizione della ricevuta di apertura su Bitcoin</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATO 3 — Documento aperto
+    ============================================================= -->
+    <section id="state-open" style="display: none;">
+      <div class="ornament" style="margin: 0 0 32px;">⁂</div>
+      <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
+        Documento <em class="serif-italic" style="color: var(--verify);">aperto.</em>
+      </h1>
+      <p class="lede" style="margin-bottom: 40px;">
+        Apertura inscritta su Bitcoin. Mittente e destinatario hanno la prova
+        legale dell'evento.
+      </p>
+
+      <div class="open-doc">
+        <div class="row" style="gap: 18px; padding: 24px 28px; border-bottom: var(--hairline);">
+          <div class="doc-icon-lg">
+            <span class="ext mono">PDF</span>
+          </div>
+          <div style="flex: 1;">
+            <div class="serif" style="font-size: 22px; line-height: 1.2;">Proposta transattiva &mdash; Vitali / Lemania S.p.A.</div>
+            <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 8px; letter-spacing: 0.04em;">
+              412&nbsp;KB &middot; application/pdf &middot; SHA-256 e3b0&nbsp;c442 … b855
+            </div>
+          </div>
+          <a class="btn" href="#" id="dlBtn">Scarica</a>
+        </div>
+
+        <div class="open-grid">
+          <div class="og-row"><div class="og-k">Mittente</div><div class="og-v">Studio Notarile Bertolaso</div></div>
+          <div class="og-row"><div class="og-k">Inviato il</div><div class="og-v mono">07 giu 2026 · 14:38:02 CEST</div></div>
+          <div class="og-row"><div class="og-k">Aperto il</div><div class="og-v mono" id="openedAt">—</div></div>
+          <div class="og-row"><div class="og-k">Identità verificata</div><div class="og-v">SPID Liv. 2 · CF VTLMRC70S30H501Z</div></div>
+          <div class="og-row"><div class="og-k">Cifratura</div><div class="og-v mono">X25519 + AES-GCM-256</div></div>
+          <div class="og-row" style="border-bottom: 0;"><div class="og-k">Ricevuta di apertura</div><div class="og-v mono">apposta &middot; #&nbsp;<span id="newBlock">874.203</span></div></div>
+        </div>
+      </div>
+
+      <div class="row row-gap" style="margin-top: 32px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn" href="certificato.html">Apri certificato di trasmissione</a>
+        <a class="btn ghost" href="verifica.html">Verifica indipendente</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Ricezione plico &middot; sessione effimera</span>
+    </div>
+  </footer>
+
+  <style>
+  /* Barra di avanzamento */
+  .rcv-progress {
+    list-style: none; padding: 0; margin: 0 0 56px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .rcv-progress li {
+    padding: 20px 16px;
+    border-right: 1px solid var(--rule-2);
+    display: flex; align-items: center; gap: 14px;
+    color: var(--ink-3);
+  }
+  .rcv-progress li:last-child { border-right: 0; }
+  .rp-circle {
+    width: 32px; height: 32px;
+    border: 1px solid var(--rule);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    color: var(--ink-3);
+    flex-shrink: 0;
+  }
+  .rcv-progress li.done .rp-circle { background: var(--verify); border-color: var(--verify); color: var(--paper); }
+  .rcv-progress li.current .rp-circle { background: var(--seal); border-color: var(--seal); color: var(--paper); }
+  .rcv-progress li.done, .rcv-progress li.current { color: var(--ink); }
+  .rp-lbl {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+
+  /* Mittente */
+  .rcv-from {
+    display: grid; grid-template-columns: 84px 1fr;
+    gap: 24px; align-items: center;
+    padding: 28px 32px;
+    background: var(--paper-2);
+    border: var(--hairline-strong);
+    margin-bottom: 40px;
+  }
+
+  /* Opzioni autenticazione */
+  .auth-options { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--ink); }
+  .auth-opt {
+    display: grid; grid-template-columns: 56px 1fr 36px;
+    gap: 20px; padding: 22px 24px;
+    background: transparent; border: 0;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    align-items: center;
+    text-align: left;
+    transition: background .15s;
+  }
+  .auth-opt:last-child { border-bottom: 0; }
+  .auth-opt:hover { background: var(--paper-2); }
+  .auth-opt.selected { background: var(--paper-2); border-left: 4px solid var(--seal); padding-left: 20px; }
+  .ao-letter {
+    width: 44px; height: 44px;
+    border: 1px solid var(--ink);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: italic; font-size: 22px;
+    color: var(--ink);
+  }
+  .auth-opt.selected .ao-letter { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+  .ao-title { font-family: var(--serif); font-size: 22px; line-height: 1.2; color: var(--ink); }
+  .ao-desc { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+  .ao-arrow {
+    font-family: var(--mono); font-size: 20px; color: var(--ink-3);
+    text-align: right;
+  }
+  .auth-opt:hover .ao-arrow { color: var(--seal); }
+
+  /* Decifratura */
+  .dot-spinner {
+    width: 36px; height: 36px;
+    border: 1px solid var(--ink);
+    border-top-color: var(--seal);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .checklist {
+    list-style: none; padding: 0; margin: 28px 0 0;
+    border-top: var(--hairline);
+  }
+  .checklist li {
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.06em; color: var(--ink-3);
+    padding: 12px 0 12px 32px;
+    border-bottom: var(--hairline);
+    position: relative;
+    transition: color .25s;
+  }
+  .checklist li::before {
+    content: ""; position: absolute; left: 0; top: 17px;
+    width: 14px; height: 14px;
+    border: 1px solid var(--rule);
+  }
+  .checklist li.done { color: var(--ink); }
+  .checklist li.done::before { background: var(--verify); border-color: var(--verify); }
+  .checklist li.done::after {
+    content: ""; position: absolute; left: 3px; top: 21px;
+    width: 8px; height: 4px;
+    border-left: 1.5px solid var(--paper);
+    border-bottom: 1.5px solid var(--paper);
+    transform: rotate(-45deg);
+  }
+  .checklist li.active::before { border-color: var(--seal); animation: pulseBorder 1s ease-in-out infinite; }
+  @keyframes pulseBorder { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* Documento aperto */
+  .open-doc {
+    border: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .doc-icon-lg {
+    width: 52px; height: 64px;
+    background: var(--paper-2); border: 1px solid var(--ink);
+    display: grid; place-items: center; position: relative; flex-shrink: 0;
+  }
+  .doc-icon-lg::before {
+    content: ""; position: absolute; top: 0; right: 0;
+    width: 14px; height: 14px;
+    background: linear-gradient(225deg, var(--paper) 50%, var(--ink) 50%);
+  }
+  .doc-icon-lg .ext { font-size: 10px; letter-spacing: 0.1em; color: var(--ink); }
+  .open-grid { display: flex; flex-direction: column; padding: 0 28px; }
+  .og-row {
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 24px; padding: 14px 0;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: baseline;
+  }
+  .og-k {
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .og-v { font-size: 14px; color: var(--ink); }
+  .og-v.mono { font-family: var(--mono); font-size: 12px; }
+
+  @media (max-width: 700px) {
+    .rcv-from { grid-template-columns: 1fr; gap: 16px; text-align: center; }
+    .rcv-from .seal-mark { margin: 0 auto; }
+    .rcv-progress li { padding: 14px 8px; }
+    .rp-lbl { font-size: 10px; }
+    .og-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+  </style>
+
+  <script type="module">
+  // ===========================================================================
+  // VEYLON SEND - ricevi.html (decifratura E2E nel browser destinatario)
+  // ===========================================================================
+  // 1. Legge ?token=<magic> dall URL
+  // 2. Chiama send-receive-info -> metadati + signed URL download blob
+  // 3. Recupera la chiave PRIVATA X25519 da IndexedDB (o richiede passphrase)
+  // 4. Scarica blob cifrato, ECDH(ephemeral pubkey, ourPrivKey) -> AES key
+  // 5. Decifra in memoria, verifica SHA-256 == sha256_originale
+  // 6. Chiama send-receive-confirm con sha256_decifrato_verifica
+  // 7. Offre download del file in chiaro (Blob URL)
+  // ===========================================================================
+
+  const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+  const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+  const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
+
+  // ---- Utility -----------------------------------------------------------
+  function base64ToBytes(b64) {
+    const bin = atob(b64);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  function bytesToBase64(bytes) {
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+  function bytesToHex(bytes) {
+    return [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  async function sha256Hex(data) {
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return bytesToHex(new Uint8Array(digest));
+  }
+  async function callFn(path, body, opts) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (SUPABASE_ANON_KEY) headers['apikey'] = SUPABASE_ANON_KEY;
+    const res = await fetch(`${FUNCTIONS_BASE}/${path}`, {
+      method: (opts && opts.method) || 'POST',
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const text = await res.text();
+    let json;
+    try { json = JSON.parse(text); } catch { json = { raw: text }; }
+    if (!res.ok) throw new Error(json?.error ?? ('http_' + res.status));
+    return json;
+  }
+
+  // ---- IndexedDB per chiave privata --------------------------------------
+  // Schema: db 'veylon-send-keys', store 'keys' con record { id: 'me', jwk, fingerprint }
+  function openDb() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open('veylon-send-keys', 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('keys')) db.createObjectStore('keys', { keyPath: 'id' });
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function loadPrivateKeyFromDb() {
+    try {
+      const db = await openDb();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction('keys', 'readonly');
+        const store = tx.objectStore('keys');
+        const req = store.get('me');
+        req.onsuccess = () => resolve(req.result ?? null);
+        req.onerror = () => reject(req.error);
+      });
+    } catch (e) {
+      console.warn('idb_open_failed:', e);
+      return null;
+    }
+  }
+  async function importPrivateKeyJwk(jwk) {
+    return await crypto.subtle.importKey(
+      'jwk', jwk, { name: 'X25519' }, false, ['deriveBits'],
+    );
+  }
+
+  // ---- Decifratura -------------------------------------------------------
+  async function deriveAesKeyFromEphemeral(ephPubB64, privKey) {
+    const ephRaw = base64ToBytes(ephPubB64);
+    const ephPub = await crypto.subtle.importKey(
+      'raw', ephRaw, { name: 'X25519' }, false, [],
+    );
+    const sharedBits = await crypto.subtle.deriveBits(
+      { name: 'X25519', public: ephPub }, privKey, 256,
+    );
+    return await crypto.subtle.importKey(
+      'raw', sharedBits, { name: 'AES-GCM' }, false, ['decrypt'],
+    );
+  }
+
+  // ---- UI helpers --------------------------------------------------------
+  const $auth = document.getElementById('state-auth');
+  const $dec  = document.getElementById('state-decrypt');
+  const $open = document.getElementById('state-open');
+  const $stepEl = document.getElementById('decryptStep');
+  const $stepsList = document.querySelectorAll('#decryptList li');
+  function showAuth()    { $auth.style.display = 'block'; $dec.style.display = 'none'; $open.style.display = 'none'; }
+  function showDecrypt() {
+    $auth.style.display = 'none'; $dec.style.display = 'block'; $open.style.display = 'none';
+    document.querySelector('.rcv-progress li.current')?.classList.remove('current');
+    document.querySelector('.rcv-progress li[data-step="2"]').classList.add('current');
+    document.querySelector('.rcv-progress li[data-step="1"]').classList.add('done');
+  }
+  function showOpen() {
+    $auth.style.display = 'none'; $dec.style.display = 'none'; $open.style.display = 'block';
+    document.querySelector('.rcv-progress li.current')?.classList.remove('current');
+    document.querySelectorAll('.rcv-progress li').forEach(li => li.classList.add('done'));
+  }
+  async function markStep(idx, label) {
+    if (label) $stepEl.textContent = label;
+    if (idx > 0 && $stepsList[idx-1]) {
+      $stepsList[idx-1].classList.remove('active');
+      $stepsList[idx-1].classList.add('done');
+    }
+    if ($stepsList[idx]) $stepsList[idx].classList.add('active');
+    await new Promise(r => setTimeout(r, 250));
+  }
+
+  // ---- Main flow ---------------------------------------------------------
+  (async function main() {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    if (!token) {
+      showAuth();
+      $auth.innerHTML = '<h1 class="serif" style="font-size:36px;">Link non valido</h1><p class="lede">Manca il token di accesso. Verificare il link ricevuto via email.</p>';
+      return;
+    }
+
+    // 1) Recupera metadati + signed URL download
+    let info;
+    try {
+      info = await callFn('send-receive-info?token=' + encodeURIComponent(token), null, { method: 'GET' });
+    } catch (err) {
+      showAuth();
+      $auth.innerHTML = '<h1 class="serif" style="font-size:36px;">Trasmissione non disponibile</h1><p class="lede">Errore: ' + (err?.message ?? 'sconosciuto') + '</p>';
+      return;
+    }
+    const t = info.trasmissione;
+
+    // Mostra metadati mittente nella sezione auth
+    showAuth();
+    const fromBox = document.querySelector('.rcv-from');
+    if (fromBox) {
+      fromBox.innerHTML = '<div class="seal-mark"><span class="glyph">V</span></div>'
+        + '<div>'
+        + '<div class="eyebrow">Mittente</div>'
+        + '<div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;">' + (t.mittente_email ?? '-') + '</div>'
+        + '<div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.06em;">'
+        + 'Codice ' + t.codice + ' . Livello richiesto: ' + t.livello_identita_richiesto.toUpperCase()
+        + '</div>'
+        + '<div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.06em;">'
+        + 'Trasmesso il ' + new Date(t.created_at).toLocaleString('it-IT')
+        + '</div>'
+        + '</div>';
+    }
+
+    // Sostituisce i bottoni SPID/CIE/CNS con un solo bottone "Decifra ora"
+    const authOptions = document.querySelector('.auth-options');
+    if (authOptions) {
+      authOptions.innerHTML = '<button class="auth-opt selected" id="decryptNowBtn">'
+        + '<div class="ao-letter">A</div>'
+        + '<div class="ao-body">'
+        + '<div class="ao-title">Decifra ora (email + magic link)</div>'
+        + '<div class="ao-desc">La decifratura avviene sul vostro dispositivo. La chiave privata non viene mai inviata.</div>'
+        + '</div>'
+        + '<div class="ao-arrow">&rarr;</div>'
+        + '</button>';
+      document.getElementById('decryptNowBtn').addEventListener('click', () => startFlow(t, info.blob_download_url, token));
+    }
+  })();
+
+  async function startFlow(t, blobUrl, token) {
+    showDecrypt();
+    try {
+      // 1) Carica chiave privata da IndexedDB
+      await markStep(0, 'Recupero della chiave privata del destinatario...');
+      const stored = await loadPrivateKeyFromDb();
+      if (!stored || !stored.jwk) {
+        throw new Error("Chiave privata non trovata in questo browser. Per la prima ricezione e' necessario generarla (procedura guidata in arrivo).");
+      }
+      // Verifica fingerprint (deve combaciare con quella usata dal mittente)
+      if (stored.fingerprint && stored.fingerprint !== t.destinatario_pubkey_fp) {
+        throw new Error('La chiave locale non corrisponde a quella usata dal mittente. Usare un altro browser o ripristinare la chiave dalla passphrase.');
+      }
+      const privKey = await importPrivateKeyJwk(stored.jwk);
+
+      // 2) Download blob cifrato
+      await markStep(1, 'Download del plico cifrato...');
+      const blobRes = await fetch(blobUrl);
+      if (!blobRes.ok) throw new Error('download_blob_fallito_' + blobRes.status);
+      const cipherBytes = new Uint8Array(await blobRes.arrayBuffer());
+
+      // 3) ECDH con ephemeral pubkey del mittente
+      await markStep(2, 'Scambio Diffie-Hellman X25519...');
+      const envelope = t.cifratura_envelope || {};
+      const ephPubB64 = envelope.ephemeral_pubkey;
+      if (!ephPubB64) throw new Error('envelope_senza_ephemeral_pubkey');
+      const aesKey = await deriveAesKeyFromEphemeral(ephPubB64, privKey);
+
+      // 4) AES-GCM decrypt
+      await markStep(3, 'Decifratura AES-GCM-256 in memoria...');
+      const nonce = base64ToBytes(t.cifratura_nonce);
+      const plainBuf = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: nonce }, aesKey, cipherBytes,
+      );
+      const plainBytes = new Uint8Array(plainBuf);
+
+      // 5) Verifica integrita SHA-256 == sha256_originale
+      await markStep(4, 'Verifica di integrita SHA-256...');
+      const sha = await sha256Hex(plainBytes);
+      if (sha !== t.sha256_originale) {
+        throw new Error('hash_mismatch_dopo_decifratura');
+      }
+
+      // 6) Conferma apertura (otsStamp APERTURA)
+      await markStep(5, 'Apposizione ricevuta di apertura su Bitcoin...');
+      const confirmRes = await callFn('send-receive-confirm', {
+        token,
+        sha256_decifrato_verifica: sha,
+      });
+
+      // 7) Mostra documento aperto + URL download
+      const blob = new Blob([plainBytes], { type: t.mime || 'application/octet-stream' });
+      const dlUrl = URL.createObjectURL(blob);
+      showOpen();
+      const dlBtn = document.getElementById('dlBtn');
+      if (dlBtn) {
+        dlBtn.href = dlUrl;
+        dlBtn.download = t.nome_file || 'documento';
+      }
+      const openedAtEl = document.getElementById('openedAt');
+      if (openedAtEl) openedAtEl.textContent = new Date(confirmRes.opened_at).toLocaleString('it-IT', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      const newBlock = document.getElementById('newBlock');
+      if (newBlock) newBlock.textContent = 'in conferma';
+    } catch (err) {
+      console.error('decrypt_failed:', err);
+      $stepEl.textContent = 'Errore: ' + (err?.message ?? 'sconosciuto');
+      const panel = document.querySelector('#state-decrypt .panel');
+      if (panel) {
+        const e = document.createElement('p');
+        e.style.cssText = 'margin-top:24px;color:var(--seal);font-family:var(--mono);font-size:12px;';
+        e.textContent = 'Decifratura interrotta. Verificare di aver aperto il link nello stesso browser usato per generare la chiave.';
+        panel.appendChild(e);
+      }
+    }
+  }
+  </script></body>
+</html>

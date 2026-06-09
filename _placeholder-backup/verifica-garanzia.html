@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="it" data-palette="navy">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Verifica garanzia · Appaltare.com</title>
+  <meta name="description" content="Verifica pubblica di una garanzia d'appalto tramite il suo codice. Stato, importo e notarizzazione blockchain del documento."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"/>
+  <style>
+:root{
+  --bg:oklch(0.985 0.005 250);--surface:#fff;--surface-2:oklch(0.97 0.008 250);
+  --ink:oklch(0.22 0.03 250);--ink-2:oklch(0.42 0.03 250);--ink-3:oklch(0.55 0.025 250);
+  --line:oklch(0.90 0.012 250);--line-strong:oklch(0.82 0.02 250);
+  --brand-700:oklch(0.32 0.08 250);--brand-600:oklch(0.42 0.10 250);--brand-500:oklch(0.55 0.16 250);
+  --ok-600:oklch(0.52 0.14 150);--ok-50:oklch(0.97 0.025 150);--ok-line:oklch(0.62 0.14 150);
+  --amber-600:oklch(0.66 0.16 75);--amber-50:oklch(0.97 0.035 80);
+  --red-600:oklch(0.56 0.20 25);--red-50:oklch(0.97 0.025 25);
+  --font-sans:"Geist",system-ui,sans-serif;--font-mono:"Geist Mono",ui-monospace,monospace;
+  --r-md:8px;--r-lg:12px;--r-xl:16px;--shadow:0 2px 4px rgba(15,23,42,.06),0 12px 32px -8px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding:48px 24px 80px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-500)}
+h1{font-size:clamp(28px,3vw,38px);font-weight:700;letter-spacing:-.02em;margin:8px 0 12px;color:var(--brand-700)}
+.lead{font-size:16px;color:var(--ink-2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px;box-shadow:var(--shadow);margin-top:28px}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+input{width:100%;padding:12px 13px;border:1px solid var(--line-strong);border-radius:var(--r-md);font:inherit;font-family:var(--font-mono);font-size:15px;text-transform:uppercase}
+.btn{margin-top:16px;width:100%;padding:14px;border:0;border-radius:var(--r-md);background:var(--brand-600);color:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+.btn:hover{background:var(--brand-700)}.btn:disabled{opacity:.5}
+.result{margin-top:24px;border-radius:var(--r-lg);padding:24px}
+.result.ok{border:1px solid var(--ok-line);background:var(--ok-50)}
+.result.no{border:1px solid var(--red-600);background:var(--red-50)}
+.result h3{margin:0 0 14px;font-size:20px}.result.ok h3{color:var(--ok-600)}.result.no h3{color:var(--red-600)}
+.kv{display:flex;gap:10px;font-size:14px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.kv span:first-child{min-width:160px;color:var(--ink-3);font-weight:600}
+.kv code{font-family:var(--font-mono);font-size:13px}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600;text-transform:capitalize}
+.badge.conf{background:var(--ok-600);color:#fff}.badge.pend{background:var(--amber-600);color:#fff}
+.alert{padding:12px 14px;border-radius:var(--r-md);font-size:14px;margin-top:14px;background:var(--red-50);color:var(--red-600)}
+.foot{margin-top:36px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:20px}
+.foot a{color:var(--brand-600)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav style="display:flex;gap:18px;margin-bottom:20px;font-size:14px">
+      <a href="/veylon.html" onclick="if(history.length>1){history.back();return false}" style="color:var(--brand-600);text-decoration:none;font-weight:600">← Indietro</a>
+      <a href="/veylon.html" style="margin-left:auto;color:var(--brand-600);text-decoration:none;font-weight:600">Veylon · home</a>
+    </nav>
+    <div class="eyebrow">Garanzie · Appaltare</div>
+    <h1>Verifica una garanzia</h1>
+    <p class="lead">Inserisci il codice riportato sulla fideiussione (formato <code>APT-GAR-2026-XXXXXX</code>) per controllarne autenticità, stato e notarizzazione.</p>
+    <div class="card">
+      <label for="codice">Codice di verifica</label>
+      <input type="text" id="codice" placeholder="APT-GAR-2026-XXXXXX" maxlength="18"/>
+      <button class="btn" id="go">Verifica</button>
+      <div id="msg"></div>
+      <div id="result"></div>
+    </div>
+    <div class="foot">Gestisci le tue garanzie: <a href="/garanzie.html">garanzie.html</a></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+  <script>
+const SUPABASE_URL='https://efhdooeqscqncgvhqfyu.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmaGRvb2Vxc2NxbmNndmhxZnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDA3NTcsImV4cCI6MjA5MDYxNjc1N30.wtvxgipTgEPpz40Vo6qZBsPXQO1vQuz4F1GwF9bCNlM';
+const FN=SUPABASE_URL+'/functions/v1/garanzia-verifica';
+const el=id=>document.getElementById(id);
+
+async function verify(c){
+  el('msg').innerHTML='';el('result').innerHTML='';
+  c=(c||'').trim().toUpperCase();
+  if(!/^APT-GAR-\d{4}-[A-Z0-9]{6}$/.test(c)){el('msg').innerHTML='<div class="alert">Codice non valido (formato APT-GAR-2026-XXXXXX).</div>';return;}
+  const btn=el('go');btn.disabled=true;btn.textContent='Verifica…';
+  try{
+    const res=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON},body:JSON.stringify({codice:c})});
+    const j=await res.json();
+    if(!j.success)throw new Error(j.error||'errore');
+    if(!j.valido){el('result').innerHTML=`<div class="result no"><h3>Garanzia non trovata</h3><p>Nessuna garanzia con il codice ${esc(c)}.</p></div>`;return;}
+    const conf=j.documento_verificato_su_bitcoin;
+    el('result').innerHTML=`<div class="result ok"><h3>✓ Garanzia valida</h3>
+      <div class="kv"><span>Codice</span><code>${esc(j.codice)}</code></div>
+      <div class="kv"><span>Tipo</span><span style="text-transform:capitalize">${esc(j.tipo)}</span></div>
+      ${j.numero?`<div class="kv"><span>Numero</span><code>${esc(j.numero)}</code></div>`:''}
+      ${j.garante?`<div class="kv"><span>Garante</span>${esc(j.garante)}</div>`:''}
+      ${j.contraente?`<div class="kv"><span>Contraente</span>${esc(j.contraente)}</div>`:''}
+      ${j.beneficiario?`<div class="kv"><span>Beneficiario</span>${esc(j.beneficiario)}</div>`:''}
+      ${j.importo?`<div class="kv"><span>Importo</span>€ ${Number(j.importo).toLocaleString('it-IT')}</div>`:''}
+      ${j.data_scadenza?`<div class="kv"><span>Scadenza</span>${new Date(j.data_scadenza).toLocaleDateString('it-IT')}${j.scaduta?' ⚠️ scaduta':''}</div>`:''}
+      <div class="kv"><span>Stato</span><span class="badge ${conf?'conf':'pend'}" style="text-transform:capitalize">${esc(j.stato)}</span></div>
+      <div class="kv"><span>Documento</span>${j.documento_notarizzato?(conf?'<span class="badge conf">Notarizzato su Bitcoin</span>':'<span class="badge pend">Notarizzato (in conferma)</span>'):'Non notarizzato'}</div>
+      ${j.btc_block_height?`<div class="kv"><span>Blocco Bitcoin</span><code>#${j.btc_block_height}</code></div>`:''}
+    </div>`;
+  }catch(err){el('msg').innerHTML=`<div class="alert">Errore: ${esc(String(err.message||err))}</div>`;}
+  finally{btn.disabled=false;btn.textContent='Verifica';}
+}
+el('go').addEventListener('click',()=>verify(el('codice').value));
+function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const qp=new URLSearchParams(location.search).get('c');if(qp){el('codice').value=qp;verify(qp);}
+  </script>
+</body>
+</html>

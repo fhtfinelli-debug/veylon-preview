@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Firma elettronica avanzata</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Sezione VIII</span>
+        <span class="sep">·</span>
+        <span>Firma elettronica avanzata</span>
+      </div>
+      <a href="dashboard.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
+        <a href="notarizza.html">Sigillo</a>
+        <a href="invia.html">Send</a>
+        <a href="mail.html">Mail</a>
+        <a href="firma.html" class="current">Firma</a>
+        <a href="garanzie.html">Garanzie</a>
+        <a href="onboarding.html">KYC</a>
+        <a href="tag.html">Tag</a>
+        <a href="cert.html">Cert</a>
+        <a href="archivio.html">Archivio</a>
+        <a href="verifica.html">Verifica</a>
+        <a href="#" id="logout" class="nav-aux">Esci</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>FEA conforme &mdash; <strong style="color: var(--ink);">CAD art. 20-21</strong> &middot; eIDAS art. 26</span>
+        <span>Per la firma qualificata (QES) si rinvia a TSP accreditato AgID</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="col" style="padding: 56px 32px 96px;">
+
+    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
+      <span class="section-num">Sezione VIII &middot; Firma elettronica avanzata</span>
+      <span class="roman">xii</span>
+    </div>
+
+    <div class="row-between" style="align-items: flex-end; gap: 48px; flex-wrap: wrap; margin-bottom: 48px;">
+      <div>
+        <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 16ch;">
+          Far <em class="serif-italic" style="color: var(--seal);">firmare</em> un documento.
+        </h1>
+        <p class="lede" style="margin-top: 24px; max-width: 44ch;">
+          Firma elettronica avanzata con OTP, scatola nera dell'audit trail e
+          atto di firma sigillato su Bitcoin. Senza software pesanti.
+        </p>
+      </div>
+      <a class="btn seal lg" href="#newSignReq">Nuova richiesta di firma <span class="arrow"></span></a>
+    </div>
+
+    <!-- Cruscotto -->
+    <div class="dashboard">
+      <div class="dash-cell">
+        <div class="eyebrow">Richieste aperte</div>
+        <div class="dash-num">12</div>
+        <div class="dash-foot">In istruttoria</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Firmate</div>
+        <div class="dash-num verify-c">84</div>
+        <div class="dash-foot">Ultimi 90 giorni</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Tempo medio firma</div>
+        <div class="dash-num">2,3<span class="ink-3">&nbsp;h</span></div>
+        <div class="dash-foot">Dalla richiesta</div>
+      </div>
+      <div class="dash-cell">
+        <div class="eyebrow">Sigilli atto firma</div>
+        <div class="dash-num">96</div>
+        <div class="dash-foot">Su Bitcoin</div>
+      </div>
+    </div>
+
+    <!-- Layout: lista richieste + dettaglio -->
+    <div class="sig-layout">
+
+      <!-- LISTA richieste -->
+      <section class="sig-list">
+        <div class="sig-list-head">
+          <span class="eyebrow">Richieste di firma</span>
+          <div class="sig-filt">
+            <button class="sig-tab active">Tutte</button>
+            <button class="sig-tab">Attese</button>
+            <button class="sig-tab">Firmate</button>
+          </div>
+        </div>
+
+        <a href="#" class="sig-item selected"
+          data-code="VLN-FRM-2026-7C1B98" data-state="waiting"
+          data-eyebrow="In attesa di firma · pratica 1 di 2 firmatari"
+          data-title="Mandato professionale — Cliente Vitali Costruzioni S.r.l."
+          data-doc="Mandato professionale — rev. 02"
+          data-docmeta="412 KB · SHA-256 e3b0 c442 … b855 · sigillato #&nbsp;874.198"
+          data-signers='[
+            {"name":"Avv. Mario Bertolaso","email":"mario.bertolaso@studiobertolaso.it","cf":"BRT MRA 70S30 H501Z","status":"signed","when":"firmato 6 giu 15:54 · OTP da SMS · IP 185.…"},
+            {"name":"Sig. Marco Vitali","role":"legale rappresentante","email":"m.vitali@vitalicostruzioni.it","note":"OTP da inviare","status":"waiting","when":"in attesa · magic link recapitato 6 giu 15:42"}
+          ]'
+          data-audit='[
+            ["6 giu 15:42","Pratica aperta — documento sigillato e codice generato","SHA-256 stamp · #874.198","done"],
+            ["6 giu 15:42","Magic link recapitato a entrambi i firmatari","2 email · 0 bounce","done"],
+            ["6 giu 15:51","Avv. Bertolaso autenticato","device fingerprint registrato","done"],
+            ["6 giu 15:53","OTP da SMS verificato","+39 349 … · 1° tentativo","done"],
+            ["6 giu 15:54","Atto di firma sigillato su Bitcoin","#874.201 · merkle 12 livelli","done"],
+            ["in attesa","Sig. Vitali — identificazione e OTP","scade 13 giu 15:42","pending"]
+          ]'>
+          <div class="sig-item-meta">
+            <span class="sig-state seal-c">In attesa di firma</span>
+            <span class="status pending"><span class="dot"></span>1 di 2</span>
+          </div>
+          <div class="sig-item-title">Mandato professionale &mdash; Cliente Vitali Costruzioni S.r.l.</div>
+          <div class="sig-item-foot mono">
+            VLN-FRM-2026-7C1B98 · richiesto 6&nbsp;giu&nbsp;15:42 · scade 13&nbsp;giu
+          </div>
+        </a>
+        <a href="#" class="sig-item"
+          data-code="VLN-FRM-2026-5A8D43" data-state="signed"
+          data-eyebrow="Pratica conclusa · 2 firmatari su 2"
+          data-title="Atto transattivo — Vitali / Lemania S.p.A."
+          data-doc="Atto transattivo definitivo — rev. 03"
+          data-docmeta="284 KB · SHA-256 5a8d 4320 … d089 · sigillato #&nbsp;874.166"
+          data-signers='[
+            {"name":"Sig. Marco Vitali","role":"in proprio","email":"m.vitali@vitalicostruzioni.it","cf":"VTL MRC 02S30 H501Z","status":"signed","when":"firmato 5 giu 16:42 · OTP da SMS · IP 78.…"},
+            {"name":"Costruzioni Lemania S.p.A.","role":"legale rappresentante Geom. P. Lemania","email":"p.lemania@costruzionilemania.it","cf":"LMN PRA 65A01 G273E","status":"signed","when":"firmato 5 giu 17:08 · OTP da SMS · IP 93.…"}
+          ]'
+          data-audit='[
+            ["5 giu 14:08","Pratica aperta da Studio Bertolaso","SHA-256 stamp · #874.158","done"],
+            ["5 giu 14:08","Magic link recapitati a 2 firmatari","2 email · 0 bounce","done"],
+            ["5 giu 16:38","Sig. Vitali autenticato","device fingerprint registrato","done"],
+            ["5 giu 16:42","Firma di Vitali apposta","#874.171 · merkle 11 livelli","done"],
+            ["5 giu 17:04","Geom. Lemania autenticato","device fingerprint registrato","done"],
+            ["5 giu 17:08","Firma di Lemania apposta — pratica conclusa","#874.174 · merkle 12 livelli","done"]
+          ]'>
+          <div class="sig-item-meta">
+            <span class="sig-state verify-c">Firmato</span>
+            <span class="status confirmed"><span class="dot"></span>2 di 2</span>
+          </div>
+          <div class="sig-item-title">Atto transattivo — Vitali / Lemania S.p.A.</div>
+          <div class="sig-item-foot mono">
+            VLN-FRM-2026-5A8D43 · firmato 5&nbsp;giu&nbsp;17:08 · sigillo #&nbsp;874.174
+          </div>
+        </a>
+        <a href="#" class="sig-item"
+          data-code="VLN-FRM-2026-2F71A0" data-state="signed"
+          data-eyebrow="Pratica conclusa · 3 firmatari su 3"
+          data-title="Verbale assemblea S.r.l. — Hekla Studio"
+          data-doc="Verbale assemblea straordinaria — Hekla Studio S.r.l."
+          data-docmeta="612 KB · SHA-256 2f71 a094 … 6bc2 · sigillato #&nbsp;874.115"
+          data-signers='[
+            {"name":"Dott. Luca Hekla","role":"presidente assemblea","email":"l.hekla@hekla-studio.it","status":"signed","when":"firmato 4 giu 10:18 · OTP da SMS"},
+            {"name":"Sig.ra Giulia Ferri","role":"socia · 40%","email":"g.ferri@hekla-studio.it","status":"signed","when":"firmato 4 giu 10:22 · OTP da SMS"},
+            {"name":"Sig. Andrea Conti","role":"socio · 30%","email":"a.conti@hekla-studio.it","status":"signed","when":"firmato 4 giu 10:30 · OTP da SMS"}
+          ]'
+          data-audit='[
+            ["4 giu 09:14","Pratica aperta","SHA-256 stamp · #874.111","done"],
+            ["4 giu 09:14","Magic link recapitati a 3 firmatari","3 email · 0 bounce","done"],
+            ["4 giu 10:18","Firma di Hekla apposta","#874.115 · merkle 10","done"],
+            ["4 giu 10:22","Firma di Ferri apposta","#874.117 · merkle 10","done"],
+            ["4 giu 10:30","Firma di Conti apposta — pratica conclusa","#874.120 · merkle 11","done"]
+          ]'>
+          <div class="sig-item-meta">
+            <span class="sig-state verify-c">Firmato</span>
+            <span class="status confirmed"><span class="dot"></span>3 di 3</span>
+          </div>
+          <div class="sig-item-title">Verbale assemblea S.r.l. — Hekla Studio</div>
+          <div class="sig-item-foot mono">
+            VLN-FRM-2026-2F71A0 · firmato 4&nbsp;giu &middot; sigillo #&nbsp;874.120
+          </div>
+        </a>
+        <a href="#" class="sig-item"
+          data-code="VLN-FRM-2026-9E4F02" data-state="waiting"
+          data-eyebrow="In attesa di firma · 1 firmatario richiesto"
+          data-title="Consenso al trattamento dati — pratica n. 0382/2026"
+          data-doc="Informativa privacy + consenso GDPR — pratica 0382/2026"
+          data-docmeta="118 KB · SHA-256 9e4f 0273 … 31bd · sigillato #&nbsp;874.205"
+          data-signers='[
+            {"name":"Sig.ra Elena Marchetti","role":"interessata al trattamento","email":"e.marchetti@email.com","note":"magic link aperto, identificazione non completata","status":"waiting","when":"link aperto 7 giu 10:48 · OTP non richiesto"}
+          ]'
+          data-audit='[
+            ["7 giu 09:18","Pratica aperta dallo Studio","SHA-256 stamp · #874.205","done"],
+            ["7 giu 09:18","Magic link recapitato a Elena Marchetti","1 email · 0 bounce","done"],
+            ["7 giu 10:48","Magic link aperto — visita ricevuta","device fingerprint registrato","done"],
+            ["in attesa","Identificazione SPID o OTP non completata","scade 14 giu 09:18","pending"]
+          ]'>
+          <div class="sig-item-meta">
+            <span class="sig-state seal-c">In attesa di firma</span>
+            <span class="status pending"><span class="dot"></span>0 di 1</span>
+          </div>
+          <div class="sig-item-title">Consenso al trattamento dati — pratica n. 0382/2026</div>
+          <div class="sig-item-foot mono">
+            VLN-FRM-2026-9E4F02 · richiesto 7&nbsp;giu&nbsp;09:18 · scade 14&nbsp;giu
+          </div>
+        </a>
+        <a href="#" class="sig-item"
+          data-code="VLN-FRM-2026-1A4E55" data-state="expired"
+          data-eyebrow="Pratica scaduta · firma non apposta"
+          data-title="Contratto di subfornitura — Mortara Lotto III"
+          data-doc="Contratto di subfornitura — bozza 02"
+          data-docmeta="492 KB · SHA-256 1a4e 55c3 … 8d12 · sigillato #&nbsp;873.842"
+          data-signers='[
+            {"name":"Edilizia Bormida S.r.l.","role":"subfornitore","email":"contratti@ediliziabormida.it","status":"expired","when":"magic link mai aperto · scaduto 5 giu"}
+          ]'
+          data-audit='[
+            ["29 mag 11:14","Pratica aperta","SHA-256 stamp · #873.842","done"],
+            ["29 mag 11:14","Magic link recapitato","1 email · 0 bounce","done"],
+            ["5 giu 11:14","Pratica scaduta — riapertura necessaria","nessuna autenticazione registrata","failed"]
+          ]'>
+          <div class="sig-item-meta">
+            <span class="sig-state ink-3">Scaduto</span>
+            <span class="status failed"><span class="dot"></span>0 di 1</span>
+          </div>
+          <div class="sig-item-title">Contratto di subfornitura — Mortara Lotto III</div>
+          <div class="sig-item-foot mono">
+            VLN-FRM-2026-1A4E55 · scaduto 5&nbsp;giu &middot; non firmato
+          </div>
+        </a>
+      </section>
+
+      <!-- DETTAGLIO -->
+      <section class="sig-detail">
+        <div class="sig-detail-head">
+          <div>
+            <div class="eyebrow seal-c" id="d-eyebrow">In attesa di firma · pratica 1 di 2 firmatari</div>
+            <h2 class="serif" id="d-title" style="font-size: 30px; line-height: 1.1; margin: 12px 0 0; max-width: 24ch;">Mandato professionale — Cliente Vitali Costruzioni S.r.l.</h2>
+          </div>
+          <div class="seal-mark">
+            <span class="glyph">V</span>
+          </div>
+        </div>
+
+        <hr class="rule" style="margin: 32px 0;"/>
+
+        <!-- Documento -->
+        <div class="eyebrow" style="margin-bottom: 12px;">Documento sottoposto a firma</div>
+        <div class="row" style="padding: 16px 18px; border: var(--hairline-strong); background: var(--paper); gap: 16px;">
+          <div class="doc-icon" style="width: 44px; height: 56px;">
+            <span class="ext mono">PDF</span>
+          </div>
+          <div style="flex: 1;">
+            <div class="serif" id="d-doc" style="font-size: 18px; line-height: 1.2;">Mandato professionale — rev. 02</div>
+            <div class="mono" id="d-docmeta" style="font-size: 11px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em;">412 KB · SHA-256 e3b0 c442 … b855 · sigillato # 874.198</div>
+          </div>
+          <a class="btn ghost" href="certificato.html" style="padding: 8px 14px;">Apri</a>
+        </div>
+
+        <!-- Firmatari -->
+        <div class="eyebrow" style="margin: 32px 0 12px;">Firmatari designati</div>
+        <ul class="signers" id="d-signers"></ul>
+
+        <!-- AUDIT TRAIL -->
+        <div class="eyebrow" style="margin: 32px 0 12px;">Audit trail della pratica</div>
+        <ol class="audit" id="d-audit"></ol>
+
+        <div class="row row-gap" style="margin-top: 32px; flex-wrap: wrap;">
+          <a class="btn" href="certificato.html">Atto di firma &middot; certificato</a>
+          <a class="btn ghost" href="firma-applica.html">Anteprima vista firmatario</a>
+          <button class="btn ghost">Sollecita firmatario mancante</button>
+          <button class="btn ghost">Esporta dossier &middot; PDF</button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- NUOVA RICHIESTA DI FIRMA -->
+    <section id="newSignReq" style="margin-top: 96px; padding-top: 56px; border-top: 3px double var(--seal);">
+      <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
+        <span class="section-num">§ Nuova richiesta di firma</span>
+        <span class="roman">xiii</span>
+      </div>
+      <h2 class="serif" style="font-size: clamp(32px, 4vw, 42px); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 32px; max-width: 22ch;">
+        Aprire una <em class="serif-italic" style="color: var(--seal);">nuova pratica.</em>
+      </h2>
+
+      <div style="display: grid; grid-template-columns: 1fr 280px; gap: 64px; align-items: start;" id="reqLayout">
+        <div class="stack-32">
+
+          <div>
+            <div class="step-head">
+              <span class="step-mark">01</span>
+              <div>
+                <div class="eyebrow">Passo primo</div>
+                <h3 class="serif" style="font-size: 24px;">Documento da sottoporre</h3>
+              </div>
+            </div>
+            <div class="drop" id="drop">
+              <div class="icon"></div>
+              <div class="title">Selezionare o trascinare il documento</div>
+              <div class="sub">Verrà sigillato e protetto da modifiche</div>
+            </div>
+            <input type="file" id="file" style="display:none"/>
+            <div id="docInfo" style="display:none; margin-top: 18px; padding: 16px 18px; border: var(--hairline-strong); background: var(--paper-2);">
+              <div class="row" style="gap: 14px;">
+                <div class="doc-icon" style="width: 36px; height: 46px;"><span class="ext mono" id="docExt">PDF</span></div>
+                <div style="flex: 1;">
+                  <div class="serif" style="font-size: 16px; line-height: 1.2;" id="docName">—</div>
+                  <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 4px;" id="docMeta">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="step-head">
+              <span class="step-mark">02</span>
+              <div>
+                <div class="eyebrow">Passo secondo</div>
+                <h3 class="serif" style="font-size: 24px;">Firmatari designati</h3>
+              </div>
+            </div>
+            <div id="signersList">
+              <div class="signer-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 130px 36px; gap: 16px; align-items: end;">
+                  <div>
+                    <label class="field-label">Nominativo</label>
+                    <input class="field-input" type="text" placeholder="Sig. Marco Vitali"/>
+                  </div>
+                  <div>
+                    <label class="field-label">Email</label>
+                    <input class="field-input mono" type="email" placeholder="m.vitali@..."/>
+                  </div>
+                  <div>
+                    <label class="field-label">OTP via</label>
+                    <select class="field-input"><option>SMS</option><option>Email</option></select>
+                  </div>
+                  <button class="rm-signer" title="Rimuovi" onclick="this.closest('.signer-form').remove()">×</button>
+                </div>
+              </div>
+            </div>
+            <button class="btn ghost" id="addSigner" style="margin-top: 18px;">+ Aggiungi firmatario</button>
+          </div>
+
+          <div>
+            <div class="step-head">
+              <span class="step-mark">03</span>
+              <div>
+                <div class="eyebrow">Passo terzo</div>
+                <h3 class="serif" style="font-size: 24px;">Termini della richiesta</h3>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+              <div>
+                <label class="field-label">Scadenza per la firma</label>
+                <select class="field-input"><option>7 giorni</option><option>14 giorni</option><option>30 giorni</option></select>
+              </div>
+              <div>
+                <label class="field-label">Ordine di firma</label>
+                <select class="field-input"><option>Sequenziale</option><option>Parallelo</option></select>
+              </div>
+            </div>
+            <div style="margin-top: 24px;">
+              <label class="field-label">Messaggio al firmatario (facoltativo)</label>
+              <textarea class="field-input" rows="2" placeholder="In allegato il mandato per la prossima udienza..." style="resize: vertical; padding: 12px; border: 1px solid var(--rule); background: var(--paper);"></textarea>
+            </div>
+          </div>
+
+          <button class="btn seal lg" style="width: 100%; justify-content: center; padding: 22px;">
+            Apri la pratica e invia richiesta <span class="arrow"></span>
+          </button>
+        </div>
+
+        <aside class="sidebar">
+          <div class="sidebar-block">
+            <div class="eyebrow seal-c">Cosa accade dopo</div>
+            <ol class="sidebar-num">
+              <li>Il documento viene sigillato su Bitcoin</li>
+              <li>Ogni firmatario riceve un magic link</li>
+              <li>Autenticazione + OTP via SMS o email</li>
+              <li>Apposizione della firma con audit trail</li>
+              <li>L'atto di firma viene sigillato</li>
+              <li>Pratica chiusa &mdash; certificato emesso</li>
+            </ol>
+          </div>
+          <hr class="rule-2"/>
+          <div class="sidebar-block">
+            <div class="eyebrow seal-c">Valore probatorio</div>
+            <p class="body" style="font-size: 13px; margin-top: 8px;">
+              Firma elettronica avanzata ai sensi del <em class="serif-italic">CAD art. 20-21</em>
+              ed eIDAS art. 26. Ammissibile come prova. Non costituisce firma qualificata.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
+      <span>Sezione VIII &mdash; Firma</span>
+    </div>
+  </footer>
+
+  <style>
+  .dashboard {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+    margin-bottom: 48px;
+  }
+  .dash-cell { padding: 28px 24px; border-right: 1px solid var(--rule); }
+  .dash-cell:last-child { border-right: 0; }
+  .dash-num { font-family: var(--serif); font-size: 44px; line-height: 1; margin: 14px 0 12px; letter-spacing: -0.015em; }
+  .dash-foot { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+
+  .sig-layout {
+    display: grid; grid-template-columns: 1fr 1.5fr; gap: 0;
+    border: 1px solid var(--ink);
+  }
+  .sig-list { border-right: 1px solid var(--ink); background: var(--paper); }
+  .sig-list-head {
+    padding: 16px 24px; background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .sig-filt { display: flex; gap: 14px; }
+  .sig-tab {
+    background: transparent; border: 0;
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+    padding: 6px 0; border-bottom: 1px solid transparent; cursor: pointer;
+  }
+  .sig-tab.active { color: var(--ink); border-bottom-color: var(--seal); }
+  .sig-item {
+    display: block; padding: 20px 24px;
+    border-bottom: 1px solid var(--rule-2);
+    transition: background .15s;
+  }
+  .sig-item:hover { background: var(--paper-2); }
+  .sig-item.selected { background: var(--paper-2); border-left: 3px solid var(--seal); padding-left: 21px; }
+  .sig-item-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .sig-state { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; }
+  .sig-item-title { font-family: var(--serif); font-size: 17px; line-height: 1.2; color: var(--ink); letter-spacing: -0.005em; }
+  .sig-item-foot { font-size: 10.5px; color: var(--ink-3); margin-top: 10px; letter-spacing: 0.04em; }
+
+  .sig-detail { padding: 32px 36px; background: var(--paper-2); }
+  .sig-detail-head { display: flex; justify-content: space-between; align-items: start; gap: 24px; }
+
+  .doc-icon {
+    background: var(--paper-2); border: 1px solid var(--ink);
+    display: grid; place-items: center; position: relative; flex-shrink: 0;
+  }
+  .doc-icon::before {
+    content: ""; position: absolute; top: 0; right: 0;
+    width: 12px; height: 12px;
+    background: linear-gradient(225deg, var(--paper) 50%, var(--ink) 50%);
+  }
+  .doc-icon .ext { font-size: 9px; letter-spacing: 0.1em; color: var(--ink); }
+
+  /* Firmatari */
+  .signers { list-style: none; padding: 0; margin: 0; border: 1px solid var(--rule); }
+  .signer {
+    display: grid; grid-template-columns: 36px 1fr 100px;
+    gap: 18px; padding: 18px 20px;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: center;
+  }
+  .signer:last-child { border-bottom: 0; }
+  .signer-mark {
+    width: 28px; height: 28px;
+    border: 1px solid var(--rule);
+    display: grid; place-items: center;
+    color: var(--ink-3);
+  }
+  .signer.signed .signer-mark { background: var(--verify); border-color: var(--verify); color: var(--paper); }
+  .signer.waiting .signer-mark { border-color: var(--amber); animation: pulse 1.8s ease-in-out infinite; }
+  .signer-name { font-size: 17px; line-height: 1.2; color: var(--ink); }
+  .signer-meta { font-size: 11px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em; word-break: break-all; }
+  .signer-when { font-size: 11px; color: var(--ink-2); margin-top: 4px; letter-spacing: 0.06em; }
+  .signer-status {
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* Audit trail */
+  .audit { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--rule-2); }
+  .audit li {
+    display: grid; grid-template-columns: 100px 1fr 200px; gap: 18px;
+    padding: 12px 0 12px 24px;
+    border-bottom: 1px solid var(--rule-2);
+    align-items: baseline;
+    position: relative;
+  }
+  .audit li::before {
+    content: ""; position: absolute; left: 4px; top: 16px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--verify);
+  }
+  .audit li.pending::before { background: var(--paper); border: 1px solid var(--amber); animation: pulse 1.8s ease-in-out infinite; }
+  .au-t { font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; }
+  .au-l { font-family: var(--serif); font-size: 16px; color: var(--ink); line-height: 1.3; }
+  .audit li.pending .au-l { color: var(--ink-2); font-style: italic; }
+  .au-m { font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.06em; text-align: right; }
+
+  .step-head {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 20px; padding-bottom: 14px;
+    border-bottom: var(--hairline);
+  }
+  .step-mark {
+    font-family: var(--mono); font-size: 12px; color: var(--seal);
+    letter-spacing: 0.2em; border: 1px solid var(--seal);
+    width: 36px; height: 36px; display: grid; place-items: center; flex-shrink: 0;
+  }
+
+  .rm-signer {
+    background: transparent; border: 1px solid var(--rule);
+    width: 36px; height: 36px; cursor: pointer; color: var(--ink-3);
+    font-size: 16px;
+  }
+  .rm-signer:hover { color: var(--seal); border-color: var(--seal); }
+  .signer-form { padding: 16px 0; border-bottom: 1px solid var(--rule-2); }
+  .signer-form:last-child { border-bottom: 0; }
+
+  .sidebar { position: sticky; top: 24px; align-self: start; border-left: 1px solid var(--rule); padding-left: 24px; }
+  .sidebar-block { padding: 16px 0; }
+  .sidebar-block:first-child { padding-top: 0; }
+  .sidebar-num {
+    list-style: none; padding: 0; margin: 10px 0 0;
+    counter-reset: stp;
+    font-family: var(--serif); font-style: italic;
+    font-size: 15px; color: var(--ink); line-height: 1.5;
+  }
+  .sidebar-num li {
+    padding: 4px 0 4px 28px; position: relative; counter-increment: stp;
+  }
+  .sidebar-num li::before {
+    content: counter(stp, lower-roman) ".";
+    position: absolute; left: 0; top: 4px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--seal); letter-spacing: 0.08em;
+  }
+
+  @media (max-width: 980px) {
+    .dashboard { grid-template-columns: repeat(2, 1fr); }
+    .dash-cell:nth-child(2n) { border-right: 0; }
+    .dash-cell { border-bottom: 1px solid var(--rule); }
+    .sig-layout { grid-template-columns: 1fr; }
+    .sig-list { border-right: 0; border-bottom: 1px solid var(--ink); }
+    #reqLayout { grid-template-columns: 1fr !important; }
+    .sidebar { position: static; border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 32px; }
+    .signer { grid-template-columns: 36px 1fr; }
+    .signer-status { grid-column: 2; text-align: left; }
+    .audit li { grid-template-columns: 1fr; gap: 4px; padding-left: 20px; }
+    .au-m { text-align: left; }
+    .signer-form > div { grid-template-columns: 1fr !important; }
+  }
+  </style>
+
+  <script>
+    // Selezione pratica + aggiornamento dettaglio
+    function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]));}
+    function updateSigDetail(item){
+      const d = item.dataset;
+      const set = (id, val) => { const e = document.getElementById(id); if (e && val != null) e.textContent = val; };
+      set('d-eyebrow', d.eyebrow);
+      set('d-title', d.title);
+      set('d-doc', d.doc);
+      const dm = document.getElementById('d-docmeta');
+      if (dm) dm.innerHTML = d.docmeta || '';
+      // Signers
+      const ul = document.getElementById('d-signers');
+      if (ul) {
+        const signers = JSON.parse(d.signers || '[]');
+        ul.innerHTML = signers.map(s => {
+          const cls = s.status === 'signed' ? 'signed' :
+                      s.status === 'expired' ? 'failed' : 'waiting';
+          const stateLbl = s.status === 'signed' ? '<div class="signer-status verify-c">Apposta</div>' :
+                          s.status === 'expired' ? '<div class="signer-status seal-c">Scaduta</div>' :
+                          '<div class="signer-status seal-c">Attesa</div>';
+          const mark = s.status === 'signed'
+            ? '<div class="signer-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10 L8 14 L16 6" stroke-linecap="square"/></svg></div>'
+            : '<div class="signer-mark"></div>';
+          const role = s.role ? ' <em style="color: var(--ink-3); font-style: italic;">— ' + escapeHtml(s.role) + '</em>' : '';
+          const note = s.note ? ' · ' + escapeHtml(s.note) : '';
+          const cf = s.cf ? ' · CF ' + escapeHtml(s.cf) : '';
+          return '<li class="signer ' + cls + '">' +
+            mark +
+            '<div class="signer-body">' +
+              '<div class="signer-name serif">' + escapeHtml(s.name) + role + '</div>' +
+              '<div class="signer-meta mono">' + escapeHtml(s.email||'') + cf + note + '</div>' +
+              '<div class="signer-when mono">' + escapeHtml(s.when||'') + '</div>' +
+            '</div>' +
+            stateLbl +
+          '</li>';
+        }).join('');
+      }
+      // Audit
+      const ol = document.getElementById('d-audit');
+      if (ol) {
+        const audit = JSON.parse(d.audit || '[]');
+        ol.innerHTML = audit.map(row => {
+          const [time, label, meta, kind] = row;
+          const cls = kind === 'pending' ? ' class="pending"' : kind === 'failed' ? ' class="failed"' : '';
+          return '<li' + cls + '><span class="au-t mono">' + escapeHtml(time) + '</span>' +
+                 '<span class="au-l">' + escapeHtml(label) + '</span>' +
+                 '<span class="au-m mono">' + escapeHtml(meta) + '</span></li>';
+        }).join('');
+      }
+    }
+    document.querySelectorAll('.sig-item').forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.sig-item').forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        updateSigDetail(item);
+        document.querySelector('.sig-detail')?.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+    // Inizializza con la voce selezionata
+    updateSigDetail(document.querySelector('.sig-item.selected') || document.querySelector('.sig-item'));
+    document.querySelectorAll('.sig-tab').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.sig-tab').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+      });
+    });
+
+    // File drop nuova richiesta
+    const drop = document.getElementById('drop'), fileInput = document.getElementById('file');
+    drop.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => onFile(e.target.files[0]));
+    ['dragover','dragenter'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', e => { e.preventDefault(); onFile(e.dataTransfer.files[0]); });
+
+    function onFile(file) {
+      if (!file) return;
+      drop.style.display = 'none';
+      document.getElementById('docInfo').style.display = 'block';
+      document.getElementById('docName').textContent = file.name;
+      document.getElementById('docMeta').textContent = (file.size < 1024*1024 ? (file.size/1024).toFixed(1)+' KB' : (file.size/1024/1024).toFixed(2)+' MB') + ' · ' + (file.type || 'application/octet-stream');
+      document.getElementById('docExt').textContent = (file.name.split('.').pop() || 'BIN').slice(0,4).toUpperCase();
+    }
+
+    // Aggiungi firmatario
+    document.getElementById('addSigner').addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector('#signersList .signer-form').cloneNode(true);
+      t.querySelectorAll('input').forEach(i => i.value = '');
+      t.querySelector('.rm-signer').addEventListener('click', () => t.remove());
+      document.getElementById('signersList').appendChild(t);
+    });
+    document.querySelector('.rm-signer').addEventListener('click', e => e.target.closest('.signer-form').remove());
+  </script>
+<script>
+  document.getElementById('logout')?.addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('veylon_session');
+    location.href = 'login.html';
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it" data-palette="navy">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Applica firma · Appaltare.com</title>
+  <meta name="description" content="Applica la tua firma elettronica al documento inserendo il codice OTP ricevuto."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"/>
+  <style>
+:root{
+  --bg:oklch(0.985 0.005 250);--surface:#fff;--ink:oklch(0.22 0.03 250);--ink-2:oklch(0.42 0.03 250);--ink-3:oklch(0.55 0.025 250);
+  --line:oklch(0.90 0.012 250);--line-strong:oklch(0.82 0.02 250);--brand-700:oklch(0.32 0.08 250);--brand-600:oklch(0.42 0.10 250);--brand-500:oklch(0.55 0.16 250);
+  --ok-600:oklch(0.52 0.14 150);--ok-50:oklch(0.97 0.025 150);--ok-line:oklch(0.62 0.14 150);--amber-600:oklch(0.66 0.16 75);--amber-50:oklch(0.97 0.035 80);
+  --red-600:oklch(0.56 0.20 25);--red-50:oklch(0.97 0.025 25);
+  --font-sans:"Geist",system-ui,sans-serif;--font-mono:"Geist Mono",ui-monospace,monospace;
+  --r-md:8px;--r-lg:12px;--r-xl:16px;--shadow:0 2px 4px rgba(15,23,42,.06),0 12px 32px -8px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+.wrap{max-width:600px;margin:0 auto;padding:56px 24px 80px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-500)}
+h1{font-size:28px;font-weight:700;letter-spacing:-.02em;margin:8px 0 16px;color:var(--brand-700)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px;box-shadow:var(--shadow);margin-top:20px}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin:14px 0 6px}
+input{width:100%;padding:12px 13px;border:1px solid var(--line-strong);border-radius:var(--r-md);font:inherit;font-size:15px}
+input.otp{font-family:var(--font-mono);font-size:22px;letter-spacing:8px;text-align:center}
+.btn{margin-top:18px;width:100%;padding:14px;border:0;border-radius:var(--r-md);background:var(--brand-600);color:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+.btn:hover{background:var(--brand-700)}.btn:disabled{opacity:.5}
+.kv{display:flex;gap:10px;font-size:14px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.kv span:first-child{min-width:130px;color:var(--ink-3);font-weight:600}.kv code{font-family:var(--font-mono);font-size:12px;word-break:break-all}
+.alert{padding:12px 14px;border-radius:var(--r-md);font-size:14px;margin-top:14px}
+.alert.err{background:var(--red-50);color:var(--red-600)}.alert.ok{background:var(--ok-50);color:var(--ok-600)}
+.muted{color:var(--ink-3)}.disclaimer{font-size:12px;color:var(--ink-3);margin-top:16px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav style="display:flex;gap:18px;margin-bottom:20px;font-size:14px">
+      <a href="/veylon.html" onclick="if(history.length>1){history.back();return false}" style="color:var(--brand-600);text-decoration:none;font-weight:600">← Indietro</a>
+      <a href="/veylon.html" style="margin-left:auto;color:var(--brand-600);text-decoration:none;font-weight:600">Veylon · home</a>
+    </nav>
+    <div class="eyebrow">Firma · Appaltare</div>
+    <h1>Applica la tua firma</h1>
+    <div id="content"><div class="card"><p class="muted">Caricamento…</p></div></div>
+  </div>
+  <script>
+const SUPABASE_URL='https://efhdooeqscqncgvhqfyu.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmaGRvb2Vxc2NxbmNndmhxZnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDA3NTcsImV4cCI6MjA5MDYxNjc1N30.wtvxgipTgEPpz40Vo6qZBsPXQO1vQuz4F1GwF9bCNlM';
+const FN=SUPABASE_URL+'/functions/v1/firma-applica';
+const content=document.getElementById('content');
+const codice=(new URLSearchParams(location.search).get('c')||'').toUpperCase();
+function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function call(action,extra){const res=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON},body:JSON.stringify(Object.assign({action,codice},extra||{}))});return res.json();}
+
+async function init(){
+  if(!/^[A-Z0-9]{8}$/.test(codice)){content.innerHTML='<div class="card"><div class="alert err">Codice firma mancante o non valido nell\'URL.</div></div>';return;}
+  const j=await call('info');
+  if(!j.success||!j.trovato){content.innerHTML='<div class="card"><div class="alert err">Richiesta di firma non trovata.</div></div>';return;}
+  if(j.gia_firmato){content.innerHTML=`<div class="card"><div class="alert ok">✓ Questo documento risulta già firmato.</div><div class="kv"><span>Documento</span>${esc(j.doc_name)}</div></div>`;return;}
+  if(j.scaduto){content.innerHTML='<div class="card"><div class="alert err">Il codice OTP è scaduto. Richiedi una nuova firma.</div></div>';return;}
+  content.innerHTML=`<div class="card">
+    <div class="kv"><span>Documento</span>${esc(j.doc_name)}</div>
+    <div class="kv"><span>Impronta</span><code>${j.doc_sha256}</code></div>
+    <div class="kv"><span>Firmatario</span>${esc(j.firmatario_email)}</div>
+    <label>Il tuo nome e cognome</label><input type="text" id="nome"/>
+    <label>Codice OTP (6 cifre)</label><input class="otp" id="otp" maxlength="6" inputmode="numeric" placeholder="––––––"/>
+    <button class="btn" id="go">Firma il documento</button>
+    <div id="msg"></div>
+    <p class="disclaimer">Firmando dichiari di aver preso visione del documento. L'atto di firma (documento + identità + istante) verrà notarizzato su Bitcoin con valore di prova. Firma elettronica avanzata, non qualificata eIDAS.</p>
+  </div>`;
+  document.getElementById('go').addEventListener('click',sign);
+}
+async function sign(){
+  const msg=document.getElementById('msg');msg.innerHTML='';
+  const otp=document.getElementById('otp').value.trim();
+  const nome=document.getElementById('nome').value.trim();
+  if(!/^\d{6}$/.test(otp)){msg.innerHTML='<div class="alert err">Inserisci il codice OTP a 6 cifre.</div>';return;}
+  const btn=document.getElementById('go');btn.disabled=true;btn.textContent='Firma in corso…';
+  try{
+    const j=await call('firma',{otp,nome});
+    if(!j.success){const m={otp_errato:'Codice OTP errato.',otp_scaduto:'Codice scaduto.',gia_firmato:'Già firmato.'}[j.error]||('Errore: '+j.error);throw new Error(m);}
+    content.innerHTML=`<div class="card"><div class="alert ok">✓ Documento firmato con successo.</div>
+      <div class="kv"><span>Firmato il</span>${new Date(j.signed_at).toLocaleString('it-IT')}</div>
+      <div class="kv"><span>Atto (SHA-256)</span><code>${j.atto_sha256}</code></div>
+      <p class="muted" style="margin-top:14px">${esc(j.messaggio)}</p></div>`;
+  }catch(err){msg.innerHTML=`<div class="alert err">${esc(String(err.message||err))}</div>`;btn.disabled=false;btn.textContent='Firma il documento';}
+}
+init();
+  </script>
+</body>
+</html>

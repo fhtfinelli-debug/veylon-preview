@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="it" data-palette="navy">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Garanzie · Fideiussioni d'appalto · Appaltare.com</title>
+  <meta name="description" content="Gestisci e certifica le garanzie d'appalto (provvisorie, definitive, anticipazione) con notarizzazione blockchain del documento e codice di verifica pubblico."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"/>
+  <style>
+:root{
+  --bg:oklch(0.985 0.005 250);--surface:#fff;--surface-2:oklch(0.97 0.008 250);
+  --ink:oklch(0.22 0.03 250);--ink-2:oklch(0.42 0.03 250);--ink-3:oklch(0.55 0.025 250);
+  --line:oklch(0.90 0.012 250);--line-strong:oklch(0.82 0.02 250);
+  --brand-700:oklch(0.32 0.08 250);--brand-600:oklch(0.42 0.10 250);--brand-500:oklch(0.55 0.16 250);
+  --ok-600:oklch(0.52 0.14 150);--ok-50:oklch(0.97 0.025 150);
+  --amber-600:oklch(0.66 0.16 75);--amber-50:oklch(0.97 0.035 80);
+  --red-600:oklch(0.56 0.20 25);--red-50:oklch(0.97 0.025 25);
+  --font-sans:"Geist",system-ui,sans-serif;--font-mono:"Geist Mono",ui-monospace,monospace;
+  --r-md:8px;--r-lg:12px;--r-xl:16px;--shadow:0 2px 4px rgba(15,23,42,.06),0 12px 32px -8px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.5}
+.wrap{max-width:920px;margin:0 auto;padding:48px 24px 80px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-500)}
+h1{font-size:clamp(28px,3vw,38px);font-weight:700;letter-spacing:-.02em;margin:8px 0 12px;color:var(--brand-700)}
+.lead{font-size:16px;color:var(--ink-2);max-width:60ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px;box-shadow:var(--shadow);margin-top:28px}
+h2{font-size:18px;margin:0 0 18px;color:var(--brand-700)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{margin-bottom:4px}.field.full{grid-column:1/-1}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+input,select{width:100%;padding:10px 12px;border:1px solid var(--line-strong);border-radius:var(--r-md);font:inherit;font-size:14px;background:#fff}
+.drop{border:2px dashed var(--line-strong);border-radius:var(--r-md);padding:20px;text-align:center;cursor:pointer;font-size:14px;color:var(--ink-3);background:var(--surface-2)}
+.drop:hover{border-color:var(--brand-500)} .drop strong{color:var(--brand-700)}
+input[type=file]{display:none}
+.hashbox{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);margin-top:8px;word-break:break-all}
+.btn{margin-top:18px;padding:13px 20px;border:0;border-radius:var(--r-md);background:var(--brand-600);color:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+.btn:hover{background:var(--brand-700)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.sm{padding:7px 12px;font-size:13px;margin:0}
+.btn.ghost{background:transparent;color:var(--brand-600);border:1px solid var(--line-strong)}
+.alert{padding:12px 14px;border-radius:var(--r-md);font-size:14px;margin-top:14px}
+.alert.warn{background:var(--amber-50);color:oklch(0.40 0.12 70)}.alert.err{background:var(--red-50);color:var(--red-600)}
+.alert.ok{background:var(--ok-50);color:var(--ok-600)}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line)}
+code{font-family:var(--font-mono);font-size:12px}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;text-transform:capitalize}
+.b-bozza{background:var(--surface-2);color:var(--ink-3)}.b-emessa{background:oklch(0.94 0.03 250);color:var(--brand-600)}
+.b-verificata{background:var(--ok-50);color:var(--ok-600)}.b-escussa{background:var(--red-50);color:var(--red-600)}
+.b-svincolata{background:var(--surface-2);color:var(--ink-3)}.b-scaduta{background:var(--amber-50);color:var(--amber-600)}
+.muted{color:var(--ink-3);font-size:13px}
+.foot{margin-top:36px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:20px}
+.foot a{color:var(--brand-600)}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav style="display:flex;gap:18px;margin-bottom:20px;font-size:14px">
+      <a href="/veylon.html" onclick="if(history.length>1){history.back();return false}" style="color:var(--brand-600);text-decoration:none;font-weight:600">← Indietro</a>
+      <a href="/veylon.html" style="margin-left:auto;color:var(--brand-600);text-decoration:none;font-weight:600">Veylon · home</a>
+    </nav>
+    <div class="eyebrow">Garanzie · Appaltare</div>
+    <h1>Garanzie d'appalto</h1>
+    <p class="lead">Gestisci fideiussioni e garanzie (provvisorie, definitive, anticipazione) con <strong>documento notarizzato su Bitcoin</strong> e <strong>codice di verifica pubblico</strong> per la stazione appaltante.</p>
+
+    <div id="auth-warn" class="alert warn" style="display:none">Devi essere autenticato. <a href="/index.html">Accedi</a> e ricarica.</div>
+
+    <div class="card">
+      <h2>Nuova garanzia</h2>
+      <div class="grid">
+        <div class="field"><label>Tipo</label>
+          <select id="tipo">
+            <option value="provvisoria">Provvisoria (art. 106 D.Lgs 36/2023)</option>
+            <option value="definitiva">Definitiva (art. 117)</option>
+            <option value="anticipazione">Garanzia anticipazione</option>
+            <option value="buona_esecuzione">Buona esecuzione</option>
+            <option value="altro">Altro</option>
+          </select>
+        </div>
+        <div class="field"><label>Numero polizza/garanzia</label><input type="text" id="numero" placeholder="Es. 2026/00123"/></div>
+        <div class="field"><label>Garante (banca/assicurazione)</label><input type="text" id="garante"/></div>
+        <div class="field"><label>Contraente (operatore economico)</label><input type="text" id="contraente"/></div>
+        <div class="field"><label>Beneficiario (stazione appaltante)</label><input type="text" id="beneficiario"/></div>
+        <div class="field"><label>Importo (€)</label><input type="number" id="importo" step="0.01" min="0"/></div>
+        <div class="field"><label>Data emissione</label><input type="date" id="data_emissione"/></div>
+        <div class="field"><label>Data scadenza</label><input type="date" id="data_scadenza"/></div>
+        <div class="field full"><label>Documento di garanzia (opzionale, viene notarizzato)</label>
+          <div class="drop" id="drop"><strong>Trascina o seleziona il PDF</strong> — il file resta locale, si invia solo l'hash</div>
+          <input type="file" id="file"/>
+          <div class="hashbox" id="hash"></div>
+        </div>
+      </div>
+      <button class="btn" id="go">Crea garanzia</button>
+      <div id="msg"></div>
+    </div>
+
+    <div class="card">
+      <h2>Le tue garanzie</h2>
+      <div id="list"><p class="muted">Caricamento…</p></div>
+    </div>
+
+    <div class="foot">Verifica pubblica di una garanzia: <a href="/verifica-garanzia.html">verifica-garanzia.html</a></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+  <script>
+const SUPABASE_URL='https://efhdooeqscqncgvhqfyu.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmaGRvb2Vxc2NxbmNndmhxZnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDA3NTcsImV4cCI6MjA5MDYxNjc1N30.wtvxgipTgEPpz40Vo6qZBsPXQO1vQuz4F1GwF9bCNlM';
+const FN_CREA=SUPABASE_URL+'/functions/v1/garanzia-crea';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+const el=id=>document.getElementById(id);
+let docHash=null,docFile=null;
+
+async function sha256File(file){const buf=await file.arrayBuffer();const d=await crypto.subtle.digest('SHA-256',buf);return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('');}
+const drop=el('drop');
+drop.addEventListener('click',()=>el('file').click());
+el('file').addEventListener('change',async e=>{docFile=e.target.files[0];if(!docFile)return;el('hash').textContent='calcolo…';docHash=await sha256File(docFile);el('hash').textContent='SHA-256: '+docHash;});
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.borderColor='var(--brand-500)'}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.borderColor=''}));
+drop.addEventListener('drop',async e=>{docFile=e.dataTransfer.files[0];if(!docFile)return;docHash=await sha256File(docFile);el('hash').textContent='SHA-256: '+docHash;});
+
+el('go').addEventListener('click',async()=>{
+  el('msg').innerHTML='';
+  const {data:s}=await sb.auth.getSession();
+  if(!s.session){el('auth-warn').style.display='block';return;}
+  const btn=el('go');btn.disabled=true;btn.textContent='Creazione…';
+  try{
+    const payload={action:'crea',tipo:el('tipo').value,numero:el('numero').value||null,garante:el('garante').value||null,
+      contraente:el('contraente').value||null,beneficiario:el('beneficiario').value||null,
+      importo:el('importo').value?parseFloat(el('importo').value):null,
+      data_emissione:el('data_emissione').value||null,data_scadenza:el('data_scadenza').value||null};
+    if(docHash){payload.doc_sha256=docHash;payload.doc_name=docFile?docFile.name:'Documento garanzia';}
+    const res=await fetch(FN_CREA,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.session.access_token,'apikey':SUPABASE_ANON},body:JSON.stringify(payload)});
+    const j=await res.json();
+    if(!j.success)throw new Error(j.error||'errore');
+    el('msg').innerHTML=`<div class="alert ok">✓ Garanzia creata. Codice di verifica: <code>${j.codice_verifica}</code>${j.notarizzato?' · documento notarizzato':''}</div>`;
+    ['numero','garante','contraente','beneficiario','importo','data_emissione','data_scadenza'].forEach(f=>el(f).value='');
+    docHash=null;docFile=null;el('hash').textContent='';
+    loadList();
+  }catch(err){el('msg').innerHTML=`<div class="alert err">Errore: ${esc(String(err.message||err))}</div>`;}
+  finally{btn.disabled=false;btn.textContent='Crea garanzia';}
+});
+
+async function changeStato(id,stato){
+  const {data:s}=await sb.auth.getSession();if(!s.session)return;
+  await fetch(FN_CREA,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.session.access_token,'apikey':SUPABASE_ANON},body:JSON.stringify({action:'cambia_stato',garanzia_id:id,nuovo_stato:stato})});
+  loadList();
+}
+window.changeStato=changeStato;
+
+async function loadList(){
+  const {data:s}=await sb.auth.getSession();
+  if(!s.session){el('list').innerHTML='<p class="muted">Accedi per vedere le tue garanzie.</p>';return;}
+  const {data,error}=await sb.from('garanzie').select('id,tipo,numero,contraente,importo,stato,codice_verifica,data_scadenza,veylon_id').order('created_at',{ascending:false});
+  if(error){el('list').innerHTML='<p class="muted">Errore nel caricamento.</p>';return;}
+  if(!data.length){el('list').innerHTML='<p class="muted">Nessuna garanzia ancora.</p>';return;}
+  let h='<table><thead><tr><th>Tipo</th><th>Contraente</th><th>Importo</th><th>Codice</th><th>Stato</th><th>Doc</th><th></th></tr></thead><tbody>';
+  for(const g of data){
+    const next={bozza:'emessa',emessa:'verificata',verificata:'svincolata'}[g.stato];
+    h+=`<tr>
+      <td style="text-transform:capitalize">${esc(g.tipo)}</td>
+      <td>${esc(g.contraente||'—')}</td>
+      <td>${g.importo?'€ '+Number(g.importo).toLocaleString('it-IT'):'—'}</td>
+      <td><code>${esc(g.codice_verifica||'—')}</code></td>
+      <td><span class="badge b-${g.stato}">${g.stato}</span></td>
+      <td>${g.veylon_id?'🔒':'—'}</td>
+      <td>${next?`<button class="btn sm ghost" onclick="changeStato('${g.id}','${next}')">→ ${next}</button>`:''}</td>
+    </tr>`;
+  }
+  h+='</tbody></table>';
+  el('list').innerHTML=h;
+}
+function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+(async()=>{const {data:s}=await sb.auth.getSession();if(!s.session)el('auth-warn').style.display='block';loadList();})();
+  </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Veylon — Stato del sistema</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
+    .card { border: 1px solid var(--rule, #ddd); padding: 16px; background: var(--paper, #fff); border-radius: 4px; }
+    .card h3 { margin: 0 0 8px; font-family: var(--mono); font-size: 14px; font-weight: normal; text-transform: lowercase; letter-spacing: 0.5px; }
+    .badge { display: inline-block; padding: 2px 8px; font-family: var(--mono); font-size: 11px; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge.ok { background: #c8e6c9; color: #1b5e20; }
+    .badge.warn { background: #fff3e0; color: #e65100; }
+    .badge.err { background: #ffcdd2; color: #b71c1c; }
+    .badge.idle { background: #eceff1; color: #455a64; }
+    .summary { display: flex; gap: 24px; align-items: baseline; margin-bottom: 12px; }
+    .summary .num { font-family: var(--serif); font-size: 48px; font-weight: normal; }
+    .summary .lbl { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #666; }
+    code.tiny { font-size: 11px; color: #666; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="brand">
+      <a href="index.html">Veylon</a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Cruscotto</a>
+    </nav>
+  </header>
+
+  <main class="panel">
+    <h1 style="font-family: var(--serif); font-weight: normal;">Stato del sistema</h1>
+    <p>Verifica live dei <span id="total-count">40</span> endpoint backend di Veylon. Una function attiva risponde con <code>4xx</code> a una richiesta vuota; un <code>5xx</code> indica che il servizio esterno (Mailgun, Twilio, &hellip;) non &eacute; ancora configurato.</p>
+
+    <div class="summary">
+      <span><span class="num" id="ok-count">&mdash;</span> <span class="lbl">attive</span></span>
+      <span><span class="num" id="warn-count">&mdash;</span> <span class="lbl">in attesa config</span></span>
+      <span><span class="num" id="err-count">&mdash;</span> <span class="lbl">errori</span></span>
+    </div>
+
+    <button id="refresh-btn" class="btn">Esegui di nuovo i controlli</button>
+
+    <div class="grid" id="cards"></div>
+  </main>
+
+  <footer class="masthead" style="margin-top: 64px;">
+    <p style="font-size: 12px; color: #666; font-family: var(--mono);">
+      Progetto Supabase: <code class="tiny">hanxxxtgxofjkfdjegfe</code> &middot;
+      Region: EU Ireland &middot;
+      Build: <span id="build-ts">live</span>
+    </p>
+  </footer>
+
+  <script type="module">
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+
+    const checks = [
+      // Atto i Sigillo
+      { atto: "i", n: "veylon-verifica", m: "POST", b: "{}", role: "Verifica pubblica documento" },
+      { atto: "i", n: "veylon-upgrade", m: "POST", b: "{}", role: "Cron OTS upgrade" },
+      { atto: "i", n: "veylon-certificato", m: "GET", role: "PDF certificato sigillo" },
+      { atto: "i", n: "veylon-notarizza", m: "POST", b: "{}", role: "Notarizza (auth)" },
+      // Atto ii Send
+      { atto: "ii", n: "send-keys-register", m: "POST", b: "{}", role: "Registra chiave pubblica (auth)" },
+      { atto: "ii", n: "send-keys-get", m: "POST", b: "{}", role: "Ricava chiave pubblica (auth)" },
+      { atto: "ii", n: "send-create", m: "POST", b: "{}", role: "Crea trasmissione (auth)" },
+      { atto: "ii", n: "send-evidence-upload", m: "POST", b: "{}", role: "Conferma upload evidenza (auth)" },
+      { atto: "ii", n: "send-delivery-webhook", m: "POST", b: "{}", role: "Webhook Mailgun consegna" },
+      { atto: "ii", n: "send-receive-info", m: "GET", role: "Info destinatario via magic link" },
+      { atto: "ii", n: "send-receive-confirm", m: "POST", b: "{}", role: "Conferma apertura destinatario" },
+      { atto: "ii", n: "send-revoke", m: "POST", b: "{}", role: "Revoca trasmissione (auth)" },
+      { atto: "ii", n: "send-certificato", m: "GET", role: "PDF certificato trasmissione" },
+      // Atto iii Mail
+      { atto: "iii", n: "mail-verifica", m: "GET", role: "Verifica pubblica email certificata" },
+      { atto: "iii", n: "mail-certificato", m: "GET", role: "PDF certificato email" },
+      { atto: "iii", n: "mail-delivery-webhook", m: "POST", b: "{}", role: "Webhook Mailgun delivery" },
+      { atto: "iii", n: "mail-inbound-webhook", m: "POST", b: "{}", role: "Webhook Mailgun inbound Vault" },
+      { atto: "iii", n: "mail-relay-send", m: "POST", b: "{}", role: "Relay SMTP outbound (auth)" },
+      // Atto iv Garanzie
+      { atto: "iv", n: "garanzia-verifica", m: "POST", b: "{}", role: "Verifica pubblica garanzia" },
+      { atto: "iv", n: "garanzia-crea", m: "POST", b: "{}", role: "Crea garanzia (auth)" },
+      // Atto v Registro
+      { atto: "v", n: "drive-shared", m: "GET", role: "Accesso link condiviso" },
+      { atto: "v", n: "drive-condividi", m: "POST", b: "{}", role: "Condividi documento (auth)" },
+      // Atto vi Tag
+      { atto: "vi", n: "tag-verifica", m: "POST", b: "{}", role: "Verifica pubblica QR" },
+      { atto: "vi", n: "tag-produttore-onboarding", m: "POST", b: "{}", role: "Onboarding produttore (auth)" },
+      { atto: "vi", n: "tag-certificato-crea", m: "POST", b: "{}", role: "Emetti certificato Tag (auth)" },
+      { atto: "vi", n: "tag-certificato-batch", m: "POST", b: "{}", role: "Emissione massiva (auth)" },
+      { atto: "vi", n: "tag-trasferimento", m: "POST", b: "{}", role: "Trasferisci proprieta (auth)" },
+      { atto: "vi", n: "tag-revoca", m: "POST", b: "{}", role: "Revoca certificato Tag (auth)" },
+      // Atto vii Cert
+      { atto: "vii", n: "cert-verifica", m: "POST", b: "{}", role: "Verifica pubblica certificato" },
+      { atto: "vii", n: "cert-istituzione-onboarding", m: "POST", b: "{}", role: "Onboarding istituzione (auth)" },
+      { atto: "vii", n: "cert-template-crea", m: "POST", b: "{}", role: "Crea template (auth)" },
+      { atto: "vii", n: "cert-emetti", m: "POST", b: "{}", role: "Emetti certificato (auth)" },
+      { atto: "vii", n: "cert-emetti-batch", m: "POST", b: "{}", role: "Emissione massiva (auth)" },
+      { atto: "vii", n: "cert-ritira", m: "POST", b: "{}", role: "Ritira certificato (auth)" },
+      { atto: "vii", n: "cert-revoca", m: "POST", b: "{}", role: "Revoca certificato (auth)" },
+      // Atto viii Firma
+      { atto: "viii", n: "firma-applica", m: "POST", b: "{}", role: "Applica firma con OTP" },
+      { atto: "viii", n: "firma-richiedi", m: "POST", b: "{}", role: "Richiedi firma (auth, Mailgun)" },
+      // Atto ix KYC
+      { atto: "ix", n: "kyc-onboarding", m: "POST", b: "{}", role: "Onboarding KYC (auth)" },
+      // OTP Auth (trasversale)
+      { atto: "auth", n: "auth-otp-send", m: "POST", b: "{}", role: "Invio OTP (Twilio)" },
+      { atto: "auth", n: "auth-otp-verify", m: "POST", b: "{}", role: "Verifica OTP" },
+    ];
+
+    document.getElementById("total-count").textContent = checks.length;
+    const cards = document.getElementById("cards");
+
+    function statusBadge(code) {
+      if (code >= 200 && code < 300) return ["ok", "ok"];
+      if (code === 401 || code === 403 || code === 405) return ["ok", "active"];
+      if (code === 400) return ["ok", "active"];
+      if (code >= 500) return ["err", "config-missing"];
+      return ["idle", "unknown"];
+    }
+
+    function render() {
+      cards.innerHTML = "";
+      let ok = 0, warn = 0, err = 0;
+
+      checks.forEach((c, idx) => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.id = "card-" + idx;
+        div.innerHTML = `
+          <h3>${c.n}</h3>
+          <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${c.role}</div>
+          <span class="badge idle" id="b-${idx}">testing&hellip;</span>
+          <span class="badge idle" id="a-${idx}">atto ${c.atto}</span>
+        `;
+        cards.appendChild(div);
+      });
+
+      Promise.all(checks.map(async (c, idx) => {
+        const url = `${SUPABASE_URL}/functions/v1/${c.n}`;
+        const headers = { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON };
+        if (c.b) headers["Content-Type"] = "application/json";
+        let code = 0;
+        try {
+          const r = await fetch(url, { method: c.m, headers, body: c.b ?? undefined });
+          code = r.status;
+        } catch (_e) {
+          code = -1;
+        }
+        const [cls, lbl] = statusBadge(code);
+        const badge = document.getElementById("b-" + idx);
+        badge.className = "badge " + cls;
+        badge.textContent = `${code} ${lbl}`;
+        if (cls === "ok") ok++;
+        else if (cls === "err") err++;
+        else warn++;
+        document.getElementById("ok-count").textContent = ok;
+        document.getElementById("warn-count").textContent = err;
+        document.getElementById("err-count").textContent = 0;
+      }));
+
+      document.getElementById("build-ts").textContent = new Date().toISOString().replace("T", " ").substring(0, 19);
+    }
+
+    document.getElementById("refresh-btn").addEventListener("click", render);
+    render();
+  </script>
+</body>
+</html>
