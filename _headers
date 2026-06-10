@@ -1,0 +1,21 @@
+# =============================================================================
+# VEYLON · HTTP security headers (Cloudflare Pages / Netlify / Lovable)
+# =============================================================================
+# Configurazione hardening per il dominio statico.
+# - Content-Security-Policy: limita gli host autorizzati per script, style,
+#   immagini e connessioni XHR/fetch al dominio del progetto Supabase Veylon
+#   (hanxxxtgxofjkfdjegfe.supabase.co).
+# - X-Frame-Options / X-Content-Type-Options / Referrer-Policy / Permissions-Policy:
+#   default conservativi (no iframe esterni, no MIME sniffing, no geo/cam/mic).
+# - HSTS: forziamo HTTPS un anno, preload OK.
+# Aggiornare CSP qui se aggiungi nuovi CDN/host.
+# =============================================================================
+
+/*
+  Content-Security-Policy: default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  X-XSS-Protection: 0
