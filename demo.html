@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Prenota una demo</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta name="description" content="VEYLON. Richiedi una demo di 20 minuti sul caso d'uso piu' rilevante per il tuo settore."/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-inner" style="grid-template-columns: 1fr auto 1fr;">
+      <div class="masthead-meta">
+        <span>Modulo di richiesta demo</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="pricing.html">Listino</a>
+        <a href="index.html">Indice</a>
+        <a href="login.html">Accedi</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Risposta entro 24 ore lavorative &middot; demo dedicata di 20 minuti</span>
+        <span>Trattamento dati ex art. 13 GDPR &middot; conservazione 18 mesi</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="demo-page">
+    <div class="col-narrow" style="padding: 56px 32px 24px;">
+      <div class="row-between" style="align-items: flex-end;">
+        <span class="section-num">Modulo di richiesta</span>
+        <span class="roman">J</span>
+      </div>
+      <h1 class="serif" style="font-size: clamp(40px, 5.5vw, 64px); line-height: 1.05; margin: 18px 0 0; letter-spacing: -0.02em;">
+        Richiedere una <em class="serif-italic" style="color: var(--seal);">demo dedicata.</em>
+      </h1>
+      <p class="lede" style="margin-top: 24px;">
+        Vent&iacute; minuti, con uno dei fondatori. Mostriamo il modulo piu&grave; rilevante per il vostro settore,
+        e capiamo insieme se ha senso fare un pilota su un caso d'uso reale.
+      </p>
+    </div>
+
+    <!-- FORM -->
+    <form id="demoForm" class="demo-frame" novalidate>
+      <fieldset class="demo-fieldset">
+        <legend class="eyebrow seal-c" style="letter-spacing: 0.32em;">Identit&agrave; del richiedente</legend>
+
+        <div class="demo-row">
+          <label class="field-label" for="nome">Nome e cognome</label>
+          <input class="field-input mono" id="nome" name="nome" type="text" required minlength="2" maxlength="120" autocomplete="name" placeholder="Avv. Maria Bianchi"/>
+        </div>
+
+        <div class="demo-row">
+          <label class="field-label" for="azienda">Azienda o studio</label>
+          <input class="field-input mono" id="azienda" name="azienda" type="text" required minlength="2" maxlength="200" autocomplete="organization" placeholder="Bianchi & Partners"/>
+        </div>
+
+        <div class="demo-row two-col">
+          <div>
+            <label class="field-label" for="email">Email professionale</label>
+            <input class="field-input mono" id="email" name="email" type="email" required autocomplete="email" placeholder="m.bianchi@studio.it"/>
+          </div>
+          <div>
+            <label class="field-label" for="telefono">Telefono <span class="opt">(opzionale)</span></label>
+            <input class="field-input mono" id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="+39 06 0001 9001"/>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="demo-fieldset">
+        <legend class="eyebrow seal-c" style="letter-spacing: 0.32em;">Contesto operativo</legend>
+
+        <div class="demo-row">
+          <label class="field-label" for="settore">Settore di attivit&agrave;</label>
+          <select class="field-input mono" id="settore" name="settore" required>
+            <option value="">— Selezionare —</option>
+            <option value="avvocati">Avvocati &middot; studi legali boutique</option>
+            <option value="banche">Banche &middot; finanziarie &middot; gestori del credito</option>
+            <option value="sanita">Sanit&agrave; privata &middot; cliniche &middot; laboratori</option>
+            <option value="m_and_a">M&amp;A &middot; due diligence &middot; advisory boutique</option>
+            <option value="hr_enterprise">HR enterprise &middot; gruppi industriali</option>
+            <option value="stazioni_appaltanti">Stazioni appaltanti &middot; PA &middot; centrali di committenza</option>
+            <option value="real_estate">Real estate &middot; agenzie &middot; fondi immobiliari</option>
+            <option value="commercialisti">Commercialisti &middot; consulenti del lavoro &middot; revisori</option>
+            <option value="altro">Altro</option>
+          </select>
+        </div>
+
+        <div class="demo-row">
+          <span class="field-label">Atti di interesse <span class="opt">(selezionare uno o pi&ugrave;)</span></span>
+          <div class="atti-checkbox-grid">
+            <label class="atto-check"><input type="checkbox" name="atti" value="i_sigillo"/> <span>i. Sigillo</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="ii_send"/> <span>ii. Send</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="iii_mail"/> <span>iii. Mail</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="iv_garanzie"/> <span>iv. Garanzie</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="v_registro"/> <span>v. Registro</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="vi_tag"/> <span>vi. Tag</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="vii_cert"/> <span>vii. Cert</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="viii_firma"/> <span>viii. Firma</span></label>
+            <label class="atto-check"><input type="checkbox" name="atti" value="ix_kyc"/> <span>ix. KYC</span></label>
+          </div>
+        </div>
+
+        <div class="demo-row">
+          <label class="field-label" for="messaggio">Caso d'uso prioritario <span class="opt">(opzionale, max 2000 caratteri)</span></label>
+          <textarea class="field-input mono" id="messaggio" name="messaggio" rows="5" maxlength="2000" placeholder="Esempio: gestiamo circa 200 fideiussioni d'appalto al mese e vorremmo dare ai nostri clienti un codice pubblico di verifica."></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset class="demo-fieldset">
+        <legend class="eyebrow seal-c" style="letter-spacing: 0.32em;">Consenso al trattamento</legend>
+        <label class="consent-row">
+          <input type="checkbox" id="consent" name="consent" required/>
+          <span>
+            Acconsento al trattamento dei dati ai sensi dell'art. 13 del Regolamento UE 2016/679 (GDPR) ai soli fini
+            del contatto commerciale e della prenotazione di una demo. Conservazione 18 mesi.
+            <a class="link-seal" href="../PRIVACY.md" target="_blank" rel="noopener">Informativa estesa</a>.
+          </span>
+        </label>
+      </fieldset>
+
+      <div class="demo-submit">
+        <button type="submit" class="btn seal lg" id="submitBtn">
+          Richiedere la demo <span class="arrow"></span>
+        </button>
+        <p class="small" id="submitNote">
+          Risposta in giornata lavorativa. Nessuna chiamata commerciale a freddo.
+        </p>
+      </div>
+
+      <div id="result" class="demo-result" hidden></div>
+    </form>
+
+    <!-- TRUST FOOTER -->
+    <section class="col-narrow" style="padding: 56px 32px 24px;">
+      <hr class="rule"/>
+      <div class="trust-grid">
+        <div>
+          <div class="eyebrow">In alternativa</div>
+          <p class="body small" style="margin-top: 8px;">
+            Scrivere direttamente a <a class="link-seal mono" href="mailto:sales@veylon.app">sales@veylon.app</a> o
+            consultare la <a class="link-seal" href="pricing.html">tabella di listino</a>.
+          </p>
+        </div>
+        <div>
+          <div class="eyebrow">Riserbo</div>
+          <p class="body small" style="margin-top: 8px;">
+            I dati di questo modulo sono usati esclusivamente per la richiesta in corso.
+            Nessun terzo, nessuna profilazione, nessuna newsletter.
+          </p>
+        </div>
+        <div>
+          <div class="eyebrow">Demo tipo</div>
+          <p class="body small" style="margin-top: 8px;">
+            20 minuti &middot; videocall &middot; un fondatore + il modulo piu&grave; rilevante per il vostro caso d'uso.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Modulo richiesta demo &middot; rev. J1</span>
+    </div>
+  </footer>
+
+  <style>
+  .demo-page { padding-bottom: 80px; }
+  .demo-frame {
+    max-width: 820px;
+    margin: 16px auto 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 48px 56px 56px;
+  }
+  .demo-fieldset { border: 0; padding: 0 0 36px; margin: 0 0 36px; border-bottom: var(--hairline); }
+  .demo-fieldset:last-of-type { border-bottom: 0; padding-bottom: 0; margin-bottom: 24px; }
+  .demo-fieldset legend { margin-bottom: 20px; padding: 0; }
+  .demo-row { margin-bottom: 22px; }
+  .demo-row.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+
+  .field-label {
+    display: block;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-2); margin-bottom: 8px;
+  }
+  .field-label .opt { font-family: var(--serif); font-style: italic; text-transform: none; letter-spacing: 0; color: var(--ink-3); font-size: 12px; }
+  .field-input {
+    width: 100%;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 12px 14px;
+    font-size: 14px; color: var(--ink);
+    outline: none;
+    border-radius: 0;
+  }
+  .field-input:focus { border-color: var(--seal); }
+  textarea.field-input { resize: vertical; min-height: 96px; }
+  select.field-input { appearance: none; -webkit-appearance: none; cursor: pointer; }
+
+  .atti-checkbox-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    border: 1px solid var(--rule);
+  }
+  .atto-check {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 14px;
+    border-right: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule-2);
+    font-family: var(--serif); font-size: 15px; cursor: pointer;
+  }
+  .atto-check input { accent-color: var(--seal); }
+  .atto-check:hover { background: var(--paper-2); }
+
+  .consent-row {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 13px; color: var(--ink-2); line-height: 1.5;
+    cursor: pointer;
+  }
+  .consent-row input { margin-top: 3px; accent-color: var(--seal); }
+
+  .demo-submit { display: flex; align-items: center; gap: 16px; margin-top: 12px; }
+  #submitNote { margin: 0; color: var(--ink-3); }
+
+  .demo-result {
+    margin-top: 24px; padding: 18px 22px;
+    background: var(--paper-2); border: 1px solid var(--rule);
+    font-family: var(--serif); font-size: 16px; color: var(--ink);
+  }
+  .demo-result.ok { border-color: var(--verify); }
+  .demo-result.err { border-color: var(--seal); color: var(--seal); }
+
+  .trust-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    margin-top: 32px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid var(--ink); padding: 14px 20px;
+    font-family: var(--sans); font-size: 13px; letter-spacing: 0.04em;
+    background: transparent; color: var(--ink); cursor: pointer;
+  }
+  .btn.lg { padding: 16px 24px; font-size: 14px; }
+  .btn.seal { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+  .btn.seal:hover { background: var(--seal-2); border-color: var(--seal-2); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn .arrow::after { content: "→"; font-family: var(--mono); }
+
+  @media (max-width: 720px) {
+    .demo-frame { padding: 28px 24px; }
+    .demo-row.two-col { grid-template-columns: 1fr; }
+    .atti-checkbox-grid { grid-template-columns: 1fr 1fr; }
+    .trust-grid { grid-template-columns: 1fr; gap: 18px; }
+    .demo-submit { flex-direction: column; align-items: flex-start; }
+  }
+  </style>
+
+  <script>
+    // Config Supabase
+    const SUPABASE_URL = (window.VEYLON_CONFIG && window.VEYLON_CONFIG.SUPABASE_URL)
+      || 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+
+    // UTM tracking (parse query string)
+    function collectUtm() {
+      const utm = {};
+      const params = new URLSearchParams(location.search);
+      ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach((k) => {
+        const v = params.get(k);
+        if (v) utm[k] = v.slice(0, 256);
+      });
+      return utm;
+    }
+
+    // Pre-fill da query string
+    const params = new URLSearchParams(location.search);
+    const settore = params.get('settore');
+    if (settore) {
+      const sel = document.getElementById('settore');
+      if (sel && [...sel.options].some(o => o.value === settore)) {
+        sel.value = settore;
+      }
+    }
+    const attoPre = params.get('atto');
+    if (attoPre) {
+      const chk = document.querySelector('input[name="atti"][value="' + attoPre + '"]');
+      if (chk) chk.checked = true;
+    }
+
+    const form = document.getElementById('demoForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitNote = document.getElementById('submitNote');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      result.hidden = true;
+      result.className = 'demo-result';
+
+      const atti = Array.from(document.querySelectorAll('input[name="atti"]:checked'))
+        .map(i => i.value);
+
+      const payload = {
+        nome: form.nome.value.trim(),
+        azienda: form.azienda.value.trim(),
+        email: form.email.value.trim(),
+        telefono: form.telefono.value.trim() || undefined,
+        settore: form.settore.value,
+        atti_interesse: atti,
+        messaggio: form.messaggio.value.trim() || undefined,
+        utm: collectUtm(),
+        consent: form.consent.checked,
+      };
+
+      if (!payload.consent) {
+        result.hidden = false;
+        result.classList.add('err');
+        result.textContent = 'Per inviare la richiesta occorre prestare il consenso al trattamento dati.';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Invio in corso…';
+
+      // Plausible: log goal
+      if (window.plausible) {
+        window.plausible('demo_request', { props: { settore: payload.settore } });
+      }
+
+      try {
+        const res = await fetch(SUPABASE_URL + '/functions/v1/lead-capture', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          result.hidden = false;
+          result.classList.add('err');
+          result.textContent = data.detail
+            ? ('Errore: ' + data.detail)
+            : (data.error
+                ? ('Errore: ' + data.error)
+                : 'Impossibile inviare la richiesta. Riprovare tra qualche istante.');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Richiedere la demo <span class="arrow"></span>';
+          return;
+        }
+
+        result.hidden = false;
+        result.classList.add('ok');
+        result.textContent = data.message || 'Grazie! Vi contattiamo entro 24 ore lavorative.';
+        form.reset();
+        submitNote.textContent = 'Riferimento richiesta: ' + (data.lead_id || '—');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Inviare un\'altra richiesta <span class="arrow"></span>';
+      } catch (err) {
+        result.hidden = false;
+        result.classList.add('err');
+        result.textContent = 'Errore di rete. Riprovare tra qualche istante o scrivere a sales@veylon.app.';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Richiedere la demo <span class="arrow"></span>';
+      }
+    });
+  </script>
+</body>
+</html>

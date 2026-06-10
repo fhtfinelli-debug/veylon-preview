@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Listino dei nove atti</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta name="description" content="VEYLON. Listino dei nove atti — sigillo, send, mail, garanzie, registro, tag, cert, firma, kyc. Free, Pro, Business, Enterprise."/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+  <!-- ============================================================
+       MASTHEAD
+  ============================================================= -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Listino &middot; vigente dal&nbsp;<span class="tabular">10&nbsp;giugno&nbsp;MMXXVI</span></span>
+        <span class="sep">·</span>
+        <span>IVA esclusa</span>
+        <span class="sep">·</span>
+        <span>Pagamenti in EUR</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="index.html">Indice</a>
+        <a href="demo.html">Prenota demo</a>
+        <a href="login.html">Accedi</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Listino pubblico &mdash; nove atti, tre piani, un solo conto.</span>
+        <span>Sigillo Bitcoin &middot; eIDAS art. 41 &middot; GDPR EU Ireland</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="pricing-page">
+
+    <!-- Intestazione editoriale -->
+    <section class="col-narrow" style="padding: 64px 32px 24px;">
+      <div class="row-between" style="align-items: flex-end;">
+        <span class="section-num">Sezione &middot; pricing</span>
+        <span class="roman">J</span>
+      </div>
+      <h1 class="serif" style="font-size: clamp(44px, 6vw, 72px); line-height: 1.02; margin: 18px 0 0; letter-spacing: -0.02em;">
+        Listino dei <em class="serif-italic" style="color: var(--seal);">nove atti.</em>
+      </h1>
+      <p class="lede" style="margin-top: 24px; max-width: 64ch;">
+        Ogni atto Veylon ha un proprio piano. Si pu&ograve; iniziare gratuitamente
+        e sottoscrivere solo gli atti realmente in uso. Nessun vincolo annuale per i piani Pro &mdash;
+        rinnovo mensile, cancellabile in qualunque momento.
+      </p>
+      <div class="mono" style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-top: 20px;">
+        Prezzi indicati per piano singolo &middot; IVA esclusa &middot; pagamento via Stripe
+      </div>
+    </section>
+
+    <hr class="rule" style="margin: 16px auto 0; max-width: 1180px;"/>
+
+    <!-- Tavola dei piani: ogni atto con 3 colonne (Free/Pro/Business o Starter/Pro/Enterprise) -->
+    <div class="pricing-frame">
+
+      <!-- ===== ATTO I — SIGILLO ===== -->
+      <article class="atto-card">
+        <header class="atto-head">
+          <span class="atto-roman">i</span>
+          <div>
+            <div class="eyebrow seal-c" style="letter-spacing: 0.32em;">Atto i</div>
+            <h2 class="serif" style="font-size: 30px; margin: 4px 0 0;">Sigillo &mdash; notarizzazione Bitcoin</h2>
+            <p class="atto-sub">Hash di documenti ancorato su Bitcoin via OpenTimestamps. Prova di esistenza che sopravvive a Veylon.</p>
+          </div>
+        </header>
+        <div class="piano-grid">
+          <div class="piano">
+            <div class="piano-tag">Free</div>
+            <div class="piano-price"><span class="serif">€0</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>10 sigilli / mese</li>
+              <li>Verifica pubblica</li>
+              <li>Conservazione 12 mesi</li>
+              <li>Supporto via FAQ</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="free" data-atto="sigillo">Inizia gratis</button>
+          </div>
+          <div class="piano feat">
+            <div class="piano-tag">Pro &mdash; consigliato</div>
+            <div class="piano-price"><span class="serif">€9</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>100 sigilli / mese</li>
+              <li>Conservazione decennale</li>
+              <li>Codice pubblico personalizzato</li>
+              <li>Supporto email 24h</li>
+            </ul>
+            <button class="btn seal lg piano-cta" data-piano="sigillo_pro" data-atto="sigillo">Sottoscrivi Pro</button>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">Business</div>
+            <div class="piano-price"><span class="serif">€29</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>1.000 sigilli / mese</li>
+              <li>API REST + webhook</li>
+              <li>Conservazione decennale</li>
+              <li>SLA 99,5%</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="sigillo_business" data-atto="sigillo">Sottoscrivi Business</button>
+          </div>
+        </div>
+      </article>
+
+      <hr class="rule"/>
+
+      <!-- ===== ATTO II — SEND ===== -->
+      <article class="atto-card">
+        <header class="atto-head">
+          <span class="atto-roman">ii</span>
+          <div>
+            <div class="eyebrow seal-c" style="letter-spacing: 0.32em;">Atto ii</div>
+            <h2 class="serif" style="font-size: 30px; margin: 4px 0 0;">Send &mdash; trasmissione cifrata end-to-end</h2>
+            <p class="atto-sub">File transfer E2E AES-GCM-256 / X25519, con prova probatoria di apertura.</p>
+          </div>
+        </header>
+        <div class="piano-grid">
+          <div class="piano">
+            <div class="piano-tag">Free</div>
+            <div class="piano-price"><span class="serif">€0</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>5 trasmissioni / mese</li>
+              <li>Allegati fino a 25&nbsp;MB</li>
+              <li>4 sigilli (creazione &middot; invio &middot; consegna &middot; apertura)</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="free" data-atto="send">Inizia gratis</button>
+          </div>
+          <div class="piano feat">
+            <div class="piano-tag">Pro &mdash; consigliato</div>
+            <div class="piano-price"><span class="serif">€29</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>100 trasmissioni / mese</li>
+              <li>Allegati fino a 200&nbsp;MB</li>
+              <li>Data room temporanee (7 giorni)</li>
+              <li>Branding mittente</li>
+            </ul>
+            <button class="btn seal lg piano-cta" data-piano="send_pro" data-atto="send">Sottoscrivi Pro</button>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">Business</div>
+            <div class="piano-price"><span class="serif">€99</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>500 trasmissioni / mese</li>
+              <li>Allegati fino a 2&nbsp;GB</li>
+              <li>Data room persistenti (30 giorni)</li>
+              <li>API + ruoli destinatari</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="send_business" data-atto="send">Sottoscrivi Business</button>
+          </div>
+        </div>
+      </article>
+
+      <hr class="rule"/>
+
+      <!-- ===== ATTO III — MAIL ===== -->
+      <article class="atto-card">
+        <header class="atto-head">
+          <span class="atto-roman">iii</span>
+          <div>
+            <div class="eyebrow seal-c" style="letter-spacing: 0.32em;">Atto iii</div>
+            <h2 class="serif" style="font-size: 30px; margin: 4px 0 0;">Mail &mdash; email certificate cross-border</h2>
+            <p class="atto-sub">Raccomandata digitale eIDAS art. 41, valida cross-border in tutta UE.</p>
+          </div>
+        </header>
+        <div class="piano-grid">
+          <div class="piano">
+            <div class="piano-tag">Free</div>
+            <div class="piano-price"><span class="serif">€0</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>10 email certificate / mese</li>
+              <li>Sigillo invio + consegna</li>
+              <li>Conservazione 12 mesi</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="free" data-atto="mail">Inizia gratis</button>
+          </div>
+          <div class="piano feat">
+            <div class="piano-tag">Pro &mdash; consigliato</div>
+            <div class="piano-price"><span class="serif">€19</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>500 email / mese</li>
+              <li>Conservazione decennale</li>
+              <li>Modalit&agrave; BCC e Relay</li>
+              <li>Mittente dedicato</li>
+            </ul>
+            <button class="btn seal lg piano-cta" data-piano="mail_pro" data-atto="mail">Sottoscrivi Pro</button>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">Business</div>
+            <div class="piano-price"><span class="serif">€79</span><span class="piano-per">/ mese</span></div>
+            <ul class="piano-list">
+              <li>5.000 email / mese</li>
+              <li>API REST + webhook</li>
+              <li>Domini multipli</li>
+              <li>SLA 99,9% + supporto prioritario</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="mail_business" data-atto="mail">Sottoscrivi Business</button>
+          </div>
+        </div>
+      </article>
+
+      <hr class="rule"/>
+
+      <!-- ===== ATTO VII — CERT (a consumo) ===== -->
+      <article class="atto-card">
+        <header class="atto-head">
+          <span class="atto-roman">vii</span>
+          <div>
+            <div class="eyebrow seal-c" style="letter-spacing: 0.32em;">Atto vii</div>
+            <h2 class="serif" style="font-size: 30px; margin: 4px 0 0;">Cert &mdash; credenziali e certificati istituzionali</h2>
+            <p class="atto-sub">Diplomi, ECM, attestati, batch GMP &mdash; verifica pubblica, audit-ready.</p>
+          </div>
+        </header>
+        <div class="piano-grid">
+          <div class="piano">
+            <div class="piano-tag">Starter</div>
+            <div class="piano-price"><span class="serif">€0,80</span><span class="piano-per">/ credenziale</span></div>
+            <ul class="piano-list">
+              <li>Pay-as-you-go, nessun minimo</li>
+              <li>PDF firmato + verifica pubblica</li>
+              <li>Template standard</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="cert_starter" data-atto="cert">Acquista crediti</button>
+          </div>
+          <div class="piano feat">
+            <div class="piano-tag">Pro &mdash; consigliato</div>
+            <div class="piano-price"><span class="serif">€0,50</span><span class="piano-per">/ credenziale</span></div>
+            <ul class="piano-list">
+              <li>Minimo 1.000 credenziali / anno</li>
+              <li>Template istituzionali personalizzati</li>
+              <li>Batch emission (CSV)</li>
+              <li>Audit trail 21 CFR Part 11</li>
+            </ul>
+            <button class="btn seal lg piano-cta" data-piano="cert_pro" data-atto="cert">Sottoscrivi Pro</button>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">Enterprise</div>
+            <div class="piano-price"><span class="serif">on demand</span><span class="piano-per">&nbsp;</span></div>
+            <ul class="piano-list">
+              <li>Volumi sopra 50.000 credenziali / anno</li>
+              <li>Bundle annuale a forfait</li>
+              <li>Onboarding dedicato</li>
+              <li>SLA personalizzato</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="enterprise" data-atto="cert">Contatta sales</button>
+          </div>
+        </div>
+      </article>
+
+      <hr class="rule"/>
+
+      <!-- ===== ATTO VI — TAG (a consumo) ===== -->
+      <article class="atto-card">
+        <header class="atto-head">
+          <span class="atto-roman">vi</span>
+          <div>
+            <div class="eyebrow seal-c" style="letter-spacing: 0.32em;">Atto vi</div>
+            <h2 class="serif" style="font-size: 30px; margin: 4px 0 0;">Tag &mdash; passaporti digitali per prodotti</h2>
+            <p class="atto-sub">QR e NFC certificati &mdash; conformi al Digital Product Passport (Reg. UE 2024/1781).</p>
+          </div>
+        </header>
+        <div class="piano-grid">
+          <div class="piano">
+            <div class="piano-tag">Starter</div>
+            <div class="piano-price"><span class="serif">€0,30</span><span class="piano-per">/ tag</span></div>
+            <ul class="piano-list">
+              <li>Pay-as-you-go, nessun minimo</li>
+              <li>QR statico</li>
+              <li>Verifica pubblica</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="tag_starter" data-atto="tag">Acquista crediti</button>
+          </div>
+          <div class="piano feat">
+            <div class="piano-tag">Pro &mdash; consigliato</div>
+            <div class="piano-price"><span class="serif">€0,15</span><span class="piano-per">/ tag</span></div>
+            <ul class="piano-list">
+              <li>Minimo 5.000 tag / anno</li>
+              <li>Trasferimento di propriet&agrave;</li>
+              <li>Batch emission</li>
+              <li>API REST</li>
+            </ul>
+            <button class="btn seal lg piano-cta" data-piano="tag_pro" data-atto="tag">Sottoscrivi Pro</button>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">Enterprise NFC</div>
+            <div class="piano-price"><span class="serif">on demand</span><span class="piano-per">&nbsp;</span></div>
+            <ul class="piano-list">
+              <li>NFC dinamico (chip programmabili)</li>
+              <li>Integrazione MES / ERP</li>
+              <li>Forfait annuale</li>
+              <li>DPP conformity tracker</li>
+            </ul>
+            <button class="btn ghost lg piano-cta" data-piano="enterprise" data-atto="tag">Contatta sales</button>
+          </div>
+        </div>
+      </article>
+
+      <hr class="rule"/>
+
+      <!-- ===== ATTI IV, V, VIII, IX — INCLUSI NEI PIANI ATTIVI ===== -->
+      <article class="atto-card">
+        <header class="atto-head">
+          <span class="atto-roman">iv-ix</span>
+          <div>
+            <div class="eyebrow seal-c" style="letter-spacing: 0.32em;">Atti iv &middot; v &middot; viii &middot; ix</div>
+            <h2 class="serif" style="font-size: 30px; margin: 4px 0 0;">Garanzie &middot; Registro &middot; Firma &middot; KYC</h2>
+            <p class="atto-sub">
+              Inclusi nei piani Business e disponibili come componenti aggiuntivi nei piani Pro.
+              Per volumi enterprise sono parte del contratto su misura.
+            </p>
+          </div>
+        </header>
+        <div class="piano-grid four">
+          <div class="piano">
+            <div class="piano-tag">Garanzie</div>
+            <div class="piano-price-small">Incluso Business</div>
+            <p class="small">Fideiussioni e cauzioni con verifica pubblica.</p>
+            <a class="link-seal small" href="garanzie.html">Modulo &rarr;</a>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">Registro</div>
+            <div class="piano-price-small">Incluso Pro+</div>
+            <p class="small">Archivio personale dei documenti sigillati con condivisione a scadenza.</p>
+            <a class="link-seal small" href="archivio.html">Modulo &rarr;</a>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">Firma</div>
+            <div class="piano-price-small">Incluso Pro+</div>
+            <p class="small">Firma elettronica avanzata via OTP, FEA conforme eIDAS art. 26.</p>
+            <a class="link-seal small" href="firma.html">Modulo &rarr;</a>
+          </div>
+          <div class="piano">
+            <div class="piano-tag">KYC</div>
+            <div class="piano-price-small">Add-on Enterprise</div>
+            <p class="small">Onboarding operatori economici, D.Lgs. 231/2007 ready.</p>
+            <a class="link-seal small" href="onboarding.html">Modulo &rarr;</a>
+          </div>
+        </div>
+      </article>
+
+      <hr class="rule"/>
+
+      <!-- ===== BLOCCO ENTERPRISE / SALES ===== -->
+      <article class="atto-card enterprise">
+        <header class="atto-head">
+          <span class="atto-roman">&infin;</span>
+          <div>
+            <div class="eyebrow seal-c" style="letter-spacing: 0.32em;">Piano Enterprise</div>
+            <h2 class="serif" style="font-size: 32px; margin: 4px 0 0;">Per gruppi industriali, banche, pubbliche amministrazioni.</h2>
+            <p class="atto-sub">
+              Contratto annuale, SLA personalizzato, DPO dedicato, integrazione SSO/SAML, deploy single-tenant in EU Ireland o Frankfurt.
+            </p>
+          </div>
+        </header>
+        <div class="enterprise-cta">
+          <button class="btn seal lg piano-cta" data-piano="enterprise" data-atto="enterprise" style="padding: 18px 28px;">
+            Richiedi un colloquio commerciale <span class="arrow"></span>
+          </button>
+          <a href="demo.html" class="link-seal small" style="margin-left: 18px;">Oppure prenota una demo &rarr;</a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- DOMANDE FREQUENTI -->
+    <section class="col-narrow" style="padding: 64px 32px 24px;">
+      <span class="section-num">Sezione &middot; chiarimenti</span>
+      <h2 class="serif" style="font-size: 36px; margin: 12px 0 24px;">Domande frequenti.</h2>
+
+      <details class="faq" open>
+        <summary>Posso iniziare gratis?</summary>
+        <p>S&igrave;. Tutti gli atti con piano Free attivano dieci o cinque atti al mese, sufficienti per validare il caso d'uso prima di sottoscrivere.</p>
+      </details>
+      <details class="faq">
+        <summary>Posso combinare pi&ugrave; piani?</summary>
+        <p>Certo: ogni atto si sottoscrive indipendentemente. Un avvocato pu&ograve; avere Mail Pro + Sigillo Pro senza Tag; una clinica pu&ograve; avere Cert Pro + Sigillo Business senza Send.</p>
+      </details>
+      <details class="faq">
+        <summary>Si paga in anticipo o a consumo?</summary>
+        <p>I piani Pro/Business sono in abbonamento mensile via Stripe. I piani Cert e Tag sono a consumo (pacchetti di crediti, scalati alla emissione).</p>
+      </details>
+      <details class="faq">
+        <summary>Come funziona la cancellazione?</summary>
+        <p>Si pu&ograve; cancellare in qualunque momento dal cruscotto. L'accesso resta attivo fino alla fine del periodo gi&agrave; pagato.</p>
+      </details>
+      <details class="faq">
+        <summary>Fattura elettronica?</summary>
+        <p>S&igrave;, fattura elettronica IT (Sistema di Interscambio) per partite IVA italiane. Per soggetti esteri fattura PDF con IVA esclusa (reverse charge intra-UE).</p>
+      </details>
+    </section>
+
+    <!-- Stato sistema -->
+    <div class="col-narrow" style="padding: 40px 32px 24px; text-align: center;">
+      <div class="mono" style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">
+        Stato servizio &middot; <span class="verify-c">operativo</span> &middot;
+        ultimo aggiornamento listino <span class="tabular">10&nbsp;giugno&nbsp;2026</span>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Listino &middot; rev. J1</span>
+    </div>
+  </footer>
+
+  <style>
+  .pricing-page { padding-bottom: 80px; }
+  .pricing-frame { max-width: 1180px; margin: 24px auto 0; padding: 0 32px; }
+
+  .atto-card { padding: 56px 0; }
+  .atto-head { display: grid; grid-template-columns: 80px 1fr; gap: 24px; align-items: start; margin-bottom: 36px; }
+  .atto-roman {
+    font-family: var(--serif); font-style: italic; font-size: 60px;
+    color: var(--seal); line-height: 1; padding-top: 4px;
+  }
+  .atto-sub { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink-2); margin: 10px 0 0; max-width: 60ch; }
+
+  .piano-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--ink);
+  }
+  .piano-grid.four { grid-template-columns: repeat(4, 1fr); }
+  .piano {
+    padding: 28px 24px 32px;
+    border-right: 1px solid var(--rule);
+    background: var(--paper);
+    display: flex; flex-direction: column;
+  }
+  .piano:last-child { border-right: 0; }
+  .piano.feat { background: var(--paper-2); position: relative; }
+  .piano.feat::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--seal);
+  }
+
+  .piano-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-2);
+    padding-bottom: 14px; border-bottom: var(--hairline); margin-bottom: 18px;
+  }
+  .piano-price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .piano-price .serif { font-size: 48px; line-height: 1; color: var(--ink); }
+  .piano-price .piano-per { font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.06em; }
+  .piano-price-small { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--seal); margin: 4px 0 14px; }
+
+  .piano-list { list-style: none; padding: 18px 0 24px; margin: 0; font-size: 14px; color: var(--ink-2); flex: 1; }
+  .piano-list li { padding: 6px 0 6px 18px; position: relative; }
+  .piano-list li::before {
+    content: ""; position: absolute; left: 0; top: 14px;
+    width: 8px; height: 1px; background: var(--seal);
+  }
+
+  .piano-cta { width: 100%; justify-content: center; margin-top: auto; }
+
+  .atto-card.enterprise {
+    background: var(--paper-2);
+    padding: 56px 56px 64px;
+    border: 1px solid var(--rule);
+    margin: 48px 0;
+  }
+  .enterprise-cta { display: flex; align-items: center; margin-top: 24px; }
+
+  /* FAQ */
+  .faq {
+    border-bottom: var(--hairline);
+    padding: 18px 0;
+  }
+  .faq summary {
+    font-family: var(--serif); font-size: 20px; cursor: pointer; color: var(--ink);
+    list-style: none;
+    position: relative; padding-right: 32px;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+"; position: absolute; right: 0; top: 0;
+    font-family: var(--mono); font-size: 18px; color: var(--seal);
+  }
+  .faq[open] summary::after { content: "−"; }
+  .faq p { margin: 12px 0 0; font-size: 15px; color: var(--ink-2); }
+
+  /* Bottoni reuse-friendly */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid var(--ink); padding: 14px 20px;
+    font-family: var(--sans); font-size: 13px; letter-spacing: 0.04em;
+    background: transparent; color: var(--ink); cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .btn.lg { padding: 16px 24px; font-size: 14px; }
+  .btn.ghost:hover { background: var(--ink); color: var(--paper); }
+  .btn.seal { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+  .btn.seal:hover { background: var(--seal-2); border-color: var(--seal-2); }
+  .btn .arrow::after { content: "→"; font-family: var(--mono); }
+
+  @media (max-width: 880px) {
+    .piano-grid, .piano-grid.four { grid-template-columns: 1fr; }
+    .piano { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .piano:last-child { border-bottom: 0; }
+    .atto-head { grid-template-columns: 56px 1fr; gap: 16px; }
+    .atto-roman { font-size: 44px; }
+    .atto-card.enterprise { padding: 36px 24px; }
+    .enterprise-cta { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+  </style>
+
+  <script>
+    // =============================================================
+    // Pricing → stripe-checkout
+    // =============================================================
+    // Configurazione via window.VEYLON_CONFIG (settata da config esterno)
+    const SUPABASE_URL = (window.VEYLON_CONFIG && window.VEYLON_CONFIG.SUPABASE_URL)
+      || 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+
+    function getSessionToken() {
+      try {
+        const raw = localStorage.getItem('veylon_session');
+        if (!raw) return null;
+        const s = JSON.parse(raw);
+        return s && s.access_token ? s.access_token : null;
+      } catch { return null; }
+    }
+
+    async function startCheckout(piano, atto) {
+      // Plausible: log custom event (no-op se Plausible non caricato)
+      if (window.plausible) {
+        window.plausible('subscribe_clicked', { props: { piano: piano, atto: atto } });
+      }
+
+      // Piano "free" → diretto al signup
+      if (piano === 'free') {
+        location.href = 'login.html?next=' + encodeURIComponent('dashboard.html?welcome=free');
+        return;
+      }
+
+      // Piano "enterprise" → form demo precompilato
+      if (piano === 'enterprise') {
+        location.href = 'demo.html?settore=enterprise&atto=' + encodeURIComponent(atto || '');
+        return;
+      }
+
+      const token = getSessionToken();
+      if (!token) {
+        // Non loggato → vai al login, ritorna qui dopo
+        location.href = 'login.html?next=' + encodeURIComponent('pricing.html?piano=' + piano);
+        return;
+      }
+
+      try {
+        const res = await fetch(SUPABASE_URL + '/functions/v1/stripe-checkout', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            piano: piano,
+            success_url: location.origin + '/dashboard.html?subscribed=ok&piano=' + piano,
+            cancel_url: location.origin + '/pricing.html?cancelled=1',
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          alert('Impossibile avviare il checkout: ' + (data.error || res.status));
+          return;
+        }
+        if (data.demo_mode) {
+          alert('Modalita\' demo attiva (Stripe non configurato).\nPiano: ' + data.piano_label
+                + '\nImporto indicativo: €' + data.importo_eur + ' / ' + data.intervallo
+                + '\n\nRedirect a demo URL.');
+          location.href = data.demo_checkout_url;
+          return;
+        }
+        if (data.contact_sales) {
+          location.href = data.contact_url;
+          return;
+        }
+        location.href = data.checkout_url;
+      } catch (e) {
+        alert('Errore di rete. Riprovare tra qualche istante.');
+      }
+    }
+
+    document.querySelectorAll('.piano-cta').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const piano = btn.getAttribute('data-piano');
+        const atto = btn.getAttribute('data-atto');
+        startCheckout(piano, atto);
+      });
+    });
+
+    // Pre-seleziona piano da query string
+    const params = new URLSearchParams(location.search);
+    const preselect = params.get('piano');
+    if (preselect) {
+      const target = document.querySelector('[data-piano="' + CSS.escape(preselect) + '"]');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.style.outline = '2px solid var(--seal)';
+        setTimeout(() => target.style.outline = '', 1800);
+      }
+    }
+  </script>
+</body>
+</html>
