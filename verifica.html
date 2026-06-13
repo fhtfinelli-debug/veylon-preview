@@ -966,11 +966,13 @@
   renderRecents();
   </script>
 
-  <script>
-    document.getElementById('logout')?.addEventListener('click', e => {
+  <script type="module">
+    // verifica.html e' pubblica: nessuna guard, ma se l'utente e' autenticato
+    // il link "Esci" deve chiudere correttamente la sessione Supabase.
+    import { signOut } from "./_shared/supabase-client.js";
+    document.getElementById('logout')?.addEventListener('click', (e) => {
       e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
+      signOut("login.html?signedout=ok");
     });
   </script>
 </body>

@@ -4,811 +4,125 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON Mail · Email certificate</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VII</span>
-        <span class="sep">·</span>
-        <span>Email certificate</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Email certificate</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
       <nav class="masthead-nav full">
         <a href="dashboard.html">Cruscotto</a>
-        <a href="notarizza.html">Sigillo</a>
-        <a href="invia.html">Send</a>
         <a href="mail.html" class="current">Mail</a>
-        <a href="firma.html">Firma</a>
-        <a href="garanzie.html">Garanzie</a>
-        <a href="onboarding.html">KYC</a>
-        <a href="tag.html">Tag</a>
-        <a href="cert.html">Cert</a>
         <a href="archivio.html">Archivio</a>
-        <a href="verifica.html">Verifica</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
-    <div class="masthead-band">
-      <div class="masthead-band-inner">
-        <span>Casella attiva: <strong style="color: var(--ink);" class="mono">stamp.bertolaso@veylon.it</strong></span>
-        <span>D.Lgs. 82/2005 &middot; CAD &mdash; <span class="verify-c">conforme</span></span>
-      </div>
-    </div>
   </header>
 
-  <main class="col" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">Sezione VII &middot; Email certificate</span>
-      <span class="roman">vii</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 18ch;">
-      Tre ricevute, su <em class="serif-italic" style="color: var(--seal);">qualsiasi casella.</em>
-    </h1>
-    <p class="lede" style="margin-top: 28px; max-width: 48ch;">
-      Per ogni email vengono emessi tre certificati indipendenti, ancorati a Bitcoin.
-      Funziona con la vostra casella esistente, anche fuori d'Italia.
-    </p>
-
-    <!-- Le tre ricevute spiegate sinteticamente -->
-    <div class="three-rcpt" style="margin-top: 56px;">
-      <div class="rcpt">
-        <div class="rcpt-num">I.</div>
-        <div class="rcpt-tag eyebrow seal-c">Ricevuta di invio</div>
-        <h3 class="serif">Attesta la presa in carico per la trasmissione.</h3>
-        <p class="body" style="font-size: 13px;">Mittente, destinatari, oggetto, hash del contenuto. Emessa entro pochi secondi.</p>
-        <div class="rcpt-when mono">testé · entro 5&nbsp;sec</div>
-      </div>
-      <div class="rcpt">
-        <div class="rcpt-num">II.</div>
-        <div class="rcpt-tag eyebrow seal-c">Ricevuta di consegna</div>
-        <h3 class="serif">Attesta l'accettazione dal server di destinazione.</h3>
-        <p class="body" style="font-size: 13px;">Server SMTP destinatario, codice di risposta, DSN (RFC 3464). Modalità Relay.</p>
-        <div class="rcpt-when mono">entro pochi minuti</div>
-      </div>
-      <div class="rcpt">
-        <div class="rcpt-num">III.</div>
-        <div class="rcpt-tag eyebrow seal-c">Contenuto sigillato</div>
-        <h3 class="serif">Inscrive il contenuto integrale sulla blockchain.</h3>
-        <p class="body" style="font-size: 13px;">Corpo + allegati canonicalizzati. Verificabile per sempre, anche senza VEYLON.</p>
-        <div class="rcpt-when mono">immutabile</div>
-      </div>
-    </div>
-
-    <!-- Configurazione: due modalità -->
-    <section style="margin-top: 96px;">
-      <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-        <span class="section-num">§ Configurazione</span>
-        <span class="roman">viii</span>
-      </div>
-      <h2 class="serif" style="font-size: clamp(32px, 4vw, 42px); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 32px; max-width: 22ch;">
-        Tre modalità d'impiego, <em class="serif-italic" style="color: var(--seal);">a scelta.</em>
-      </h2>
-
-      <div class="modes">
-        <div class="mode-card">
-          <div class="mode-head">
-            <div class="mode-letter">A</div>
-            <div>
-              <div class="eyebrow">Modalità più semplice</div>
-              <h3 class="serif">In copia conoscenza (CCN)</h3>
-            </div>
-          </div>
-          <p class="body" style="font-size: 14px;">
-            Inserire la vostra casella di sigillo in CCN ad ogni messaggio importante.
-            Si ottengono <em class="serif-italic">Ricevuta di invio</em> e
-            <em class="serif-italic">Contenuto sigillato.</em>
-          </p>
-          <div class="mode-addr">
-            <div class="eyebrow" style="margin-bottom: 8px;">Vostra casella sigillo</div>
-            <div class="addr-row">
-              <span class="mono" id="addr">stamp.bertolaso@veylon.it</span>
-              <button class="addr-copy" onclick="copyAddr()">Copia</button>
-            </div>
-          </div>
-          <p class="small" style="margin-top: 14px;">Indicato per: corrispondenza professionale ordinaria, comunicazioni B2B.</p>
-        </div>
-
-        <div class="mode-card selected">
-          <div class="mode-head">
-            <div class="mode-letter">B</div>
-            <div>
-              <div class="eyebrow">Modalità completa</div>
-              <h3 class="serif">Relay SMTP outbound</h3>
-            </div>
-          </div>
-          <p class="body" style="font-size: 14px;">
-            Si configura VEYLON come server SMTP nel proprio client. Si ottengono
-            <em class="serif-italic">tutte e tre</em> le ricevute, comprensiva di
-            <em class="serif-italic">consegna alla casella.</em>
-          </p>
-          <div class="mode-smtp">
-            <div class="smtp-row"><span class="smtp-k">Server</span><span class="smtp-v mono">smtp.veylon.it</span></div>
-            <div class="smtp-row"><span class="smtp-k">Porta</span><span class="smtp-v mono">587 · STARTTLS</span></div>
-            <div class="smtp-row"><span class="smtp-k">Utente</span><span class="smtp-v mono">studio.bertolaso</span></div>
-            <div class="smtp-row"><span class="smtp-k">Password</span><span class="smtp-v mono">●●●●●●●●●●●●&nbsp;&nbsp;<a href="#" style="color: var(--seal); border-bottom: 1px solid var(--seal); font-family: var(--sans); font-size: 12px;">rigenera</a></span></div>
-          </div>
-          <p class="small" style="margin-top: 14px;">Indicato per: lettere di diffida, comunicazioni di interruzione contrattuale, atti di rilievo.</p>
-        </div>
-        <div class="mode-card">
-          <div class="mode-head">
-            <div class="mode-letter">C</div>
-            <div>
-              <div class="eyebrow">Modalità in ingresso</div>
-              <h3 class="serif">Vault &mdash; casella certificata</h3>
-            </div>
-          </div>
-          <p class="body" style="font-size: 14px;">
-            VEYLON ospita una casella dedicata. Ogni email <em class="serif-italic">in arrivo</em>
-            viene automaticamente sigillata. Indicato per ricevere comunicazioni
-            ufficiali da terzi con prova certificata.
-          </p>
-          <div class="mode-addr">
-            <div class="eyebrow" style="margin-bottom: 8px;">Vostra casella in ingresso</div>
-            <div class="addr-row">
-              <span class="mono">contratti.bertolaso@vault.veylon.it</span>
-              <button class="addr-copy" onclick="copyVault()">Copia</button>
-            </div>
-          </div>
-          <p class="small" style="margin-top: 14px;">Inoltrate qui o comunicate ai mittenti. Ogni messaggio è archiviato sigillato.</p>
-        </div>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Mail</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Email <em class="serif-italic" style="color: var(--seal);">certificate.</em>
+        </h1>
+        <p class="lede">Ogni email che invii viene tracciata, marcata temporalmente e archiviata.</p>
       </div>
     </section>
 
-    <!-- Dashboard repertorio email -->
-    <section style="margin-top: 96px;">
-      <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-        <span class="section-num">§ Repertorio &middot; ultimi 30 giorni</span>
-        <span class="roman">ix</span>
-      </div>
-
-      <!-- Cruscotto -->
-      <div class="dashboard">
-        <div class="dash-cell">
-          <div class="eyebrow">Email certificate</div>
-          <div class="dash-num">218</div>
-          <div class="dash-foot">Ultimi 30 giorni</div>
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 14px;">Le tue email certificate</h2>
+        <div id="state-loading" class="state-msg">Caricamento email&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden>
+          <span></span> <button class="link-seal" id="retry" type="button">Riprova</button>
         </div>
-        <div class="dash-cell">
-          <div class="eyebrow">Tutte e 3 ricevute</div>
-          <div class="dash-num verify-c">196</div>
-          <div class="dash-foot">Consegna confermata</div>
+        <div id="state-empty" class="state-msg" hidden>
+          Non hai ancora inviato email certificate.
+          <a href="invia.html" class="link-seal">Apri una trasmissione &rarr;</a>
         </div>
-        <div class="dash-cell">
-          <div class="eyebrow">Consegna in attesa</div>
-          <div class="dash-num seal-c">14</div>
-          <div class="dash-foot">Server destinatario non risponde</div>
-        </div>
-        <div class="dash-cell">
-          <div class="eyebrow">Respinte</div>
-          <div class="dash-num">8</div>
-          <div class="dash-foot">Bounce — casella inesistente</div>
-        </div>
-        <div class="dash-cell">
-          <div class="eyebrow">Tempo medio consegna</div>
-          <div class="dash-num mono">3.4<span style="font-size: 18px;">&nbsp;sec</span></div>
-          <div class="dash-foot">Su tutti i destinatari</div>
-        </div>
-      </div>
-
-      <div class="mail-list">
-        <div class="ml-head">
-          <span class="eyebrow">Email certificate</span>
-          <div class="ml-filt">
-            <button class="ml-tab active">Tutte</button>
-            <button class="ml-tab">Consegnate</button>
-            <button class="ml-tab">In attesa</button>
-            <button class="ml-tab">Respinte</button>
-          </div>
-        </div>
-
-        <a href="#detail" class="ml-item selected" data-from="avv.bertolaso@studiobertolaso.it" data-to="avv.romagnoli@studiormg.it" data-subj="Atto di diffida — Rep. 2026/0148" data-date="07 giu 14:38:02" data-datehead="7 giugno 2026 · ore 14:38:02 CEST" data-attach="2 documenti · 412 KB · 218 KB" data-proto="VLN-ML-2026-A8F4C2D1" data-hash="a8f4 c2d1 … 7b39" data-hashtot="e3b0 c442 … b855" data-mx="mx.studiormg.it" data-block="874.201" data-delivery="2.1 sec dopo l'invio" data-smtp="250 2.0.0 OK" data-status1="ok" data-status2="ok" data-status3="ok" data-status1lbl="Confermata" data-status2lbl="Confermata" data-status3lbl="Confermata">
-          <div class="ml-meta">
-            <span class="ml-from mono">→ avv.romagnoli@studiormg.it</span>
-            <div class="ml-stats">
-              <span class="rcpt-pill ok">I</span>
-              <span class="rcpt-pill ok">II</span>
-              <span class="rcpt-pill ok">III</span>
-            </div>
-          </div>
-          <div class="ml-subj">Atto di diffida &mdash; Rep. 2026/0148</div>
-          <div class="ml-foot mono">07&nbsp;giu &middot; 14:38 &middot; consegnata in 2.1&nbsp;sec &middot; <span class="verify-c">tutte e 3</span></div>
-        </a>
-
-        <a href="#detail" class="ml-item" data-from="avv.bertolaso@studiobertolaso.it" data-to="ufficio.gare@comune.mortara.pv.it" data-subj="Trasmissione documentazione gara CIG 9876543210" data-date="07 giu 11:22:18" data-datehead="7 giugno 2026 · ore 11:22:18 CEST" data-attach="6 documenti · 4,2 MB totali" data-proto="VLN-ML-2026-D71B7E6C" data-hash="d71b 7e6c … 8a9f" data-hashtot="3210 ab44 … 5678" data-mx="mx.comune.mortara.pv.it" data-block="874.198" data-delivery="4.7 sec dopo l'invio" data-smtp="250 2.0.0 OK" data-status1="ok" data-status2="ok" data-status3="ok" data-status1lbl="Confermata" data-status2lbl="Confermata" data-status3lbl="Confermata">
-          <div class="ml-meta">
-            <span class="ml-from mono">→ ufficio.gare@comune.mortara.pv.it</span>
-            <div class="ml-stats">
-              <span class="rcpt-pill ok">I</span>
-              <span class="rcpt-pill ok">II</span>
-              <span class="rcpt-pill ok">III</span>
-            </div>
-          </div>
-          <div class="ml-subj">Trasmissione documentazione gara CIG 9876543210</div>
-          <div class="ml-foot mono">07&nbsp;giu &middot; 11:22 &middot; consegnata in 4.7&nbsp;sec</div>
-        </a>
-
-        <a href="#detail" class="ml-item" data-from="avv.bertolaso@studiobertolaso.it" data-to="dr.bianchi@studiolegale.it, c.rossi@studiolegale.it" data-subj="Proposta transattiva — Vitali / Lemania S.p.A." data-date="07 giu 10:04:55" data-datehead="7 giugno 2026 · ore 10:04:55 CEST" data-attach="3 documenti · 894 KB totali" data-proto="VLN-ML-2026-9F02AC1D" data-hash="9f02 ac1d … 5f7b" data-hashtot="3b5e 7c9f … 1c3a" data-mx="mx.studiolegale.it" data-block="874.182" data-delivery="in attesa — server lento" data-smtp="220 ESMTP ready" data-status1="ok" data-status2="pending" data-status3="ok" data-status1lbl="Confermata" data-status2lbl="In attesa" data-status3lbl="Confermata">
-          <div class="ml-meta">
-            <span class="ml-from mono">→ dr.bianchi@studiolegale.it, c.rossi@studiolegale.it</span>
-            <div class="ml-stats">
-              <span class="rcpt-pill ok">I</span>
-              <span class="rcpt-pill pending">II</span>
-              <span class="rcpt-pill ok">III</span>
-            </div>
-          </div>
-          <div class="ml-subj">Proposta transattiva &mdash; Vitali / Lemania S.p.A.</div>
-          <div class="ml-foot mono">07&nbsp;giu &middot; 10:04 &middot; <span class="seal-c">consegna in attesa</span></div>
-        </a>
-
-        <a href="#detail" class="ml-item" data-from="avv.bertolaso@studiobertolaso.it" data-to="amministrazione@hekla-studio.it" data-subj="Notula onorari — Q2 2026" data-date="06 giu 17:30:42" data-datehead="6 giugno 2026 · ore 17:30:42 CEST" data-attach="1 documento · 124 KB" data-proto="VLN-ML-2026-7E4A3C8B" data-hash="7e4a 3c8b … 0d3e" data-hashtot="1f9d 2e6a … 5c8d" data-mx="mx.hekla-studio.it" data-block="874.151" data-delivery="1.8 sec dopo l'invio" data-smtp="250 2.0.0 OK" data-status1="ok" data-status2="ok" data-status3="ok" data-status1lbl="Confermata" data-status2lbl="Confermata" data-status3lbl="Confermata">
-          <div class="ml-meta">
-            <span class="ml-from mono">→ amministrazione@hekla-studio.it</span>
-            <div class="ml-stats">
-              <span class="rcpt-pill ok">I</span>
-              <span class="rcpt-pill ok">II</span>
-              <span class="rcpt-pill ok">III</span>
-            </div>
-          </div>
-          <div class="ml-subj">Notula onorari &mdash; Q2 2026</div>
-          <div class="ml-foot mono">06&nbsp;giu &middot; 17:30 &middot; consegnata in 1.8&nbsp;sec</div>
-        </a>
-
-        <a href="#detail" class="ml-item" data-from="avv.bertolaso@studiobertolaso.it" data-to="direzione@asl-roma2.it" data-subj="Comunicazione conclusione mandato 2024/0382" data-date="06 giu 09:18:00" data-datehead="6 giugno 2026 · ore 09:18:00 CEST" data-attach="2 documenti · 318 KB" data-proto="VLN-ML-2026-3C71B8A2" data-hash="3c71 b8a2 … 6a8c" data-hashtot="2d81 f4b6 … 4a6c" data-mx="mx.asl-roma2.it" data-block="—" data-delivery="bounce SMTP" data-smtp="550 5.1.1 mailbox unavailable" data-status1="ok" data-status2="ko" data-status3="ok" data-status1lbl="Confermata" data-status2lbl="Respinta" data-status3lbl="Confermata">
-          <div class="ml-meta">
-            <span class="ml-from mono">→ direzione@asl-roma2.it</span>
-            <div class="ml-stats">
-              <span class="rcpt-pill ok">I</span>
-              <span class="rcpt-pill ko">II</span>
-              <span class="rcpt-pill ok">III</span>
-            </div>
-          </div>
-          <div class="ml-subj">Comunicazione conclusione mandato 2024/0382</div>
-          <div class="ml-foot mono">06&nbsp;giu &middot; 09:18 &middot; <span class="seal-c">casella destinatario inesistente</span></div>
-        </a>
-      </div>
-    </section>
-
-    <!-- DETTAGLIO: tre ricevute per una singola email -->
-    <section id="detail" style="margin-top: 96px;">
-      <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
-        <span class="section-num">§ Dettaglio &middot; email selezionata</span>
-        <span class="roman">x</span>
-      </div>
-
-      <div class="email-detail">
-        <div class="ed-head">
-          <div class="eyebrow seal-c" style="margin-bottom: 14px;" id="d-datehead">Email del 7 giugno 2026 · ore 14:38:02 CEST</div>
-          <h2 class="serif" style="font-size: 32px; line-height: 1.15; margin: 0 0 16px;" id="d-subj">Atto di diffida — Rep. 2026/0148</h2>
-          <div class="ed-headers">
-            <div class="ed-row"><div class="ed-k">Da</div><div class="ed-v mono" id="d-from">avv.bertolaso@studiobertolaso.it</div></div>
-            <div class="ed-row"><div class="ed-k">A</div><div class="ed-v mono" id="d-to">avv.romagnoli@studiormg.it</div></div>
-            <div class="ed-row"><div class="ed-k">Allegati</div><div class="ed-v" id="d-attach">2 documenti · 412 KB · 218 KB</div></div>
-            <div class="ed-row" style="border-bottom: 0;"><div class="ed-k">Codice protocollo</div><div class="ed-v mono" id="d-proto">VLN-ML-2026-A8F4C2D1</div></div>
-          </div>
-        </div>
-
-        <hr class="rule" style="margin: 40px 0;"/>
-
-        <!-- TRE CERTIFICATI affiancati -->
-        <div class="three-certs">
-          <!-- Ricevuta di Invio -->
-          <article class="cert-tile">
-            <div class="cert-tile-head">
-              <span class="cert-roman">I</span>
-              <div>
-                <div class="eyebrow">Ricevuta di invio</div>
-                <h4 class="serif">Presa in carico</h4>
-              </div>
-              <span class="status confirmed" id="d-status1" style="margin-left: auto;"><span class="dot"></span>Confermata</span>
-            </div>
-            <div class="cert-tile-grid">
-              <div class="ct-row"><div class="ct-k">Emessa il</div><div class="ct-v mono" id="d-date">07 giu 14:38:02</div></div>
-              <div class="ct-row"><div class="ct-k">Hash messaggio</div><div class="ct-v mono" id="d-hash">a8f4 c2d1 … 7b39</div></div>
-              <div class="ct-row"><div class="ct-k">Blocco Bitcoin</div><div class="ct-v mono" id="d-block">#&nbsp;874.201</div></div>
-              <div class="ct-row" style="border-bottom:0;"><div class="ct-k">Documento</div><div class="ct-v"><a class="link-seal" href="certificato.html">Apri certificato</a></div></div>
-            </div>
-          </article>
-
-          <!-- Ricevuta di Consegna -->
-          <article class="cert-tile">
-            <div class="cert-tile-head">
-              <span class="cert-roman">II</span>
-              <div>
-                <div class="eyebrow">Ricevuta di consegna</div>
-                <h4 class="serif">Accettata dal server</h4>
-              </div>
-              <span class="status confirmed" id="d-status2" style="margin-left: auto;"><span class="dot"></span>Confermata</span>
-            </div>
-            <div class="cert-tile-grid">
-              <div class="ct-row"><div class="ct-k">Server destinatario</div><div class="ct-v mono" id="d-mx">mx.studiormg.it</div></div>
-              <div class="ct-row"><div class="ct-k">Risposta SMTP</div><div class="ct-v mono" id="d-smtp">250 2.0.0 OK</div></div>
-              <div class="ct-row"><div class="ct-k">Consegnata in</div><div class="ct-v mono" id="d-delivery">2.1 sec dopo l'invio</div></div>
-              <div class="ct-row" style="border-bottom:0;"><div class="ct-k">DSN RFC&nbsp;3464</div><div class="ct-v"><a class="link-seal" href="#">Scarica .eml</a></div></div>
-            </div>
-          </article>
-
-          <!-- Contenuto Sigillato -->
-          <article class="cert-tile">
-            <div class="cert-tile-head">
-              <span class="cert-roman">III</span>
-              <div>
-                <div class="eyebrow">Contenuto sigillato</div>
-                <h4 class="serif">Immutabile per sempre</h4>
-              </div>
-              <span class="status confirmed" id="d-status3" style="margin-left: auto;"><span class="dot"></span>Confermata</span>
-            </div>
-            <div class="cert-tile-grid">
-              <div class="ct-row"><div class="ct-k">Corpo + allegati</div><div class="ct-v mono">canonicalizzati</div></div>
-              <div class="ct-row"><div class="ct-k">SHA-256 totale</div><div class="ct-v mono" id="d-hashtot">e3b0 c442 … b855</div></div>
-              <div class="ct-row"><div class="ct-k">Verificabile su</div><div class="ct-v mono">Bitcoin mainnet</div></div>
-              <div class="ct-row" style="border-bottom:0;"><div class="ct-k">Verifica</div><div class="ct-v"><a class="link-seal" href="verifica.html">Apri verificatore</a></div></div>
-            </div>
-          </article>
-        </div>
-
-        <!-- Anteprima contenuto canonicalizzato -->
-        <div style="margin-top: 48px;">
-          <div class="eyebrow" style="margin-bottom: 14px;">Anteprima del messaggio canonicalizzato</div>
-          <pre class="mail-preview" id="d-preview">From: avv.bertolaso@studiobertolaso.it
-To: avv.romagnoli@studiormg.it
-Subject: Atto di diffida — Rep. 2026/0148
-Date: Sat, 07 Jun 2026 14:38:02 +0200
-Message-ID: &lt;a8f4c2d1.veylon@studiobertolaso.it&gt;
-Content-Type: multipart/mixed
-
-  Egregio Collega,
-
-  in nome e per conto del mio assistito Sig. Marco Vitali,
-  con la presente diffido formalmente il Vs. assistito al
-  pagamento dell'importo di € 48.500,00 (…)
-  </pre>
-        </div>
-
-        <div class="row row-gap" style="margin-top: 36px; flex-wrap: wrap;">
-          <a class="btn" href="certificato.html">Certificato consolidato &middot; PDF</a>
-          <a class="btn ghost" href="verifica.html">Verifica indipendente</a>
-          <button class="btn ghost">Esporta tutto &middot; .zip</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Confronto con PEC -->
-    <section style="margin-top: 96px;">
-      <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
-        <span class="section-num">§ Confronto con la PEC</span>
-        <span class="roman">xi</span>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start;">
-        <div>
-          <h2 class="serif" style="font-size: clamp(28px, 3.4vw, 38px); line-height: 1.1; margin: 0 0 18px; max-width: 18ch;">
-            VEYLON Mail rispetto alla <em class="serif-italic" style="color: var(--seal);">PEC.</em>
-          </h2>
-          <p class="body" style="max-width: 48ch;">
-            Copre l'ottanta-novanta percento delle comunicazioni commerciali ove
-            oggi si usa la PEC per scrupolo legale, senza sostituirla nei casi in
-            cui la legge la richieda tassativamente (art. 149-bis c.p.c.).
-          </p>
-        </div>
-        <table class="compare-table">
-          <thead>
-            <tr><th>&nbsp;</th><th>PEC</th><th class="emph">VEYLON Mail</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Casella d'origine</td><td>solo @pec.it</td><td class="emph">qualsiasi casella</td></tr>
-            <tr><td>Validità all'estero</td><td>Italia</td><td class="emph">UE via eIDAS</td></tr>
-            <tr><td>Ricevuta di accettazione</td><td>✓</td><td class="emph">✓</td></tr>
-            <tr><td>Ricevuta di consegna</td><td>solo a @pec.it</td><td class="emph">a qualsiasi server SMTP</td></tr>
-            <tr><td>Contenuto sigillato</td><td>—</td><td class="emph">verificabile per sempre</td></tr>
-            <tr><td>Cambio indirizzo</td><td>nuova @pec.it</td><td class="emph">mantieni il tuo</td></tr>
-            <tr><td class="last">Atti giudiziari (art. 149-bis)</td><td class="last">✓ obbligatoria</td><td class="last emph">— rimane PEC</td></tr>
-          </tbody>
+        <table class="t" id="tbl" hidden>
+          <thead><tr><th>Data</th><th>Destinatario</th><th>Oggetto</th><th>Stato</th></tr></thead>
+          <tbody id="rows"></tbody>
         </table>
-      </div>
+      </article>
     </section>
-
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
-      <span>Sezione VII &mdash; Mail</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Email certificate</span></div></footer>
 
   <style>
-  /* Tre ricevute: spiegazione sintetica */
-  .three-rcpt {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border: 1px solid var(--ink);
-  }
-  .rcpt {
-    padding: 32px 28px;
-    border-right: 1px solid var(--rule);
-    background: var(--paper);
-  }
-  .rcpt:last-child { border-right: 0; }
-  .rcpt-num {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 36px;
-    color: var(--seal);
-    line-height: 1;
-    margin-bottom: 18px;
-  }
-  .rcpt-tag { margin-bottom: 14px; }
-  .rcpt h3 {
-    font-size: 22px;
-    line-height: 1.22;
-    margin: 0 0 14px;
-    max-width: 22ch;
-  }
-  .rcpt-when {
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin-top: 16px;
-  }
-
-  /* Modalità d'impiego */
-  .modes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .mode-card {
-    border: 1px solid var(--ink);
-    background: var(--paper);
-    padding: 32px;
-  }
-  .mode-card.selected {
-    background: var(--paper-2);
-    border-left: 4px solid var(--seal);
-    padding-left: 28px;
-  }
-  .mode-head {
-    display: flex; gap: 18px; align-items: center;
-    margin-bottom: 18px;
-  }
-  .mode-letter {
-    width: 48px; height: 48px;
-    border: 1px solid var(--ink);
-    display: grid; place-items: center;
-    font-family: var(--serif);
-    font-size: 28px;
-    color: var(--ink);
-    font-style: italic;
-    flex-shrink: 0;
-  }
-  .mode-card.selected .mode-letter { background: var(--seal); color: var(--paper); border-color: var(--seal); }
-  .mode-head h3 { font-size: 22px; line-height: 1.2; margin: 4px 0 0; }
-
-  .mode-addr { margin-top: 18px; padding: 16px; background: var(--paper); border: 1px solid var(--rule); }
-  .addr-row {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 15px;
-  }
-  .addr-row .mono { flex: 1; color: var(--ink); letter-spacing: 0.04em; word-break: break-all; }
-  .addr-copy {
-    background: var(--ink); color: var(--paper);
-    border: 0; padding: 8px 14px;
-    font-family: var(--mono); font-size: 10.5px;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    cursor: pointer;
-  }
-  .addr-copy:hover { background: var(--seal); }
-
-  .mode-smtp { margin-top: 18px; }
-  .smtp-row {
-    display: grid; grid-template-columns: 100px 1fr; gap: 16px;
-    padding: 8px 0; border-bottom: 1px solid var(--rule-2);
-  }
-  .smtp-row:last-child { border-bottom: 0; }
-  .smtp-k {
-    font-family: var(--mono); font-size: 10.5px;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
-  }
-  .smtp-v.mono { font-size: 13px; color: var(--ink); }
-
-  /* Dashboard */
-  .dashboard {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-    margin-bottom: 48px;
-  }
-  .dash-cell {
-    padding: 28px 24px;
-    border-right: 1px solid var(--rule);
-  }
-  .dash-cell:last-child { border-right: 0; }
-  .dash-num {
-    font-family: var(--serif);
-    font-size: 44px;
-    line-height: 1;
-    margin: 14px 0 12px;
-    letter-spacing: -0.015em;
-  }
-  .dash-foot {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-
-  /* Lista email */
-  .mail-list {
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-  }
-  .ml-head {
-    padding: 16px 24px;
-    background: var(--paper-2);
-    border-bottom: 1px solid var(--rule);
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 12px;
-  }
-  .ml-filt { display: flex; gap: 16px; }
-  .ml-tab {
-    background: transparent; border: 0;
-    font-family: var(--mono); font-size: 10.5px;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--ink-3);
-    padding: 6px 0;
-    border-bottom: 1px solid transparent;
-    cursor: pointer;
-  }
-  .ml-tab.active { color: var(--ink); border-bottom-color: var(--seal); }
-
-  .ml-item {
-    display: block;
-    padding: 22px 24px;
-    border-bottom: 1px solid var(--rule-2);
-    transition: background .15s;
-  }
-  .ml-item:hover { background: var(--paper-2); }
-  .ml-item.selected {
-    background: var(--paper-2);
-    border-left: 3px solid var(--seal);
-    padding-left: 21px;
-  }
-  .ml-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 6px; }
-  .ml-from { font-size: 11.5px; color: var(--ink-3); letter-spacing: 0.04em; }
-  .ml-subj {
-    font-family: var(--serif); font-size: 18px;
-    line-height: 1.2; color: var(--ink); letter-spacing: -0.005em;
-  }
-  .ml-foot {
-    font-size: 11px; color: var(--ink-3);
-    margin-top: 8px; letter-spacing: 0.06em;
-  }
-  .ml-stats { display: flex; gap: 6px; }
-  .rcpt-pill {
-    width: 24px; height: 24px;
-    display: grid; place-items: center;
-    font-family: var(--mono); font-size: 11px;
-    border: 1px solid var(--rule);
-    color: var(--ink-3);
-  }
-  .rcpt-pill.ok { background: var(--verify); color: var(--paper); border-color: var(--verify); }
-  .rcpt-pill.pending {
-    background: var(--paper); color: var(--amber); border-color: var(--amber);
-    animation: pulse 1.8s ease-in-out infinite;
-  }
-  .rcpt-pill.ko { background: var(--seal); color: var(--paper); border-color: var(--seal); }
-
-  /* Dettaglio email */
-  .email-detail {
-    background: var(--paper);
-    border: 1px solid var(--ink);
-    padding: 40px 44px;
-  }
-  .ed-headers { display: flex; flex-direction: column; margin-top: 18px; border-top: 1px solid var(--rule-2); }
-  .ed-row {
-    display: grid; grid-template-columns: 160px 1fr; gap: 16px;
-    padding: 10px 0; border-bottom: 1px solid var(--rule-2);
-    align-items: baseline;
-  }
-  .ed-k {
-    font-family: var(--mono); font-size: 10.5px;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
-  }
-  .ed-v { font-size: 14px; color: var(--ink); }
-  .ed-v.mono { font-family: var(--mono); font-size: 13px; }
-
-  /* Tre certificati */
-  .three-certs {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border: 1px solid var(--rule);
-  }
-  .cert-tile {
-    padding: 24px;
-    border-right: 1px solid var(--rule);
-    background: var(--paper-2);
-  }
-  .cert-tile:last-child { border-right: 0; }
-  .cert-tile-head {
-    display: flex; gap: 14px; align-items: center;
-    padding-bottom: 16px; border-bottom: 1px solid var(--rule);
-    margin-bottom: 16px;
-  }
-  .cert-roman {
-    width: 36px; height: 36px;
-    border: 1px solid var(--seal);
-    display: grid; place-items: center;
-    font-family: var(--serif); font-style: italic; font-size: 18px;
-    color: var(--seal);
-    flex-shrink: 0;
-  }
-  .cert-tile-head h4 { font-size: 17px; line-height: 1.15; margin: 4px 0 0; }
-  .cert-tile-grid { display: flex; flex-direction: column; }
-  .ct-row {
-    display: grid; grid-template-columns: 110px 1fr; gap: 12px;
-    padding: 8px 0; border-bottom: 1px solid var(--rule-2);
-    align-items: baseline;
-  }
-  .ct-k {
-    font-family: var(--mono); font-size: 10px;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
-  }
-  .ct-v { font-size: 12px; color: var(--ink); }
-  .ct-v.mono { font-family: var(--mono); font-size: 11px; }
-
-  /* Anteprima messaggio */
-  .mail-preview {
-    background: var(--paper-2);
-    border: 1px solid var(--rule);
-    padding: 20px 24px;
-    font-family: var(--mono);
-    font-size: 12px;
-    line-height: 1.7;
-    color: var(--ink-2);
-    white-space: pre-wrap;
-    margin: 0;
-    overflow-x: auto;
-  }
-
-  /* Tabella di confronto */
-  .compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-  }
-  .compare-table th {
-    text-align: left;
-    padding: 14px 12px;
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    border-bottom: 1px solid var(--rule);
-  }
-  .compare-table th.emph { color: var(--seal); }
-  .compare-table td {
-    padding: 12px;
-    font-size: 14px;
-    color: var(--ink-2);
-    border-bottom: 1px solid var(--rule-2);
-  }
-  .compare-table td.emph {
-    color: var(--ink);
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 16px;
-  }
-  .compare-table tr:last-child td { border-bottom: 0; }
-  .compare-table td.last { color: var(--ink-3); font-style: normal; font-family: var(--sans); font-size: 13px; }
-
-  @media (max-width: 960px) {
-    .three-rcpt { grid-template-columns: 1fr; }
-    .rcpt { border-right: 0; border-bottom: 1px solid var(--rule); }
-    .modes { grid-template-columns: 1fr; }
-    .dashboard { grid-template-columns: repeat(2, 1fr); }
-    .dash-cell:nth-child(2n) { border-right: 0; }
-    .dash-cell { border-bottom: 1px solid var(--rule); }
-    .three-certs { grid-template-columns: 1fr; }
-    .cert-tile { border-right: 0; border-bottom: 1px solid var(--rule); }
-    section [style*="grid-template-columns: 1fr 1.2fr"] { grid-template-columns: 1fr !important; gap: 32px !important; }
-    .ed-row { grid-template-columns: 1fr; gap: 4px; }
-  }
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
   </style>
 
-  <script>
-    function copyVault() {
-      const addr = 'contratti.bertolaso@vault.veylon.it';
-      navigator.clipboard?.writeText(addr);
-    }
-    function copyAddr() {
-      const addr = document.getElementById('addr').textContent;
-      navigator.clipboard?.writeText(addr);
-      const btn = document.querySelector('.addr-copy');
-      const old = btn.textContent;
-      btn.textContent = '✓ Copiato';
-      setTimeout(() => btn.textContent = old, 1500);
-    }
-    function setStatus(elId, kind, label){
-      const el = document.getElementById(elId);
-      if (!el) return;
-      el.className = 'status ' + (kind==='ok'?'confirmed':kind==='ko'?'failed':'pending');
-      // ricostruisci dot + label
-      el.style.marginLeft = 'auto';
-      el.innerHTML = '<span class="dot"></span>' + label;
-    }
-    function updateDetail(item){
-      const d = item.dataset;
-      const set = (id, val) => { const el = document.getElementById(id); if (el && val != null) el.textContent = val; };
-      set('d-datehead', 'Email del ' + d.datehead);
-      set('d-subj', d.subj);
-      set('d-from', d.from);
-      set('d-to', d.to);
-      set('d-attach', d.attach);
-      set('d-proto', d.proto);
-      set('d-date', d.date);
-      set('d-hash', d.hash);
-      set('d-block', d.block === '—' ? '—' : '# ' + d.block);
-      set('d-mx', d.mx);
-      set('d-smtp', d.smtp);
-      set('d-delivery', d.delivery);
-      set('d-hashtot', d.hashtot);
-      setStatus('d-status1', d.status1, d.status1lbl);
-      setStatus('d-status2', d.status2, d.status2lbl);
-      setStatus('d-status3', d.status3, d.status3lbl);
-      const pre = document.getElementById('d-preview');
-      if (pre) {
-        pre.textContent = 'From: ' + d.from + '\n' +
-          'To: ' + d.to + '\n' +
-          'Subject: ' + d.subj + '\n' +
-          'Date: ' + d.datehead + '\n' +
-          'Message-ID: <' + d.proto.toLowerCase() + '.veylon@studiobertolaso.it>\n' +
-          'Content-Type: multipart/mixed\n\n' +
-          '  [Anteprima canonicalizzata del messaggio]';
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+
+  await protectPage();
+  bindLogout("#logout");
+
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : ""; }
+
+  async function load() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("state-empty").hidden = true;
+    document.getElementById("tbl").hidden = true;
+    document.getElementById("rows").innerHTML = "";
+    try {
+      const { data, error } = await supabase
+        .from("email_certificate")
+        .select("id, destinatario, oggetto, stato, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      document.getElementById("state-loading").hidden = true;
+      if (error) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + error.message;
+        err.hidden = false;
+        return;
       }
+      if (!data || data.length === 0) {
+        document.getElementById("state-empty").hidden = false;
+        return;
+      }
+      const tbody = document.getElementById("rows");
+      data.forEach(m => {
+        const stato = m.stato || "in coda";
+        const ok = /consegnata|delivered|recapitata/i.test(stato);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${fmt(m.created_at)}</td>
+          <td class="mono">${escapeHtml(m.destinatario || "—")}</td>
+          <td>${escapeHtml(m.oggetto || "—")}</td>
+          <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("tbl").hidden = false;
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
     }
-    document.querySelectorAll('.ml-item').forEach(item => {
-      item.addEventListener('click', e => {
-        e.preventDefault();
-        document.querySelectorAll('.ml-item').forEach(i => i.classList.remove('selected'));
-        item.classList.add('selected');
-        updateDetail(item);
-        document.getElementById('detail')?.scrollIntoView({behavior:'smooth', block:'start'});
-      });
-    });
-    document.querySelectorAll('.ml-tab').forEach(t => {
-      t.addEventListener('click', () => {
-        document.querySelectorAll('.ml-tab').forEach(x => x.classList.remove('active'));
-        t.classList.add('active');
-      });
-    });
-    document.querySelectorAll('.mode-card').forEach(m => {
-      m.addEventListener('click', () => {
-        document.querySelectorAll('.mode-card').forEach(x => x.classList.remove('selected'));
-        m.classList.add('selected');
-      });
-    });
-  </script>
-<script>
-  document.getElementById('logout')?.addEventListener('click', e => {
-    e.preventDefault();
-    localStorage.removeItem('veylon_session');
-    location.href = 'login.html';
-  });
+  }
+  document.getElementById("retry").addEventListener("click", load);
+  load();
   </script>
 </body>
 </html>

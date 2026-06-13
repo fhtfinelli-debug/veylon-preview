@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON · Accesso all'area riservata</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
@@ -30,138 +30,144 @@
     </div>
   </header>
 
-  <main class="login-page">
+  <main class="auth-page">
 
-    <!-- Riga di intestazione -->
-    <div class="col-narrow" style="padding: 48px 32px 24px;">
+    <!-- Intestazione -->
+    <div class="col-narrow" style="padding: 48px 24px 16px;">
       <div class="row-between" style="align-items: flex-end;">
         <span class="section-num">Sessione &middot; n. <span class="tabular mono" id="sess">S-2026-3F84A21B</span></span>
         <span class="roman">i</span>
       </div>
     </div>
 
-    <!-- Pannello principale -->
-    <div class="login-frame">
+    <!-- Pannello -->
+    <div class="auth-frame">
 
-      <div class="login-head">
-        <div class="eyebrow seal-c" style="letter-spacing: 0.32em; margin-bottom: 18px;">Atto di accertamento</div>
-        <h1 class="serif" style="font-size: clamp(40px, 5vw, 60px); line-height: 1.05; margin: 0; letter-spacing: -0.02em;">
-          Accedere all'area <em class="serif-italic" style="color: var(--seal);">riservata.</em>
+      <div class="auth-head">
+        <div class="eyebrow seal-c" style="letter-spacing: 0.32em; margin-bottom: 14px;">Atto di accertamento</div>
+        <h1 class="serif auth-title">
+          Accedi al tuo <em class="serif-italic" style="color: var(--seal);">cruscotto Veylon.</em>
         </h1>
-        <p class="lede" style="margin-top: 24px;">
-          Identificarsi con strumento d'identità statale oppure con credenziali di servizio.
-          Ogni accesso è inscritto nel registro di sessione del titolare.
+        <p class="lede auth-lede" style="margin-top: 14px;">
+          Ogni accesso e' inscritto nel registro di sessione del titolare.
+          Sessione cifrata end-to-end.
         </p>
       </div>
 
-      <hr class="rule" style="margin: 48px 0;"/>
-
-      <!-- DUE COLONNE: SPID/CIE/CNS + email -->
-      <div class="login-grid">
-
-        <!-- COLONNA A: identità statale -->
-        <section>
-          <div class="login-section-head">
-            <span class="step-mark">A</span>
-            <div>
-              <div class="eyebrow">Identità statale &mdash; consigliato</div>
-              <h2 class="serif" style="font-size: 24px; margin: 4px 0 0;">SPID &middot; CIE &middot; CNS</h2>
-            </div>
-          </div>
-
-          <div class="id-grid">
-            <button class="id-btn primary" onclick="goAuth('spid')">
-              <div class="id-letter">A</div>
-              <div class="id-body">
-                <div class="id-name">Entra con SPID</div>
-                <div class="id-sub">Sistema Pubblico di Identità Digitale</div>
-              </div>
-              <div class="id-arrow">→</div>
-            </button>
-
-            <div class="id-spid-providers" id="providers">
-              <div class="eyebrow" style="margin-bottom: 10px;">Selezionare il provider</div>
-              <div class="provs">
-                <button class="prov">Aruba</button>
-                <button class="prov">Infocert</button>
-                <button class="prov">Lepida</button>
-                <button class="prov">Namirial</button>
-                <button class="prov">Poste</button>
-                <button class="prov">Register</button>
-                <button class="prov">Sielte</button>
-                <button class="prov">TIM</button>
-              </div>
-              <p class="small" style="margin-top: 10px;">Livello richiesto per la sessione: <strong style="color: var(--ink);">SPID L2</strong></p>
-            </div>
-
-            <button class="id-btn" onclick="goAuth('cie')">
-              <div class="id-letter">B</div>
-              <div class="id-body">
-                <div class="id-name">Entra con CIE</div>
-                <div class="id-sub">Carta d'Identità Elettronica &middot; app o lettore NFC</div>
-              </div>
-              <div class="id-arrow">→</div>
-            </button>
-
-            <button class="id-btn" onclick="goAuth('cns')">
-              <div class="id-letter">C</div>
-              <div class="id-body">
-                <div class="id-name">Entra con CNS</div>
-                <div class="id-sub">Carta Nazionale dei Servizi &middot; smart card</div>
-              </div>
-              <div class="id-arrow">→</div>
-            </button>
-          </div>
-        </section>
-
-        <!-- COLONNA B: email -->
-        <section>
-          <div class="login-section-head">
-            <span class="step-mark">B</span>
-            <div>
-              <div class="eyebrow">Credenziali di servizio</div>
-              <h2 class="serif" style="font-size: 24px; margin: 4px 0 0;">Email e parola d'ordine</h2>
-            </div>
-          </div>
-
-          <form onsubmit="event.preventDefault(); goAuth('email');" class="email-form">
-            <div>
-              <label class="field-label">Email</label>
-              <input class="field-input mono" type="email" placeholder="avv.bertolaso@studiobertolaso.it" value="avv.bertolaso@studiobertolaso.it"/>
-            </div>
-            <div style="margin-top: 22px;">
-              <label class="field-label">Parola d'ordine</label>
-              <input class="field-input mono" type="password" placeholder="●●●●●●●●●●●●●●" value="••••••••••••••"/>
-            </div>
-            <div style="margin-top: 16px;">
-              <a href="#" class="link-seal small">Recupero parola d'ordine</a>
-            </div>
-            <button type="submit" class="btn seal lg" style="width: 100%; justify-content: center; margin-top: 28px; padding: 18px;">
-              Accedi <span class="arrow"></span>
-            </button>
-            <p class="small" style="margin-top: 14px; text-align: center;">
-              Sarà richiesto un secondo fattore via OTP (SMS o app autenticazione).
-            </p>
-          </form>
-        </section>
+      <!-- Trust strip -->
+      <div class="auth-trust-strip" role="list" aria-label="Garanzie del servizio" style="margin-top: 28px;">
+        <span class="item" role="listitem">GDPR · EU Ireland</span>
+        <span class="item" role="listitem">Verifica indipendente Bitcoin</span>
+        <span class="item" role="listitem">Cancella account in 1 click</span>
       </div>
 
-      <hr class="rule" style="margin: 48px 0 32px;"/>
+      <!-- Banner di stato (errore / successo / info) -->
+      <div id="status-banner" class="status-banner" role="status" aria-live="polite" hidden></div>
+
+      <hr class="rule" style="margin: 32px 0;"/>
+
+      <!-- Tab selector -->
+      <div class="tabs" role="tablist" aria-label="Metodo di accesso">
+        <button type="button" class="tab is-active" role="tab" aria-selected="true" data-tab="password" id="tab-password">
+          <span class="tab-letter">A</span>
+          <span class="tab-name">Email e parola d'ordine</span>
+        </button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="magic" id="tab-magic">
+          <span class="tab-letter">B</span>
+          <span class="tab-name">Collegamento via email</span>
+        </button>
+      </div>
+
+      <!-- PANEL: Email + Password -->
+      <section class="tab-panel is-active" id="panel-password" role="tabpanel" aria-labelledby="tab-password">
+        <form id="form-password" class="auth-form" novalidate>
+          <div>
+            <label class="field-label" for="pw-email">Email</label>
+            <input
+              class="field-input mono"
+              type="email"
+              id="pw-email"
+              name="email"
+              autocomplete="email"
+              required
+              placeholder="nome@studio.it"
+              aria-describedby="pw-email-hint"
+            />
+            <p id="pw-email-hint" class="small" style="margin-top: 6px;">L'email del proprio profilo Veylon.</p>
+          </div>
+          <div style="margin-top: 24px;">
+            <label class="field-label" for="pw-password">Parola d'ordine</label>
+            <input
+              class="field-input mono"
+              type="password"
+              id="pw-password"
+              name="password"
+              autocomplete="current-password"
+              required
+              minlength="8"
+              placeholder="Almeno 8 caratteri"
+            />
+          </div>
+          <div style="margin-top: 14px;">
+            <a href="forgot-password.html" class="link-seal small">Recupero parola d'ordine</a>
+          </div>
+          <button type="submit" class="btn seal lg auth-submit" id="pw-submit">
+            <span class="btn-label">Accedi</span>
+            <span class="arrow"></span>
+          </button>
+          <p class="small auth-foot" style="font-size: 13px;">
+            Non hai ancora un account?
+            <a href="signup.html" class="link-seal" style="font-weight: 500;">Crea il tuo conto gratis</a>
+            &mdash; 10 sigilli/mese, sempre.
+          </p>
+        </form>
+      </section>
+
+      <!-- PANEL: Magic link -->
+      <section class="tab-panel" id="panel-magic" role="tabpanel" aria-labelledby="tab-magic" hidden>
+        <form id="form-magic" class="auth-form" novalidate>
+          <p class="body" style="margin-bottom: 18px; font-size: 14px;">
+            Inseriamo l'email. Riceverai un <strong>collegamento di accesso</strong>
+            valido per qualche minuto. Cliccando si apre la sessione senza password.
+          </p>
+          <div>
+            <label class="field-label" for="ml-email">Email</label>
+            <input
+              class="field-input mono"
+              type="email"
+              id="ml-email"
+              name="email"
+              autocomplete="email"
+              required
+              placeholder="nome@studio.it"
+            />
+          </div>
+          <button type="submit" class="btn seal lg auth-submit" id="ml-submit">
+            <span class="btn-label">Invia collegamento</span>
+            <span class="arrow"></span>
+          </button>
+          <p class="small auth-foot">
+            Hai una password? <a href="#" class="link-seal" data-go-tab="password">Accedi con parola d'ordine</a>.
+          </p>
+        </form>
+      </section>
+
+      <hr class="rule" style="margin: 40px 0 24px;"/>
 
       <!-- Footer riservato -->
-      <div class="login-foot">
+      <div class="auth-foot-grid">
         <div>
-          <div class="eyebrow" style="margin-bottom: 10px;">Per la stazione appaltante o terzo verificatore</div>
-          <p class="body" style="margin: 0; font-size: 14px; max-width: 50ch;">
-            Per verificare l'autenticità di un documento o di una garanzia non è
+          <div class="eyebrow" style="margin-bottom: 8px;">Per la stazione appaltante o terzo verificatore</div>
+          <p class="body" style="margin: 0; font-size: 13px;">
+            Per verificare l'autenticita' di un documento o di una garanzia non e'
             necessario accedere. <a class="link-seal" href="verifica.html">Apri la verifica pubblica</a>.
           </p>
         </div>
         <div>
-          <div class="eyebrow" style="margin-bottom: 10px;">Assistenza</div>
-          <p class="body" style="margin: 0; font-size: 14px;">
-            Lun&ndash;Ven 9:00&ndash;19:00 &middot; <span class="mono">+39&nbsp;06&nbsp;0001&nbsp;9001</span><br/>
-            <a class="link-seal" href="#">supporto@veylon.it</a>
+          <div class="eyebrow" style="margin-bottom: 8px;">Assistenza</div>
+          <p class="body" style="margin: 0; font-size: 13px;">
+            Lun&ndash;Ven 9:00&ndash;19:00 &middot;
+            <a class="link-seal" href="mailto:supporto@veylon.it">supporto@veylon.it</a>
           </p>
         </div>
       </div>
@@ -169,11 +175,9 @@
     </div>
 
     <!-- Stato del sistema -->
-    <div class="col-narrow" style="padding: 40px 32px 24px; text-align: center;">
+    <div class="col-narrow" style="padding: 32px 24px 24px; text-align: center;">
       <div class="mono" style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">
-        Stato del servizio · <span class="verify-c">operativo</span> &middot;
-        blocco corrente Bitcoin <span class="mono" style="color: var(--ink);">#&nbsp;874.201</span> &middot;
-        calendar OTS (3 di 3) <span class="verify-c">attivi</span>
+        Stato del servizio · <span class="verify-c">operativo</span>
       </div>
     </div>
 
@@ -187,129 +191,294 @@
   </footer>
 
   <style>
-  .login-page { padding-bottom: 72px; }
-
-  .login-frame {
-    max-width: 920px;
+  /* ---- Layout pagine auth (login/signup/recovery) ---- */
+  .auth-page { padding-bottom: 56px; }
+  .auth-frame {
+    max-width: 640px;
     margin: 8px auto 0;
     background: var(--paper);
     border: 1px solid var(--rule);
-    padding: 56px;
+    padding: 40px;
     position: relative;
   }
-
-  .login-grid {
-    display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    gap: 56px;
+  .auth-title {
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.02em;
   }
+  .auth-lede { margin-top: 18px; font-size: clamp(16px, 1.6vw, 20px); }
 
-  .login-section-head {
-    display: flex; align-items: center; gap: 18px;
-    margin-bottom: 24px; padding-bottom: 18px;
-    border-bottom: var(--hairline);
-  }
-  .step-mark {
-    font-family: var(--serif); font-style: italic; font-size: 22px;
-    border: 1px solid var(--ink);
-    width: 44px; height: 44px;
-    display: grid; place-items: center; color: var(--ink);
-    flex-shrink: 0;
-  }
-
-  /* Bottoni identità */
-  .id-grid { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--ink); }
-  .id-btn {
-    display: grid; grid-template-columns: 56px 1fr 36px;
-    gap: 18px; padding: 18px 22px;
-    background: transparent; border: 0;
-    border-bottom: 1px solid var(--rule);
-    cursor: pointer;
-    align-items: center;
-    text-align: left;
-    transition: background .15s;
-  }
-  .id-btn:hover { background: var(--paper-2); }
-  .id-btn.primary { border-left: 4px solid var(--seal); padding-left: 18px; }
-  .id-btn.primary .id-letter { background: var(--seal); color: var(--paper); border-color: var(--seal); }
-  .id-btn.primary .id-name { color: var(--ink); }
-
-  .id-letter {
-    width: 44px; height: 44px;
-    border: 1px solid var(--ink);
-    display: grid; place-items: center;
-    font-family: var(--serif); font-style: italic; font-size: 22px;
+  /* Banner stato */
+  .status-banner {
+    margin-top: 24px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--ink);
+    background: var(--paper-2);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
     color: var(--ink);
   }
-  .id-name { font-family: var(--serif); font-size: 19px; line-height: 1.2; color: var(--ink); }
-  .id-sub { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-2); margin-top: 4px; }
-  .id-arrow {
-    font-family: var(--mono); font-size: 18px; color: var(--ink-3); text-align: right;
-  }
-  .id-btn:hover .id-arrow { color: var(--seal); }
+  .status-banner.is-error { border-left-color: var(--seal); color: var(--seal); background: var(--seal-50); }
+  .status-banner.is-success { border-left-color: var(--verify); color: var(--verify); }
+  .status-banner.is-info { border-left-color: var(--ink-2); }
 
-  .id-spid-providers {
-    padding: 16px 22px 18px;
-    background: var(--paper-2);
-    border-bottom: 1px solid var(--rule);
-  }
-  .provs {
+  /* Tabs */
+  .tabs {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--ink);
+    margin-bottom: 28px;
   }
-  .prov {
-    border: 1px solid var(--rule);
-    background: var(--paper);
-    padding: 8px 6px;
-    font-family: var(--mono); font-size: 10px;
-    letter-spacing: 0.12em; text-transform: uppercase;
+  .tab {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 12px;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule);
     color: var(--ink-2);
+    text-align: left;
     cursor: pointer;
+    transition: background .15s, color .15s;
+    font-family: var(--serif);
+    font-size: 14px;
+    line-height: 1.2;
   }
-  .prov:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .tab:last-child { border-right: 0; }
+  .tab:hover { background: var(--paper-2); color: var(--ink); }
+  .tab.is-active { background: var(--ink); color: var(--paper); }
+  .tab.is-active .tab-letter { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+  .tab-letter {
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    border: 1px solid var(--ink-2);
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .tab-name { font-size: 14px; }
 
-  /* Form email */
-  .email-form { padding-top: 4px; }
+  .tab-panel { display: none; }
+  .tab-panel.is-active { display: block; }
 
-  /* Footer login */
-  .login-foot {
+  /* Form */
+  .auth-form { padding-top: 4px; }
+  .auth-submit {
+    width: 100%;
+    justify-content: center;
+    margin-top: 28px;
+    padding: 16px;
+  }
+  .auth-submit[data-loading="true"] { opacity: 0.6; cursor: wait; }
+  .auth-foot {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  /* SSO */
+  .sso-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .sso-btn {
+    display: grid; grid-template-columns: 28px 1fr; gap: 14px;
+    align-items: center;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    padding: 14px 18px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--ink);
+    transition: background .15s;
+    text-align: left;
+  }
+  .sso-btn:hover { background: var(--paper-2); }
+  .sso-btn:disabled { opacity: 0.5; cursor: wait; }
+  .sso-icon { width: 22px; height: 22px; }
+
+  /* Footer panel */
+  .auth-foot-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 48px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
   }
 
-  @media (max-width: 760px) {
-    .login-frame { padding: 36px 24px; }
-    .login-grid { grid-template-columns: 1fr; gap: 48px; }
-    .provs { grid-template-columns: repeat(2, 1fr); }
-    .login-foot { grid-template-columns: 1fr; gap: 24px; }
+  /* Mobile first */
+  @media (max-width: 640px) {
+    .auth-frame { padding: 28px 20px; border-left: 0; border-right: 0; }
+    .auth-foot-grid { grid-template-columns: 1fr; gap: 18px; }
+    .tabs { grid-template-columns: 1fr; }
+    .tab { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .tab:last-child { border-bottom: 0; }
   }
   </style>
 
-  <script>
-    function goAuth(method) {
-      // Simula sessione: persiste lo stato di autenticazione
-      try {
-        localStorage.setItem('veylon_session', JSON.stringify({
-          authenticated: true,
-          method: method,
-          since: new Date().toISOString(),
-          subject: {
-            name: 'Avv. Mario Bertolaso',
-            role: 'Procuratore legale',
-            organization: 'Studio Notarile Bertolaso & Associati',
-            cf: 'BRTMRA70S30H501Z',
-            level: method === 'spid' ? 'SPID L2' : method === 'cie' ? 'CIE' : method === 'cns' ? 'CNS' : 'Credenziali email + OTP'
-          }
-        }));
-      } catch(e){}
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
 
-      // Reindirizza al cruscotto
-      location.href = 'dashboard.html';
+    // ---- Helpers ----
+    const $ = (sel) => document.querySelector(sel);
+    const banner = $("#status-banner");
+
+    function showBanner(msg, type = "info") {
+      banner.textContent = msg;
+      banner.classList.remove("is-error", "is-success", "is-info");
+      banner.classList.add("is-" + type);
+      banner.hidden = false;
+      banner.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
-    // Codice sessione casuale
-    document.getElementById('sess').textContent = 'S-2026-' + Math.random().toString(16).slice(2,10).toUpperCase();
+    function hideBanner() {
+      banner.hidden = true;
+      banner.textContent = "";
+    }
+    function setLoading(btnSel, loading, labelLoading) {
+      const btn = $(btnSel);
+      if (!btn) return;
+      btn.disabled = loading;
+      btn.dataset.loading = loading ? "true" : "false";
+      const label = btn.querySelector(".btn-label");
+      if (label) {
+        if (loading) {
+          label.dataset.originalText = label.dataset.originalText || label.textContent;
+          label.textContent = labelLoading || "Attendere...";
+        } else if (label.dataset.originalText) {
+          label.textContent = label.dataset.originalText;
+        }
+      }
+    }
+
+    function getNextPath() {
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get("next");
+      if (next && next.startsWith("/")) return next;
+      if (next && !next.startsWith("http")) return next;
+      return "dashboard.html";
+    }
+
+    // ---- Tabs ----
+    const tabs = document.querySelectorAll(".tab");
+    const panels = {
+      password: $("#panel-password"),
+      magic: $("#panel-magic"),
+    };
+    function selectTab(name) {
+      tabs.forEach((t) => {
+        const active = t.dataset.tab === name;
+        t.classList.toggle("is-active", active);
+        t.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      Object.entries(panels).forEach(([key, el]) => {
+        if (!el) return;
+        const active = key === name;
+        el.classList.toggle("is-active", active);
+        el.hidden = !active;
+      });
+      hideBanner();
+    }
+    tabs.forEach((t) => t.addEventListener("click", () => selectTab(t.dataset.tab)));
+    document.querySelectorAll("[data-go-tab]").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        selectTab(a.dataset.goTab);
+      });
+    });
+
+    // ---- Redirect se gia' autenticato ----
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data?.session) {
+        window.location.href = getNextPath();
+      }
+    })();
+
+    // ---- Param di stato (es. ?reset=ok da reset-password) ----
+    (function checkInfoParams() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("reset") === "ok") {
+        showBanner("Password aggiornata. Accedi con la nuova parola d'ordine.", "success");
+      } else if (params.get("confirmed") === "ok") {
+        showBanner("Email confermata. Puoi accedere.", "success");
+      } else if (params.get("signedout") === "ok") {
+        showBanner("Sessione chiusa correttamente.", "info");
+      }
+    })();
+
+    // ---- Form: email + password ----
+    $("#form-password").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      hideBanner();
+      const email = $("#pw-email").value.trim();
+      const password = $("#pw-password").value;
+      if (!email || !password) {
+        showBanner("Inserire email e parola d'ordine.", "error");
+        return;
+      }
+      setLoading("#pw-submit", true, "Verifica in corso...");
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      setLoading("#pw-submit", false);
+      if (error) {
+        const msg = mapAuthError(error.message);
+        showBanner(msg, "error");
+        return;
+      }
+      showBanner("Accesso riuscito. Reindirizzamento...", "success");
+      window.location.href = getNextPath();
+    });
+
+    // ---- Form: magic link ----
+    $("#form-magic").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      hideBanner();
+      const email = $("#ml-email").value.trim();
+      if (!email) {
+        showBanner("Inserire un'email valida.", "error");
+        return;
+      }
+      setLoading("#ml-submit", true, "Invio in corso...");
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: window.location.origin + "/confirm-email.html",
+        },
+      });
+      setLoading("#ml-submit", false);
+      if (error) {
+        showBanner(mapAuthError(error.message), "error");
+        return;
+      }
+      showBanner(
+        "Se l'email esiste, riceverai un collegamento di accesso entro pochi minuti. Controlla anche la cartella spam.",
+        "success",
+      );
+    });
+
+    // ---- Map errori Supabase -> italiano user-friendly ----
+    function mapAuthError(msg) {
+      if (!msg) return "Errore di accesso. Riprova fra qualche secondo.";
+      const low = msg.toLowerCase();
+      if (low.includes("invalid login credentials")) {
+        return "Email o parola d'ordine non riconosciute. Controlla i dati, oppure usa il recupero password se ti sei dimenticato la parola d'ordine.";
+      }
+      if (low.includes("email not confirmed")) {
+        return "Email non ancora confermata. Controlla la posta in arrivo (anche spam) per il link di attivazione.";
+      }
+      if (low.includes("rate limit") || low.includes("too many")) {
+        return "Troppi tentativi ravvicinati. Riprova fra qualche minuto per motivi di sicurezza.";
+      }
+      if (low.includes("network") || low.includes("fetch")) {
+        return "Problema di rete. Verifica la connessione e riprova.";
+      }
+      if (low.includes("user not found")) {
+        return "Questo account non risulta registrato. Vuoi creare un nuovo conto?";
+      }
+      if (low.includes("disabled") || low.includes("locked")) {
+        return "Account temporaneamente non attivo. Contatta supporto@veylon.app";
+      }
+      return "Non riusciamo ad accedere: " + msg + ". Se il problema persiste, contatta supporto@veylon.app";
+    }
+
+    // ---- Codice sessione casuale (decorativo) ----
+    document.getElementById("sess").textContent =
+      "S-2026-" + Math.random().toString(16).slice(2, 10).toUpperCase();
   </script>
 </body>
 </html>

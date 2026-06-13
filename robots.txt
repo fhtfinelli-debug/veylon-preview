@@ -1,0 +1,73 @@
+# Veylon · robots.txt
+# https://veylon.app
+
+User-agent: *
+
+# Pagine pubbliche: tutto il resto e' indicizzabile
+Allow: /
+Allow: /index.html
+Allow: /pricing.html
+Allow: /verifica.html
+Allow: /verifica-garanzia.html
+Allow: /cert-verifica.html
+Allow: /signup.html
+Allow: /login.html
+Allow: /forgot-password.html
+Allow: /reset-password.html
+Allow: /confirm-email.html
+Allow: /notarizza.html
+Allow: /invia.html
+Allow: /mail.html
+Allow: /garanzie.html
+Allow: /tag.html
+Allow: /tag-onboarding.html
+Allow: /cert.html
+Allow: /firma.html
+Allow: /system-status.html
+Allow: /demo.html
+Allow: /certificato.html
+Allow: /certificazioni.html
+Allow: /styles.css
+
+# Area riservata e flussi authenticated: non indicizzare
+Disallow: /dashboard.html
+Disallow: /dashboard*
+Disallow: /admin.html
+Disallow: /admin*
+Disallow: /onboarding.html
+Disallow: /onboarding*
+Disallow: /archivio.html
+Disallow: /archivio*
+
+# Sigillo (modulo operativo) - landing notarizza.html resta pubblica
+Disallow: /trasmissioni.html
+Disallow: /trasmissioni*
+Disallow: /ricevi.html
+Disallow: /condivisione.html
+Disallow: /condivisione*
+
+# Firma operativa (la landing firma.html resta pubblica)
+Disallow: /firma-applica.html
+
+# Cert moduli operativi (cert.html landing resta pubblica)
+Disallow: /cert-mio.html
+Disallow: /cert-emetti.html
+Disallow: /cert-emetti-batch.html
+Disallow: /cert-istituzione.html
+
+# Tag moduli operativi (tag.html landing resta pubblica)
+Disallow: /tag-emetti.html
+Disallow: /tag-batch.html
+Disallow: /tag-storico.html
+Disallow: /tag-trasferisci.html
+
+# Code-redeem pagine private
+Disallow: /t-codice.html
+Disallow: /c-codice.html
+
+# Shared assets JS
+Disallow: /_shared/
+Disallow: /_placeholder-backup/
+
+# Sitemap
+Sitemap: https://veylon.app/sitemap.xml

@@ -286,8 +286,8 @@
             '!');
         } else if (json.scaduto) {
           showState('warn',
-            'Certificato scaduto',
-            'Il certificato e\' stato emesso correttamente ma e\' scaduto.',
+            'Questo link è scaduto',
+            'Chiedi al mittente di reinviarlo.',
             'i');
         } else if (json.bitcoin?.documento_verificato) {
           showState('ok',

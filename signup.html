@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Registrazione</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner" style="grid-template-columns: 1fr auto 1fr;">
+      <div class="masthead-meta">
+        <span>Registrazione &mdash; apertura conto</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="login.html">Accesso</a>
+        <a href="verifica.html">Verifica pubblica</a>
+      </nav>
+    </div>
+    <div class="masthead-band">
+      <div class="masthead-band-inner">
+        <span>Apertura conto &mdash; <span class="verify-c">operativo</span></span>
+        <span>Conferma via email obbligatoria</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page">
+
+    <div class="col-narrow" style="padding: 48px 24px 16px;">
+      <div class="row-between" style="align-items: flex-end;">
+        <span class="section-num">Atto di apertura &middot; n. <span class="tabular mono" id="sess">A-2026-0000A1B2</span></span>
+        <span class="roman">i</span>
+      </div>
+    </div>
+
+    <div class="auth-frame">
+
+      <div class="auth-head">
+        <div class="eyebrow seal-c" style="letter-spacing: 0.32em; margin-bottom: 14px;">Atto di apertura</div>
+        <h1 class="serif auth-title">
+          Inizia gratis. <em class="serif-italic" style="color: var(--seal);">Sempre.</em>
+        </h1>
+        <p class="lede auth-lede" style="margin-top: 14px;">
+          Dieci sigilli al mese, senza carta di credito, senza scadenza.
+          Il piano Free e' per sempre.
+        </p>
+      </div>
+
+      <!-- Trust strip -->
+      <div class="auth-trust-strip" role="list" aria-label="Garanzie del servizio" style="margin-top: 28px;">
+        <span class="item" role="listitem">Nessuna carta richiesta</span>
+        <span class="item" role="listitem">GDPR · EU Ireland</span>
+        <span class="item" role="listitem">Cancella in 1 click</span>
+      </div>
+
+      <div id="status-banner" class="status-banner" role="status" aria-live="polite" hidden></div>
+
+      <hr class="rule" style="margin: 32px 0;"/>
+
+      <!-- VIEW: form -->
+      <section id="view-form">
+
+        <!-- Form email -->
+        <form id="form-signup" class="auth-form" novalidate>
+
+          <div>
+            <label class="field-label" for="su-email">Email professionale</label>
+            <input
+              class="field-input mono"
+              type="email"
+              id="su-email"
+              name="email"
+              autocomplete="email"
+              required
+              placeholder="nome@studio.it"
+            />
+            <p class="small" style="margin-top: 6px;">Useremo questa email per il link di attivazione e le comunicazioni di servizio.</p>
+          </div>
+
+          <div style="margin-top: 22px;">
+            <label class="field-label" for="su-password">Parola d'ordine</label>
+            <input
+              class="field-input mono"
+              type="password"
+              id="su-password"
+              name="password"
+              autocomplete="new-password"
+              required
+              minlength="8"
+              placeholder="Almeno 8 caratteri, almeno un numero"
+              aria-describedby="su-password-hint"
+            />
+            <div class="pw-strength" id="pw-strength" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <span class="pw-strength-label" id="pw-strength-label">&nbsp;</span>
+            <p id="su-password-hint" class="small" style="margin-top: 6px;">Suggerito: 12+ caratteri, lettere maiuscole/minuscole, numeri e simboli.</p>
+          </div>
+
+          <div style="margin-top: 22px;">
+            <label class="field-label" for="su-confirm">Conferma parola d'ordine</label>
+            <input
+              class="field-input mono"
+              type="password"
+              id="su-confirm"
+              name="confirm"
+              autocomplete="new-password"
+              required
+              minlength="8"
+              placeholder="Ripeti la parola d'ordine"
+            />
+          </div>
+
+          <label class="consent" style="margin-top: 24px;">
+            <input type="checkbox" id="su-tos" required/>
+            <span>
+              Dichiaro di aver letto e accettato la
+              <a class="link-seal" href="../PRIVACY.md" target="_blank" rel="noopener">Informativa privacy</a>
+              e i
+              <a class="link-seal" href="../TERMS.md" target="_blank" rel="noopener">Termini di servizio</a>.
+            </span>
+          </label>
+
+          <button type="submit" class="btn seal lg auth-submit" id="su-submit">
+            <span class="btn-label">Registrati</span>
+            <span class="arrow"></span>
+          </button>
+
+          <p class="small auth-foot">
+            Hai gia' un account?
+            <a href="login.html" class="link-seal">Accedi</a>.
+          </p>
+        </form>
+      </section>
+
+      <!-- VIEW: success (post-signup) -->
+      <section id="view-success" hidden>
+        <div class="seal-mark" style="margin: 0 auto 18px;">
+          <span class="glyph">V</span>
+        </div>
+        <h2 class="serif center" style="font-size: 28px; margin: 0 0 14px;">Email di conferma inviata</h2>
+        <p class="body center" style="font-size: 15px; max-width: 50ch; margin: 0 auto 22px;">
+          Abbiamo inviato un collegamento di conferma a
+          <strong class="mono" id="success-email" style="font-size: 14px;">&mdash;</strong>.
+          <br/>Clicca il link nell'email per attivare l'account.
+        </p>
+        <p class="small center" style="margin: 0 auto 22px; color: var(--ink-3); max-width: 44ch;">
+          L'email arriva normalmente entro 1 minuto. Se non la trovi, potrai
+          richiederne il rinvio dopo 60 secondi.
+        </p>
+        <div class="auth-foot-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 28px auto 0;">
+          <button class="btn ghost" id="resend-email" type="button">
+            <span class="btn-label">Reinvia email</span>
+          </button>
+          <a class="btn seal" href="login.html">Torna al login</a>
+        </div>
+        <p class="small center" style="margin-top: 18px;">
+          Non vedi l'email? Controlla la cartella <em>spam</em> o <em>promozioni</em>.
+        </p>
+      </section>
+
+      <hr class="rule" style="margin: 40px 0 24px;"/>
+
+      <div class="auth-foot-grid">
+        <div>
+          <div class="eyebrow" style="margin-bottom: 8px;">Trattamento dati</div>
+          <p class="body" style="margin: 0; font-size: 13px;">
+            I dati restano nello SEE. Cifratura at-rest e in-transit. Vedi
+            <a class="link-seal" href="../PRIVACY.md" target="_blank" rel="noopener">privacy</a>.
+          </p>
+        </div>
+        <div>
+          <div class="eyebrow" style="margin-bottom: 8px;">Assistenza</div>
+          <p class="body" style="margin: 0; font-size: 13px;">
+            <a class="link-seal" href="mailto:supporto@veylon.it">supporto@veylon.it</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Registrazione &middot; conferma email obbligatoria</span>
+    </div>
+  </footer>
+
+  <style>
+  .auth-page { padding-bottom: 56px; }
+  .auth-frame {
+    max-width: 640px;
+    margin: 8px auto 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 40px;
+  }
+  .auth-title { font-size: clamp(32px, 5vw, 52px); line-height: 1.05; margin: 0; letter-spacing: -0.02em; }
+  .auth-lede { margin-top: 18px; font-size: clamp(16px, 1.6vw, 20px); }
+
+  .status-banner {
+    margin-top: 24px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--ink);
+    background: var(--paper-2);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .status-banner.is-error { border-left-color: var(--seal); color: var(--seal); background: var(--seal-50); }
+  .status-banner.is-success { border-left-color: var(--verify); color: var(--verify); }
+  .status-banner.is-info { border-left-color: var(--ink-2); }
+
+  .auth-form { padding-top: 4px; }
+  .auth-submit { width: 100%; justify-content: center; margin-top: 28px; padding: 16px; }
+  .auth-foot { margin-top: 16px; text-align: center; }
+
+  .sso-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sso-btn {
+    display: grid; grid-template-columns: 22px 1fr; gap: 12px;
+    align-items: center;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    padding: 12px 16px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .sso-btn:hover { background: var(--paper-2); }
+  .sso-icon { width: 20px; height: 20px; }
+
+  .consent {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 12px;
+    align-items: start;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+  .consent input { margin-top: 3px; }
+
+  .auth-foot-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; }
+
+  @media (max-width: 640px) {
+    .auth-frame { padding: 28px 20px; border-left: 0; border-right: 0; }
+    .auth-foot-grid { grid-template-columns: 1fr; gap: 18px; }
+    .sso-grid { grid-template-columns: 1fr; }
+  }
+  </style>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+
+    const $ = (s) => document.querySelector(s);
+    const banner = $("#status-banner");
+
+    function showBanner(msg, type = "info") {
+      banner.textContent = msg;
+      banner.classList.remove("is-error", "is-success", "is-info");
+      banner.classList.add("is-" + type);
+      banner.hidden = false;
+    }
+    function hideBanner() { banner.hidden = true; banner.textContent = ""; }
+    function setLoading(btnSel, loading, labelLoading) {
+      const btn = $(btnSel);
+      if (!btn) return;
+      btn.disabled = loading;
+      const label = btn.querySelector(".btn-label");
+      if (label) {
+        if (loading) {
+          label.dataset.originalText = label.dataset.originalText || label.textContent;
+          label.textContent = labelLoading || "Attendere...";
+        } else if (label.dataset.originalText) {
+          label.textContent = label.dataset.originalText;
+        }
+      }
+    }
+    function validPassword(pw) {
+      return pw.length >= 8 && /\d/.test(pw);
+    }
+
+    // ---- Password strength meter ----
+    function pwScore(pw) {
+      let score = 0;
+      if (pw.length >= 8) score++;
+      if (pw.length >= 12) score++;
+      if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+      if (/\d/.test(pw) && /[^A-Za-z0-9]/.test(pw)) score++;
+      return score;
+    }
+    function pwLabel(score) {
+      switch (score) {
+        case 0: return "";
+        case 1: return "Debole";
+        case 2: return "Sufficiente";
+        case 3: return "Buona";
+        case 4: return "Forte";
+        default: return "";
+      }
+    }
+    const pwInput = $("#su-password");
+    const pwMeter = $("#pw-strength");
+    const pwLabelEl = $("#pw-strength-label");
+    pwInput.addEventListener("input", () => {
+      const s = pwScore(pwInput.value);
+      pwMeter.className = "pw-strength level-" + s;
+      pwLabelEl.textContent = pwLabel(s);
+    });
+
+    // Se gia' loggato -> dashboard
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data?.session) window.location.href = "dashboard.html";
+    })();
+
+    // Form
+    let lastEmail = "";
+    $("#form-signup").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      hideBanner();
+
+      const email = $("#su-email").value.trim();
+      const password = $("#su-password").value;
+      const confirm = $("#su-confirm").value;
+      const tos = $("#su-tos").checked;
+
+      if (!email) { showBanner("Inserire un'email valida.", "error"); return; }
+      if (!validPassword(password)) {
+        showBanner("La parola d'ordine deve avere almeno 8 caratteri e un numero.", "error");
+        return;
+      }
+      if (password !== confirm) {
+        showBanner("Le parole d'ordine non coincidono. Controlla di averle scritte uguali.", "error");
+        return;
+      }
+      if (!tos) {
+        showBanner("Per proseguire serve accettare privacy e termini di servizio.", "error");
+        return;
+      }
+
+      setLoading("#su-submit", true, "Apertura conto in corso...");
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin + "/confirm-email.html",
+        },
+      });
+      setLoading("#su-submit", false);
+
+      if (error) {
+        showBanner(mapAuthError(error.message), "error");
+        return;
+      }
+
+      lastEmail = email;
+
+      // Caso A: serve conferma email
+      if (data?.user && !data.session) {
+        $("#view-form").hidden = true;
+        $("#view-success").hidden = false;
+        $("#success-email").textContent = email;
+        startResendCooldown(60);
+        hideBanner();
+        return;
+      }
+      // Caso B: confirmation email disabilitato lato Supabase -> onboarding
+      if (data?.session) {
+        window.location.href = "onboarding.html";
+      }
+    });
+
+    // ---- Cooldown reinvia email (60s) ----
+    let resendTimer = null;
+    function startResendCooldown(seconds) {
+      const btn = $("#resend-email");
+      const label = btn.querySelector(".btn-label");
+      btn.disabled = true;
+      let remaining = seconds;
+      label.textContent = "Reinvia (" + remaining + "s)";
+      if (resendTimer) clearInterval(resendTimer);
+      resendTimer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(resendTimer);
+          resendTimer = null;
+          btn.disabled = false;
+          label.textContent = "Reinvia email";
+        } else {
+          label.textContent = "Reinvia (" + remaining + "s)";
+        }
+      }, 1000);
+    }
+
+    // Reinvia email conferma
+    $("#resend-email").addEventListener("click", async () => {
+      if (!lastEmail) return;
+      hideBanner();
+      $("#resend-email").disabled = true;
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: lastEmail,
+        options: { emailRedirectTo: window.location.origin + "/confirm-email.html" },
+      });
+      if (error) {
+        showBanner("Non e' stato possibile reinviare: " + error.message, "error");
+        $("#resend-email").disabled = false;
+      } else {
+        showBanner("Email di conferma reinviata. Controlla la posta in arrivo.", "success");
+        startResendCooldown(60);
+      }
+    });
+
+    function mapAuthError(msg) {
+      if (!msg) return "Errore nell'apertura del conto. Riprova fra qualche secondo.";
+      const low = msg.toLowerCase();
+      if (low.includes("already registered") || low.includes("already exists") || low.includes("user already")) {
+        return "Questa email risulta gia' registrata. Vai al login per accedere, oppure recupera la parola d'ordine.";
+      }
+      if (low.includes("weak password") || low.includes("password should be")) {
+        return "Parola d'ordine troppo debole. Usa almeno 8 caratteri con almeno un numero.";
+      }
+      if (low.includes("invalid email")) return "Email non valida. Controlla che sia scritta correttamente.";
+      if (low.includes("rate limit") || low.includes("too many")) {
+        return "Troppi tentativi ravvicinati. Riprova fra qualche minuto.";
+      }
+      if (low.includes("network") || low.includes("fetch")) {
+        return "Problema di rete. Verifica la connessione e riprova.";
+      }
+      return "Non riusciamo ad aprire il conto: " + msg + ". Se il problema persiste, contatta supporto@veylon.app";
+    }
+
+    document.getElementById("sess").textContent =
+      "A-2026-" + Math.random().toString(16).slice(2, 10).toUpperCase();
+  </script>
+</body>
+</html>

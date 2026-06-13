@@ -3,391 +3,184 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Cert &middot; Emetti certificato</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Cert · Emetti certificato</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VII &middot; Cert</span>
-        <span class="sep">&middot;</span>
-        <span>Emissione singola</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Emetti certificato</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
         <a href="cert.html">Cert</a>
-        <a href="cert-istituzione.html">Istituzione</a>
-        <a href="cert-emetti-batch.html">Batch</a>
-        <a href="cert-verifica.html">Verifica</a>
+        <a href="cert-emetti.html" class="current">Emetti</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
   </header>
 
-  <main class="col-narrow" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">&sect; II &mdash; Emetti</span>
-      <span class="roman">ii</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
-      Emetti un <em class="serif-italic" style="color: var(--seal);">certificato.</em>
-    </h1>
-    <p class="lede" style="margin: 12px 0 40px; max-width: 56ch;">
-      Scegli istituzione e template, compila i campi del template e il
-      beneficiario. Veylon genera codice + PDF + QR + sigillo Bitcoin.
-    </p>
-
-    <form id="emettiForm" class="panel" style="padding: 32px;" onsubmit="emetti(event)">
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">A</span> Istituzione &amp; template</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="istituzioneId">Istituzione</label>
-          <select id="istituzioneId" class="field-input mono" required onchange="caricaTemplate()">
-            <option value="">&mdash; carica istituzioni &mdash;</option>
-          </select>
-          <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">
-            Non vedi nulla? Apri <a href="cert-istituzione.html">Onboarding istituzione</a>.
-          </div>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="templateId">Template (opzionale)</label>
-          <select id="templateId" class="field-input mono" onchange="renderCampiDinamici()">
-            <option value="">&mdash; nessun template (campi liberi) &mdash;</option>
-          </select>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">B</span> Beneficiario</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="benEmail">Email beneficiario</label>
-          <input id="benEmail" class="field-input" type="email" required placeholder="mario.rossi@studenti.unibo.it"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="benCf">Codice fiscale (opzionale)</label>
-          <input id="benCf" class="field-input mono" maxlength="16" placeholder="RSSMRA80A01H501Z"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="benNome">Nome e cognome</label>
-          <input id="benNome" class="field-input" placeholder="Mario Rossi"/>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" id="fsCampi" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">C</span> Dati certificato</legend>
-        <div id="campiDinamici" style="margin-top: 18px;">
-          <div class="mono" style="font-size: 12px; color: var(--ink-3);">
-            Seleziona un template oppure aggiungi i campi liberi manualmente sotto.
-          </div>
-
-          <div class="ff-row" style="margin-top: 16px;">
-            <label class="field-label" for="campiLiberi">Campi liberi (JSON)</label>
-            <textarea id="campiLiberi" class="field-input mono" rows="6" placeholder='{"corso":"Matematica Applicata","voto":"110L","ore":120}'></textarea>
-            <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">JSON valido (coppie chiave/valore semplici). Es. lauree, ECM, batch GMP.</div>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">D</span> Disciplina &amp; scadenza</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="disciplina">Disciplina scientifica (solo settore ricerca)</label>
-          <select id="disciplina" class="field-input mono">
-            <option value="">&mdash; non applicabile &mdash;</option>
-            <option value="fisica">Fisica delle particelle</option>
-            <option value="astronomia">Astronomia / Astrofisica</option>
-            <option value="genomica">Genomica / Bioinformatica</option>
-            <option value="chimica">Chimica / Scienza materiali</option>
-            <option value="scienze_terra">Scienze della Terra</option>
-            <option value="biologia">Biologia</option>
-            <option value="medicina">Medicina clinica</option>
-            <option value="neuroscienze">Neuroscienze</option>
-            <option value="psicologia">Psicologia</option>
-            <option value="economia">Economia / Finance</option>
-            <option value="ai_ml">AI / Machine Learning</option>
-            <option value="ingegneria">Ingegneria applicata</option>
-            <option value="matematica">Matematica</option>
-            <option value="linguistica">Linguistica / Digital humanities</option>
-            <option value="archeologia">Archeologia</option>
-            <option value="veterinaria">Veterinaria</option>
-            <option value="agronomia">Agronomia / Scienze alimentari</option>
-            <option value="architettura">Architettura / Urbanistica</option>
-            <option value="storia">Storia / Filologia</option>
-            <option value="sport">Sport / Medicina sportiva</option>
-            <option value="aerospace">Aerospace</option>
-            <option value="energia">Energia / Nucleare</option>
-          </select>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="dataScadenza">Data scadenza (opzionale)</label>
-          <input id="dataScadenza" class="field-input mono" type="date"/>
-          <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">Se vuota e il template ha validita_anni, viene calcolata automaticamente.</div>
-        </div>
-      </fieldset>
-
-      <div class="row" style="gap: 16px; align-items: center; margin-top: 32px;">
-        <button id="submitBtn" type="submit" class="btn seal lg">Emetti certificato <span class="arrow"></span></button>
-        <span id="formMsg" class="mono" style="font-size: 12px; color: var(--ink-3);"></span>
-      </div>
-    </form>
-
-    <section id="result" style="display: none; margin-top: 56px;" class="receipt">
-      <div class="receipt-grid">
-        <div class="receipt-row">
-          <span class="receipt-key">Stato</span>
-          <span class="receipt-val">Certificato emesso e ancorato a Bitcoin.</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Codice pubblico</span>
-          <span class="receipt-val mono" id="rCodice">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Impronta SHA-256</span>
-          <span class="receipt-val mono" id="rSha" style="word-break: break-all; font-size: 11px;">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Stato OTS</span>
-          <span class="receipt-val mono" id="rOts">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">URL verifica pubblica</span>
-          <span class="receipt-val mono"><a id="rVerifyLink" href="#" target="_blank">&mdash;</a></span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Download PDF</span>
-          <span class="receipt-val mono"><a id="rPdfLink" href="#" download>scarica</a></span>
-        </div>
-      </div>
-      <div class="row" style="gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-        <a href="cert-emetti.html" class="btn seal" onclick="location.reload(); return false;">Emetti un altro <span class="arrow"></span></a>
-        <a href="cert.html" class="btn ghost">Torna all'hub</a>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Cert · Emissione</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Emetti un <em class="serif-italic" style="color: var(--seal);">certificato.</em>
+        </h1>
+        <p class="lede">Il certificato viene iscritto nel registro Veylon e ancorato su Bitcoin.</p>
       </div>
     </section>
 
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 18px;">Nuovo certificato</h2>
+        <form id="form" novalidate>
+          <div>
+            <label class="field-label" for="titolo">Titolo del certificato</label>
+            <input class="field-input" type="text" id="titolo" required placeholder="Es. Diploma di Master"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="dest-nome">Nome del destinatario</label>
+            <input class="field-input" type="text" id="dest-nome" required placeholder="Nome e cognome"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="dest-email">Email del destinatario</label>
+            <input class="field-input mono" type="email" id="dest-email" required placeholder="nome@dominio.it"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="scadenza">Scadenza (facoltativa)</label>
+            <input class="field-input" type="date" id="scadenza"/>
+          </div>
+          <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
+            <span class="btn-label">Emetti certificato</span>
+          </button>
+          <div id="result" hidden style="margin-top: 20px; padding: 14px; border: 1px solid var(--rule); background: var(--paper-2);">
+            <div class="eyebrow seal-c" style="margin-bottom: 6px;">Certificato emesso</div>
+            <div class="mono" style="font-size: 12px;" id="result-codice"></div>
+          </div>
+        </form>
+      </article>
+    </section>
+
+    <section style="margin-top: 40px;">
+      <h2 class="serif" style="font-size: 22px;">Tuoi certificati emessi</h2>
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento certificati&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+        <div id="state-empty" class="state-msg" hidden>Non hai ancora emesso alcun certificato.</div>
+        <table class="t" id="tbl" hidden>
+          <thead><tr><th>Emesso</th><th>Titolo</th><th>Destinatario</th><th>Codice</th><th>Stato</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </article>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
-      <span>Sezione VII &mdash; Cert &middot; Emetti</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Emissione certificati</span></div></footer>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
-    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
-    const REST_BASE = `${SUPABASE_URL}/rest/v1`;
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+  </style>
 
-    function getJwt() {
-      try {
-        const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
-        return session?.access_token ?? null;
-      } catch { return null; }
-    }
-    function headers() {
-      const h = { 'Content-Type': 'application/json' };
-      const jwt = getJwt();
-      if (jwt) h['Authorization'] = 'Bearer ' + jwt;
-      if (SUPABASE_ANON_KEY) h['apikey'] = SUPABASE_ANON_KEY;
-      return h;
-    }
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  const { session } = await protectPage();
+  bindLogout("#logout");
 
-    // Carica le istituzioni dell'utente via PostgREST (RLS = solo le proprie)
-    let templateCache = {}; // istituzione_id -> [{id,nome,tipo,schema_dati_jsonb}]
-    async function caricaIstituzioni() {
-      try {
-        const res = await fetch(`${REST_BASE}/cert_istituzioni?select=id,ragione_sociale,settore,tipo&order=ragione_sociale.asc`, { headers: headers() });
-        if (!res.ok) return;
-        const rows = await res.json();
-        const sel = document.getElementById('istituzioneId');
-        sel.innerHTML = '<option value="">&mdash; scegli &mdash;</option>' +
-          rows.map(r => `<option value="${r.id}">${r.ragione_sociale} (${r.settore})</option>`).join('');
-        const last = localStorage.getItem('veylon_cert_istituzione_id');
-        if (last && rows.find(r => r.id === last)) {
-          sel.value = last;
-          caricaTemplate();
-        }
-      } catch (e) {
-        console.error('istituzioni_load_failed', e);
-      }
-    }
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
 
-    async function caricaTemplate() {
-      const istId = document.getElementById('istituzioneId').value;
-      const sel = document.getElementById('templateId');
-      sel.innerHTML = '<option value="">&mdash; nessun template (campi liberi) &mdash;</option>';
-      if (!istId) return;
-      try {
-        const res = await fetch(`${REST_BASE}/cert_template?istituzione_id=eq.${istId}&attivo=eq.true&select=id,nome,tipo,schema_dati_jsonb&order=nome.asc`, { headers: headers() });
-        if (!res.ok) return;
-        const rows = await res.json();
-        templateCache = {};
-        for (const r of rows) {
-          templateCache[r.id] = r;
-          sel.innerHTML += `<option value="${r.id}">${r.nome} (${r.tipo})</option>`;
-        }
-      } catch (e) {
-        console.error('template_load_failed', e);
-      }
-    }
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleDateString("it-IT") : ""; }
 
-    function renderCampiDinamici() {
-      const tId = document.getElementById('templateId').value;
-      const wrap = document.getElementById('campiDinamici');
-      // mantieni il textarea "campi liberi" come fallback
-      if (!tId || !templateCache[tId]) {
-        document.getElementById('campiLiberi').disabled = false;
-        return;
-      }
-      const t = templateCache[tId];
-      const campi = (t.schema_dati_jsonb && Array.isArray(t.schema_dati_jsonb.campi))
-        ? t.schema_dati_jsonb.campi : [];
-      if (campi.length === 0) {
-        document.getElementById('campiLiberi').disabled = false;
-        return;
-      }
-      // costruisce campi dinamici
-      let html = '<div class="mono" style="font-size: 11px; color: var(--ink-3); margin-bottom: 12px;">Campi richiesti dal template &laquo;'+t.nome+'&raquo;</div>';
-      for (const c of campi) {
-        const id = 'tcampo_' + c.nome;
-        html += `<div class="ff-row" style="margin-bottom: 14px;">
-          <label class="field-label" for="${id}">${c.label}${c.obbligatorio ? ' <span style="color: var(--seal);">*</span>' : ''}</label>`;
-        if (c.tipo === 'select' && Array.isArray(c.opzioni)) {
-          html += `<select id="${id}" class="field-input mono" data-nome="${c.nome}" ${c.obbligatorio ? 'required' : ''}>
-            <option value="">&mdash; scegli &mdash;</option>
-            ${c.opzioni.map(o => `<option value="${o}">${o}</option>`).join('')}
-          </select>`;
-        } else if (c.tipo === 'boolean') {
-          html += `<select id="${id}" class="field-input mono" data-nome="${c.nome}" ${c.obbligatorio ? 'required' : ''}>
-            <option value="">&mdash; scegli &mdash;</option>
-            <option value="true">Si</option>
-            <option value="false">No</option>
-          </select>`;
-        } else {
-          const ht = c.tipo === 'number' ? 'number' : (c.tipo === 'date' ? 'date' : (c.tipo === 'email' ? 'email' : 'text'));
-          html += `<input id="${id}" type="${ht}" class="field-input" data-nome="${c.nome}" ${c.obbligatorio ? 'required' : ''}/>`;
-        }
-        html += '</div>';
-      }
-      html += `<div class="ff-row" style="margin-top: 20px; padding-top: 16px; border-top: var(--hairline);">
-        <label class="field-label" for="campiLiberi">Campi extra (JSON opzionale)</label>
-        <textarea id="campiLiberi" class="field-input mono" rows="3" placeholder='{"extra":"valore"}'></textarea>
-      </div>`;
-      wrap.innerHTML = html;
-    }
-
-    function raccogliDati() {
-      const out = {};
-      // dai campi del template (data-nome)
-      document.querySelectorAll('[data-nome]').forEach(el => {
-        const k = el.dataset.nome;
-        let v = el.value;
-        if (v === '' || v == null) return;
-        if (el.type === 'number') v = Number(v);
-        if (v === 'true') v = true; else if (v === 'false') v = false;
-        out[k] = v;
+  document.getElementById("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const titolo = document.getElementById("titolo").value.trim();
+    const dest_nome = document.getElementById("dest-nome").value.trim();
+    const dest_email = document.getElementById("dest-email").value.trim();
+    const scadenza = document.getElementById("scadenza").value || null;
+    if (!titolo || !dest_nome || !dest_email) { alert("Compila tutti i campi obbligatori."); return; }
+    const btn = document.getElementById("submit");
+    btn.disabled = true;
+    const original = btn.querySelector(".btn-label").textContent;
+    btn.querySelector(".btn-label").textContent = "Emissione…";
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/cert-emetti`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+        body: JSON.stringify({ titolo, destinatario_nome: dest_nome, destinatario_email: dest_email, scadenza }),
       });
-      // campi liberi (JSON)
-      const liberi = document.getElementById('campiLiberi');
-      if (liberi && liberi.value.trim()) {
-        try {
-          const extra = JSON.parse(liberi.value);
-          Object.assign(out, extra);
-        } catch (e) {
-          throw new Error('campi liberi: JSON non valido');
-        }
-      }
-      return out;
+      const j = await res.json();
+      if (!res.ok || !j.success) throw new Error(j?.error || "errore");
+      document.getElementById("result-codice").textContent = j.codice || j.id;
+      document.getElementById("result").hidden = false;
+      document.getElementById("form").reset();
+      loadList();
+    } catch (e) {
+      alert("Errore: " + (e.message || e));
+    } finally {
+      btn.disabled = false;
+      btn.querySelector(".btn-label").textContent = original;
     }
+  });
 
-    async function emetti(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('formMsg');
-      msg.textContent = '';
-      msg.style.color = '';
-
-      const jwt = getJwt();
-      if (!jwt) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Accesso richiesto. Vai al login e ritorna.';
+  async function loadList() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("state-empty").hidden = true;
+    document.getElementById("tbl").hidden = true;
+    document.getElementById("rows").innerHTML = "";
+    try {
+      const { data, error } = await supabase
+        .from("cert_emessi")
+        .select("id, titolo, destinatario_nome, codice, stato, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100);
+      document.getElementById("state-loading").hidden = true;
+      if (error) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + error.message;
+        err.hidden = false;
         return;
       }
-
-      let dati;
-      try { dati = raccogliDati(); }
-      catch (err) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = err.message;
+      if (!data || data.length === 0) {
+        document.getElementById("state-empty").hidden = false;
         return;
       }
-
-      const payload = {
-        istituzione_id: document.getElementById('istituzioneId').value,
-        template_id: document.getElementById('templateId').value || undefined,
-        beneficiario_email: document.getElementById('benEmail').value.trim(),
-        beneficiario_codice_fiscale: document.getElementById('benCf').value.trim() || undefined,
-        beneficiario_nome: document.getElementById('benNome').value.trim() || undefined,
-        dati_certificato: dati,
-        disciplina_scientifica: document.getElementById('disciplina').value || undefined,
-        data_scadenza: document.getElementById('dataScadenza').value || undefined,
-      };
-
-      btn.disabled = true;
-      btn.innerHTML = 'Emissione in corso&hellip;';
-
-      try {
-        const res = await fetch(`${FUNCTIONS_BASE}/cert-emetti`, {
-          method: 'POST', headers: headers(), body: JSON.stringify(payload),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.success) throw new Error(json.error || 'http_' + res.status);
-        const c = json.certificato;
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('rCodice').textContent = c.codice_pubblico;
-        document.getElementById('rSha').textContent = c.doc_sha256;
-        document.getElementById('rOts').textContent = c.ots_status;
-        document.getElementById('rVerifyLink').href = c.verifica_url;
-        document.getElementById('rVerifyLink').textContent = c.verifica_url;
-        if (json.pdf_download_url) {
-          document.getElementById('rPdfLink').href = json.pdf_download_url;
-        } else {
-          document.getElementById('rPdfLink').textContent = 'PDF non disponibile';
-          document.getElementById('rPdfLink').removeAttribute('href');
-        }
-        btn.innerHTML = '&check; Emesso';
-        btn.style.background = 'var(--verify)';
-        btn.style.borderColor = 'var(--verify)';
-      } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Emetti certificato <span class="arrow"></span>';
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Errore: ' + (err.message || err);
-      }
+      const tbody = document.getElementById("rows");
+      data.forEach(c => {
+        const stato = c.stato || "emesso";
+        const ok = /valido|emesso|attivo/i.test(stato);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${fmt(c.created_at)}</td>
+          <td>${escapeHtml(c.titolo || "—")}</td>
+          <td>${escapeHtml(c.destinatario_nome || "—")}</td>
+          <td class="mono">${escapeHtml(c.codice || "—")}</td>
+          <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("tbl").hidden = false;
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
     }
-
-    // bootstrap
-    caricaIstituzioni();
+  }
+  loadList();
   </script>
 </body>
 </html>

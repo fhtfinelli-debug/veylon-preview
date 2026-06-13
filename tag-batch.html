@@ -3,268 +3,111 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Tag · Emissione massiva</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Tag · Massiva</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VI &middot; Tag</span>
-        <span class="sep">·</span>
-        <span>Emissione massiva</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Tag · Massiva</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
         <a href="tag.html">Tag</a>
-        <a href="tag-onboarding.html">Onboarding</a>
-        <a href="tag-emetti.html">Emetti</a>
-        <a href="tag-storico.html">Storico</a>
+        <a href="tag-batch.html" class="current">Massiva</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
   </header>
 
-  <main class="col-narrow" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">&sect; I &mdash; Lotto massivo</span>
-      <span class="roman">i</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
-      Emetti un lotto da <em class="serif-italic" style="color: var(--seal);">CSV.</em>
-    </h1>
-    <p class="lede" style="margin: 12px 0 40px; max-width: 56ch;">
-      Carica un CSV con i tuoi esemplari (fino a 1.000 per chiamata). Per ognuno
-      Veylon genera codice + QR, notarizza su Bitcoin, e ti restituisce una ZIP
-      con tutti i PNG QR e un manifest CSV.
-    </p>
-
-    <details class="panel" style="padding: 20px; margin-bottom: 24px;">
-      <summary style="cursor: pointer;"><strong>Formato CSV atteso</strong></summary>
-      <pre class="mono small" style="margin-top: 12px; padding: 12px; background: var(--paper-2); overflow-x: auto;">codice_prodotto,lotto,descrizione,sha256_dichiarazione,nfc_uid
-LEM-1873-EN-248,2026/07-A,Cronografo Lemania n. 248,3b...64hex...,
-LEM-1873-EN-249,2026/07-A,Cronografo Lemania n. 249,7a...64hex...,
-...</pre>
-      <p class="small" style="margin-top: 8px;">
-        Solo <span class="mono">sha256_dichiarazione</span> &egrave; obbligatorio
-        (64 caratteri hex lowercase). Gli altri campi possono essere vuoti.
-      </p>
-    </details>
-
-    <form id="batchForm" class="panel" style="padding: 32px;" onsubmit="emettiBatch(event)">
-
-      <div class="ff-row">
-        <label class="field-label" for="produttoreId">ID produttore</label>
-        <input id="produttoreId" class="field-input mono" required placeholder="uuid del produttore"/>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Tag · Massiva</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Emissione <em class="serif-italic" style="color: var(--seal);">massiva.</em>
+        </h1>
+        <p class="lede">Carica un CSV con i prodotti da etichettare in lotto.</p>
       </div>
-
-      <div class="ff-row" style="margin-top: 18px;">
-        <label class="field-label" for="applicazione">Applicazione fisica (default per tutti)</label>
-        <select id="applicazione" class="field-input mono">
-          <option value="qr_adesivo">QR adesivo</option>
-          <option value="qr_inciso">QR inciso indelebile</option>
-          <option value="nfc_ntag424_dna">NFC NTAG 424 DNA + QR</option>
-        </select>
-      </div>
-
-      <div class="ff-row" style="margin-top: 18px;">
-        <label class="field-label" for="csvFile">File CSV</label>
-        <input id="csvFile" class="field-input" type="file" accept=".csv,text/csv" required/>
-        <p class="small" style="margin-top: 8px;">Max 1.000 righe per emissione.</p>
-      </div>
-
-      <button id="submitBtn" class="btn seal lg" type="submit" style="width: 100%; justify-content: center; padding: 18px; margin-top: 24px;">
-        Emetti lotto <span class="arrow"></span>
-      </button>
-
-      <p id="formMsg" class="small" style="margin-top: 16px; text-align: center;"></p>
-    </form>
-
-    <!-- Risultato -->
-    <section id="result" style="display: none; margin-top: 40px;" class="panel">
-      <div class="eyebrow verify-c" style="margin-bottom: 12px;">Lotto emesso</div>
-      <div class="hist-meta">
-        <div class="hist-meta-k">Certificati emessi</div>
-        <div class="hist-meta-v"><strong id="rEmessi">0</strong> su <span id="rTotale">0</span> richiesti</div>
-        <div class="hist-meta-k">Errori</div>
-        <div class="hist-meta-v" id="rFalliti">0</div>
-      </div>
-      <div class="row" style="gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-        <a id="rDownloadZip" class="btn seal" download="lotto-tag.zip">Scarica ZIP con i QR <span class="arrow"></span></a>
-        <a href="tag-storico.html" class="btn ghost">Vai allo storico</a>
-      </div>
-      <div id="rErroriList" style="margin-top: 20px;"></div>
     </section>
 
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 18px;">Nuovo lotto</h2>
+        <form id="form" novalidate>
+          <div>
+            <label class="field-label" for="csv">File CSV</label>
+            <input class="field-input" type="file" id="csv" accept=".csv" required/>
+            <p class="small" style="margin-top: 6px; color: var(--ink-3);">
+              Colonne: <code>denominazione,sku,lotto</code>.
+            </p>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label">Applicazione</label>
+            <div role="radiogroup" aria-label="Applicazione" class="radio-row">
+              <label class="radio-pill"><input type="radio" name="app" value="qr_adesivo" checked/> QR su adesivo</label>
+              <label class="radio-pill"><input type="radio" name="app" value="qr_inciso"/> QR inciso</label>
+            </div>
+          </div>
+          <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
+            <span class="btn-label">Avvia lotto</span>
+          </button>
+          <div id="result" hidden style="margin-top: 20px; padding: 14px; border: 1px solid var(--rule); background: var(--paper-2);">
+            <div class="eyebrow seal-c" style="margin-bottom: 6px;">Lotto avviato</div>
+            <div class="mono" style="font-size: 12px;" id="result-codice"></div>
+          </div>
+        </form>
+      </article>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
-      <span>Sezione VI &mdash; Tag &middot; Massivo</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Tag · Massiva</span></div></footer>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
-    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .radio-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--rule); cursor: pointer; font-family: var(--serif); font-size: 14px; }
+  .radio-pill:hover { background: var(--paper-2); }
+  .radio-pill input { accent-color: var(--seal); }
+  </style>
 
-    function getJwt() {
-      try {
-        const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
-        return session?.access_token ?? null;
-      } catch { return null; }
-    }
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  const { session } = await protectPage();
+  bindLogout("#logout");
 
-    // Pre-popola produttore_id
-    const lastProduttore = localStorage.getItem('veylon_tag_produttore_id');
-    if (lastProduttore) document.getElementById('produttoreId').value = lastProduttore;
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
 
-    function parseCsv(text) {
-      // Parser CSV minimale (gestisce campi "quoted" con virgola interna).
-      const lines = text.split(/\r?\n/).filter(l => l.trim());
-      if (lines.length < 2) return { header: [], rows: [] };
-      const parseLine = (line) => {
-        const out = [];
-        let cur = '';
-        let inQ = false;
-        for (let i = 0; i < line.length; i++) {
-          const c = line[i];
-          if (inQ) {
-            if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
-            else if (c === '"') { inQ = false; }
-            else { cur += c; }
-          } else {
-            if (c === ',') { out.push(cur); cur = ''; }
-            else if (c === '"' && cur === '') { inQ = true; }
-            else { cur += c; }
-          }
-        }
-        out.push(cur);
-        return out;
-      };
-      const header = parseLine(lines[0]).map(h => h.trim());
-      const rows = lines.slice(1).map(l => {
-        const cells = parseLine(l);
-        const obj = {};
-        header.forEach((h, i) => obj[h] = (cells[i] ?? '').trim());
-        return obj;
-      });
-      return { header, rows };
-    }
-
-    async function emettiBatch(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('formMsg');
-      msg.textContent = ''; msg.style.color = '';
-
-      const jwt = getJwt();
-      if (!jwt) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Accesso richiesto.';
-        return;
-      }
-
-      const file = document.getElementById('csvFile').files[0];
-      if (!file) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Seleziona un file CSV.';
-        return;
-      }
-
+  document.getElementById("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const file = document.getElementById("csv").files[0];
+    if (!file) { alert("Seleziona un CSV."); return; }
+    const app = document.querySelector('input[name="app"]:checked').value;
+    const btn = document.getElementById("submit");
+    btn.disabled = true;
+    const original = btn.querySelector(".btn-label").textContent;
+    btn.querySelector(".btn-label").textContent = "Caricamento…";
+    try {
       const text = await file.text();
-      const { rows } = parseCsv(text);
-      if (rows.length === 0) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'CSV vuoto.';
-        return;
-      }
-      if (rows.length > 1000) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Max 1.000 righe per batch.';
-        return;
-      }
-
-      const righe = rows.map(r => ({
-        codice_prodotto: r.codice_prodotto || undefined,
-        lotto: r.lotto || undefined,
-        descrizione: r.descrizione || undefined,
-        sha256_dichiarazione: (r.sha256_dichiarazione || '').toLowerCase(),
-        nfc_uid: r.nfc_uid || undefined,
-        metadata: {},
-      })).filter(r => /^[0-9a-f]{64}$/.test(r.sha256_dichiarazione));
-
-      if (righe.length === 0) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Nessuna riga con sha256 valido. Controlla il formato.';
-        return;
-      }
-
-      const payload = {
-        produttore_id: document.getElementById('produttoreId').value.trim(),
-        applicazione: document.getElementById('applicazione').value,
-        regulatory_compliance: {},
-        righe,
-      };
-
-      btn.disabled = true;
-      btn.innerHTML = `Notarizzazione di ${righe.length} certificati…`;
-
-      try {
-        const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt };
-        if (SUPABASE_ANON_KEY) headers['apikey'] = SUPABASE_ANON_KEY;
-        const res = await fetch(`${FUNCTIONS_BASE}/tag-certificato-batch`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(payload),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.success) {
-          throw new Error(json.error || ('http_' + res.status));
-        }
-
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('rEmessi').textContent = json.emessi;
-        document.getElementById('rTotale').textContent = json.totale_richiesto;
-        document.getElementById('rFalliti').textContent = json.falliti;
-
-        if (json.zip_base64) {
-          document.getElementById('rDownloadZip').href = `data:${json.zip_mime};base64,${json.zip_base64}`;
-          document.getElementById('rDownloadZip').download = json.zip_filename || 'lotto-tag.zip';
-        }
-
-        if (json.errori && json.errori.length) {
-          const list = document.getElementById('rErroriList');
-          list.innerHTML = '<div class="eyebrow seal-c" style="margin-bottom: 8px;">Errori</div>'
-            + '<ul class="small mono">'
-            + json.errori.map(e => `<li>riga ${e.index}: ${e.error}</li>`).join('')
-            + '</ul>';
-        }
-
-        btn.innerHTML = '✓ Lotto emesso';
-        btn.style.background = 'var(--verify)';
-        btn.style.borderColor = 'var(--verify)';
-        document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Emetti lotto <span class="arrow"></span>';
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Errore: ' + (err.message || err);
-      }
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-emetti-batch`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+        body: JSON.stringify({ csv: text, filename: file.name, applicazione: app }),
+      });
+      const j = await res.json();
+      if (!res.ok || !j.success) throw new Error(j?.error || "errore");
+      document.getElementById("result-codice").textContent = "Lotto: " + (j.lotto_codice || j.lotto_id || "—");
+      document.getElementById("result").hidden = false;
+      document.getElementById("form").reset();
+    } catch (e) {
+      alert("Errore: " + (e.message || e));
+    } finally {
+      btn.disabled = false;
+      btn.querySelector(".btn-label").textContent = original;
     }
+  });
   </script>
 </body>
 </html>

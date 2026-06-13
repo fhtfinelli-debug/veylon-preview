@@ -3,343 +3,155 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Cert &middot; Onboarding istituzione</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Cert · La tua istituzione</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VII &middot; Cert</span>
-        <span class="sep">&middot;</span>
-        <span>Onboarding istituzione</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>La tua istituzione</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
         <a href="cert.html">Cert</a>
-        <a href="cert-emetti.html">Emetti</a>
-        <a href="cert-emetti-batch.html">Batch</a>
-        <a href="cert-verifica.html">Verifica</a>
+        <a href="cert-istituzione.html" class="current">Istituzione</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
   </header>
 
-  <main class="col-narrow" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">&sect; I &mdash; Registrazione</span>
-      <span class="roman">i</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
-      Registra l'<em class="serif-italic" style="color: var(--seal);">istituzione.</em>
-    </h1>
-    <p class="lede" style="margin: 12px 0 40px; max-width: 56ch;">
-      Universita, ospedale, ASL, casa farmaceutica, ente di ricerca, ordine
-      professionale, ente di formazione. Per i settori sensibili
-      (pharma/sanitario/ricerca) servono email DPO + firma DPA.
-    </p>
-
-    <form id="onboardingForm" class="panel" style="padding: 32px;" onsubmit="onboard(event)">
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">A</span> Identita'</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="ragioneSociale">Ragione sociale</label>
-          <input id="ragioneSociale" class="field-input" required placeholder="Alma Mater Studiorum &mdash; Universita' di Bologna"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="pIva">Partita IVA (11 cifre)</label>
-          <input id="pIva" class="field-input mono" required pattern="\d{11}" placeholder="80007010376"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="codiceFiscale">Codice fiscale (se diverso da P.IVA)</label>
-          <input id="codiceFiscale" class="field-input mono" placeholder="es. 80007010376"/>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">B</span> Tipo &amp; settore</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="tipo">Tipo istituzione</label>
-          <select id="tipo" class="field-input mono" required>
-            <option value="">&mdash; scegli &mdash;</option>
-            <option value="universita">Universita</option>
-            <option value="scuola">Scuola</option>
-            <option value="azienda_pharma">Azienda pharma</option>
-            <option value="ospedale">Ospedale</option>
-            <option value="asl">ASL</option>
-            <option value="ente_ricerca">Ente di ricerca</option>
-            <option value="ordine_professionale">Ordine professionale</option>
-            <option value="consorzio">Consorzio</option>
-            <option value="ente_formazione">Ente di formazione</option>
-            <option value="altro">Altro</option>
-          </select>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="settore">Settore principale</label>
-          <select id="settore" class="field-input mono" required onchange="aggiornaSettore()">
-            <option value="">&mdash; scegli &mdash;</option>
-            <option value="formazione">Formazione e accademia</option>
-            <option value="pharma">Farmaceutico (pharma) &mdash; richiede DPA + DPO</option>
-            <option value="sanitario">Sanitario &mdash; richiede DPA + DPO</option>
-            <option value="ricerca">Ricerca scientifica &mdash; richiede DPA + DPO</option>
-          </select>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="codiceMecc">Codice MIUR / ASL / AIFA / ACCREDIA</label>
-          <input id="codiceMecc" class="field-input mono" placeholder="es. UNIBO-001 oppure AIFA-AIP-12345"/>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">C</span> Contatti</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="sitoWeb">Sito web (opzionale)</label>
-          <input id="sitoWeb" class="field-input" type="url" placeholder="https://www.unibo.it"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="emailContatto">Email ufficio certificazioni</label>
-          <input id="emailContatto" class="field-input" type="email" placeholder="ufficio.certificati@unibo.it"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="telefonoContatto">Telefono</label>
-          <input id="telefonoContatto" class="field-input" placeholder="+39 051 ..."/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="indirizzo">Indirizzo sede</label>
-          <input id="indirizzo" class="field-input" placeholder="Via Zamboni 33, 40126 Bologna BO"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="legaleRapp">Legale rappresentante</label>
-          <input id="legaleRapp" class="field-input" placeholder="Prof. Mario Rossi"/>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" id="fsCompliance" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">D</span> Compliance &amp; DPA</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="dpoEmail">Email DPO (Data Protection Officer) <span id="dpoMandatory" style="color: var(--seal);">&middot; obbligatoria</span></label>
-          <input id="dpoEmail" class="field-input" type="email" placeholder="dpo@unibo.it"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label">Normative dichiarate applicabili</label>
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px;">
-            <label class="check-row"><input type="checkbox" value="21cfr11" name="norm"/> 21 CFR Part 11 (FDA)</label>
-            <label class="check-row"><input type="checkbox" value="gmp_annex11" name="norm"/> GMP Annex 11 (EU)</label>
-            <label class="check-row"><input type="checkbox" value="iso17025" name="norm"/> ISO 17025 (lab)</label>
-            <label class="check-row"><input type="checkbox" value="ich_gcp" name="norm"/> ICH-GCP E6(R3)</label>
-            <label class="check-row"><input type="checkbox" value="ebsi" name="norm"/> EBSI (diplomi UE)</label>
-            <label class="check-row"><input type="checkbox" value="espr" name="norm"/> ESPR (DPP UE)</label>
-            <label class="check-row"><input type="checkbox" value="gdpr_art9" name="norm"/> GDPR art. 9 dati salute</label>
-            <label class="check-row"><input type="checkbox" value="agid" name="norm"/> AgID (FSE)</label>
-            <label class="check-row"><input type="checkbox" value="eidas_art19" name="norm"/> eIDAS art. 19 EAA</label>
-            <label class="check-row"><input type="checkbox" value="lisbona_1997" name="norm"/> Conv. Lisbona 1997</label>
-            <label class="check-row"><input type="checkbox" value="dlgs_81_2008" name="norm"/> D.Lgs 81/2008 sicurezza lavoro</label>
-            <label class="check-row"><input type="checkbox" value="agenas_ecm" name="norm"/> AgeNaS ECM</label>
-            <label class="check-row"><input type="checkbox" value="fmd_ue_2011_62" name="norm"/> FMD UE 2011/62 anti-contraffazione</label>
-            <label class="check-row"><input type="checkbox" value="top_guidelines" name="norm"/> TOP guidelines (riproducibilita')</label>
-          </div>
-        </div>
-
-        <div class="ff-row" style="margin-top: 24px; padding: 18px; background: var(--paper-2); border: var(--hairline);">
-          <label class="check-row" style="font-weight: normal;">
-            <input id="dpaAccetto" type="checkbox"/>
-            <span>Accetto il <strong>Data Processing Agreement (DPA) Veylon Cert</strong>: l'istituzione e' titolare del trattamento, Veylon e' responsabile esterno. Audit trail append-only, log accessi cifrati, storage in UE.</span>
-          </label>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">E</span> Livello KYC</legend>
-        <div class="ff-row" style="margin-top: 18px;">
-          <select id="livelloKyc" class="field-input mono">
-            <option value="light">Light &mdash; solo P.IVA dichiarata</option>
-            <option value="standard">Standard &mdash; P.IVA verificata + DPA</option>
-            <option value="strong">Strong &mdash; KYC completo + DPO + audit</option>
-          </select>
-        </div>
-      </fieldset>
-
-      <div class="row" style="gap: 16px; align-items: center; margin-top: 32px;">
-        <button id="submitBtn" type="submit" class="btn seal lg">Registra istituzione <span class="arrow"></span></button>
-        <span id="formMsg" class="mono" style="font-size: 12px; color: var(--ink-3);"></span>
-      </div>
-
-    </form>
-
-    <section id="result" style="display: none; margin-top: 56px;" class="receipt">
-      <div class="receipt-grid">
-        <div class="receipt-row">
-          <span class="receipt-key">Stato</span>
-          <span class="receipt-val">Istituzione registrata. Procedi con i template.</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">ID istituzione</span>
-          <span class="receipt-val mono" id="rIstituzioneId">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Ragione sociale</span>
-          <span class="receipt-val serif-italic" id="rRagioneSociale">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Settore</span>
-          <span class="receipt-val" id="rSettore">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Livello KYC</span>
-          <span class="receipt-val" id="rKyc">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">DPA firmato</span>
-          <span class="receipt-val mono" id="rDpa">&mdash;</span>
-        </div>
-      </div>
-      <div class="row" style="gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-        <a href="cert-emetti.html" class="btn seal">Emetti il primo certificato <span class="arrow"></span></a>
-        <a href="cert.html" class="btn ghost">Torna all'hub</a>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Cert · Istituzione</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          La tua <em class="serif-italic" style="color: var(--seal);">istituzione.</em>
+        </h1>
+        <p class="lede">Profilo dell'ente che emette certificati.</p>
       </div>
     </section>
 
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento profilo&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+        <div id="state-empty" class="state-msg" hidden>
+          Non hai ancora registrato un'istituzione.
+        </div>
+        <form id="form" hidden>
+          <div>
+            <label class="field-label" for="nome">Denominazione</label>
+            <input class="field-input" type="text" id="nome" required/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="piva">P. IVA / Codice fiscale</label>
+            <input class="field-input mono" type="text" id="piva"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="sede">Sede legale</label>
+            <input class="field-input" type="text" id="sede"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="pec">Email istituzionale</label>
+            <input class="field-input mono" type="email" id="pec"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="accred">Riferimento di accreditamento</label>
+            <input class="field-input" type="text" id="accred" placeholder="Es. ECM Agenas, ENAC, MUR…"/>
+          </div>
+          <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
+            <span class="btn-label">Salva profilo</span>
+          </button>
+        </form>
+      </article>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
-      <span>Sezione VII &mdash; Cert &middot; Onboarding</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Profilo istituzione</span></div></footer>
 
   <style>
-  .check-row {
-    display: flex; gap: 8px; align-items: flex-start;
-    font-family: var(--sans, var(--serif));
-    font-size: 13px; line-height: 1.4;
-    padding: 4px 0;
-  }
-  .check-row input { margin-top: 3px; flex-shrink: 0; }
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
   </style>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
-    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  const { user } = await protectPage();
+  bindLogout("#logout");
 
-    function getJwt() {
-      try {
-        const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
-        return session?.access_token ?? null;
-      } catch { return null; }
-    }
+  let currentId = null;
 
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
-
-    function aggiornaSettore() {
-      const s = document.getElementById('settore').value;
-      const sensibile = ['pharma', 'sanitario', 'ricerca'].includes(s);
-      const dpo = document.getElementById('dpoMandatory');
-      dpo.textContent = sensibile ? '· obbligatoria' : '· opzionale';
-      dpo.style.color = sensibile ? 'var(--seal)' : 'var(--ink-3)';
-      document.getElementById('dpoEmail').required = sensibile;
-      document.getElementById('dpaAccetto').required = sensibile;
-    }
-
-    async function onboard(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('formMsg');
-      msg.textContent = '';
-      msg.style.color = '';
-
-      const jwt = getJwt();
-      if (!jwt) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Accesso richiesto. Vai al login e ritorna.';
+  async function load() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("state-empty").hidden = true;
+    document.getElementById("form").hidden = true;
+    try {
+      const { data, error } = await supabase
+        .from("cert_istituzioni")
+        .select("id, denominazione, partita_iva, sede, email, accreditamento")
+        .limit(1)
+        .maybeSingle();
+      document.getElementById("state-loading").hidden = true;
+      if (error && !/relation|does not exist/i.test(error.message)) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + error.message;
+        err.hidden = false;
         return;
       }
-
-      const normative = Array.from(document.querySelectorAll('input[name="norm"]:checked'))
-        .map(c => c.value);
-
-      const payload = {
-        ragione_sociale: document.getElementById('ragioneSociale').value.trim(),
-        p_iva: document.getElementById('pIva').value.trim(),
-        codice_fiscale: document.getElementById('codiceFiscale').value.trim() || undefined,
-        tipo: document.getElementById('tipo').value,
-        codice_meccanografico: document.getElementById('codiceMecc').value.trim() || undefined,
-        settore: document.getElementById('settore').value,
-        sito_web: document.getElementById('sitoWeb').value.trim() || undefined,
-        contatti: {
-          email: document.getElementById('emailContatto').value.trim() || undefined,
-          telefono: document.getElementById('telefonoContatto').value.trim() || undefined,
-          indirizzo: document.getElementById('indirizzo').value.trim() || undefined,
-          legale_rappresentante: document.getElementById('legaleRapp').value.trim() || undefined,
-        },
-        dpa_accetto: document.getElementById('dpaAccetto').checked,
-        gdpr_dpo_email: document.getElementById('dpoEmail').value.trim() || undefined,
-        livello_kyc: document.getElementById('livelloKyc').value,
-        normative_applicabili: normative,
-        meccanism_iscrizione_albo: {},
-      };
-
-      btn.disabled = true;
-      btn.innerHTML = 'Registrazione in corso&hellip;';
-
-      try {
-        const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt };
-        if (SUPABASE_ANON_KEY) headers['apikey'] = SUPABASE_ANON_KEY;
-        const res = await fetch(`${FUNCTIONS_BASE}/cert-istituzione-onboarding`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(payload),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.success) {
-          throw new Error(json.error || ('http_' + res.status));
-        }
-        const ist = json.istituzione;
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('rIstituzioneId').textContent = ist.id;
-        document.getElementById('rRagioneSociale').textContent = ist.ragione_sociale;
-        document.getElementById('rSettore').textContent = ist.settore;
-        document.getElementById('rKyc').textContent = ist.livello_kyc;
-        document.getElementById('rDpa').textContent = ist.dpa_signed_at ?? 'non firmato';
-
-        localStorage.setItem('veylon_cert_istituzione_id', ist.id);
-
-        btn.innerHTML = '&check; Registrata';
-        btn.style.background = 'var(--verify)';
-        btn.style.borderColor = 'var(--verify)';
-        msg.style.color = 'var(--verify)';
-        msg.textContent = json.modalita === 'update' ? 'Profilo aggiornato.' : 'Profilo creato.';
-      } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Registra istituzione <span class="arrow"></span>';
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Errore: ' + (err.message || err);
+      // Mostra form vuoto se non c'e' istituzione (creazione), oppure popolato (modifica)
+      if (data) {
+        currentId = data.id;
+        document.getElementById("nome").value = data.denominazione || "";
+        document.getElementById("piva").value = data.partita_iva || "";
+        document.getElementById("sede").value = data.sede || "";
+        document.getElementById("pec").value = data.email || "";
+        document.getElementById("accred").value = data.accreditamento || "";
+      } else {
+        document.getElementById("state-empty").hidden = false;
       }
+      document.getElementById("form").hidden = false;
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
     }
+  }
+
+  document.getElementById("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const payload = {
+      denominazione: document.getElementById("nome").value.trim(),
+      partita_iva: document.getElementById("piva").value.trim() || null,
+      sede: document.getElementById("sede").value.trim() || null,
+      email: document.getElementById("pec").value.trim() || null,
+      accreditamento: document.getElementById("accred").value.trim() || null,
+    };
+    if (!payload.denominazione) { alert("Denominazione obbligatoria."); return; }
+    const btn = document.getElementById("submit");
+    btn.disabled = true;
+    try {
+      let res;
+      if (currentId) {
+        res = await supabase.from("cert_istituzioni").update(payload).eq("id", currentId);
+      } else {
+        res = await supabase.from("cert_istituzioni").insert({ ...payload, owner_id: user.id });
+      }
+      if (res.error) throw res.error;
+      alert("Profilo salvato.");
+      load();
+    } catch (e) {
+      alert("Errore: " + (e.message || e));
+    } finally {
+      btn.disabled = false;
+    }
+  });
+  load();
   </script>
 </body>
 </html>

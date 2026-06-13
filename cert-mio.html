@@ -3,261 +3,120 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Cert &middot; I miei certificati</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Cert · I miei certificati</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VII &middot; Cert</span>
-        <span class="sep">&middot;</span>
-        <span>Bacheca beneficiario</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>I miei certificati</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
         <a href="cert.html">Cert</a>
-        <a href="cert-istituzione.html">Istituzione</a>
-        <a href="cert-emetti.html">Emetti</a>
-        <a href="cert-verifica.html">Verifica</a>
+        <a href="cert-mio.html" class="current">I miei</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
   </header>
 
-  <main class="col-narrow" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">&sect; IV &mdash; Bacheca</span>
-      <span class="roman">iv</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
-      I miei <em class="serif-italic" style="color: var(--seal);">certificati.</em>
-    </h1>
-    <p class="lede" style="margin: 12px 0 40px; max-width: 60ch;">
-      I certificati intestati alla tua email risultano qui in automatico.
-      Puoi anche cercare per <em>codice pubblico</em> uno specifico
-      <span class="mono">VLN-CERT-...</span> ricevuto da un'istituzione.
-    </p>
-
-    <!-- =========================================================
-         Ricerca per codice (anche senza account)
-    ========================================================== -->
-    <section class="panel" style="padding: 24px; margin-bottom: 32px;">
-      <div class="row" style="gap: 12px; align-items: center; flex-wrap: wrap;">
-        <input id="searchCodice" class="field-input mono" placeholder="VLN-CERT-2026-XXXX-XXXX" style="flex: 1; min-width: 280px;"/>
-        <button class="btn seal" onclick="cercaPerCodice()">Apri verifica <span class="arrow"></span></button>
-      </div>
-      <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 8px;">
-        Suggerimento: la verifica pubblica funziona anche senza login &mdash;
-        apre la scheda completa di chi ha emesso il certificato.
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Cert · I miei certificati</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Certificati a <em class="serif-italic" style="color: var(--seal);">tuo nome.</em>
+        </h1>
       </div>
     </section>
 
-    <!-- =========================================================
-         Stato login + lista certificati intestati
-    ========================================================== -->
-    <section id="loginState" style="display: none; margin: 24px 0;" class="panel">
-      <div style="padding: 24px;">
-        <h3 class="serif" style="margin: 0 0 8px;">Accedi per vedere i tuoi certificati</h3>
-        <p class="body small" style="margin: 0 0 16px;">
-          Mostriamo solo i certificati intestati alla email del tuo account
-          (le policy RLS del database non permettono ricerche libere per privacy).
-        </p>
-        <a href="login.html" class="btn seal">Vai al login <span class="arrow"></span></a>
-      </div>
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento certificati&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+        <div id="state-empty" class="state-msg" hidden>
+          Nessun certificato a tuo nome al momento.
+        </div>
+        <table class="t" id="tbl" hidden>
+          <thead><tr><th>Emesso</th><th>Titolo</th><th>Istituzione</th><th>Codice</th><th>Stato</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </article>
     </section>
-
-    <section id="loadingState" style="display: none; margin: 24px 0;">
-      <div class="mono" style="font-size: 12px; color: var(--ink-3);">Carico i tuoi certificati&hellip;</div>
-    </section>
-
-    <section id="emptyState" style="display: none; margin: 24px 0;" class="panel">
-      <div style="padding: 24px;">
-        <h3 class="serif" style="margin: 0 0 8px;">Nessun certificato a tuo nome</h3>
-        <p class="body small" style="margin: 0 0 12px;">
-          Quando un'istituzione emette un certificato a tuo nome, lo trovi qui.
-          Verifica che la email che usano sia <span class="mono" id="emptyEmail">&mdash;</span>.
-        </p>
-      </div>
-    </section>
-
-    <section id="certList" style="display: none; margin-top: 16px;"></section>
-
-    <div class="row" style="gap: 12px; margin-top: 48px;">
-      <a href="cert.html" class="btn ghost">Torna all'hub</a>
-      <a href="cert-verifica.html" class="btn ghost">Verifica pubblica</a>
-    </div>
-
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
-      <span>Sezione VII &mdash; Cert &middot; Bacheca</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>I miei certificati</span></div></footer>
 
   <style>
-    .cert-card {
-      border-top: 1px solid var(--ink);
-      padding: 24px 0;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 16px;
-      align-items: start;
-    }
-    .cert-card:last-child { border-bottom: 1px solid var(--rule); }
-    .cert-card-codice {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--ink-3);
-      margin-bottom: 6px;
-    }
-    .cert-card-title {
-      font-family: var(--serif);
-      font-size: 20px;
-      line-height: 1.2;
-      margin: 0 0 8px;
-    }
-    .cert-card-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--ink-3);
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .cert-pill {
-      display: inline-block;
-      padding: 3px 8px;
-      border: 1px solid var(--rule);
-      border-radius: 2px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .cert-pill.emesso  { color: var(--seal); border-color: var(--seal); }
-    .cert-pill.ritirato { color: var(--ink-3); }
-    .cert-pill.revocato { color: #b00020; border-color: #b00020; }
-    .cert-pill.scaduto  { color: var(--ink-3); border-style: dashed; }
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
   </style>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
-    const REST_BASE = `${SUPABASE_URL}/rest/v1`;
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  await protectPage();
+  bindLogout("#logout");
 
-    function getSession() {
-      try { return JSON.parse(localStorage.getItem('veylon_session') || '{}'); }
-      catch { return {}; }
-    }
-    function getJwt() { return getSession()?.access_token ?? null; }
-    function headers() {
-      const h = { 'Content-Type': 'application/json' };
-      const jwt = getJwt();
-      if (jwt) h['Authorization'] = 'Bearer ' + jwt;
-      if (SUPABASE_ANON_KEY) h['apikey'] = SUPABASE_ANON_KEY;
-      return h;
-    }
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleDateString("it-IT") : ""; }
 
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
-
-    function cercaPerCodice() {
-      const c = (document.getElementById('searchCodice').value || '').trim().toUpperCase();
-      if (!c) return;
-      // delega tutto alla pagina di verifica pubblica
-      location.href = 'cert-verifica.html?codice=' + encodeURIComponent(c);
-    }
-
-    function fmtData(d) {
-      if (!d) return '&mdash;';
-      try { return new Date(d).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' }); }
-      catch { return d; }
-    }
-
-    function renderLista(rows) {
-      const wrap = document.getElementById('certList');
-      wrap.style.display = 'block';
-      wrap.innerHTML = rows.map(r => {
-        const ist = r.istituzione || {};
-        const tpl = r.template || {};
-        const titolo = tpl.nome ? tpl.nome : (r.disciplina_scientifica ? 'Certificato ' + r.disciplina_scientifica : 'Certificato');
-        const settore = ist.settore ? ist.settore : '';
-        const ragsoc = ist.ragione_sociale ? ist.ragione_sociale : 'Istituzione';
-        const stato = r.stato || 'emesso';
-        return `
-          <article class="cert-card">
-            <div>
-              <div class="cert-card-codice">${r.codice_pubblico}</div>
-              <h3 class="cert-card-title">${titolo}</h3>
-              <div class="body small" style="margin: 0 0 10px;">
-                Emesso da <strong>${ragsoc}</strong>${settore ? ' &middot; <span class="mono">'+settore+'</span>' : ''}
-              </div>
-              <div class="cert-card-meta">
-                <span>Emissione: ${fmtData(r.data_emissione)}</span>
-                ${r.data_scadenza ? '<span>Scadenza: '+fmtData(r.data_scadenza)+'</span>' : '<span>Senza scadenza</span>'}
-                <span class="cert-pill ${stato}">${stato}</span>
-              </div>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px; align-items: stretch;">
-              <a class="btn seal sm" href="cert-verifica.html?codice=${encodeURIComponent(r.codice_pubblico)}">Apri scheda <span class="arrow"></span></a>
-              <a class="btn ghost sm" href="c-codice.html?c=${encodeURIComponent(r.codice_pubblico)}" target="_blank">Vista pubblica</a>
-            </div>
-          </article>
-        `;
-      }).join('');
-    }
-
-    async function caricaCertificati() {
-      const sess = getSession();
-      const jwt = sess?.access_token;
-      const email = sess?.user?.email || sess?.email || '';
-      if (!jwt) {
-        document.getElementById('loginState').style.display = 'block';
+  async function load() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("state-empty").hidden = true;
+    document.getElementById("tbl").hidden = true;
+    document.getElementById("rows").innerHTML = "";
+    try {
+      const { data, error } = await supabase
+        .from("cert_a_mio_nome")
+        .select("id, titolo, istituzione_nome, codice, stato, emesso_il")
+        .order("emesso_il", { ascending: false })
+        .limit(100);
+      document.getElementById("state-loading").hidden = true;
+      if (error) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + error.message;
+        err.hidden = false;
         return;
       }
-      document.getElementById('loadingState').style.display = 'block';
-      try {
-        const sel = 'id,codice_pubblico,doc_sha256,stato,data_emissione,data_scadenza,disciplina_scientifica,'
-                  + 'istituzione:cert_istituzioni(id,ragione_sociale,settore,tipo),'
-                  + 'template:cert_template(id,nome,tipo,validita_anni)';
-        const res = await fetch(
-          `${REST_BASE}/cert_certificati?select=${encodeURIComponent(sel)}&order=created_at.desc&limit=200`,
-          { headers: headers() }
-        );
-        document.getElementById('loadingState').style.display = 'none';
-        if (!res.ok) {
-          document.getElementById('emptyState').style.display = 'block';
-          document.getElementById('emptyEmail').textContent = email || '(email non disponibile)';
-          return;
-        }
-        const rows = await res.json();
-        if (!rows.length) {
-          document.getElementById('emptyState').style.display = 'block';
-          document.getElementById('emptyEmail').textContent = email || '(email non disponibile)';
-          return;
-        }
-        renderLista(rows);
-      } catch (e) {
-        console.error('cert_mio_load_failed', e);
-        document.getElementById('loadingState').style.display = 'none';
-        document.getElementById('emptyState').style.display = 'block';
-        document.getElementById('emptyEmail').textContent = email || '(email non disponibile)';
+      if (!data || data.length === 0) {
+        document.getElementById("state-empty").hidden = false;
+        return;
       }
+      const tbody = document.getElementById("rows");
+      data.forEach(c => {
+        const stato = c.stato || "valido";
+        const ok = /valido|attivo/i.test(stato);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${fmt(c.emesso_il)}</td>
+          <td>${escapeHtml(c.titolo || "—")}</td>
+          <td>${escapeHtml(c.istituzione_nome || "—")}</td>
+          <td class="mono">${escapeHtml(c.codice || "—")}</td>
+          <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("tbl").hidden = false;
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
     }
-
-    document.addEventListener('DOMContentLoaded', caricaCertificati);
+  }
+  load();
   </script>
-
 </body>
 </html>

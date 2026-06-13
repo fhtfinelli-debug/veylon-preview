@@ -3,343 +3,145 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Cert · Hub certificati istituzionali</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Cert · Hub certificati</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VII</span>
-        <span class="sep">&middot;</span>
-        <span>Certificati istituzionali</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Veylon Cert</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
       <nav class="masthead-nav full">
         <a href="dashboard.html">Cruscotto</a>
-        <a href="notarizza.html">Sigillo</a>
-        <a href="invia.html">Send</a>
-        <a href="mail.html">Mail</a>
-        <a href="firma.html">Firma</a>
-        <a href="garanzie.html">Garanzie</a>
-        <a href="onboarding.html">KYC</a>
-        <a href="tag.html">Tag</a>
         <a href="cert.html" class="current">Cert</a>
         <a href="archivio.html">Archivio</a>
-        <a href="verifica.html">Verifica</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
-    <div class="masthead-band">
-      <div class="masthead-band-inner">
-        <span>21 CFR Part 11 &middot; GMP Annex 11 &middot; ISO 17025 &middot; ICH-GCP &middot; GDPR art. 9 &middot; eIDAS art. 19</span>
-        <span>EBSI ready &middot; ESPR ready &middot; AgID compatibile</span>
-      </div>
-    </div>
   </header>
 
-  <main class="col" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">Sezione VII &middot; Cert &middot; Hub</span>
-      <span class="roman">vii</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.05; letter-spacing: -0.02em; margin: 0; max-width: 22ch;">
-      Hub <em class="serif-italic" style="color: var(--seal);">certificati istituzionali.</em>
-    </h1>
-    <p class="lede" style="margin-top: 28px; max-width: 56ch;">
-      Universita, ospedali, case farmaceutiche, enti di ricerca e laboratori
-      accreditati: <em class="serif-italic">qui</em> si registrano, si
-      definiscono i template, si emettono i certificati,
-      si verificano e si revocano. Ogni operazione lascia una traccia
-      append-only sigillata su Bitcoin (21 CFR Part 11 / Annex 11 compliant).
-    </p>
-
-    <hr class="rule" style="margin: 48px 0;"/>
-
-    <!-- ============================================================
-         AZIONI PRINCIPALI - HUB
-    ============================================================= -->
-    <section style="margin-bottom: 72px;">
-      <div class="row-between" style="align-items: end; margin-bottom: 32px;">
-        <div>
-          <span class="section-num">&sect; Azioni</span>
-          <h2 class="serif" style="font-size: clamp(28px, 3.4vw, 36px); line-height: 1.1; margin-top: 12px; max-width: 24ch;">
-            Cosa vuoi fare <em class="serif-italic" style="color: var(--seal);">oggi?</em>
-          </h2>
-        </div>
-        <span class="roman">i</span>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Cert</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Certificati <em class="serif-italic" style="color: var(--seal);">istituzionali.</em>
+        </h1>
+        <p class="lede">Diplomi, attestati ECM, GxP. Emessi da istituzioni accreditate, verificabili pubblicamente.</p>
       </div>
+    </section>
 
-      <div class="hub-grid">
-        <a href="cert-istituzione.html" class="hub-card">
-          <div class="hub-num">01</div>
-          <h3 class="serif">Onboarding istituzione</h3>
-          <p class="body small">Registra la tua universita, ASL, casa farmaceutica, ente di ricerca. KYC con P.IVA, settore, normative, firma DPA.</p>
-          <div class="hub-foot mono">Inizia da qui &rarr;</div>
-        </a>
-
-        <a href="cert-emetti.html" class="hub-card">
-          <div class="hub-num">02</div>
-          <h3 class="serif">Emetti certificato</h3>
-          <p class="body small">Compila i campi del template selezionato, scegli il beneficiario, ottieni codice pubblico + PDF firmato + QR di verifica.</p>
-          <div class="hub-foot mono">Emissione singola &rarr;</div>
-        </a>
-
-        <a href="cert-emetti-batch.html" class="hub-card">
-          <div class="hub-num">03</div>
-          <h3 class="serif">Emissione massiva</h3>
-          <p class="body small">Carica un CSV (fino a 5.000 righe). Ricevi uno ZIP con tutti i PDF, il manifest CSV e l'elenco degli errori.</p>
-          <div class="hub-foot mono">Batch CSV &rarr;</div>
-        </a>
-
+    <section style="margin-top: 40px;">
+      <div class="hub">
         <a href="cert-mio.html" class="hub-card">
-          <div class="hub-num">04</div>
-          <h3 class="serif">Bacheca beneficiario</h3>
-          <p class="body small">Sei stato certificato? Qui i certificati a tuo nome (ricerca via email + codice).</p>
-          <div class="hub-foot mono">I miei certificati &rarr;</div>
+          <div class="hub-num">i</div>
+          <div class="hub-name">I miei certificati</div>
+          <div class="hub-desc">Certificati a tuo nome</div>
+          <div class="hub-arrow">→</div>
         </a>
-
+        <a href="cert-emetti.html" class="hub-card">
+          <div class="hub-num">ii</div>
+          <div class="hub-name">Emetti un certificato</div>
+          <div class="hub-desc">Per la tua istituzione</div>
+          <div class="hub-arrow">→</div>
+        </a>
+        <a href="cert-emetti-batch.html" class="hub-card">
+          <div class="hub-num">iii</div>
+          <div class="hub-name">Emissione massiva</div>
+          <div class="hub-desc">CSV/Excel di certificati</div>
+          <div class="hub-arrow">→</div>
+        </a>
+        <a href="cert-istituzione.html" class="hub-card">
+          <div class="hub-num">iv</div>
+          <div class="hub-name">La tua istituzione</div>
+          <div class="hub-desc">Profilo e accreditamento</div>
+          <div class="hub-arrow">→</div>
+        </a>
         <a href="cert-verifica.html" class="hub-card">
-          <div class="hub-num">05</div>
-          <h3 class="serif">Verifica pubblica</h3>
-          <p class="body small">Incolla il codice <span class="mono">VLN-CERT-...</span> o trascina il PDF: vedi se e' autentico, l'istituzione emittente, il sigillo Bitcoin.</p>
-          <div class="hub-foot mono">Verifica un codice &rarr;</div>
-        </a>
-
-        <a href="cert.html#templates" class="hub-card">
-          <div class="hub-num">06</div>
-          <h3 class="serif">Crea template</h3>
-          <p class="body small">Definisci una volta i campi del tuo certificato (laurea, ECM, batch GMP, CoA). Riusabile per ogni emissione.</p>
-          <div class="hub-foot mono">Template builder &rarr;</div>
+          <div class="hub-num">v</div>
+          <div class="hub-name">Verifica un certificato</div>
+          <div class="hub-desc">Per terzi</div>
+          <div class="hub-arrow">→</div>
         </a>
       </div>
     </section>
 
-    <hr class="rule"/>
-
-    <!-- ============================================================
-         I QUATTRO SETTORI
-    ============================================================= -->
-    <section style="padding: 72px 0;">
-      <div class="row-between" style="align-items: end; margin-bottom: 32px;">
-        <div>
-          <span class="section-num">&sect; Settori</span>
-          <h2 class="serif" style="font-size: clamp(28px, 3.4vw, 36px); line-height: 1.1; margin-top: 12px; max-width: 24ch;">
-            I quattro <em class="serif-italic" style="color: var(--seal);">settori.</em>
-          </h2>
+    <section style="margin-top: 40px;">
+      <h2 class="serif" style="font-size: 22px;">Riepilogo</h2>
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento riepilogo&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+        <div id="kpis" class="mini-kpi" hidden>
+          <div><div class="kpi-lbl">Emessi da me</div><div class="kpi-num" id="k-emessi">0</div></div>
+          <div><div class="kpi-lbl">A mio nome</div><div class="kpi-num" id="k-mio">0</div></div>
+          <div><div class="kpi-lbl">In attesa</div><div class="kpi-num" id="k-pending">0</div></div>
         </div>
-        <span class="roman">ii</span>
-      </div>
-
-      <div class="sect-grid">
-        <article class="sect-card">
-          <div class="sec-eyebrow">i &mdash; Formazione e accademia</div>
-          <h3 class="serif">Diplomi, ECM, sicurezza lavoro</h3>
-          <p class="body small">Lauree triennali e magistrali, dottorati, attestati sicurezza D.Lgs 81/08, ECM AgeNaS, diplomi linguistici, badge corsi online.</p>
-          <div class="sec-foot mono">eIDAS art. 19 &middot; Lisbona 1997 &middot; EBSI</div>
-        </article>
-        <article class="sect-card">
-          <div class="sec-eyebrow">ii &mdash; Farmaceutico (pharma)</div>
-          <h3 class="serif">Batch GMP, CoA, SOP, lot release</h3>
-          <p class="body small">Batch record GMP, certificati di analisi, stability data, training records personale, deviazioni CAPA, audit FDA/EMA/AIFA.</p>
-          <div class="sec-foot mono">21 CFR Part 11 &middot; GMP Annex 11 &middot; FMD UE 2011/62</div>
-        </article>
-        <article class="sect-card">
-          <div class="sec-eyebrow">iii &mdash; Sanitario</div>
-          <h3 class="serif">Consenso informato, referti, DAT</h3>
-          <p class="body small">Cartelle cliniche elettroniche, referti, consensi informati, prescrizioni mediche, DAT (L. 219/2017), libretto vaccinale.</p>
-          <div class="sec-foot mono">GDPR art. 9 &middot; AgID FSE &middot; ICH-GCP</div>
-        </article>
-        <article class="sect-card">
-          <div class="sec-eyebrow">iv &mdash; Ricerca scientifica</div>
-          <h3 class="serif">Lab notebook, pre-registration, peer review</h3>
-          <p class="body small">22 discipline: fisica, astronomia, genomica, chimica, biologia, medicina, neuroscienze, ai/ml, ingegneria, matematica, archeologia, aerospace, energia...</p>
-          <div class="sec-foot mono">ISO 17025 &middot; TOP guidelines &middot; FAIR Data</div>
-        </article>
-      </div>
+      </article>
     </section>
-
-    <hr class="rule"/>
-
-    <!-- ============================================================
-         COME FUNZIONA
-    ============================================================= -->
-    <section style="padding: 72px 0 0;">
-      <div class="row-between" style="align-items: end; margin-bottom: 32px;">
-        <div>
-          <span class="section-num">&sect; Flusso</span>
-          <h2 class="serif" style="font-size: clamp(28px, 3.4vw, 36px); line-height: 1.1; margin-top: 12px; max-width: 24ch;">
-            Come <em class="serif-italic" style="color: var(--seal);">funziona.</em>
-          </h2>
-        </div>
-        <span class="roman">iii</span>
-      </div>
-
-      <ol class="flow-steps">
-        <li>
-          <div class="fs-num">01</div>
-          <div>
-            <h3 class="serif">Registrazione istituzione (una sola volta)</h3>
-            <p class="body small">Apri <a href="cert-istituzione.html">Onboarding istituzione</a>: inserisci P.IVA, settore, normative, firma il DPA. Per pharma/sanitario/ricerca serve email DPO.</p>
-          </div>
-        </li>
-        <li>
-          <div class="fs-num">02</div>
-          <div>
-            <h3 class="serif">Definisci uno o piu' template</h3>
-            <p class="body small">Es. "Laurea Magistrale", "Crediti ECM 2026", "Batch GMP Pharma-Pad-002": dichiari i campi e (opzionale) carichi un PDF base con l'intestazione del tuo ente.</p>
-          </div>
-        </li>
-        <li>
-          <div class="fs-num">03</div>
-          <div>
-            <h3 class="serif">Emetti il certificato</h3>
-            <p class="body small">Compila i campi del template, scegli il beneficiario (email + opzionale CF). Veylon genera codice, PDF + QR, ancora a Bitcoin via OpenTimestamps.</p>
-          </div>
-        </li>
-        <li>
-          <div class="fs-num">04</div>
-          <div>
-            <h3 class="serif">Verifica pubblica (anche dietro al QR)</h3>
-            <p class="body small">Chiunque va su <span class="mono">veylon.it/c/&lt;codice&gt;</span> oppure scansiona il QR sul PDF. Riceve esito + dati istituzionali + sigillo Bitcoin.</p>
-          </div>
-        </li>
-        <li>
-          <div class="fs-num">05</div>
-          <div>
-            <h3 class="serif">Revoca o ritiro</h3>
-            <p class="body small">Se il certificato e' annullato (laurea revocata, ECM truffaldino, batch ritirato), motivo obbligatorio. Audit trail append-only GxP compliant.</p>
-          </div>
-        </li>
-      </ol>
-    </section>
-
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l. &middot; Servizio fiduciario digitale</span>
-      <span>Sezione VII &mdash; Cert</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Veylon Cert</span></div></footer>
 
   <style>
-  /* HUB grid */
-  .hub-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-    border-left: 1px solid var(--rule);
-  }
-  .hub-card {
-    padding: 28px 28px 32px;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    color: inherit;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: background .15s;
-    min-height: 220px;
-  }
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .hub { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--rule); }
+  .hub-card { display: grid; grid-template-columns: 44px 1fr 24px; gap: 14px; padding: 22px 22px; border-right: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule-2); align-items: center; color: inherit; }
+  .hub-card:nth-child(2n) { border-right: 0; }
   .hub-card:hover { background: var(--paper-2); }
-  .hub-card:nth-child(-n+3) { border-bottom: 1px solid var(--rule); }
-  .hub-card:nth-last-child(-n+3) { border-bottom: 0; }
-  .hub-num {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--seal);
-    border: 1px solid var(--seal);
-    width: 36px; height: 36px;
-    display: grid; place-items: center;
-  }
-  .hub-card h3 { font-size: 21px; line-height: 1.2; margin: 0; max-width: 22ch; letter-spacing: -0.005em; }
-  .hub-foot {
-    margin-top: auto;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--seal);
-  }
-
-  /* Settori */
-  .sect-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-    border-left: 1px solid var(--rule);
-  }
-  .sect-card {
-    padding: 28px 28px 32px;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .sect-card:nth-last-child(-n+2) { border-bottom: 0; }
-  .sec-eyebrow {
-    font-family: var(--mono); font-size: 10.5px;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--seal);
-    margin-bottom: 12px;
-  }
-  .sect-card h3 { font-size: 22px; line-height: 1.2; margin: 0 0 12px; max-width: 22ch; letter-spacing: -0.005em; }
-  .sec-foot {
-    font-size: 10.5px; letter-spacing: 0.08em;
-    color: var(--ink-3); margin-top: 16px;
-  }
-
-  /* Flusso */
-  .flow-steps {
-    list-style: none; padding: 0; margin: 0;
-    border-top: 1px solid var(--ink);
-  }
-  .flow-steps li {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 24px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--rule);
-  }
-  .fs-num {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--seal);
-    letter-spacing: 0.2em;
-    border: 1px solid var(--seal);
-    width: 44px; height: 44px;
-    display: grid; place-items: center;
-    align-self: start;
-  }
-  .flow-steps h3 { font-size: 20px; line-height: 1.2; margin: 0 0 6px; letter-spacing: -0.005em; }
-
-  @media (max-width: 980px) {
-    .hub-grid { grid-template-columns: 1fr 1fr; }
-    .hub-card { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-    .hub-card:nth-child(2n) { border-right: 0; }
-    .sect-grid { grid-template-columns: 1fr; }
-    .sect-card { border-right: 0; }
-  }
-  @media (max-width: 640px) {
-    .hub-grid { grid-template-columns: 1fr; }
-    .hub-card { border-right: 0; }
-  }
+  .hub-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 22px; }
+  .hub-name { font-family: var(--serif); font-size: 20px; }
+  .hub-desc { grid-column: 2; font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-2); }
+  .hub-arrow { font-family: var(--mono); color: var(--ink-3); }
+  .mini-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--ink); }
+  .mini-kpi > div { padding: 18px 16px; border-right: 1px solid var(--rule); }
+  .mini-kpi > div:last-child { border-right: 0; }
+  .kpi-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .kpi-num { font-family: var(--serif); font-size: 32px; line-height: 1; }
   </style>
 
-  <script>
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  await protectPage();
+  bindLogout("#logout");
+
+  async function loadKpis() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("kpis").hidden = true;
+
+    async function count(table, filter) {
+      try {
+        let q = supabase.from(table).select("*", { count: "exact", head: true });
+        if (filter) q = filter(q);
+        const { count: n, error } = await q;
+        if (error) return { n: 0, err: error };
+        return { n: n ?? 0, err: null };
+      } catch (e) { return { n: 0, err: e }; }
+    }
+
+    const a = await count("cert_emessi");
+    const b = await count("cert_a_mio_nome");
+    const c = await count("cert_emessi", q => q.eq("stato", "in_attesa"));
+
+    const anyHard = [a, b, c].find(x => x.err && !/relation|does not exist|permission/i.test(x.err.message || ""));
+    document.getElementById("state-loading").hidden = true;
+    if (anyHard) {
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (anyHard.err.message || anyHard.err);
+      err.hidden = false;
+      return;
+    }
+    document.getElementById("k-emessi").textContent = String(a.n);
+    document.getElementById("k-mio").textContent = String(b.n);
+    document.getElementById("k-pending").textContent = String(c.n);
+    document.getElementById("kpis").hidden = false;
+  }
+  loadKpis();
   </script>
 </body>
 </html>

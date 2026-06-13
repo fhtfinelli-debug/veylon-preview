@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VEYLON · Amministrazione Enterprise</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .admin-layout { max-width: 1200px; margin: 24px auto; padding: 0 24px 80px; }
+    .admin-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .admin-head h1 { font-family: var(--serif); font-weight: normal; margin: 0; font-size: 32px; }
+    .org-picker { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; }
+    .org-picker select { padding: 6px 10px; font-family: var(--mono); font-size: 12px; border: 1px solid var(--ink); background: var(--paper); }
+
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin: 24px 0 0; flex-wrap: wrap; }
+    .tab { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 12px 18px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; color: var(--ink-2); }
+    .tab.active { color: var(--ink); border-bottom-color: var(--seal); }
+    .tab-panel { display: none; padding: 32px 0; }
+    .tab-panel.active { display: block; }
+
+    .card { border: 1px solid var(--rule); padding: 20px; background: var(--paper); margin-bottom: 16px; }
+    .card h3 { font-family: var(--serif); font-weight: normal; margin: 0 0 12px; font-size: 18px; }
+
+    table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.t th, table.t td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--rule); font-family: var(--mono); }
+    table.t th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); font-weight: normal; }
+    table.t tr:hover { background: var(--paper-2); }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .row > div { display: flex; flex-direction: column; }
+    .row label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); margin-bottom: 6px; }
+    .row input, .row select, .row textarea { padding: 10px 12px; font-family: var(--mono); font-size: 13px; border: 1px solid var(--ink); background: var(--paper); }
+    .row textarea { min-height: 80px; resize: vertical; }
+    @media (max-width: 700px) { .row { grid-template-columns: 1fr; } }
+
+    .actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    .btn-primary { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); padding: 10px 18px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; }
+    .btn-primary:hover { background: var(--ink); border-color: var(--ink); }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); padding: 10px 18px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; }
+    .btn-danger { background: transparent; color: #b71c1c; border: 1px solid #b71c1c; padding: 6px 12px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; }
+    .btn-danger:hover { background: #b71c1c; color: var(--paper); }
+
+    .pill { display: inline-block; padding: 2px 8px; font-family: var(--mono); font-size: 10px; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .pill.ok { background: #c8e6c9; color: #1b5e20; }
+    .pill.warn { background: #fff3e0; color: #e65100; }
+    .pill.err { background: #ffcdd2; color: #b71c1c; }
+    .pill.muted { background: #eceff1; color: #455a64; }
+
+    .key-display { background: var(--paper-2); border: 1px dashed var(--seal); padding: 16px; margin-top: 12px; font-family: var(--mono); font-size: 13px; word-break: break-all; }
+    .key-warn { color: #b71c1c; font-family: var(--mono); font-size: 11px; margin-top: 8px; }
+
+    .quota-chart { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+    .quota-row { display: flex; align-items: center; gap: 12px; }
+    .quota-label { width: 140px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); }
+    .quota-bar { flex: 1; height: 8px; background: var(--paper-2); border: 1px solid var(--rule); position: relative; }
+    .quota-bar-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--seal); }
+    .quota-val { width: 100px; text-align: right; font-family: var(--mono); font-size: 12px; }
+
+    .filters { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .filters input, .filters select { padding: 6px 10px; font-family: var(--mono); font-size: 12px; border: 1px solid var(--ink); background: var(--paper); }
+
+    .empty { padding: 32px; text-align: center; color: var(--ink-2); font-family: var(--serif); font-style: italic; }
+    .demo-banner { background: #fff3e0; border-left: 4px solid #e65100; padding: 12px 18px; margin-bottom: 16px; font-family: var(--mono); font-size: 12px; color: #6b3a00; }
+  </style>
+</head>
+<body>
+
+  <!-- VEYLON auth guard -->
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <script type="module">
+    import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+    document.documentElement.classList.add("veylon-auth-pending");
+    try { await protectPage(); } finally {
+      document.documentElement.classList.remove("veylon-auth-pending");
+    }
+    bindLogout("#logout");
+  </script>
+
+  <header class="masthead">
+    <div class="masthead-inner" style="grid-template-columns: 1fr auto 1fr;">
+      <div class="masthead-meta">
+        <span>Amministrazione Enterprise</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="dashboard.html">Cruscotto</a>
+        <a href="system-status.html">Stato sistema</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-layout">
+
+    <div id="demo-banner" class="demo-banner" hidden>
+      Per accedere ai dati della tua organizzazione devi prima creare o essere invitato in un'organizzazione.
+    </div>
+
+    <div class="admin-head">
+      <h1>Amministrazione Enterprise</h1>
+      <div class="org-picker">
+        <span>Organizzazione:</span>
+        <select id="org-select"><option value="">-- nessuna --</option></select>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="members" role="tab">Membri</button>
+      <button class="tab" data-tab="audit" role="tab">Audit log</button>
+      <button class="tab" data-tab="apikeys" role="tab">API keys</button>
+      <button class="tab" data-tab="whitelabel" role="tab">White-label</button>
+      <button class="tab" data-tab="billing" role="tab">Billing</button>
+      <button class="tab" data-tab="quotas" role="tab">Quote</button>
+    </nav>
+
+    <!-- TAB MEMBRI -->
+    <section id="panel-members" class="tab-panel active" role="tabpanel">
+      <div class="card">
+        <h3>Invita un nuovo membro</h3>
+        <div class="row">
+          <div>
+            <label for="invite-email">Email</label>
+            <input id="invite-email" type="email" placeholder="utente@cliente.com"/>
+          </div>
+          <div>
+            <label for="invite-role">Ruolo</label>
+            <select id="invite-role">
+              <option value="member">Membro (operativo)</option>
+              <option value="admin">Amministratore</option>
+              <option value="viewer">Sola lettura</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" id="btn-invite">Invia invito</button>
+        </div>
+        <div id="invite-result" class="key-display" hidden></div>
+      </div>
+
+      <div class="card">
+        <h3>Membri attuali</h3>
+        <div id="members-list">
+          <div class="empty">Caricamento...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB AUDIT -->
+    <section id="panel-audit" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h3>Filtri</h3>
+        <div class="filters">
+          <select id="audit-days">
+            <option value="7">Ultimi 7 giorni</option>
+            <option value="30" selected>Ultimi 30 giorni</option>
+            <option value="90">Ultimi 90 giorni</option>
+          </select>
+          <input id="audit-action" type="text" placeholder="Filtro azione (es. cert.emit)"/>
+          <input id="audit-entity" type="text" placeholder="Filtro entity_type"/>
+          <button class="btn-ghost" id="btn-audit-reload">Aggiorna</button>
+          <button class="btn-primary" id="btn-audit-export-csv">Esporta CSV</button>
+          <button class="btn-ghost" id="btn-audit-export-json">Esporta JSON</button>
+        </div>
+      </div>
+      <div class="card">
+        <div id="audit-list"><div class="empty">Caricamento...</div></div>
+      </div>
+    </section>
+
+    <!-- TAB API KEYS -->
+    <section id="panel-apikeys" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h3>Crea nuova API key</h3>
+        <div class="row">
+          <div>
+            <label for="key-name">Nome (es. "Integrazione backend prod")</label>
+            <input id="key-name" type="text" maxlength="120"/>
+          </div>
+          <div>
+            <label for="key-scopes">Scope (separati da virgola)</label>
+            <input id="key-scopes" type="text" placeholder="mail:send,cert:emit"/>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" id="btn-create-key">Crea chiave</button>
+        </div>
+        <div id="key-result" class="key-display" hidden></div>
+      </div>
+
+      <div class="card">
+        <h3>Chiavi attive</h3>
+        <div id="keys-list"><div class="empty">Caricamento...</div></div>
+      </div>
+    </section>
+
+    <!-- TAB WHITE-LABEL -->
+    <section id="panel-whitelabel" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h3>Configurazione branding</h3>
+        <div class="row">
+          <div>
+            <label for="wl-primary">Colore principale</label>
+            <input id="wl-primary" type="text" placeholder="#1a3a8e"/>
+          </div>
+          <div>
+            <label for="wl-secondary">Colore secondario</label>
+            <input id="wl-secondary" type="text" placeholder="#5b9bd5"/>
+          </div>
+          <div>
+            <label for="wl-accent">Colore accent</label>
+            <input id="wl-accent" type="text" placeholder="oklch(68% 0.21 250)"/>
+          </div>
+          <div>
+            <label for="wl-font">Font family</label>
+            <input id="wl-font" type="text" placeholder="Inter, sans-serif"/>
+          </div>
+          <div>
+            <label for="wl-domain">Dominio custom</label>
+            <input id="wl-domain" type="text" placeholder="cert.cliente.com"/>
+          </div>
+          <div>
+            <label for="wl-email-from">Mittente email custom</label>
+            <input id="wl-email-from" type="email" placeholder="noreply@cliente.com"/>
+          </div>
+          <div>
+            <label for="wl-email-name">Nome mittente</label>
+            <input id="wl-email-name" type="text" placeholder="Cliente S.p.A."/>
+          </div>
+          <div>
+            <label for="wl-logo">Path logo (storage)</label>
+            <input id="wl-logo" type="text" placeholder="orgs/<uuid>/logo.png"/>
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <label for="wl-footer">Testo footer certificati PDF</label>
+          <textarea id="wl-footer" maxlength="1000" placeholder="© 2026 Cliente S.p.A."></textarea>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" id="btn-wl-save">Salva configurazione</button>
+        </div>
+        <p class="small" style="margin-top:12px;">L'upload del logo va fatto a parte nel bucket <code>veylon-whitelabel-assets</code>. Vedi <a href="../docs/WHITE-LABEL.md">docs/WHITE-LABEL.md</a>.</p>
+      </div>
+    </section>
+
+    <!-- TAB BILLING -->
+    <section id="panel-billing" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h3>Abbonamento e fatturazione</h3>
+        <p>Gestisci il tuo abbonamento, aggiorna il metodo di pagamento, scarica le fatture e cambia piano.</p>
+        <div class="actions">
+          <button class="btn-primary" id="btn-portal">Apri portale Stripe</button>
+          <a class="btn-ghost" href="pricing.html">Vedi i piani</a>
+        </div>
+        <div id="billing-result" style="margin-top:12px; font-family: var(--mono); font-size: 12px;"></div>
+      </div>
+
+      <div class="card">
+        <h3>Sottoscrizioni attive</h3>
+        <div id="subs-list"><div class="empty">Caricamento...</div></div>
+      </div>
+    </section>
+
+    <!-- TAB QUOTAS -->
+    <section id="panel-quotas" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h3>Utilizzo del periodo corrente</h3>
+        <div id="quotas-list" class="quota-chart">
+          <div class="empty">Caricamento...</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Sezione L — Enterprise</span>
+    </div>
+  </footer>
+
+  <script type="module">
+    // ---------------------------------------------------------------------
+    // Veylon Admin (Sezione L.6)
+    // ---------------------------------------------------------------------
+    // Tabs: members | audit | apikeys | whitelabel | billing | quotas
+    // ---------------------------------------------------------------------
+    const SUPABASE_URL = 'https://hanxxxtgxofjkfdjegfe.supabase.co';
+
+    async function getSupabase() {
+      const mod = await import('https://esm.sh/@supabase/supabase-js@2.39.0');
+      const anonKey = (window.VEYLON_CONFIG && window.VEYLON_CONFIG.SUPABASE_ANON_KEY)
+        || localStorage.getItem('veylon_supabase_anon')
+        || '';
+      if (!anonKey) {
+        document.getElementById('demo-banner').hidden = false;
+        document.getElementById('demo-banner').textContent =
+          'Configurazione anon key mancante: imposta window.VEYLON_CONFIG.SUPABASE_ANON_KEY.';
+      }
+      return mod.createClient(SUPABASE_URL, anonKey, {
+        auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
+      });
+    }
+
+    let supa = null;
+    let currentUser = null;
+    let currentOrgId = null;
+
+    function escapeHtml(s) {
+      return String(s ?? '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '—';
+      try {
+        return new Date(iso).toLocaleString('it-IT');
+      } catch { return iso; }
+    }
+
+    // ----- Tabs -----
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        t.classList.add('active');
+        document.getElementById('panel-' + t.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ----- Init -----
+    async function init() {
+      supa = await getSupabase();
+      const { data: sessionData } = await supa.auth.getSession();
+      currentUser = sessionData?.session?.user ?? null;
+
+      if (!currentUser) {
+        document.getElementById('demo-banner').hidden = false;
+        return;
+      }
+
+      await loadOrganizations();
+      await Promise.all([
+        loadMembers(),
+        loadAudit(),
+        loadKeys(),
+        loadWhiteLabel(),
+        loadSubscriptions(),
+        loadQuotas(),
+      ]);
+    }
+
+    // ----- Organizations -----
+    async function loadOrganizations() {
+      const { data: orgs, error } = await supa
+        .from('organizations')
+        .select('id, name, slug, plan');
+      if (error) { console.error(error); return; }
+
+      const sel = document.getElementById('org-select');
+      sel.innerHTML = '<option value="">-- nessuna --</option>';
+      (orgs ?? []).forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o.id;
+        opt.textContent = `${o.name} (${o.plan})`;
+        sel.appendChild(opt);
+      });
+      if (orgs && orgs.length > 0) {
+        sel.value = orgs[0].id;
+        currentOrgId = orgs[0].id;
+      }
+      sel.addEventListener('change', async () => {
+        currentOrgId = sel.value || null;
+        await Promise.all([loadMembers(), loadWhiteLabel()]);
+      });
+    }
+
+    // ----- Members -----
+    async function loadMembers() {
+      const root = document.getElementById('members-list');
+      if (!currentOrgId) {
+        root.innerHTML = '<div class="empty">Seleziona o crea un\'organizzazione.</div>';
+        return;
+      }
+      try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/org-members-list?organization_id=${currentOrgId}`, {
+          headers: { 'Authorization': 'Bearer ' + (await supa.auth.getSession()).data.session.access_token }
+        });
+        const j = await res.json();
+        if (!j.success) {
+          root.innerHTML = `<div class="empty">Errore: ${escapeHtml(j.error)}</div>`;
+          return;
+        }
+        if (!j.members || j.members.length === 0) {
+          root.innerHTML = '<div class="empty">Nessun membro.</div>';
+          return;
+        }
+        let html = '<table class="t"><thead><tr><th>Email</th><th>Ruolo</th><th>Aggiunto il</th></tr></thead><tbody>';
+        j.members.forEach(m => {
+          html += `<tr><td>${escapeHtml(m.email ?? m.invited_email ?? m.user_id.slice(0,8))}</td>`;
+          html += `<td><span class="pill ${m.role === 'owner' ? 'ok' : 'muted'}">${escapeHtml(m.role)}</span></td>`;
+          html += `<td>${formatDate(m.added_at)}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        root.innerHTML = html;
+      } catch (e) {
+        console.error(e);
+        root.innerHTML = `<div class="empty">Errore: ${escapeHtml(e.message)}</div>`;
+      }
+    }
+
+    document.getElementById('btn-invite').addEventListener('click', async () => {
+      if (!currentOrgId) { alert('Seleziona prima un\'organizzazione'); return; }
+      const email = document.getElementById('invite-email').value.trim();
+      const role = document.getElementById('invite-role').value;
+      if (!email) return;
+      const token = (await supa.auth.getSession()).data.session?.access_token;
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/org-invite`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ organization_id: currentOrgId, email, role })
+      });
+      const j = await res.json();
+      const out = document.getElementById('invite-result');
+      out.hidden = false;
+      out.textContent = JSON.stringify(j, null, 2);
+      if (j.success) await loadMembers();
+    });
+
+    // ----- Audit -----
+    async function loadAudit() {
+      const root = document.getElementById('audit-list');
+      const days = document.getElementById('audit-days').value;
+      const action = document.getElementById('audit-action').value.trim();
+      const entity = document.getElementById('audit-entity').value.trim();
+      try {
+        const token = (await supa.auth.getSession()).data.session?.access_token;
+        const params = new URLSearchParams({ format: 'json', days, limit: '200' });
+        if (action) params.set('action', action);
+        if (entity) params.set('entity_type', entity);
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/audit-export?${params}`, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const j = await res.json();
+        if (!j.success) {
+          root.innerHTML = `<div class="empty">Errore: ${escapeHtml(j.error)}</div>`;
+          return;
+        }
+        if (!j.rows || j.rows.length === 0) {
+          root.innerHTML = '<div class="empty">Nessun evento nel periodo selezionato.</div>';
+          return;
+        }
+        let html = '<table class="t"><thead><tr><th>Data</th><th>Azione</th><th>Entita\'</th><th>ID</th><th>Sorgente</th></tr></thead><tbody>';
+        j.rows.forEach(r => {
+          html += `<tr><td>${formatDate(r.created_at)}</td>`;
+          html += `<td><code>${escapeHtml(r.action)}</code></td>`;
+          html += `<td>${escapeHtml(r.entity_type)}</td>`;
+          html += `<td><code class="tiny">${escapeHtml(String(r.entity_id ?? '').slice(0,32))}</code></td>`;
+          html += `<td><span class="pill muted">${escapeHtml(r.source)}</span></td></tr>`;
+        });
+        html += '</tbody></table>';
+        html += `<p class="small" style="margin-top:12px;">${j.count} di ${j.total} eventi.</p>`;
+        root.innerHTML = html;
+      } catch (e) {
+        root.innerHTML = `<div class="empty">Errore: ${escapeHtml(e.message)}</div>`;
+      }
+    }
+
+    document.getElementById('btn-audit-reload').addEventListener('click', loadAudit);
+
+    async function exportAudit(format) {
+      const token = (await supa.auth.getSession()).data.session?.access_token;
+      const days = document.getElementById('audit-days').value;
+      const action = document.getElementById('audit-action').value.trim();
+      const entity = document.getElementById('audit-entity').value.trim();
+      const params = new URLSearchParams({ format, days, limit: '10000' });
+      if (action) params.set('action', action);
+      if (entity) params.set('entity_type', entity);
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/audit-export?${params}`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `veylon-audit-${new Date().toISOString().slice(0,10)}.${format}`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    document.getElementById('btn-audit-export-csv').addEventListener('click', () => exportAudit('csv'));
+    document.getElementById('btn-audit-export-json').addEventListener('click', () => exportAudit('json'));
+
+    // ----- API Keys -----
+    async function loadKeys() {
+      const root = document.getElementById('keys-list');
+      try {
+        const token = (await supa.auth.getSession()).data.session?.access_token;
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/api-keys-list`, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const j = await res.json();
+        if (!j.success) {
+          root.innerHTML = `<div class="empty">Errore: ${escapeHtml(j.error)}</div>`;
+          return;
+        }
+        if (!j.keys || j.keys.length === 0) {
+          root.innerHTML = '<div class="empty">Nessuna chiave creata.</div>';
+          return;
+        }
+        let html = '<table class="t"><thead><tr><th>Nome</th><th>Prefisso</th><th>Scope</th><th>Stato</th><th>Ultimo uso</th><th></th></tr></thead><tbody>';
+        j.keys.forEach(k => {
+          const stato = k.active ? '<span class="pill ok">attiva</span>' : '<span class="pill err">revocata</span>';
+          html += `<tr><td>${escapeHtml(k.name)}</td>`;
+          html += `<td><code>${escapeHtml(k.key_prefix)}…</code></td>`;
+          html += `<td><code class="tiny">${escapeHtml((k.scopes||[]).join(', '))}</code></td>`;
+          html += `<td>${stato}</td>`;
+          html += `<td>${formatDate(k.last_used_at)}</td>`;
+          html += `<td>${k.active ? `<button class="btn-danger" data-revoke="${k.id}">Revoca</button>` : ''}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        root.innerHTML = html;
+        root.querySelectorAll('[data-revoke]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Revocare questa chiave? L\'azione e\' irreversibile.')) return;
+            const token = (await supa.auth.getSession()).data.session?.access_token;
+            await fetch(`${SUPABASE_URL}/functions/v1/api-keys-revoke`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+              body: JSON.stringify({ id: btn.dataset.revoke })
+            });
+            await loadKeys();
+          });
+        });
+      } catch (e) {
+        root.innerHTML = `<div class="empty">Errore: ${escapeHtml(e.message)}</div>`;
+      }
+    }
+
+    document.getElementById('btn-create-key').addEventListener('click', async () => {
+      const name = document.getElementById('key-name').value.trim();
+      const scopesText = document.getElementById('key-scopes').value.trim();
+      const scopes = scopesText ? scopesText.split(',').map(s => s.trim()).filter(Boolean) : [];
+      if (!name) { alert('Inserisci un nome'); return; }
+      const token = (await supa.auth.getSession()).data.session?.access_token;
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/api-keys-create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ name, scopes })
+      });
+      const j = await res.json();
+      const out = document.getElementById('key-result');
+      if (j.success) {
+        out.hidden = false;
+        out.innerHTML = `<strong>Chiave creata. Copia ORA il valore:</strong><br/>
+          <code>${escapeHtml(j.key)}</code>
+          <div class="key-warn">Non sara' piu' recuperabile dopo aver lasciato questa pagina.</div>`;
+        document.getElementById('key-name').value = '';
+        document.getElementById('key-scopes').value = '';
+        await loadKeys();
+      } else {
+        out.hidden = false;
+        out.textContent = 'Errore: ' + (j.error ?? 'sconosciuto');
+      }
+    });
+
+    // ----- White-label -----
+    async function loadWhiteLabel() {
+      if (!currentOrgId) return;
+      const { data } = await supa
+        .from('white_label_config')
+        .select('*')
+        .eq('organization_id', currentOrgId)
+        .maybeSingle();
+      if (!data) return;
+      document.getElementById('wl-primary').value = data.primary_color ?? '';
+      document.getElementById('wl-secondary').value = data.secondary_color ?? '';
+      document.getElementById('wl-accent').value = data.accent_color ?? '';
+      document.getElementById('wl-font').value = data.font_family ?? '';
+      document.getElementById('wl-domain').value = data.custom_domain ?? '';
+      document.getElementById('wl-email-from').value = data.custom_email_from ?? '';
+      document.getElementById('wl-email-name').value = data.custom_email_from_name ?? '';
+      document.getElementById('wl-logo').value = data.logo_storage_path ?? '';
+      document.getElementById('wl-footer').value = data.certificate_footer_text ?? '';
+    }
+
+    document.getElementById('btn-wl-save').addEventListener('click', async () => {
+      if (!currentOrgId) { alert('Seleziona prima un\'organizzazione'); return; }
+      const payload = {
+        organization_id: currentOrgId,
+        primary_color: document.getElementById('wl-primary').value.trim() || null,
+        secondary_color: document.getElementById('wl-secondary').value.trim() || null,
+        accent_color: document.getElementById('wl-accent').value.trim() || null,
+        font_family: document.getElementById('wl-font').value.trim() || null,
+        custom_domain: document.getElementById('wl-domain').value.trim() || null,
+        custom_email_from: document.getElementById('wl-email-from').value.trim() || null,
+        custom_email_from_name: document.getElementById('wl-email-name').value.trim() || null,
+        logo_storage_path: document.getElementById('wl-logo').value.trim() || null,
+        certificate_footer_text: document.getElementById('wl-footer').value.trim() || null
+      };
+      const token = (await supa.auth.getSession()).data.session?.access_token;
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/white-label-update`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify(payload)
+      });
+      const j = await res.json();
+      alert(j.success ? 'Configurazione salvata.' : 'Errore: ' + (j.error ?? 'sconosciuto'));
+    });
+
+    // ----- Billing -----
+    async function loadSubscriptions() {
+      const root = document.getElementById('subs-list');
+      const { data, error } = await supa
+        .from('subscriptions')
+        .select('id, piano, stato, current_period_end, quota_used, quota_limit')
+        .order('created_at', { ascending: false });
+      if (error) { root.innerHTML = `<div class="empty">Errore: ${escapeHtml(error.message)}</div>`; return; }
+      if (!data || data.length === 0) { root.innerHTML = '<div class="empty">Nessuna sottoscrizione attiva.</div>'; return; }
+      let html = '<table class="t"><thead><tr><th>Piano</th><th>Stato</th><th>Periodo fino a</th></tr></thead><tbody>';
+      data.forEach(s => {
+        html += `<tr><td>${escapeHtml(s.piano)}</td>`;
+        html += `<td><span class="pill ${s.stato === 'active' ? 'ok' : s.stato === 'past_due' ? 'warn' : 'muted'}">${escapeHtml(s.stato)}</span></td>`;
+        html += `<td>${formatDate(s.current_period_end)}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      root.innerHTML = html;
+    }
+
+    document.getElementById('btn-portal').addEventListener('click', async () => {
+      const token = (await supa.auth.getSession()).data.session?.access_token;
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/stripe-portal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({})
+      });
+      const j = await res.json();
+      const out = document.getElementById('billing-result');
+      if (j.success && j.portal_url) {
+        out.innerHTML = j.demo_mode
+          ? `<span class="pill warn">demo mode</span> ${escapeHtml(j.demo_reason ?? '')}`
+          : `<a href="${escapeHtml(j.portal_url)}" target="_blank" rel="noopener">Apri portale &rarr;</a>`;
+        if (!j.demo_mode) window.open(j.portal_url, '_blank', 'noopener');
+      } else {
+        out.textContent = 'Errore: ' + (j.error ?? 'sconosciuto');
+      }
+    });
+
+    // ----- Quotas -----
+    async function loadQuotas() {
+      const root = document.getElementById('quotas-list');
+      const { data, error } = await supa
+        .from('subscriptions')
+        .select('piano, quota_used, quota_limit')
+        .in('stato', ['trial', 'active', 'past_due']);
+      if (error || !data || data.length === 0) {
+        root.innerHTML = '<div class="empty">Nessuna quota da mostrare.</div>';
+        return;
+      }
+      let html = '';
+      data.forEach(s => {
+        const used = s.quota_used || {};
+        const limit = s.quota_limit || {};
+        Object.keys(limit).forEach(metric => {
+          const u = Number(used[metric] ?? 0);
+          const l = Number(limit[metric] ?? 0);
+          const pct = l > 0 ? Math.min(100, (u / l) * 100) : 0;
+          html += `<div class="quota-row">
+            <span class="quota-label">${escapeHtml(s.piano)} / ${escapeHtml(metric)}</span>
+            <span class="quota-bar"><span class="quota-bar-fill" style="width:${pct}%"></span></span>
+            <span class="quota-val">${u} / ${l}</span>
+          </div>`;
+        });
+      });
+      root.innerHTML = html || '<div class="empty">Nessuna metrica di quota configurata.</div>';
+    }
+
+    init().catch(e => { console.error('init_failed', e); });
+  </script>
+</body>
+</html>

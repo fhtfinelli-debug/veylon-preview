@@ -3,294 +3,122 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Tag · Emetti certificato</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Tag · Emetti</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VI &middot; Tag</span>
-        <span class="sep">·</span>
-        <span>Emissione singola</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Tag · Emetti</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
         <a href="tag.html">Tag</a>
-        <a href="tag-onboarding.html">Onboarding</a>
-        <a href="tag-batch.html">Massivo</a>
-        <a href="tag-storico.html">Storico</a>
+        <a href="tag-emetti.html" class="current">Emetti</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
   </header>
 
-  <main class="col-narrow" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">&sect; I &mdash; Emissione</span>
-      <span class="roman">i</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
-      Emetti un <em class="serif-italic" style="color: var(--seal);">certificato.</em>
-    </h1>
-    <p class="lede" style="margin: 12px 0 40px; max-width: 50ch;">
-      Compila i campi dell'esemplare. Veylon calcola lo SHA-256 della
-      dichiarazione, lo notarizza su Bitcoin e ti restituisce il codice + il QR
-      pronto da stampare o incidere.
-    </p>
-
-    <form id="emettiForm" class="panel" style="padding: 32px;" onsubmit="emetti(event)">
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 24px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">A</span> Produttore</legend>
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="produttoreId">ID produttore</label>
-          <input id="produttoreId" class="field-input mono" required placeholder="uuid del produttore registrato"/>
-          <p class="small" style="margin-top: 8px;">
-            Non ce l'hai? Vai a <a class="link-seal" href="tag-onboarding.html">Onboarding</a>.
-            <span id="produttoreHint" style="display: none; color: var(--ink-3);">&middot; rilevato in sessione</span>
-          </p>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 24px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">B</span> Esemplare</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="codiceProdotto">Codice prodotto / SKU</label>
-          <input id="codiceProdotto" class="field-input mono" placeholder="es. LEM-1873-EN-248"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="lotto">Lotto</label>
-          <input id="lotto" class="field-input mono" placeholder="2026/07-A"/>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="descrizione">Descrizione</label>
-          <textarea id="descrizione" class="field-input" rows="3" placeholder="Cronografo Lemania 1873 — Edizione numerata"></textarea>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="applicazione">Applicazione fisica</label>
-          <select id="applicazione" class="field-input mono">
-            <option value="qr_adesivo">QR adesivo (€0,05-0,20)</option>
-            <option value="qr_inciso">QR inciso indelebile (€0,30-2,00)</option>
-            <option value="nfc_ntag424_dna">NFC NTAG 424 DNA + QR (€0,40-3,00)</option>
-          </select>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="dataScadenza">Data scadenza (opzionale)</label>
-          <input id="dataScadenza" class="field-input mono" type="date"/>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 24px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">C</span> Foto del prodotto</legend>
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="fotoOriginale">Foto originale (archivio privato)</label>
-          <input id="fotoOriginale" class="field-input" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"/>
-          <p class="small" style="margin-top: 8px;">Max 20 MB. Conservata nel bucket privato.</p>
-        </div>
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="fotoPubblica">Foto vetrina (mostrata al consumatore)</label>
-          <input id="fotoPubblica" class="field-input" type="file" accept="image/jpeg,image/png,image/webp"/>
-          <p class="small" style="margin-top: 8px;">Max 5 MB. Mostrata nella pagina pubblica del QR.</p>
-        </div>
-      </fieldset>
-
-      <button id="submitBtn" class="btn seal lg" type="submit" style="width: 100%; justify-content: center; padding: 18px;">
-        Emetti e sigilla su Bitcoin <span class="arrow"></span>
-      </button>
-
-      <p id="formMsg" class="small" style="margin-top: 16px; text-align: center;"></p>
-    </form>
-
-    <!-- Risultato -->
-    <section id="result" style="display: none; margin-top: 40px;" class="panel">
-      <div class="eyebrow verify-c" style="margin-bottom: 12px;">Certificato emesso</div>
-      <div class="serif" style="font-size: 28px; line-height: 1.1;">
-        Codice: <span class="mono" id="rCodice" style="font-size: 24px;">—</span>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 240px 1fr; gap: 32px; margin-top: 24px; align-items: start;">
-        <div style="border: 1px solid var(--ink); padding: 12px; background: var(--paper); text-align: center;">
-          <img id="rQrImg" alt="QR code" style="width: 100%; max-width: 220px; display: block; margin: 0 auto;"/>
-          <div class="mono small" style="margin-top: 8px; color: var(--ink-3);">scansiona per verificare</div>
-        </div>
-        <div>
-          <div class="hist-meta">
-            <div class="hist-meta-k">URL pubblico</div>
-            <div class="hist-meta-v mono small" id="rQrUrl" style="word-break: break-all;">—</div>
-            <div class="hist-meta-k">Atto Veylon</div>
-            <div class="hist-meta-v mono small" id="rAttoId">—</div>
-            <div class="hist-meta-k">Stato OTS</div>
-            <div class="hist-meta-v" id="rOtsStatus">—</div>
-            <div class="hist-meta-k">Upload foto</div>
-            <div class="hist-meta-v small" id="rUploads">—</div>
-          </div>
-          <div class="row" style="gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-            <a id="rDownloadQr" class="btn ghost" download="qr.png">Scarica PNG</a>
-            <a id="rOpenVerify" class="btn ghost" target="_blank">Apri pagina pubblica</a>
-            <a href="tag-emetti.html" class="btn seal">Emetti un altro <span class="arrow"></span></a>
-          </div>
-        </div>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Tag · Emissione</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Emetti un <em class="serif-italic" style="color: var(--seal);">tag.</em>
+        </h1>
+        <p class="lede">Genera un QR code univoco da applicare al prodotto.</p>
       </div>
     </section>
 
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 18px;">Nuovo tag</h2>
+        <form id="form" novalidate>
+          <div>
+            <label class="field-label" for="prod">Denominazione prodotto</label>
+            <input class="field-input" type="text" id="prod" required/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="sku">SKU / codice interno</label>
+            <input class="field-input mono" type="text" id="sku"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="lotto">Lotto / serial</label>
+            <input class="field-input mono" type="text" id="lotto"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label">Applicazione</label>
+            <div role="radiogroup" aria-label="Applicazione" class="radio-row">
+              <label class="radio-pill"><input type="radio" name="app" value="qr_adesivo" checked/> QR su adesivo</label>
+              <label class="radio-pill"><input type="radio" name="app" value="qr_inciso"/> QR inciso</label>
+            </div>
+          </div>
+          <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
+            <span class="btn-label">Emetti tag</span>
+          </button>
+          <div id="result" hidden style="margin-top: 20px; padding: 14px; border: 1px solid var(--rule); background: var(--paper-2);">
+            <div class="eyebrow seal-c" style="margin-bottom: 6px;">Tag emesso</div>
+            <div class="mono" style="font-size: 12px;" id="result-codice"></div>
+            <p class="small" id="result-link" style="margin-top: 6px;"></p>
+          </div>
+        </form>
+      </article>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
-      <span>Sezione VI &mdash; Tag &middot; Emetti</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Tag · Emetti</span></div></footer>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
-    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .radio-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--rule); cursor: pointer; font-family: var(--serif); font-size: 14px; }
+  .radio-pill:hover { background: var(--paper-2); }
+  .radio-pill input { accent-color: var(--seal); }
+  </style>
 
-    function getJwt() {
-      try {
-        const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
-        return session?.access_token ?? null;
-      } catch { return null; }
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  const { session } = await protectPage();
+  bindLogout("#logout");
+
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+
+  document.getElementById("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const payload = {
+      denominazione: document.getElementById("prod").value.trim(),
+      sku: document.getElementById("sku").value.trim() || null,
+      lotto: document.getElementById("lotto").value.trim() || null,
+      applicazione: document.querySelector('input[name="app"]:checked').value,
+    };
+    if (!payload.denominazione) { alert("Inserisci la denominazione."); return; }
+    const btn = document.getElementById("submit");
+    btn.disabled = true;
+    const original = btn.querySelector(".btn-label").textContent;
+    btn.querySelector(".btn-label").textContent = "Emissione…";
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-emetti`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+        body: JSON.stringify(payload),
+      });
+      const j = await res.json();
+      if (!res.ok || !j.success) throw new Error(j?.error || "errore");
+      document.getElementById("result-codice").textContent = j.codice || j.id;
+      if (j.url) document.getElementById("result-link").textContent = "Verifica: " + j.url;
+      document.getElementById("result").hidden = false;
+      document.getElementById("form").reset();
+    } catch (e) {
+      alert("Errore: " + (e.message || e));
+    } finally {
+      btn.disabled = false;
+      btn.querySelector(".btn-label").textContent = original;
     }
-
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
-
-    // Pre-popola produttore_id se presente in localStorage
-    const lastProduttore = localStorage.getItem('veylon_tag_produttore_id');
-    if (lastProduttore) {
-      document.getElementById('produttoreId').value = lastProduttore;
-      document.getElementById('produttoreHint').style.display = 'inline';
-    }
-
-    function bytesToHex(bytes) {
-      return [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-    async function sha256Hex(data) {
-      const digest = await crypto.subtle.digest('SHA-256', data);
-      return bytesToHex(new Uint8Array(digest));
-    }
-
-    async function emetti(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('formMsg');
-      msg.textContent = '';
-      msg.style.color = '';
-
-      const jwt = getJwt();
-      if (!jwt) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Accesso richiesto.';
-        return;
-      }
-
-      // 1. Costruisce dichiarazione canonica + sha256
-      const dichiarazione = {
-        produttore_id: document.getElementById('produttoreId').value.trim(),
-        codice_prodotto: document.getElementById('codiceProdotto').value.trim(),
-        lotto: document.getElementById('lotto').value.trim(),
-        descrizione: document.getElementById('descrizione').value.trim(),
-        applicazione: document.getElementById('applicazione').value,
-        data_scadenza: document.getElementById('dataScadenza').value || null,
-        timestamp: new Date().toISOString(),
-      };
-      const dichBytes = new TextEncoder().encode(JSON.stringify(dichiarazione));
-      const shaDich = await sha256Hex(dichBytes);
-
-      const fotoOrig = document.getElementById('fotoOriginale').files[0] || null;
-      const fotoPub = document.getElementById('fotoPubblica').files[0] || null;
-
-      const payload = {
-        produttore_id: dichiarazione.produttore_id,
-        codice_prodotto: dichiarazione.codice_prodotto || undefined,
-        lotto: dichiarazione.lotto || undefined,
-        descrizione: dichiarazione.descrizione || undefined,
-        sha256_dichiarazione: shaDich,
-        applicazione: dichiarazione.applicazione,
-        data_scadenza: dichiarazione.data_scadenza || undefined,
-        foto_originale_mime: fotoOrig?.type || undefined,
-        foto_pubblica_mime: fotoPub?.type || undefined,
-        regulatory_compliance: { dpp: {}, certificazioni: [] },
-        metadata: { dichiarazione },
-      };
-
-      btn.disabled = true;
-      btn.innerHTML = 'Notarizzazione su Bitcoin in corso…';
-
-      try {
-        const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt };
-        if (SUPABASE_ANON_KEY) headers['apikey'] = SUPABASE_ANON_KEY;
-        const res = await fetch(`${FUNCTIONS_BASE}/tag-certificato-crea`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(payload),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.success) {
-          throw new Error(json.error || ('http_' + res.status));
-        }
-
-        // Upload foto se signed URL forniti
-        const uploads = [];
-        if (fotoOrig && json.upload_urls?.foto_originale?.signed_url) {
-          uploads.push(fetch(json.upload_urls.foto_originale.signed_url, {
-            method: 'PUT',
-            headers: { 'Content-Type': fotoOrig.type },
-            body: fotoOrig,
-          }).then(r => r.ok ? 'foto_originale_ok' : 'foto_originale_failed_' + r.status));
-        }
-        if (fotoPub && json.upload_urls?.foto_pubblica?.signed_url) {
-          uploads.push(fetch(json.upload_urls.foto_pubblica.signed_url, {
-            method: 'PUT',
-            headers: { 'Content-Type': fotoPub.type },
-            body: fotoPub,
-          }).then(r => r.ok ? 'foto_pubblica_ok' : 'foto_pubblica_failed_' + r.status));
-        }
-        const uploadResults = uploads.length ? await Promise.all(uploads) : ['nessuna foto'];
-
-        // Render risultato
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('rCodice').textContent = json.codice_pubblico;
-        document.getElementById('rQrUrl').textContent = json.qr_url;
-        document.getElementById('rAttoId').textContent = json.veylon_atto_id || '—';
-        document.getElementById('rOtsStatus').textContent = json.ots_status;
-        document.getElementById('rUploads').textContent = uploadResults.join(', ');
-
-        if (json.qr_png_data_url) {
-          document.getElementById('rQrImg').src = json.qr_png_data_url;
-          document.getElementById('rDownloadQr').href = json.qr_png_data_url;
-          document.getElementById('rDownloadQr').download = json.codice_pubblico + '.png';
-        }
-        document.getElementById('rOpenVerify').href = 't-codice.html?c=' + encodeURIComponent(json.codice_pubblico);
-
-        btn.innerHTML = '✓ Emesso';
-        btn.style.background = 'var(--verify)';
-        btn.style.borderColor = 'var(--verify)';
-        document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Emetti e sigilla su Bitcoin <span class="arrow"></span>';
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Errore: ' + (err.message || err);
-      }
-    }
+  });
   </script>
 </body>
 </html>

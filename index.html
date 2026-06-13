@@ -3,11 +3,139 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON · Notarizzazione digitale con valore legale</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
-  <meta name="description" content="VEYLON. Data certa con valore probatorio ancorata alla blockchain Bitcoin. Per banche, pubbliche amministrazioni, studi legali e notarili."/>
+  <title>Veylon · Notarizzazione legale Bitcoin per documenti, email, file | eIDAS art.41</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta name="description" content="Veylon trasforma qualsiasi documento, email o file in prova legale ancorata a Bitcoin. eIDAS art.41, L.12/2019, GDPR. Inizia gratis con 10 sigilli al mese."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Veylon · Prova legale per documenti via Bitcoin"/>
+  <meta property="og:description" content="Notarizzazione digitale conforme eIDAS art.41 ancorata a Bitcoin. Per studi legali, banche, PA, imprese. Verifica indipendente per sempre."/>
+  <meta property="og:url" content="https://veylon.app/"/>
+  <meta property="og:locale" content="it_IT"/>
+  <meta property="og:site_name" content="Veylon"/>
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Veylon · Prova legale per documenti via Bitcoin"/>
+  <meta name="twitter:description" content="Notarizzazione digitale conforme eIDAS art.41 ancorata a Bitcoin. Inizia gratis con 10 sigilli al mese."/>
+
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+
+  <!-- JSON-LD: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Veylon",
+    "url": "https://veylon.app",
+    "logo": "https://veylon.app/og-logo.png",
+    "description": "Servizio fiduciario digitale per notarizzazione legale di documenti, email e file via Bitcoin. Conforme eIDAS art.41 e L.12/2019 art.8-ter.",
+    "areaServed": "EU",
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "email": "info@veylon.app",
+      "contactType": "customer support",
+      "availableLanguage": ["it", "en"]
+    }]
+  }
+  </script>
+
+  <!-- JSON-LD: Product -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Veylon · Notarizzazione legale Bitcoin",
+    "description": "Apponi un sigillo legale a documenti, email e file. Verifica indipendente per sempre tramite blockchain Bitcoin.",
+    "brand": { "@type": "Brand", "name": "Veylon" },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "EUR",
+      "lowPrice": "0",
+      "highPrice": "99",
+      "offerCount": "5",
+      "url": "https://veylon.app/pricing.html"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Veylon è una PEC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. La PEC è uno standard nazionale italiano. Veylon è un servizio fiduciario digitale che produce prova legale opponibile a terzi tramite marca temporale ancorata a Bitcoin, riconosciuta in tutta l'Unione Europea ai sensi dell'eIDAS art.41."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Veylon è una firma elettronica qualificata eIDAS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, Veylon non è una QES. Veylon è una validazione temporale elettronica con valore probatorio. Per la firma qualificata si rinvia a un prestatore di servizi fiduciari accreditato AgID/eIDAS."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Cosa succede se Veylon chiude?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Niente. Le prove restano valide. Ogni sigillo è ancorato al registro pubblico Bitcoin tramite lo standard aperto OpenTimestamps: chiunque, con qualunque client compatibile, può verificare il documento in autonomia per sempre."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Veylon è GDPR compliant?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sì. I dati sono ospitati su infrastruttura Supabase EU (Ireland). Nessun trasferimento extra-UE. Il documento non lascia mai il vostro perimetro: viene trasmessa solo l'impronta crittografica SHA-256."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso integrare Veylon via API?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sì, su piani Pro e Business. Il piano Business include accesso API REST con quota dedicata, webhooks, e SLA."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto costa la notarizzazione?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Il piano Free include 10 sigilli al mese, per sempre. Il piano Sigillo Pro a 9€/mese sblocca uso illimitato. Vedi il listino completo per gli altri moduli."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto dura la prova legale prodotta da Veylon?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Permanente. eIDAS art.41 e L.12/2019 art.8-ter conferiscono valore di legge alla marca temporale ancorata a registri distribuiti. Bitcoin è il libro mastro distribuito più resiliente esistente."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanti documenti posso sigillare con il piano Free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "10 sigilli al mese, senza scadenza e senza carta di credito richiesta. Sufficiente per la maggior parte degli usi personali e per la valutazione professionale."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -17,327 +145,293 @@
   <header class="masthead">
     <div class="masthead-inner">
       <div class="masthead-meta">
-        <span>Protocollo&nbsp;n.&nbsp;<span class="tabular">MMXXVI · 248,917</span></span>
+        <span>Servizio fiduciario digitale</span>
         <span class="sep">·</span>
-        <span>Roma · 7&nbsp;Giugno&nbsp;2026</span>
-        <span class="sep">·</span>
-        <span>Ed.&nbsp;III · vol.&nbsp;II</span>
+        <span>Roma · Edizione III</span>
       </div>
-      <a href="index.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
-        <a href="notarizza.html">Notarizza</a>
-        <a href="invia.html">Invia</a>
-        <a href="mail.html">Mail</a>
-        <a href="verifica.html">Verifica</a>
-        <a href="archivio.html">Archivio</a>
-        <a href="garanzie.html">Garanzie</a>
+      <a href="index.html" class="wordmark" aria-label="Veylon - Homepage">VEYLON</a>
+      <nav class="masthead-nav" aria-label="Navigazione principale">
+        <a href="#atti">Atti</a>
         <a href="pricing.html">Listino</a>
-        <a href="login.html" style="border: 1px solid var(--ink); padding: 6px 14px; color: var(--ink);">Accedi →</a>
+        <a href="verifica.html">Verifica</a>
+        <a href="login.html">Accedi</a>
+        <a href="signup.html" style="border: 1px solid var(--ink); padding: 6px 14px; color: var(--ink);">Prova gratis →</a>
       </nav>
     </div>
     <div class="masthead-band">
       <div class="masthead-band-inner">
-        <span>Servizio fiduciario digitale &mdash; conforme eIDAS art.&nbsp;41 · L.&nbsp;12/2019 art.&nbsp;8-ter</span>
-        <span>Stato: operativo · Blocco Bitcoin&nbsp;<span class="tabular">874,201</span></span>
+        <span>eIDAS art.&nbsp;41 · L.&nbsp;12/2019 art.&nbsp;8-ter · GDPR (EU Ireland)</span>
+        <span>Stato: <span class="verify-c">operativo</span> · ancorato su Bitcoin</span>
       </div>
     </div>
   </header>
 
   <!-- ============================================================
-       I.  HERO  ·  La Prova Matematica
+       HERO
   ============================================================= -->
-  <section class="col" style="padding-top: 80px; padding-bottom: 96px;">
+  <section class="hero-veylon col" aria-labelledby="hero-h1">
+    <div class="hero-eyebrow">Notarizzazione legale via Bitcoin · eIDAS art. 41</div>
 
-    <div class="row-between" style="margin-bottom: 56px; align-items: flex-end;">
-      <span class="section-num">§ I &nbsp;·&nbsp; La prova matematica del documento</span>
-      <span class="roman">i</span>
-    </div>
-
-    <h1 class="display" style="max-width: 16ch; margin: 0;">
-      Data certa<br/>
-      con <em>valore di legge,</em><br/>
-      ancorata a Bitcoin.
+    <h1 id="hero-h1" class="display reveal" style="max-width: 18ch; margin: 0;">
+      Trasforma ogni documento<br/>
+      in <em>prova legale,</em><br/>
+      in tre secondi.
     </h1>
 
-    <div class="ornament" style="margin: 64px 0 48px;">⁂</div>
+    <p class="hero-sub reveal">
+      Veylon appone un sigillo crittografico opponibile a terzi su documenti,
+      email e file, ancorato al registro pubblico Bitcoin. Verificabile da
+      chiunque, per sempre, anche senza di noi.
+    </p>
 
-    <div style="display: grid; grid-template-columns: 1.05fr 1fr; gap: 80px; align-items: start;">
-      <!-- Colonna sinistra: lede + CTAs -->
-      <div class="stack-32">
-        <p class="lede">
-          VEYLON appone su qualsiasi documento un sigillo digitale immutabile,
-          opponibile a terzi e verificabile in modo indipendente. Il documento
-          non lascia mai il vostro perimetro: viene trasmessa la sola impronta
-          crittografica.
-        </p>
-        <p class="body" style="max-width: 50ch;">
-          Strumento operativo per istituti di credito, pubbliche
-          amministrazioni, studi notarili e legali. La prova resta
-          matematicamente valida anche in assenza del fornitore: è ancorata
-          al registro pubblico distribuito Bitcoin tramite lo standard
-          aperto OpenTimestamps.
-        </p>
-        <div class="row row-gap" style="margin-top: 8px; flex-wrap: wrap;">
-          <a href="notarizza.html" class="btn seal lg">Apponi un sigillo <span class="arrow"></span></a>
-          <a href="verifica.html" class="btn ghost lg">Verifica un documento</a>
-        </div>
-        <div class="row row-gap" style="gap: 36px; margin-top: 8px; flex-wrap: wrap;">
-          <div>
-            <div class="eyebrow">Sigilli emessi</div>
-            <div class="serif" style="font-size: 32px; line-height: 1;">248.917</div>
-          </div>
-          <div>
-            <div class="eyebrow">Enti accreditati</div>
-            <div class="serif" style="font-size: 32px; line-height: 1;">142</div>
-          </div>
-          <div>
-            <div class="eyebrow">Disponibilità</div>
-            <div class="serif" style="font-size: 32px; line-height: 1;">99,98<span class="ink-3">%</span></div>
-          </div>
-        </div>
-      </div>
+    <div class="hero-cta-row">
+      <a href="signup.html" class="btn seal lg" data-event="hero_cta_signup">
+        Prova gratis <span class="arrow"></span>
+      </a>
+      <a href="verifica.html" class="btn ghost lg" data-event="hero_cta_verify">
+        Verifica un documento
+      </a>
+    </div>
 
-      <!-- Colonna destra: specimen di sigillo -->
-      <aside class="panel" style="padding: 36px;">
-        <div class="row-between" style="margin-bottom: 24px;">
-          <span class="section-num">Specimen · n. 248.916</span>
-          <span class="status confirmed"><span class="dot"></span>Confermato</span>
-        </div>
-        <div style="display: flex; gap: 24px; align-items: flex-start; padding-bottom: 24px; border-bottom: 1px solid var(--rule-2);">
-          <div class="seal-mark">
-            <span class="glyph">V</span>
-          </div>
-          <div class="stack-8" style="flex: 1; min-width: 0;">
-            <div class="eyebrow">Documento</div>
-            <div class="serif" style="font-size: 22px; line-height: 1.2;">
-              Atto di mandato &mdash; Rep.&nbsp;n.&nbsp;14.882/2026
-            </div>
-            <div class="eyebrow" style="margin-top: 6px;">Titolare</div>
-            <div class="body" style="margin: 0; font-size: 14px;">Studio Notarile Bertolaso &amp; Associati</div>
-          </div>
-        </div>
-
-        <div style="margin-top: 24px;">
-          <div class="eyebrow" style="margin-bottom: 10px;">Impronta SHA-256</div>
-          <div class="hash-art">
-            <span class="group">e3b0&nbsp;c442</span><span class="group">98fc&nbsp;1c14</span><span class="group">9afb&nbsp;f4c8</span><span class="group">996f&nbsp;b924</span><span class="group">27ae&nbsp;41e4</span><span class="group">649b&nbsp;934c</span><span class="group">a495&nbsp;991b</span><span class="group">7852&nbsp;b855</span>
-          </div>
-        </div>
-
-        <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--rule-2); padding-top: 20px;">
-          <div>
-            <div class="eyebrow">Data certa</div>
-            <div class="mono" style="font-size: 14px; margin-top: 6px;">07&nbsp;giu&nbsp;2026 · 14:38:02 CEST</div>
-          </div>
-          <div>
-            <div class="eyebrow">Blocco Bitcoin</div>
-            <div class="mono" style="font-size: 14px; margin-top: 6px;">#&nbsp;874.201</div>
-          </div>
-          <div style="margin-top: 16px;">
-            <div class="eyebrow">Calendar</div>
-            <div class="mono" style="font-size: 12px; margin-top: 6px;">alice · bob · finney</div>
-          </div>
-          <div style="margin-top: 16px;">
-            <div class="eyebrow">Standard</div>
-            <div class="mono" style="font-size: 12px; margin-top: 6px;">OpenTimestamps</div>
-          </div>
-        </div>
-      </aside>
+    <div class="trust-strip" role="list" aria-label="Conformità e garanzie">
+      <span class="item" role="listitem">eIDAS art. 41</span>
+      <span class="item" role="listitem">L. 12/2019 art. 8-ter</span>
+      <span class="item" role="listitem">Bitcoin · OpenTimestamps</span>
+      <span class="item" role="listitem">GDPR · EU Ireland</span>
     </div>
   </section>
 
   <hr class="rule"/>
 
   <!-- ============================================================
-       II.  I MODULI
+       PAIN → SOLUTION
   ============================================================= -->
-  <section class="col" style="padding: 80px 32px;">
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 48px;">
+  <section class="col" style="padding: clamp(56px, 8vw, 88px) 0;" aria-labelledby="pain-h2">
+    <div class="section-head">
       <div>
-        <span class="section-num">§ II</span>
-        <h2 class="serif" style="margin-top: 14px; max-width: 22ch;">
-          La suite di certificazione, <em class="serif-italic" style="color: var(--seal);">in nove atti.</em>
-        </h2>
+        <div class="head-num">§ Il problema</div>
+        <h2 id="pain-h2">Le prove legali, oggi, sono <em>costose, frammentate, fragili.</em></h2>
       </div>
-      <span class="roman">ii</span>
+      <span class="head-roman">i</span>
     </div>
 
-    <div style="border-top: 1px solid var(--ink);">
-      <!-- Modulo 1 -->
-      <a href="notarizza.html" class="module-row">
-        <div class="module-num">i.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Motore</div>
-          <h3 class="serif">Sigillo</h3>
-        </div>
-        <div class="module-desc">
-          Apposizione di marca temporale crittografica su qualsiasi documento.
-          Impronta SHA-256, ancoraggio su Bitcoin via OpenTimestamps, certificato
-          PDF con codice di verifica indipendente.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 2 -->
-      <a href="invia.html" class="module-row">
-        <div class="module-num">ii.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Trasmissione</div>
-          <h3 class="serif">Send</h3>
-        </div>
-        <div class="module-desc">
-          Trasmissione cifrata <em class="serif-italic">end-to-end</em> con
-          identità statale del destinatario (SPID, CIE, CNS). Doppio sigillo
-          su Bitcoin: di invio e di apertura. Equivalente, al livello forte, alla
-          raccomandata A/R.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 3 -->
-      <a href="mail.html" class="module-row">
-        <div class="module-num">iii.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Comunicazione</div>
-          <h3 class="serif">Mail</h3>
-        </div>
-        <div class="module-desc">
-          Email certificate con tre ricevute: invio, consegna al server
-          destinatario, contenuto sigillato. Funziona con qualsiasi casella,
-          in tutta l'Unione Europea. Alternativa alla PEC per la corrispondenza
-          commerciale.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 4 -->
-      <a href="garanzie.html" class="module-row">
-        <div class="module-num">iv.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Appalti</div>
-          <h3 class="serif">Garanzie</h3>
-        </div>
-        <div class="module-desc">
-          Fideiussioni provvisorie, definitive e di anticipazione, con documento
-          notarizzato e codice di verifica pubblico per la stazione appaltante.
-          Riduce alla radice il rischio di garanzie contraffatte.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 5 -->
-      <a href="archivio.html" class="module-row">
-        <div class="module-num">v.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Archivio</div>
-          <h3 class="serif">Registro</h3>
-        </div>
-        <div class="module-desc">
-          Repertorio dei documenti sigillati con stato della conferma su
-          Bitcoin, certificato di autenticità e condivisione tramite link
-          a scadenza, controllabile dal titolare.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 6 -->
-      <a href="tag.html" class="module-row">
-        <div class="module-num">vi.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Prodotti fisici</div>
-          <h3 class="serif">Tag</h3>
-        </div>
-        <div class="module-desc">
-          Sigillo Bitcoin per ogni unità fisica con QR e NFC. Prova d'integrità
-          dei dati di filiera per lusso, pharma, agroalimentare. Conforme
-          al Digital Product Passport UE 2024/1781.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 7 -->
-      <a href="cert.html" class="module-row">
-        <div class="module-num">vii.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Titoli &amp; attestati</div>
-          <h3 class="serif">Cert</h3>
-        </div>
-        <div class="module-desc">
-          Diplomi universitari, crediti ECM, attestati professionali, GxP, ricerca.
-          Verifica indipendente da datore di lavoro e ordini, riconosciuta
-          eIDAS art. 19 (attestati elettronici).
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 8 -->
-      <a href="firma.html" class="module-row">
-        <div class="module-num">viii.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">Firma</div>
-          <h3 class="serif">Firma elettronica avanzata</h3>
-        </div>
-        <div class="module-desc">
-          Acquisizione del consenso con OTP, audit trail completo e
-          notarizzazione dell'atto di firma. Firma elettronica avanzata
-          (FEA). Per la firma qualificata eIDAS (QES) si rinvia a prestatore
-          accreditato.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
-      <!-- Modulo 7 -->
-      <a href="onboarding.html" class="module-row" style="border-bottom: 1px solid var(--ink);">
-        <div class="module-num">ix.</div>
-        <div class="module-title">
-          <div class="eyebrow seal-c" style="margin-bottom: 6px;">KYC</div>
-          <h3 class="serif">Onboarding</h3>
-        </div>
-        <div class="module-desc">
-          Qualifica dell'operatore economico: documenti notarizzati e controlli
-          automatici (Partita IVA con calcolo del codice di controllo, codice
-          fiscale, completezza). Esito formalizzato.
-        </div>
-        <div class="module-cta">Apri →</div>
-      </a>
+    <div class="pain-grid reveal">
+      <div class="pain-cell">
+        <div class="num">01</div>
+        <p class="pain">Una PEC costa <em>~30€/anno</em> e non funziona fuori Italia.</p>
+        <p class="solution">
+          Veylon Mail certifica email verso qualsiasi casella, in tutta l'Unione,
+          con tre ricevute (invio, consegna, contenuto sigillato).
+        </p>
+      </div>
+      <div class="pain-cell">
+        <div class="num">02</div>
+        <p class="pain">Una raccomandata A/R viaggia su <em>carta</em>, può andare smarrita, costa tempo.</p>
+        <p class="solution">
+          Veylon Send trasmette il file cifrato end-to-end con doppio sigillo
+          Bitcoin: di invio e di apertura. Tracciabilità matematica.
+        </p>
+      </div>
+      <div class="pain-cell">
+        <div class="num">03</div>
+        <p class="pain">Una firma elettronica avanzata richiede un <em>TSP costoso</em> e un onboarding lungo.</p>
+        <p class="solution">
+          Veylon Firma con OTP e audit trail. Atto di firma notarizzato.
+          Apertura del conto in due minuti.
+        </p>
+      </div>
     </div>
   </section>
 
-  <hr class="rule"/>
-
   <!-- ============================================================
-       III.  COME OPERA
+       9 ATTI
   ============================================================= -->
-  <section style="background: var(--paper-2); border-top: var(--hairline-strong); border-bottom: var(--hairline-strong);">
-  <div class="col" style="padding: 80px 32px;">
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 56px;">
+  <section id="atti" style="background: var(--paper-2); border-top: var(--hairline-strong); border-bottom: var(--hairline-strong);" aria-labelledby="atti-h2">
+  <div class="col" style="padding: clamp(56px, 8vw, 88px) 0;">
+    <div class="section-head">
       <div>
-        <span class="section-num">§ III</span>
-        <h2 class="serif" style="margin-top: 14px; max-width: 22ch;">
-          Come opera <em>il sigillo</em>.
-        </h2>
+        <div class="head-num">§ La suite</div>
+        <h2 id="atti-h2">Nove atti, un solo conto, una sola <em>prova matematica.</em></h2>
       </div>
-      <span class="roman">iii</span>
+      <a href="pricing.html" class="head-link">Vedi listino →</a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-left: 1px solid var(--rule);">
-      <div class="howstep">
-        <div class="howstep-num">01</div>
-        <div class="howstep-eyebrow">Impronta locale</div>
-        <h3 class="serif">L'algoritmo SHA-256 calcola, nel browser, una stringa di 64 caratteri univoca per quel documento.</h3>
-        <p class="body" style="font-size: 14px;">
-          Il file non viene trasmesso. Alla minima variazione &mdash; una virgola, un
-          pixel &mdash; l'impronta cambia integralmente. Garanzia GDPR-nativa.
+    <div class="atti-grid-9 reveal">
+
+      <a href="notarizza.html" class="atto-card" aria-label="Sigillo - notarizzazione documenti">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>
+        </span>
+        <div class="num">i</div>
+        <h3 class="name">Sigillo</h3>
+        <p class="desc">Marca temporale legale su qualsiasi documento. SHA-256 + Bitcoin via OpenTimestamps.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="invia.html" class="atto-card" aria-label="Send - trasmissione cifrata">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        </span>
+        <div class="num">ii</div>
+        <h3 class="name">Send</h3>
+        <p class="desc">Trasmissione cifrata end-to-end con doppio sigillo Bitcoin di invio e di apertura.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="mail.html" class="atto-card" aria-label="Mail - email certificate">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg>
+        </span>
+        <div class="num">iii</div>
+        <h3 class="name">Mail</h3>
+        <p class="desc">Email certificate europee con tre ricevute: invio, consegna, contenuto sigillato.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="garanzie.html" class="atto-card" aria-label="Garanzie - fideiussioni d'appalto">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <div class="num">iv</div>
+        <h3 class="name">Garanzie</h3>
+        <p class="desc">Fideiussioni d'appalto notarizzate con codice di verifica per la stazione appaltante.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="archivio.html" class="atto-card" aria-label="Registro - repertorio dei sigilli">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h12a4 4 0 014 4v12H8a4 4 0 01-4-4V4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        </span>
+        <div class="num">v</div>
+        <h3 class="name">Registro</h3>
+        <p class="desc">Repertorio dei documenti sigillati con condivisione via link a scadenza (max 3 giorni).</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="tag.html" class="atto-card" aria-label="Tag - sigillo su prodotti fisici">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12l-8 8-9-9V3h8l9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+        </span>
+        <div class="num">vi</div>
+        <h3 class="name">Tag</h3>
+        <p class="desc">Sigillo Bitcoin per ogni unità fisica con QR. Conforme Digital Product Passport UE.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="cert.html" class="atto-card" aria-label="Cert - diplomi e attestati">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg>
+        </span>
+        <div class="num">vii</div>
+        <h3 class="name">Cert</h3>
+        <p class="desc">Diplomi, attestati, crediti ECM. Verifica indipendente da datore di lavoro e ordini.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="firma.html" class="atto-card" aria-label="Firma elettronica avanzata">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17s4-8 9-8 4 6 9 4"/><path d="M3 21h18"/></svg>
+        </span>
+        <div class="num">viii</div>
+        <h3 class="name">Firma</h3>
+        <p class="desc">Firma elettronica avanzata (FEA) con OTP e audit trail. Atto di firma notarizzato.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+      <a href="onboarding.html" class="atto-card" aria-label="Onboarding KYC operatore economico">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        </span>
+        <div class="num">ix</div>
+        <h3 class="name">KYC</h3>
+        <p class="desc">Qualifica operatore economico per appalti: P.IVA, codice fiscale, controlli automatici.</p>
+        <span class="cta">Scopri →</span>
+      </a>
+
+    </div>
+  </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS (3 step)
+  ============================================================= -->
+  <section class="col" style="padding: clamp(56px, 8vw, 88px) 0;" aria-labelledby="how-h2">
+    <div class="section-head">
+      <div>
+        <div class="head-num">§ Come funziona</div>
+        <h2 id="how-h2">Tre secondi, tre passi, <em>nessuna curva di apprendimento.</em></h2>
+      </div>
+      <span class="head-roman">ii</span>
+    </div>
+
+    <div class="steps-3 reveal">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3 class="step-title">Carichi il documento</h3>
+        <p class="step-body">
+          Il file resta nel tuo browser. SHA-256 ne calcola l'impronta localmente.
+          Il documento non viene mai trasmesso a noi: solo 64 caratteri.
         </p>
       </div>
-      <div class="howstep">
-        <div class="howstep-num">02</div>
-        <div class="howstep-eyebrow">Ancoraggio</div>
-        <h3 class="serif">L'impronta è inscritta nel libro mastro distribuito Bitcoin tramite OpenTimestamps.</h3>
-        <p class="body" style="font-size: 14px;">
-          Lo stato passa da <em class="serif-italic">in attesa</em> a <em class="serif-italic">confermato</em> entro poche ore,
-          quando il blocco viene minato. Da quel momento la data è certa e immutabile.
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3 class="step-title">Veylon sigilla su Bitcoin</h3>
+        <p class="step-body">
+          L'impronta viene inscritta nel registro pubblico Bitcoin via
+          OpenTimestamps. In pochi minuti il sigillo passa da <em>in attesa</em>
+          a <em>confermato</em>.
         </p>
       </div>
-      <div class="howstep" style="border-right: 1px solid var(--rule);">
-        <div class="howstep-num">03</div>
-        <div class="howstep-eyebrow">Verifica indipendente</div>
-        <h3 class="serif">Chiunque può verificare, in qualsiasi momento, l'esistenza e l'integrità del documento.</h3>
-        <p class="body" style="font-size: 14px;">
-          La prova è <em class="serif-italic">self-contained:</em> resta valida anche in assenza di VEYLON,
-          poiché si fonda sul registro pubblico Bitcoin.
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3 class="step-title">Chiunque verifica, per sempre</h3>
+        <p class="step-body">
+          Il certificato include il codice per la verifica indipendente. Funziona
+          anche se Veylon non esiste più: si fonda su Bitcoin, non su di noi.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DIFFERENZIATORI
+  ============================================================= -->
+  <section style="background: var(--paper-2); border-top: var(--hairline);" aria-labelledby="diff-h2">
+  <div class="col" style="padding: clamp(56px, 8vw, 88px) 0;">
+    <div class="section-head">
+      <div>
+        <div class="head-num">§ Perché Veylon</div>
+        <h2 id="diff-h2">Tre cose che <em>nessun altro</em> mette nello stesso conto.</h2>
+      </div>
+      <span class="head-roman">iii</span>
+    </div>
+
+    <div class="differenziatori reveal">
+      <div class="diff-card">
+        <div class="diff-eyebrow">Indipendenza</div>
+        <h3 class="diff-title">Verifica indipendente per sempre</h3>
+        <p class="diff-body">
+          Il sigillo è ancorato a Bitcoin con lo standard aperto OpenTimestamps.
+          La prova resta valida anche se Veylon non esiste più: chiunque, con
+          qualsiasi client compatibile, può verificarla.
+        </p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-eyebrow">Sovranità UE</div>
+        <h3 class="diff-title">Dati nello Spazio Economico Europeo</h3>
+        <p class="diff-body">
+          Infrastruttura su Supabase EU (Ireland). Nessun trasferimento extra-UE.
+          Il documento non lascia mai il vostro perimetro: viene trasmessa solo
+          l'impronta crittografica.
+        </p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-eyebrow">Operatività</div>
+        <h3 class="diff-title">API e dashboard, senza learning curve</h3>
+        <p class="diff-body">
+          Cruscotto pronto al primo accesso. API REST per chi integra. Sigillo,
+          trasmissione, email, firma e KYC in una sola piattaforma, un solo conto,
+          un solo listino.
         </p>
       </div>
     </div>
@@ -345,235 +439,277 @@
   </section>
 
   <!-- ============================================================
-       IV.  RICONOSCIMENTO GIURIDICO
+       CASI D'USO (8)
   ============================================================= -->
-  <section class="col" style="padding: 96px 32px;">
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 56px;">
+  <section class="col" style="padding: clamp(56px, 8vw, 88px) 0;" aria-labelledby="uses-h2">
+    <div class="section-head">
       <div>
-        <span class="section-num">§ IV</span>
-        <h2 class="serif" style="margin-top: 14px; max-width: 22ch;">
-          Riconoscimento <em>giuridico.</em>
-        </h2>
+        <div class="head-num">§ Per chi</div>
+        <h2 id="uses-h2">Otto categorie professionali, <em>una sola firma del tempo.</em></h2>
       </div>
-      <span class="roman">iv</span>
+      <a href="pricing.html" class="head-link">Vedi listino →</a>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start;">
-      <aside class="label-rail">
-        <div style="margin-bottom: 20px;">Fonti normative</div>
-        <div class="stack-16" style="text-transform: none; letter-spacing: 0; font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--ink);">
-          <div>Reg. UE 910/2014 <span class="ink-3">— eIDAS, art. 41</span></div>
-          <div>L. 11.02.2019 n. 12 <span class="ink-3">— art. 8-ter</span></div>
-          <div>Cod. civ. <span class="ink-3">— art. 2704</span></div>
-          <div>Cod. proc. civ. <span class="ink-3">— art. 2712</span></div>
-        </div>
-      </aside>
-
-      <div class="stack-32">
-        <div>
-          <div class="eyebrow" style="margin-bottom: 12px;">Art. 41 eIDAS · Validazione temporale</div>
-          <p class="serif" style="font-size: 22px; line-height: 1.4; font-style: italic; color: var(--ink); margin: 0; max-width: 50ch;">
-            «Alla validazione temporale elettronica non possono essere negati gli effetti giuridici
-            e l'ammissibilità come prova in procedimenti giudiziali per il solo motivo della sua
-            forma elettronica.»
-          </p>
-        </div>
-
-        <hr class="rule-2"/>
-
-        <div>
-          <div class="eyebrow" style="margin-bottom: 12px;">Art. 8-ter L. 12/2019 · Blockchain</div>
-          <p class="serif" style="font-size: 22px; line-height: 1.4; font-style: italic; color: var(--ink); margin: 0; max-width: 50ch;">
-            «La memorizzazione di un documento informatico attraverso l'uso di tecnologie basate su
-            registri distribuiti produce gli effetti giuridici della validazione temporale
-            elettronica di cui all'articolo 41 del regolamento eIDAS.»
-          </p>
-        </div>
-
-        <div class="panel-inset" style="background: var(--paper-2); border-left: 3px solid var(--seal); border-top: 0; border-right: 0; border-bottom: 0; padding: 20px 24px;">
-          <div class="eyebrow seal-c" style="margin-bottom: 10px;">Nota di trasparenza</div>
-          <p class="body" style="margin: 0; font-size: 14px;">
-            VEYLON fornisce marca temporale elettronica con valore probatorio. Non costituisce
-            firma elettronica qualificata (QES) né verifica d'identità accreditata, che restano
-            di competenza dei prestatori di servizi fiduciari accreditati AgID/eIDAS.
-          </p>
-        </div>
+    <div class="uses-grid-8 reveal">
+      <div class="use-card">
+        <div class="use-segment">Avvocati</div>
+        <h3 class="use-title">Data certa su atti e perizie</h3>
+        <p class="use-body">Es. Veylon Sigillo per datare CTP, atti di mediazione, perizie tecniche.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-segment">Banche</div>
+        <h3 class="use-title">Comunicazioni con valore legale</h3>
+        <p class="use-body">Es. Veylon Mail per recall, solleciti, comunicazioni contrattuali certificate.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-segment">Sanità privata</div>
+        <h3 class="use-title">Consensi informati e referti</h3>
+        <p class="use-body">Es. Veylon Firma per consensi, Sigillo per referti e cartelle cliniche.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-segment">M&amp;A</div>
+        <h3 class="use-title">Due diligence con prova matematica</h3>
+        <p class="use-body">Es. Veylon Send per data room cifrate con prova di apertura del destinatario.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-segment">HR</div>
+        <h3 class="use-title">Contratti e lettere di assunzione</h3>
+        <p class="use-body">Es. Veylon Firma + Mail per offerta, controfirma e archiviazione certificata.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-segment">Stazioni appaltanti</div>
+        <h3 class="use-title">Fideiussioni verificabili</h3>
+        <p class="use-body">Es. Veylon Garanzie per ridurre alla radice il rischio di garanzie contraffatte.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-segment">Real estate</div>
+        <h3 class="use-title">Proposte e preliminari datati</h3>
+        <p class="use-body">Es. Veylon Sigillo + Send per proposte, contratti preliminari, capitolati.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-segment">Commercialisti</div>
+        <h3 class="use-title">Bilanci, libri sociali, comunicazioni</h3>
+        <p class="use-body">Es. Veylon Sigillo per bilanci, Mail per comunicazioni con valore legale.</p>
       </div>
     </div>
   </section>
 
-  <hr class="rule"/>
-
   <!-- ============================================================
-       V.  ADOTTATO DA
+       PRICING TEASER
   ============================================================= -->
-  <section style="background: var(--paper-2); border-top: var(--hairline);">
-  <div class="col" style="padding: 72px 32px;">
-    <div class="row-between" style="margin-bottom: 40px;">
-      <span class="section-num">§ V &nbsp;·&nbsp; Adottato presso</span>
-      <span class="roman">v</span>
+  <section style="background: var(--paper-2); border-top: var(--hairline);" aria-labelledby="price-h2">
+  <div class="col" style="padding: clamp(56px, 8vw, 88px) 0;">
+    <div class="section-head">
+      <div>
+        <div class="head-num">§ Piani Pro</div>
+        <h2 id="price-h2">Inizia gratis. Cresci <em>quando serve davvero.</em></h2>
+      </div>
+      <a href="pricing.html" class="head-link">Tutti i piani →</a>
     </div>
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-left: 1px solid var(--rule);">
-      <div class="adopter">
-        <div class="eyebrow">Credito</div>
-        <div class="serif" style="font-size: 24px; line-height: 1.15; margin-top: 8px;">Banche &amp; istituti finanziari</div>
-        <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 12px; letter-spacing: 0.08em;">38 enti</div>
+
+    <div class="pricing-teaser reveal">
+      <div class="pricing-tier">
+        <div class="tier-eyebrow">Mail Pro</div>
+        <h3 class="tier-name">Email certificate</h3>
+        <div class="tier-price">€19</div>
+        <div class="tier-price-unit">/ mese · IVA esclusa</div>
+        <p class="tier-included">
+          Email certificate europee illimitate. Tre ricevute (invio, consegna,
+          contenuto). Funziona con qualsiasi casella, in tutta l'Unione.
+        </p>
+        <a href="pricing.html#mail" class="tier-cta">Vedi dettagli →</a>
       </div>
-      <div class="adopter">
-        <div class="eyebrow">Pubblica amministrazione</div>
-        <div class="serif" style="font-size: 24px; line-height: 1.15; margin-top: 8px;">Stazioni appaltanti, Comuni, ASL</div>
-        <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 12px; letter-spacing: 0.08em;">61 enti</div>
+
+      <div class="pricing-tier" style="background: var(--paper-2);">
+        <div class="tier-eyebrow">Send Pro</div>
+        <h3 class="tier-name">Trasmissione cifrata</h3>
+        <div class="tier-price">€29</div>
+        <div class="tier-price-unit">/ mese · IVA esclusa</div>
+        <p class="tier-included">
+          Trasmissioni illimitate end-to-end. Doppio sigillo Bitcoin di invio e
+          apertura. Allegati fino a 100 MB. Link a scadenza fino a 3 giorni.
+        </p>
+        <a href="pricing.html#send" class="tier-cta">Vedi dettagli →</a>
       </div>
-      <div class="adopter">
-        <div class="eyebrow">Foro</div>
-        <div class="serif" style="font-size: 24px; line-height: 1.15; margin-top: 8px;">Studi legali &amp; notarili</div>
-        <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 12px; letter-spacing: 0.08em;">29 studi</div>
-      </div>
-      <div class="adopter" style="border-right: 1px solid var(--rule);">
-        <div class="eyebrow">Imprese</div>
-        <div class="serif" style="font-size: 24px; line-height: 1.15; margin-top: 8px;">Grandi committenti privati</div>
-        <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 12px; letter-spacing: 0.08em;">14 gruppi</div>
+
+      <div class="pricing-tier">
+        <div class="tier-eyebrow">Cert Pro</div>
+        <h3 class="tier-name">Titoli &amp; attestati</h3>
+        <div class="tier-price">pay-per-use</div>
+        <div class="tier-price-unit">a partire da pochi euro / certificato</div>
+        <p class="tier-included">
+          Emissione attestati e diplomi notarizzati. Verifica indipendente da
+          datore di lavoro e ordini professionali. Pagamento per emissione.
+        </p>
+        <a href="pricing.html#cert" class="tier-cta">Vedi dettagli →</a>
       </div>
     </div>
   </div>
   </section>
 
   <!-- ============================================================
-       FOOTER
+       FAQ
   ============================================================= -->
-  <footer class="footer">
-    <div class="footer-inner">
+  <section class="col" style="padding: clamp(56px, 8vw, 88px) 0; max-width: 920px;" aria-labelledby="faq-h2">
+    <div class="section-head">
       <div>
-        <div class="wordmark" style="padding: 0; margin-bottom: 14px; font-size: 28px;">VEYLON</div>
-        <p class="body" style="font-size: 13px; max-width: 32ch; margin: 0;">
+        <div class="head-num">§ Domande frequenti</div>
+        <h2 id="faq-h2">Le risposte alle <em>otto domande</em> che ci fanno tutti.</h2>
+      </div>
+      <span class="head-roman">iv</span>
+    </div>
+
+    <div class="faq-accordion">
+
+      <details class="faq-item">
+        <summary>Veylon è una PEC?</summary>
+        <div class="faq-body">
+          <p>No. La PEC è uno standard nazionale italiano. Veylon è un servizio fiduciario digitale che produce prova legale opponibile a terzi tramite marca temporale ancorata a Bitcoin, riconosciuta in tutta l'Unione Europea ai sensi dell'eIDAS art.&nbsp;41.</p>
+          <p>Per le comunicazioni con valore legale verso destinatari fuori Italia (o senza PEC), <a href="mail.html" class="link-seal">Veylon Mail</a> è l'alternativa europea.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Veylon è una firma elettronica qualificata eIDAS?</summary>
+        <div class="faq-body">
+          <p>No, Veylon non è una QES. Veylon è una validazione temporale elettronica con valore probatorio, con valore di legge ai sensi dell'eIDAS art.&nbsp;41 e della L.&nbsp;12/2019 art.&nbsp;8-ter.</p>
+          <p>Per la firma qualificata si rinvia a un prestatore di servizi fiduciari accreditato AgID/eIDAS. Veylon Firma è una firma elettronica avanzata (FEA) con OTP e audit trail.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Cosa succede se Veylon chiude?</summary>
+        <div class="faq-body">
+          <p>Niente. Le prove restano valide.</p>
+          <p>Ogni sigillo è ancorato al registro pubblico Bitcoin tramite lo standard aperto OpenTimestamps: chiunque, con qualunque client compatibile, può verificare il documento in autonomia. Per sempre.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Veylon è GDPR compliant?</summary>
+        <div class="faq-body">
+          <p>Sì. I dati sono ospitati su infrastruttura Supabase EU (Ireland). Nessun trasferimento extra-UE.</p>
+          <p>Il documento non lascia mai il vostro perimetro: viene trasmessa solo l'impronta crittografica SHA-256 (64 caratteri). Il file resta nel browser.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Posso integrare Veylon via API?</summary>
+        <div class="faq-body">
+          <p>Sì, sui piani Pro e Business. Il piano Business include API REST con quota dedicata, webhooks e SLA contrattuale.</p>
+          <p>Vedi <a href="pricing.html" class="link-seal">il listino completo</a> per i dettagli.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Quanto costa la notarizzazione?</summary>
+        <div class="faq-body">
+          <p>Il piano Free include <strong>10 sigilli al mese</strong>, per sempre, senza carta di credito.</p>
+          <p>Il piano Sigillo Pro a 9€/mese sblocca uso illimitato. Per i moduli Mail, Send, Cert e gli altri atti vedi il <a href="pricing.html" class="link-seal">listino completo</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Quanto dura la prova legale prodotta da Veylon?</summary>
+        <div class="faq-body">
+          <p>Permanente. eIDAS art.&nbsp;41 e L.&nbsp;12/2019 art.&nbsp;8-ter conferiscono valore di legge alla marca temporale ancorata a registri distribuiti.</p>
+          <p>Bitcoin è il libro mastro distribuito più resiliente esistente. Finché esiste Bitcoin (in pratica: per sempre), la prova è verificabile.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Quanti documenti posso sigillare con il piano Free?</summary>
+        <div class="faq-body">
+          <p>10 sigilli al mese, senza scadenza, senza carta di credito. Sufficiente per la maggior parte degli usi personali e per la valutazione professionale.</p>
+          <p>Quando ti servono più sigilli, passi a Pro in un click.</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINAL CTA
+  ============================================================= -->
+  <section class="final-cta" aria-labelledby="cta-final-h2">
+    <div class="col">
+      <h2 id="cta-final-h2">Inizia <em>gratis.</em> Dieci sigilli al mese, sempre.</h2>
+      <p>Nessuna carta richiesta. Nessuna scadenza. Cancelli il conto in un click quando vuoi.</p>
+      <a href="signup.html" class="btn lg" data-event="final_cta_signup">Crea il tuo conto Veylon <span class="arrow"></span></a>
+      <div class="small-link">
+        Hai già un account? <a href="login.html">Accedi</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER RICCO (4 col + brand)
+  ============================================================= -->
+  <footer class="footer-rich">
+    <div class="footer-rich-inner">
+      <div class="brand-col">
+        <div class="wordmark" style="padding: 0; font-size: 26px;">VEYLON</div>
+        <p>
           Servizio fiduciario digitale per data certa e integrità documentale.
-          Ancoraggio Bitcoin via OpenTimestamps.
+          Sigillo Bitcoin via OpenTimestamps. Conforme eIDAS art.&nbsp;41.
         </p>
-        <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 20px; letter-spacing: 0.1em;">
-          Cod. fisc. e P.IVA &nbsp;<span class="tabular">15829431006</span>
+        <div class="footer-stamp">
+          Made in Italy · Hosted in EU · Anchored on Bitcoin
         </div>
       </div>
+
       <div>
-        <h4>Servizi</h4>
+        <h4>Prodotto</h4>
         <ul>
           <li><a href="notarizza.html">Sigillo</a></li>
-          <li><a href="invia.html">Send &mdash; trasmissione E2E</a></li>
-          <li><a href="mail.html">Mail &mdash; email certificate</a></li>
+          <li><a href="invia.html">Send</a></li>
+          <li><a href="mail.html">Mail</a></li>
           <li><a href="garanzie.html">Garanzie</a></li>
-          <li><a href="tag.html">Tag &mdash; prodotti fisici</a></li>
-          <li><a href="cert.html">Cert &mdash; titoli &amp; attestati</a></li>
           <li><a href="archivio.html">Registro</a></li>
-          <li><a href="firma.html">Firma elettronica</a></li>
-          <li><a href="onboarding.html">Onboarding KYC</a></li>
+          <li><a href="tag.html">Tag</a></li>
+          <li><a href="cert.html">Cert</a></li>
+          <li><a href="firma.html">Firma</a></li>
+          <li><a href="onboarding.html">KYC</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Verifica</h4>
+        <h4>Risorse</h4>
         <ul>
-          <li><a href="verifica.html">Verifica documento</a></li>
+          <li><a href="pricing.html">Listino</a></li>
+          <li><a href="verifica.html">Verifica pubblica</a></li>
           <li><a href="verifica-garanzia.html">Verifica garanzia</a></li>
-          <li><a href="certificato.html">Modello di certificato</a></li>
-          <li><a href="certificazioni.html">Specifiche tecniche</a></li>
+          <li><a href="system-status.html">Stato del servizio</a></li>
+          <li><a href="demo.html">Prenota una demo</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Istituzionale</h4>
+        <h4>Legali</h4>
         <ul>
-          <li><a href="certificazioni.html">Conformità &amp; certificazioni</a></li>
-          <li><a href="certificazioni.html">Trattamento dati &mdash; GDPR</a></li>
-          <li><a href="certificazioni.html#audit">Audit di sicurezza</a></li>
-          <li><a href="login.html">Contatti</a></li>
+          <li><a href="/PRIVACY.md">Privacy &amp; GDPR</a></li>
+          <li><a href="/TERMS.md">Termini di servizio</a></li>
+          <li><a href="/COOKIES.md">Cookie policy</a></li>
+          <li><a href="/SECURITY.md">Security</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contatti</h4>
+        <ul>
+          <li><a href="mailto:info@veylon.app">info@veylon.app</a></li>
+          <li><a href="mailto:supporto@veylon.app">supporto@veylon.app</a></li>
+          <li><a href="mailto:security@veylon.app">security@veylon.app</a></li>
+          <li><a href="login.html">Accedi all'area riservata</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-base">
+
+    <div class="footer-rich-base">
       <span>© MMXXVI · Veylon S.r.l. · Roma</span>
-      <span>Edizione III · Vol. II</span>
+      <span>eIDAS art. 41 · L. 12/2019 art. 8-ter · GDPR</span>
     </div>
   </footer>
-
-  <!-- Stili specifici di pagina -->
-  <style>
-  .module-row {
-    display: grid;
-    grid-template-columns: 60px 1fr 2fr 120px;
-    gap: 32px;
-    padding: 32px 0;
-    border-bottom: 1px solid var(--rule);
-    align-items: start;
-    transition: background .15s, padding .25s;
-    color: inherit;
-  }
-  .module-row:hover { background: var(--paper-2); padding-left: 12px; padding-right: 12px; }
-  .module-row:hover .module-cta { color: var(--seal); }
-  .module-num {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 28px;
-    color: var(--ink-3);
-    padding-top: 18px;
-  }
-  .module-title h3 { font-size: 32px; line-height: 1.05; letter-spacing: -0.015em; }
-  .module-desc { font-family: var(--serif); font-size: 18px; line-height: 1.45; color: var(--ink-2); max-width: 52ch; padding-top: 6px; }
-  .module-cta {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-align: right;
-    color: var(--ink-3);
-    padding-top: 24px;
-    transition: color .15s;
-  }
-
-  .howstep {
-    padding: 8px 32px 0;
-    border-right: 1px solid var(--rule);
-    min-height: 320px;
-  }
-  .howstep:last-child { border-right: 0; }
-  .howstep-num {
-    font-family: var(--mono);
-    font-size: 13px;
-    letter-spacing: 0.16em;
-    color: var(--seal);
-    margin-bottom: 24px;
-  }
-  .howstep-eyebrow {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin-bottom: 16px;
-  }
-  .howstep h3 {
-    font-size: 24px;
-    line-height: 1.25;
-    margin: 0 0 18px;
-    max-width: 24ch;
-  }
-  .howstep h3 em { font-style: italic; color: var(--seal); }
-
-  .adopter {
-    padding: 28px 28px 32px;
-    border-right: 1px solid var(--rule);
-  }
-  .adopter:last-child { border-right: 0; }
-
-  @media (max-width: 980px) {
-    .module-row { grid-template-columns: 40px 1fr; gap: 16px; }
-    .module-desc, .module-cta { grid-column: 2; }
-    .howstep { min-height: auto; padding-bottom: 32px; }
-    section [style*="grid-template-columns: 1.05fr 1fr"],
-    section [style*="grid-template-columns: 1fr 1.4fr"],
-    section [style*="grid-template-columns: repeat(3, 1fr)"],
-    section [style*="grid-template-columns: repeat(4, 1fr)"] {
-      grid-template-columns: 1fr !important;
-      gap: 40px !important;
-    }
-  }
-  </style>
 
 </body>
 </html>

@@ -3,540 +3,128 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON · Garanzie &amp; fideiussioni</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON · Garanzie</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione&nbsp;II — Garanzie</span>
-        <span class="sep">·</span>
-        <span>Fideiussioni d'appalto</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Garanzie d'appalto</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
       <nav class="masthead-nav full">
         <a href="dashboard.html">Cruscotto</a>
-        <a href="notarizza.html">Sigillo</a>
-        <a href="invia.html">Send</a>
-        <a href="mail.html">Mail</a>
-        <a href="firma.html">Firma</a>
         <a href="garanzie.html" class="current">Garanzie</a>
-        <a href="onboarding.html">KYC</a>
-        <a href="tag.html">Tag</a>
-        <a href="cert.html">Cert</a>
         <a href="archivio.html">Archivio</a>
-        <a href="verifica.html">Verifica</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
-    <div class="masthead-band">
-      <div class="masthead-band-inner">
-        <span>Stazione appaltante: verifica una garanzia con il codice — <a href="verifica-garanzia.html" style="color: var(--seal); border-bottom: 1px solid var(--seal);">vai al verificatore</a></span>
-        <span>D.Lgs. 36/2023 &mdash; Codice dei contratti pubblici</span>
-      </div>
-    </div>
   </header>
 
-  <main class="col" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">Sezione II · Garanzie</span>
-      <span class="roman">iv</span>
-    </div>
-
-    <div class="row-between" style="align-items: flex-end; gap: 48px; flex-wrap: wrap; margin-bottom: 56px;">
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
       <div>
-        <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 16ch;">
-          Garanzie d'appalto, <em class="serif-italic" style="color: var(--seal);">tracciabili.</em>
+        <span class="section-num">Fideiussioni d'appalto</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Le tue <em class="serif-italic" style="color: var(--seal);">garanzie.</em>
         </h1>
-        <p class="lede" style="margin-top: 24px; max-width: 44ch;">
-          Fideiussioni provvisorie, definitive, di anticipazione e di buon esito,
-          con codice di verifica pubblico. Riduce alla radice il rischio di
-          garanzie contraffatte.
-        </p>
-      </div>
-      <a class="btn seal lg" href="#newGuaranty">Emetti nuova garanzia <span class="arrow"></span></a>
-    </div>
-
-    <!-- Cruscotto -->
-    <div class="g-dashboard">
-      <div class="g-cell">
-        <div class="eyebrow">Garanzie in essere</div>
-        <div class="dash-num">47</div>
-        <div class="dash-foot">Importo cumulato &nbsp;€&nbsp;4.218.500</div>
-      </div>
-      <div class="g-cell">
-        <div class="eyebrow">In istruttoria</div>
-        <div class="dash-num seal-c">3</div>
-        <div class="dash-foot">Documenti in attesa</div>
-      </div>
-      <div class="g-cell">
-        <div class="eyebrow">Verifiche pubbliche</div>
-        <div class="dash-num">128</div>
-        <div class="dash-foot">Ultimi 30 giorni</div>
-      </div>
-      <div class="g-cell">
-        <div class="eyebrow">Prossima scadenza</div>
-        <div class="dash-num" style="font-size: 32px;">14 lug</div>
-        <div class="dash-foot">APT-GAR-2026-AB12CD</div>
-      </div>
-    </div>
-
-    <!-- Layout: lista + dettaglio -->
-    <div class="g-layout">
-
-      <!-- LISTA -->
-      <section class="g-list">
-        <div class="g-list-head">
-          <span class="eyebrow">Repertorio garanzie</span>
-          <div class="g-filt">
-            <button class="g-tab active">Tutte</button>
-            <button class="g-tab">Provvisorie</button>
-            <button class="g-tab">Definitive</button>
-            <button class="g-tab">Anticipazione</button>
-          </div>
-        </div>
-
-        <a href="#" class="g-item selected"
-          data-code="APT-GAR-2026-AB12CD" data-type="Definitiva"
-          data-eyebrow="Garanzia definitiva · Art. 117 D.Lgs. 36/2023"
-          data-title="Lavori di ristrutturazione del plesso scolastico — Lotto III"
-          data-sa="Comune di Mortara — Settore LL.PP."
-          data-oe="Costruzioni Lemania S.p.A." data-vat="04812960015"
-          data-garante="Banca del Piemonte — succ. Torino Centro"
-          data-importo="842.500,00" data-emissione="12 maggio 2026 · ore 11:08 CEST"
-          data-scadenza="14 luglio 2026" data-status="confirmed" data-statuslbl="Verificata"
-          data-hash="e3b0 c442 98fc 1c14 … b855"
-          data-wf1="10 mag 14:22" data-wf2="10 mag 14:24" data-wf3="12 mag 11:08" data-wf4="12 mag 16:34" data-wf5="—" data-wf6="previsto 14 lug" data-wfstep="5">
-          <div class="g-item-meta">
-            <span class="g-type">Definitiva</span>
-            <span class="status confirmed"><span class="dot"></span>Verificata</span>
-          </div>
-          <div class="g-item-title">Lavori di ristrutturazione plesso scolastico &mdash; Lotto III</div>
-          <div class="g-item-foot">
-            <span class="mono">APT-GAR-2026-AB12CD</span>
-            <span class="mono">€&nbsp;842.500</span>
-            <span class="mono">scad. 14&nbsp;lug&nbsp;2026</span>
-          </div>
-        </a>
-        <a href="#" class="g-item"
-          data-code="APT-GAR-2026-9E4F02" data-type="Provvisoria"
-          data-eyebrow="Garanzia provvisoria · Art. 106 D.Lgs. 36/2023"
-          data-title="Forniture sanitarie — ASL Roma 2, gara CIG 9876543210"
-          data-sa="ASL Roma 2 — Direzione Acquisti"
-          data-oe="Hekla Sanità S.r.l." data-vat="08914570580"
-          data-garante="UnipolSai Assicurazioni — agenzia Roma EUR"
-          data-importo="38.200,00" data-emissione="3 giugno 2026 · ore 09:32 CEST"
-          data-scadenza="28 agosto 2026" data-status="confirmed" data-statuslbl="Verificata"
-          data-hash="9e4f 0273 b81c d54a … 31bd"
-          data-wf1="1 giu 16:40" data-wf2="1 giu 16:42" data-wf3="3 giu 09:32" data-wf4="3 giu 14:18" data-wf5="—" data-wf6="previsto 28 ago" data-wfstep="5">
-          <div class="g-item-meta">
-            <span class="g-type">Provvisoria</span>
-            <span class="status confirmed"><span class="dot"></span>Verificata</span>
-          </div>
-          <div class="g-item-title">Forniture sanitarie &mdash; ASL Roma 2, gara CIG 9876543210</div>
-          <div class="g-item-foot">
-            <span class="mono">APT-GAR-2026-9E4F02</span>
-            <span class="mono">€&nbsp;38.200</span>
-            <span class="mono">scad. 28&nbsp;ago&nbsp;2026</span>
-          </div>
-        </a>
-        <a href="#" class="g-item"
-          data-code="APT-GAR-2026-7C1B98" data-type="Anticipazione"
-          data-eyebrow="Garanzia di anticipazione · Art. 125 D.Lgs. 36/2023"
-          data-title="Opere di urbanizzazione primaria — Comune di Mortara"
-          data-sa="Comune di Mortara — Settore LL.PP."
-          data-oe="Costruzioni Lemania S.p.A." data-vat="04812960015"
-          data-garante="Generali Italia — agenzia Milano Centrale"
-          data-importo="215.000,00" data-emissione="in formazione · bozza"
-          data-scadenza="entro 12 mesi dall'avvio lavori" data-status="pending" data-statuslbl="In istruttoria"
-          data-hash="7c1b 98e2 4d8a 6f23 … 9c47"
-          data-wf1="6 giu 11:08" data-wf2="—" data-wf3="—" data-wf4="—" data-wf5="—" data-wf6="—" data-wfstep="1">
-          <div class="g-item-meta">
-            <span class="g-type">Anticipazione</span>
-            <span class="status pending"><span class="dot"></span>In istruttoria</span>
-          </div>
-          <div class="g-item-title">Opere di urbanizzazione primaria &mdash; Comune di Mortara</div>
-          <div class="g-item-foot">
-            <span class="mono">APT-GAR-2026-7C1B98</span>
-            <span class="mono">€&nbsp;215.000</span>
-            <span class="mono">in formazione</span>
-          </div>
-        </a>
-        <a href="#" class="g-item"
-          data-code="APT-GAR-2026-5A8D43" data-type="Definitiva"
-          data-eyebrow="Garanzia definitiva · Art. 117 D.Lgs. 36/2023"
-          data-title="Manutenzione impianti termici — Edifici comunali, Torino"
-          data-sa="Comune di Torino — Settore Patrimonio"
-          data-oe="Termoidraulica Valdocco S.r.l." data-vat="11248970018"
-          data-garante="Cattolica Assicurazioni — agenzia Torino Centro"
-          data-importo="124.800,00" data-emissione="18 febbraio 2026 · ore 10:14 CEST"
-          data-scadenza="31 dicembre 2026" data-status="confirmed" data-statuslbl="Verificata"
-          data-hash="5a8d 4320 9bf1 e72c … d089"
-          data-wf1="15 feb 09:00" data-wf2="15 feb 09:04" data-wf3="18 feb 10:14" data-wf4="18 feb 11:48" data-wf5="in corso" data-wf6="previsto 31 dic" data-wfstep="5">
-          <div class="g-item-meta">
-            <span class="g-type">Definitiva</span>
-            <span class="status confirmed"><span class="dot"></span>Verificata</span>
-          </div>
-          <div class="g-item-title">Manutenzione impianti termici &mdash; Edifici comunali, Torino</div>
-          <div class="g-item-foot">
-            <span class="mono">APT-GAR-2026-5A8D43</span>
-            <span class="mono">€&nbsp;124.800</span>
-            <span class="mono">scad. 31&nbsp;dic&nbsp;2026</span>
-          </div>
-        </a>
-        <a href="#" class="g-item"
-          data-code="APT-GAR-2026-2F71A0" data-type="Provvisoria"
-          data-eyebrow="Garanzia provvisoria · Art. 106 D.Lgs. 36/2023"
-          data-title="Servizi di mensa scolastica — Comune di Vercelli"
-          data-sa="Comune di Vercelli — Settore Istruzione"
-          data-oe="Cucine Riunite S.p.A." data-vat="02418750023"
-          data-garante="Allianz S.p.A. — agenzia Vercelli"
-          data-importo="19.450,00" data-emissione="14 aprile 2026 · ore 15:22 CEST"
-          data-scadenza="svincolata il 22 maggio 2026" data-status="confirmed" data-statuslbl="Svincolata"
-          data-hash="2f71 a094 c83d 17ee … 6bc2"
-          data-wf1="12 apr 11:00" data-wf2="12 apr 11:02" data-wf3="14 apr 15:22" data-wf4="15 apr 09:40" data-wf5="conclusa" data-wf6="svincolata 22 mag" data-wfstep="6">
-          <div class="g-item-meta">
-            <span class="g-type">Provvisoria</span>
-            <span class="status confirmed"><span class="dot"></span>Svincolata</span>
-          </div>
-          <div class="g-item-title">Servizi di mensa scolastica &mdash; Comune di Vercelli</div>
-          <div class="g-item-foot">
-            <span class="mono">APT-GAR-2026-2F71A0</span>
-            <span class="mono">€&nbsp;19.450</span>
-            <span class="mono">svincolata 22&nbsp;mag&nbsp;2026</span>
-          </div>
-        </a>
-      </section>
-
-      <!-- DETTAGLIO -->
-      <section class="g-detail">
-        <div class="g-detail-head">
-          <div>
-            <div class="eyebrow seal-c" id="g-eyebrow">Garanzia definitiva · Art. 117 D.Lgs. 36/2023</div>
-            <h2 class="serif" id="g-title" style="font-size: 34px; line-height: 1.1; margin: 12px 0 0; max-width: 24ch;">Lavori di ristrutturazione del plesso scolastico — Lotto III</h2>
-          </div>
-          <div class="seal-mark">
-            <span class="glyph">V</span>
-          </div>
-        </div>
-
-        <hr class="rule" style="margin: 32px 0;"/>
-
-        <div class="g-grid">
-          <div class="g-row"><div class="g-key">Codice di verifica</div><div class="g-val mono" id="g-code" style="font-size: 18px; letter-spacing: 0.1em;">APT-GAR-2026-AB12CD</div></div>
-          <div class="g-row"><div class="g-key">Stazione appaltante</div><div class="g-val" id="g-sa">Comune di Mortara — Settore LL.PP.</div></div>
-          <div class="g-row"><div class="g-key">Operatore economico</div><div class="g-val" id="g-oe">Costruzioni Lemania S.p.A.<br/><span class="mono small">P.IVA 04812960015</span></div></div>
-          <div class="g-row"><div class="g-key">Garante</div><div class="g-val" id="g-garante">Banca del Piemonte — succ. Torino Centro</div></div>
-          <div class="g-row"><div class="g-key">Importo garantito</div><div class="g-val mono" id="g-importo" style="font-size: 22px;">€ 842.500,00</div></div>
-          <div class="g-row"><div class="g-key">Data emissione</div><div class="g-val mono" id="g-emissione">12 maggio 2026 · ore 11:08 CEST</div></div>
-          <div class="g-row"><div class="g-key">Scadenza</div><div class="g-val mono" id="g-scadenza">14 luglio 2026</div></div>
-          <div class="g-row" style="border-bottom: 0;"><div class="g-key">Impronta documento</div><div class="g-val mono" id="g-hash" style="word-break: break-all; line-height: 1.7;">e3b0 c442 98fc 1c14 … b855</div></div>
-        </div>
-
-        <hr class="rule" style="margin: 32px 0;"/>
-
-        <!-- Stato workflow -->
-        <div class="eyebrow" style="margin-bottom: 16px;">Iter procedurale</div>
-        <ol class="workflow" id="g-workflow">
-          <li data-step="1"><span class="wf-num">01</span><span class="wf-lbl">Bozza redatta</span><span class="wf-when mono" id="g-wf1">10 mag 14:22</span></li>
-          <li data-step="2"><span class="wf-num">02</span><span class="wf-lbl">Documento sigillato su Bitcoin</span><span class="wf-when mono" id="g-wf2">10 mag 14:24</span></li>
-          <li data-step="3"><span class="wf-num">03</span><span class="wf-lbl">Emessa &amp; comunicata alla S.A.</span><span class="wf-when mono" id="g-wf3">12 mag 11:08</span></li>
-          <li data-step="4"><span class="wf-num">04</span><span class="wf-lbl">Verificata dalla stazione appaltante</span><span class="wf-when mono" id="g-wf4">12 mag 16:34</span></li>
-          <li data-step="5"><span class="wf-num">05</span><span class="wf-lbl">In esecuzione</span><span class="wf-when mono" id="g-wf5">—</span></li>
-          <li data-step="6"><span class="wf-num">06</span><span class="wf-lbl">Svincolata o escussa</span><span class="wf-when mono" id="g-wf6">previsto 14 lug</span></li>
-        </ol>
-
-        <div class="row row-gap" style="margin-top: 32px; flex-wrap: wrap;">
-          <a class="btn" href="certificato.html">Certificato di autenticità</a>
-          <a class="btn ghost" href="verifica.html">Verifica pubblica</a>
-          <button class="btn ghost" onclick="window.print()">Stampa o salva in PDF</button>
-        </div>
-      </section>
-    </div>
-
-    <!-- VERIFICATORE PUBBLICO PER STAZIONE APPALTANTE -->
-    <section id="verifyBlock" style="margin-top: 96px; padding-top: 56px; border-top: 3px double var(--seal);">
-      <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
-        <span class="section-num">Per la stazione appaltante</span>
-        <span class="roman">v</span>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: start;">
-        <div>
-          <h2 class="serif" style="font-size: clamp(32px, 4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin: 0; max-width: 18ch;">
-            Verifica la <em class="serif-italic" style="color: var(--seal);">genuinità</em> di una garanzia.
-          </h2>
-          <p class="lede" style="margin-top: 20px;">
-            Inserire il codice riportato sul documento di garanzia. Il riscontro
-            attesta che il documento <em class="serif-italic">non è stato alterato</em>
-            dalla data di emissione, basandosi sul registro pubblico Bitcoin.
-          </p>
-        </div>
-        <div class="panel">
-          <label class="field-label" for="garCode">Codice della garanzia</label>
-          <input class="field-input mono" id="garCode" type="text" placeholder="APT-GAR-2026-AB12CD" style="font-size: 20px; letter-spacing: 0.1em;"/>
-          <p class="small" style="margin-top: 10px;">Formato: <span class="mono">APT-GAR-AAAA-XXXXXX</span></p>
-          <button class="btn seal" style="margin-top: 24px; width: 100%; justify-content: center;" onclick="document.getElementById('garResult').style.display='block'; document.getElementById('garResult').scrollIntoView({behavior:'smooth',block:'center'})">
-            Verifica codice <span class="arrow"></span>
-          </button>
-        </div>
-      </div>
-
-      <div id="garResult" style="display:none; margin-top: 48px;">
-        <div class="verdict ok">
-          <div class="verdict-mark">
-            <svg width="48" height="48" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="28" cy="28" r="26"/>
-              <path d="M16 28 L25 37 L41 19" stroke-linecap="square"/>
-            </svg>
-          </div>
-          <div>
-            <div class="eyebrow verify-c">Esito</div>
-            <h3 class="serif" style="font-size: 32px; line-height: 1.05; margin: 8px 0 4px;">
-              Garanzia <em class="serif-italic verify-c">autentica e valida.</em>
-            </h3>
-            <p class="body" style="margin: 0; max-width: 56ch;">
-              Codice <span class="mono">APT-GAR-2026-AB12CD</span> &mdash; €&nbsp;842.500,00 &mdash;
-              scadenza <strong>14&nbsp;luglio&nbsp;2026.</strong> Iscritta nel blocco Bitcoin
-              <span class="mono">#&nbsp;871.508.</span>
-            </p>
-          </div>
-        </div>
+        <p class="lede">Polizze fideiussorie iscritte e verificabili pubblicamente.</p>
       </div>
     </section>
 
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento garanzie&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden>
+          <span></span> <button class="link-seal" id="retry" type="button">Riprova</button>
+        </div>
+        <div id="state-empty" class="state-msg" hidden>
+          Non hai ancora alcuna garanzia attiva. Le polizze emesse dai tuoi clienti compaiono qui.
+        </div>
+        <table class="t" id="tbl" hidden>
+          <thead><tr><th>Polizza</th><th>Beneficiario</th><th>Importo</th><th>Scadenza</th><th>Stato</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </article>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
-      <span>Sezione IV — Garanzie</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Garanzie d'appalto</span></div></footer>
 
   <style>
-  .g-dashboard {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-    margin-bottom: 56px;
-  }
-  .g-cell {
-    padding: 28px 24px;
-    border-right: 1px solid var(--rule);
-  }
-  .g-cell:last-child { border-right: 0; }
-  .dash-num {
-    font-family: var(--serif);
-    font-size: 44px;
-    line-height: 1;
-    margin: 14px 0 12px;
-    letter-spacing: -0.015em;
-  }
-  .dash-foot {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-
-  .g-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 0;
-    border: 1px solid var(--ink);
-  }
-  .g-list { border-right: 1px solid var(--ink); background: var(--paper); }
-  .g-list-head {
-    padding: 18px 24px;
-    background: var(--paper-2);
-    border-bottom: 1px solid var(--rule);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .g-filt { display: flex; gap: 12px; }
-  .g-tab {
-    background: transparent; border: 0;
-    font-family: var(--mono); font-size: 10.5px;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--ink-3);
-    padding: 6px 0;
-    border-bottom: 1px solid transparent;
-    cursor: pointer;
-  }
-  .g-tab.active { color: var(--ink); border-bottom-color: var(--seal); }
-  .g-tab:hover { color: var(--ink); }
-
-  .g-item {
-    display: block;
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--rule-2);
-    transition: background .15s;
-  }
-  .g-item:hover { background: var(--paper-2); }
-  .g-item.selected {
-    background: var(--paper-2);
-    border-left: 3px solid var(--seal);
-    padding-left: 21px;
-  }
-  .g-item-meta {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 8px;
-  }
-  .g-type {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--seal);
-  }
-  .g-item-title {
-    font-family: var(--serif);
-    font-size: 17px;
-    line-height: 1.2;
-    color: var(--ink);
-    letter-spacing: -0.005em;
-  }
-  .g-item-foot {
-    display: flex; gap: 18px; margin-top: 10px;
-    font-size: 11px; color: var(--ink-3);
-    flex-wrap: wrap;
-  }
-  .g-item-foot .mono { font-family: var(--mono); letter-spacing: 0.06em; }
-
-  .g-detail { padding: 32px 36px; background: var(--paper-2); }
-  .g-detail-head { display: flex; justify-content: space-between; align-items: start; gap: 24px; }
-  .g-grid { display: flex; flex-direction: column; }
-  .g-row {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 24px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--rule-2);
-    align-items: baseline;
-  }
-  .g-key {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .g-val { font-size: 15px; color: var(--ink); }
-
-  .workflow {
-    list-style: none; padding: 0; margin: 0;
-    border-top: 1px solid var(--rule-2);
-  }
-  .workflow li {
-    display: grid;
-    grid-template-columns: 56px 1fr 140px;
-    gap: 16px;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--rule-2);
-    color: var(--ink-3);
-  }
-  .workflow li.done { color: var(--ink); }
-  .wf-num {
-    font-family: var(--mono); font-size: 12px;
-    letter-spacing: 0.14em; color: inherit;
-  }
-  .workflow li.done .wf-num { color: var(--verify); }
-  .wf-lbl { font-family: var(--serif); font-size: 17px; }
-  .workflow li.done .wf-lbl { font-style: italic; }
-  .wf-when {
-    font-size: 11px; letter-spacing: 0.08em;
-    color: var(--ink-3); text-align: right;
-  }
-
-  .verdict {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 28px;
-    align-items: start;
-    padding: 32px 36px;
-    border: 1px solid var(--rule);
-    background: var(--paper-2);
-    border-left: 4px solid var(--verify);
-  }
-  .verdict-mark { color: var(--verify); }
-
-  @media (max-width: 960px) {
-    .g-dashboard { grid-template-columns: repeat(2, 1fr); }
-    .g-cell:nth-child(2n) { border-right: 0; }
-    .g-cell { border-bottom: 1px solid var(--rule); }
-    .g-layout { grid-template-columns: 1fr; }
-    .g-list { border-right: 0; border-bottom: 1px solid var(--ink); }
-    section [style*="grid-template-columns: 1.2fr 1fr"] { grid-template-columns: 1fr !important; gap: 32px !important; }
-    .g-row { grid-template-columns: 1fr; gap: 4px; }
-    .verdict { grid-template-columns: 1fr; gap: 16px; }
-    .workflow li { grid-template-columns: 40px 1fr; gap: 12px; }
-    .wf-when { grid-column: 2; text-align: left; }
-  }
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
   </style>
 
-  <script>
-    // Selezione voce della lista + aggiornamento dettaglio
-    function updateDetail(item) {
-      const d = item.dataset;
-      const set = (id, val) => { const e = document.getElementById(id); if (e && val != null) e.textContent = val; };
-      set('g-eyebrow', d.eyebrow);
-      set('g-title', d.title);
-      set('g-code', d.code);
-      set('g-sa', d.sa);
-      set('g-garante', d.garante);
-      set('g-importo', '€\u00a0' + d.importo);
-      set('g-emissione', d.emissione);
-      set('g-scadenza', d.scadenza);
-      set('g-hash', d.hash);
-      // OE con P.IVA
-      const oeEl = document.getElementById('g-oe');
-      if (oeEl) oeEl.innerHTML = (d.oe || '') + '<br/><span class="mono small">P.IVA ' + (d.vat || '') + '</span>';
-      // Workflow
-      const wf = document.getElementById('g-workflow');
-      if (wf) {
-        const step = parseInt(d.wfstep || '0', 10);
-        wf.querySelectorAll('li').forEach(li => {
-          const s = parseInt(li.dataset.step, 10);
-          li.classList.toggle('done', s <= step);
-        });
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  await protectPage();
+  bindLogout("#logout");
+
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleDateString("it-IT") : ""; }
+  function eur(x) { return x == null ? "—" : new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(x); }
+
+  async function load() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("state-empty").hidden = true;
+    document.getElementById("tbl").hidden = true;
+    document.getElementById("rows").innerHTML = "";
+    try {
+      const { data, error } = await supabase
+        .from("garanzie")
+        .select("id, codice, beneficiario, importo, scadenza, stato, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100);
+      document.getElementById("state-loading").hidden = true;
+      if (error) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + error.message;
+        err.hidden = false;
+        return;
       }
-      for (let i = 1; i <= 6; i++) set('g-wf' + i, d['wf' + i]);
+      if (!data || data.length === 0) {
+        document.getElementById("state-empty").hidden = false;
+        return;
+      }
+      const tbody = document.getElementById("rows");
+      const now = Date.now();
+      data.forEach(g => {
+        const sc = g.scadenza ? new Date(g.scadenza).getTime() : null;
+        const scaduta = sc && sc < now;
+        const stato = g.stato || (scaduta ? "scaduta" : "attiva");
+        const ok = stato === "attiva" && !scaduta;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="mono">${escapeHtml(g.codice || "—")}</td>
+          <td>${escapeHtml(g.beneficiario || "—")}</td>
+          <td class="mono">${eur(g.importo)}</td>
+          <td class="mono">${fmt(g.scadenza)}</td>
+          <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("tbl").hidden = false;
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
     }
-    document.querySelectorAll('.g-item').forEach(item => {
-      item.addEventListener('click', e => {
-        e.preventDefault();
-        document.querySelectorAll('.g-item').forEach(i => i.classList.remove('selected'));
-        item.classList.add('selected');
-        updateDetail(item);
-        document.querySelector('.g-detail')?.scrollIntoView({behavior:'smooth', block:'start'});
-      });
-    });
-    document.querySelectorAll('.g-tab').forEach(t => {
-      t.addEventListener('click', () => {
-        document.querySelectorAll('.g-tab').forEach(x => x.classList.remove('active'));
-        t.classList.add('active');
-      });
-    });
-  </script>
-<script>
-  document.getElementById('logout')?.addEventListener('click', e => {
-    e.preventDefault();
-    localStorage.removeItem('veylon_session');
-    location.href = 'login.html';
-  });
+  }
+  document.getElementById("retry").addEventListener("click", load);
+  load();
   </script>
 </body>
 </html>

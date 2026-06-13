@@ -4,215 +4,120 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON Tag · Storico</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VI &middot; Tag</span>
-        <span class="sep">·</span>
-        <span>Repertorio emessi</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Tag · Storico</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
         <a href="tag.html">Tag</a>
-        <a href="tag-emetti.html">Emetti</a>
-        <a href="tag-batch.html">Massivo</a>
-        <a href="tag-onboarding.html">Onboarding</a>
+        <a href="tag-storico.html" class="current">Storico</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
   </header>
 
-  <main class="col" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">&sect; I &mdash; Repertorio</span>
-      <span class="roman">i</span>
-    </div>
-
-    <div class="row-between" style="align-items: flex-end; gap: 48px; flex-wrap: wrap; margin-bottom: 40px;">
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
       <div>
-        <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0;">
-          Certificati <em class="serif-italic" style="color: var(--seal);">emessi.</em>
+        <span class="section-num">Veylon Tag · Storico</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Storico <em class="serif-italic" style="color: var(--seal);">emissioni.</em>
         </h1>
-        <p class="lede" style="margin-top: 16px; max-width: 50ch;">
-          Tutti i certificati che hai emesso. Filtra per stato, clicca su un
-          codice per vedere la pagina pubblica o per trasferirne la propriet&agrave;.
-        </p>
       </div>
-      <div class="row" style="gap: 12px;">
-        <a class="btn ghost" href="tag-batch.html">Massivo</a>
-        <a class="btn seal" href="tag-emetti.html">Emetti <span class="arrow"></span></a>
-      </div>
-    </div>
+    </section>
 
-    <!-- KPI -->
-    <div class="g-dashboard" style="margin-bottom: 32px;">
-      <div class="g-cell"><div class="eyebrow">Emessi totali</div><div class="dash-num" id="kpiTotale">—</div></div>
-      <div class="g-cell"><div class="eyebrow">In essere</div><div class="dash-num" id="kpiEmessi">—</div></div>
-      <div class="g-cell"><div class="eyebrow">Trasferiti</div><div class="dash-num" id="kpiTrasf">—</div></div>
-      <div class="g-cell"><div class="eyebrow">Revocati</div><div class="dash-num" id="kpiRevoc">—</div></div>
-    </div>
-
-    <!-- Filtri -->
-    <div class="row" style="gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
-      <button class="g-tab active" data-filter="all">Tutti</button>
-      <button class="g-tab" data-filter="emesso">In essere</button>
-      <button class="g-tab" data-filter="trasferito">Trasferiti</button>
-      <button class="g-tab" data-filter="revocato">Revocati</button>
-      <input id="searchInput" class="field-input mono" placeholder="cerca codice / lotto / SKU" style="flex: 1; min-width: 200px; padding: 8px;"/>
-    </div>
-
-    <!-- Tabella -->
-    <table class="lotti-tbl" id="certTable">
-      <thead>
-        <tr>
-          <th style="width: 220px;">Codice</th>
-          <th>Esemplare</th>
-          <th style="width: 120px;">Applicazione</th>
-          <th style="width: 120px;">Stato</th>
-          <th style="width: 120px;">Emesso il</th>
-          <th style="width: 100px;" class="right">Azioni</th>
-        </tr>
-      </thead>
-      <tbody id="certTbody">
-        <tr><td colspan="6" class="small" style="text-align: center; padding: 32px;">Caricamento…</td></tr>
-      </tbody>
-    </table>
-
-    <p class="small" id="emptyHint" style="display: none; margin-top: 16px; text-align: center;">
-      Nessun certificato emesso. <a class="link-seal" href="tag-emetti.html">Comincia ora</a>.
-    </p>
-
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento storico&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+        <div id="state-empty" class="state-msg" hidden>
+          Non hai ancora emesso tag. <a href="tag-emetti.html" class="link-seal">Emetti il primo &rarr;</a>
+        </div>
+        <table class="t" id="tbl" hidden>
+          <thead><tr><th>Data</th><th>Prodotto</th><th>SKU</th><th>Lotto</th><th>Codice</th><th>Stato</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </article>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
-      <span>Sezione VI &mdash; Tag &middot; Storico</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Tag · Storico</span></div></footer>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+  </style>
 
-    function getJwt() {
-      try {
-        const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
-        return session?.access_token ?? null;
-      } catch { return null; }
-    }
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  await protectPage();
+  bindLogout("#logout");
 
-    function escapeHtml(s) {
-      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    }
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleDateString("it-IT") : ""; }
 
-    let allCerts = [];
-    let currentFilter = 'all';
-
-    async function caricaCertificati() {
-      const jwt = getJwt();
-      if (!jwt) {
-        document.getElementById('certTbody').innerHTML =
-          '<tr><td colspan="6" class="small" style="text-align: center; padding: 32px;">Accesso richiesto. Vai al <a href="login.html" class="link-seal">login</a>.</td></tr>';
+  async function load() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("state-empty").hidden = true;
+    document.getElementById("tbl").hidden = true;
+    document.getElementById("rows").innerHTML = "";
+    try {
+      const { data, error } = await supabase
+        .from("tag_prodotti")
+        .select("id, denominazione, sku, lotto, codice, stato, created_at")
+        .order("created_at", { ascending: false })
+        .limit(200);
+      document.getElementById("state-loading").hidden = true;
+      if (error) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + error.message;
+        err.hidden = false;
         return;
       }
-
-      const restUrl = `${SUPABASE_URL}/rest/v1/tag_certificati`
-        + '?select=id,codice_pubblico,codice_prodotto,lotto,descrizione,applicazione,stato,data_emissione,created_at'
-        + '&order=created_at.desc&limit=500';
-
-      try {
-        const res = await fetch(restUrl, {
-          headers: {
-            'Authorization': 'Bearer ' + jwt,
-            'apikey': SUPABASE_ANON_KEY,
-            'Accept': 'application/json',
-          },
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data?.message || ('http_' + res.status));
-
-        allCerts = Array.isArray(data) ? data : [];
-        renderKpi();
-        renderTable();
-      } catch (err) {
-        document.getElementById('certTbody').innerHTML =
-          `<tr><td colspan="6" class="small" style="text-align: center; padding: 32px; color: var(--seal);">Errore: ${escapeHtml(err.message || err)}</td></tr>`;
-      }
-    }
-
-    function renderKpi() {
-      const c = allCerts;
-      document.getElementById('kpiTotale').textContent = c.length;
-      document.getElementById('kpiEmessi').textContent = c.filter(x => x.stato === 'emesso').length;
-      document.getElementById('kpiTrasf').textContent = c.filter(x => x.stato === 'trasferito').length;
-      document.getElementById('kpiRevoc').textContent = c.filter(x => x.stato === 'revocato').length;
-    }
-
-    function renderTable() {
-      const tbody = document.getElementById('certTbody');
-      const search = (document.getElementById('searchInput').value || '').trim().toLowerCase();
-      let filtered = allCerts;
-      if (currentFilter !== 'all') filtered = filtered.filter(c => c.stato === currentFilter);
-      if (search) {
-        filtered = filtered.filter(c =>
-          (c.codice_pubblico || '').toLowerCase().includes(search) ||
-          (c.lotto || '').toLowerCase().includes(search) ||
-          (c.codice_prodotto || '').toLowerCase().includes(search)
-        );
-      }
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="small" style="text-align: center; padding: 32px;">Nessun risultato.</td></tr>';
-        document.getElementById('emptyHint').style.display = allCerts.length === 0 ? 'block' : 'none';
+      if (!data || data.length === 0) {
+        document.getElementById("state-empty").hidden = false;
         return;
       }
-      document.getElementById('emptyHint').style.display = 'none';
-
-      tbody.innerHTML = filtered.map(c => {
-        const statoClass = c.stato === 'revocato' ? 'pending' : (c.stato === 'trasferito' ? 'confirmed' : 'confirmed');
-        const dataEm = c.data_emissione ? new Date(c.data_emissione).toLocaleDateString('it-IT') : '—';
-        return `<tr>
-          <td class="mono small">${escapeHtml(c.codice_pubblico)}</td>
-          <td>
-            <div class="serif" style="font-size: 14px;">${escapeHtml(c.descrizione || '—')}</div>
-            <div class="mono small" style="color: var(--ink-3);">${escapeHtml(c.codice_prodotto || '')}${c.lotto ? ' · lotto ' + escapeHtml(c.lotto) : ''}</div>
-          </td>
-          <td class="mono small">${escapeHtml(c.applicazione)}</td>
-          <td><span class="status ${statoClass}"><span class="dot"></span>${escapeHtml(c.stato)}</span></td>
-          <td class="mono small">${dataEm}</td>
-          <td class="right">
-            <a href="t-codice.html?c=${encodeURIComponent(c.codice_pubblico)}" class="link-seal small" target="_blank">verifica</a>
-            ${c.stato === 'emesso' || c.stato === 'trasferito' ? `<br/><a href="tag-trasferisci.html?cert=${encodeURIComponent(c.id)}" class="link-seal small">trasferisci</a>` : ''}
-          </td>
-        </tr>`;
-      }).join('');
-    }
-
-    // Filtri
-    document.querySelectorAll('.g-tab').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.g-tab').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderTable();
+      const tbody = document.getElementById("rows");
+      data.forEach(t => {
+        const stato = t.stato || "attivo";
+        const ok = /attivo|valido/i.test(stato);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${fmt(t.created_at)}</td>
+          <td>${escapeHtml(t.denominazione || "—")}</td>
+          <td class="mono">${escapeHtml(t.sku || "—")}</td>
+          <td class="mono">${escapeHtml(t.lotto || "—")}</td>
+          <td class="mono">${escapeHtml(t.codice || "—")}</td>
+          <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
+        `;
+        tbody.appendChild(tr);
       });
-    });
-    document.getElementById('searchInput').addEventListener('input', renderTable);
-
-    caricaCertificati();
+      document.getElementById("tbl").hidden = false;
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
+    }
+  }
+  load();
   </script>
 </body>
 </html>

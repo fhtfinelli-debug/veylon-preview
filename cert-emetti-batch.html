@@ -3,418 +3,172 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Cert &middot; Emissione massiva (CSV)</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Cert · Emissione massiva (CSV)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
-
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="masthead-meta">
-        <span>Sezione VII &middot; Cert</span>
-        <span class="sep">&middot;</span>
-        <span>Emissione massiva</span>
-      </div>
+      <div class="masthead-meta"><span>Area riservata</span><span class="sep">·</span><span>Emissione massiva</span></div>
       <a href="dashboard.html" class="wordmark">VEYLON</a>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav full">
+        <a href="dashboard.html">Cruscotto</a>
         <a href="cert.html">Cert</a>
-        <a href="cert-istituzione.html">Istituzione</a>
-        <a href="cert-emetti.html">Singolo</a>
-        <a href="cert-verifica.html">Verifica</a>
+        <a href="cert-emetti-batch.html" class="current">Massiva</a>
         <a href="#" id="logout" class="nav-aux">Esci</a>
       </nav>
     </div>
   </header>
 
-  <main class="col-narrow" style="padding: 56px 32px 96px;">
-
-    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
-      <span class="section-num">&sect; III &mdash; Batch</span>
-      <span class="roman">iii</span>
-    </div>
-
-    <h1 class="serif" style="font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;">
-      Emissione <em class="serif-italic" style="color: var(--seal);">massiva.</em>
-    </h1>
-    <p class="lede" style="margin: 12px 0 40px; max-width: 60ch;">
-      Carica un CSV con fino a <strong>5.000 righe</strong>: per ogni riga
-      Veylon emette il certificato, ancora a Bitcoin, genera PDF e ti restituisce
-      uno ZIP con i PDF + il manifest CSV + l'elenco eventuali errori.
-    </p>
-
-    <!-- =========================================================
-         Documentazione formato CSV
-    ========================================================== -->
-    <section class="panel" style="padding: 24px; margin-bottom: 32px;">
-      <div class="section-num">&sect; Formato CSV</div>
-      <h3 class="serif" style="margin: 8px 0 12px;">Intestazioni accettate (riga 1)</h3>
-      <pre class="mono" style="background: var(--panel); padding: 12px; font-size: 12px; overflow-x: auto;">beneficiario_email,beneficiario_codice_fiscale,beneficiario_nome,dati_certificato,disciplina_scientifica,data_scadenza
-mario.rossi@example.com,RSSMRA80A01H501Z,Mario Rossi,"{""corso"":""Matematica"",""voto"":""110L""}",,2030-12-31
-laura.bianchi@example.com,,Laura Bianchi,"{""corso"":""Informatica"",""voto"":""107""}",,
-</pre>
-      <div class="body small" style="margin-top: 12px;">
-        Solo <span class="mono">beneficiario_email</span> e
-        <span class="mono">dati_certificato</span> (JSON tra doppi apici raddoppiati)
-        sono obbligatorie. Le altre colonne sono opzionali. Codifica
-        <strong>UTF-8</strong>, separatore <strong>virgola</strong>.
-      </div>
-      <button type="button" class="btn ghost sm" style="margin-top: 12px;" onclick="scaricaTemplate()">
-        Scarica template CSV
-      </button>
-    </section>
-
-    <!-- =========================================================
-         Form: istituzione + template + CSV
-    ========================================================== -->
-    <form id="batchForm" class="panel" style="padding: 32px;" onsubmit="emettiBatch(event)">
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">A</span> Istituzione &amp; template</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="istituzioneId">Istituzione</label>
-          <select id="istituzioneId" class="field-input mono" required onchange="caricaTemplate()">
-            <option value="">&mdash; carica istituzioni &mdash;</option>
-          </select>
-        </div>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="templateId">Template (opzionale ma consigliato)</label>
-          <select id="templateId" class="field-input mono">
-            <option value="">&mdash; nessun template (campi liberi) &mdash;</option>
-          </select>
-          <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">
-            Se scegli un template, il PDF erediter&agrave; il layout base e le normative di riferimento.
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">B</span> CSV</legend>
-
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label" for="csvFile">File CSV (UTF-8, max 5.000 righe)</label>
-          <input id="csvFile" class="field-input" type="file" accept=".csv,text/csv" required onchange="anteprimaCsv()"/>
-        </div>
-
-        <div id="csvPreview" style="display: none; margin-top: 18px;">
-          <div class="section-num">&sect; Anteprima</div>
-          <div class="mono" style="font-size: 11px; color: var(--ink-3); margin: 6px 0 8px;">
-            Prime <span id="previewRows">0</span> righe rilevate. Righe totali: <span id="totalRows" class="mono">0</span>.
-          </div>
-          <div style="overflow-x: auto; border: 1px solid var(--rule);">
-            <table id="previewTable" style="width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px;"></table>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset class="ff" style="border: 0; padding: 0; margin-bottom: 32px;">
-        <legend class="ff-leg" style="padding: 0;"><span class="ff-num">C</span> Conferma</legend>
-        <div class="ff-row" style="margin-top: 18px;">
-          <label class="field-label">
-            <input type="checkbox" id="confermo" required style="margin-right: 8px; vertical-align: middle;"/>
-            Confermo che ho il consenso a emettere certificati a queste persone, sotto la mia responsabilit&agrave;.
-          </label>
-        </div>
-      </fieldset>
-
-      <div class="row" style="gap: 16px; align-items: center; margin-top: 32px;">
-        <button id="submitBtn" type="submit" class="btn seal lg">Emetti il batch <span class="arrow"></span></button>
-        <span id="formMsg" class="mono" style="font-size: 12px; color: var(--ink-3);"></span>
-      </div>
-    </form>
-
-    <!-- =========================================================
-         Risultato
-    ========================================================== -->
-    <section id="result" style="display: none; margin-top: 56px;" class="receipt">
-      <div class="receipt-grid">
-        <div class="receipt-row">
-          <span class="receipt-key">Esito batch</span>
-          <span class="receipt-val" id="rEsito">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Emessi</span>
-          <span class="receipt-val mono" id="rOk">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Scartati</span>
-          <span class="receipt-val mono" id="rKo">&mdash;</span>
-        </div>
-        <div class="receipt-row">
-          <span class="receipt-key">Manifest</span>
-          <span class="receipt-val mono"><a id="rManifest" href="#" download>scarica manifest.csv</a></span>
-        </div>
-        <div class="receipt-row" id="rZipRow">
-          <span class="receipt-key">ZIP completo</span>
-          <span class="receipt-val mono"><a id="rZip" href="#" download>scarica certificati.zip</a></span>
-        </div>
-      </div>
-      <div id="rErrori" class="panel" style="margin-top: 24px; padding: 16px; display: none;">
-        <div class="section-num">&sect; Errori per riga</div>
-        <pre class="mono" id="rErroriPre" style="font-size: 11px; margin-top: 8px; max-height: 280px; overflow: auto;"></pre>
-      </div>
-      <div class="row" style="gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-        <a href="cert-emetti-batch.html" class="btn seal" onclick="location.reload(); return false;">Nuovo batch <span class="arrow"></span></a>
-        <a href="cert.html" class="btn ghost">Torna all'hub</a>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Cert · Massiva</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Emissione <em class="serif-italic" style="color: var(--seal);">massiva.</em>
+        </h1>
+        <p class="lede">Carica un CSV per emettere fino a 1000 certificati in un solo invio.</p>
       </div>
     </section>
 
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 18px;">Nuovo invio massivo</h2>
+        <form id="form" novalidate>
+          <div>
+            <label class="field-label" for="csv">File CSV</label>
+            <input class="field-input" type="file" id="csv" accept=".csv" required/>
+            <p class="small" style="margin-top: 6px; color: var(--ink-3);">
+              Colonne richieste: <code>nome,email,titolo</code>. Colonna opzionale: <code>scadenza</code>.
+            </p>
+          </div>
+          <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
+            <span class="btn-label">Avvia emissione</span>
+          </button>
+          <div id="result" hidden style="margin-top: 20px; padding: 14px; border: 1px solid var(--rule); background: var(--paper-2);">
+            <div class="eyebrow seal-c" style="margin-bottom: 6px;">Lotto avviato</div>
+            <div class="mono" style="font-size: 12px;" id="result-codice"></div>
+          </div>
+        </form>
+      </article>
+    </section>
+
+    <section style="margin-top: 40px;">
+      <h2 class="serif" style="font-size: 22px;">Lotti di emissione</h2>
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento lotti&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+        <div id="state-empty" class="state-msg" hidden>Non hai ancora avviato lotti.</div>
+        <table class="t" id="tbl" hidden>
+          <thead><tr><th>Avviato</th><th>Codice lotto</th><th>Righe</th><th>Emessi</th><th>Stato</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </article>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
-      <span>Sezione VII &mdash; Cert &middot; Batch</span>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Emissione massiva</span></div></footer>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
-    const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
-    const REST_BASE = `${SUPABASE_URL}/rest/v1`;
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+  </style>
 
-    function getJwt() {
-      try {
-        const session = JSON.parse(localStorage.getItem('veylon_session') || '{}');
-        return session?.access_token ?? null;
-      } catch { return null; }
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  const { session } = await protectPage();
+  bindLogout("#logout");
+
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : ""; }
+
+  document.getElementById("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const file = document.getElementById("csv").files[0];
+    if (!file) { alert("Seleziona un CSV."); return; }
+    const btn = document.getElementById("submit");
+    btn.disabled = true;
+    const original = btn.querySelector(".btn-label").textContent;
+    btn.querySelector(".btn-label").textContent = "Caricamento…";
+    try {
+      const text = await file.text();
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/cert-emetti-batch`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+        body: JSON.stringify({ csv: text, filename: file.name }),
+      });
+      const j = await res.json();
+      if (!res.ok || !j.success) throw new Error(j?.error || "errore");
+      document.getElementById("result-codice").textContent = "Lotto: " + (j.lotto_codice || j.lotto_id || "—");
+      document.getElementById("result").hidden = false;
+      document.getElementById("form").reset();
+      loadList();
+    } catch (e) {
+      alert("Errore: " + (e.message || e));
+    } finally {
+      btn.disabled = false;
+      btn.querySelector(".btn-label").textContent = original;
     }
-    function headers() {
-      const h = { 'Content-Type': 'application/json' };
-      const jwt = getJwt();
-      if (jwt) h['Authorization'] = 'Bearer ' + jwt;
-      if (SUPABASE_ANON_KEY) h['apikey'] = SUPABASE_ANON_KEY;
-      return h;
-    }
+  });
 
-    document.getElementById('logout')?.addEventListener('click', e => {
-      e.preventDefault();
-      localStorage.removeItem('veylon_session');
-      location.href = 'login.html';
-    });
-
-    function scaricaTemplate() {
-      const csv = [
-        'beneficiario_email,beneficiario_codice_fiscale,beneficiario_nome,dati_certificato,disciplina_scientifica,data_scadenza',
-        'mario.rossi@example.com,RSSMRA80A01H501Z,Mario Rossi,"{""corso"":""Matematica"",""voto"":""110L""}",,2030-12-31',
-        'laura.bianchi@example.com,,Laura Bianchi,"{""corso"":""Informatica"",""voto"":""107""}",,',
-      ].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'veylon-cert-template.csv';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
-
-    async function caricaIstituzioni() {
-      try {
-        const res = await fetch(`${REST_BASE}/cert_istituzioni?select=id,ragione_sociale,settore,tipo&order=ragione_sociale.asc`, { headers: headers() });
-        if (!res.ok) return;
-        const rows = await res.json();
-        const sel = document.getElementById('istituzioneId');
-        sel.innerHTML = '<option value="">&mdash; scegli &mdash;</option>' +
-          rows.map(r => `<option value="${r.id}">${r.ragione_sociale} (${r.settore})</option>`).join('');
-      } catch (e) { console.error('istituzioni_load_failed', e); }
-    }
-
-    async function caricaTemplate() {
-      const istId = document.getElementById('istituzioneId').value;
-      const sel = document.getElementById('templateId');
-      sel.innerHTML = '<option value="">&mdash; nessun template (campi liberi) &mdash;</option>';
-      if (!istId) return;
-      try {
-        const res = await fetch(`${REST_BASE}/cert_template?istituzione_id=eq.${istId}&attivo=eq.true&select=id,nome,tipo&order=nome.asc`, { headers: headers() });
-        if (!res.ok) return;
-        const rows = await res.json();
-        for (const r of rows) {
-          sel.innerHTML += `<option value="${r.id}">${r.nome} (${r.tipo})</option>`;
-        }
-      } catch (e) { console.error('template_load_failed', e); }
-    }
-
-    // ----- CSV parser semplice (gestisce virgolette + virgolette raddoppiate) -----
-    function parseCsv(text) {
-      const out = [];
-      let i = 0, field = '', row = [], inQuotes = false;
-      while (i < text.length) {
-        const ch = text[i];
-        if (inQuotes) {
-          if (ch === '"') {
-            if (text[i+1] === '"') { field += '"'; i += 2; continue; }
-            inQuotes = false; i++; continue;
-          }
-          field += ch; i++; continue;
-        }
-        if (ch === '"') { inQuotes = true; i++; continue; }
-        if (ch === ',') { row.push(field); field = ''; i++; continue; }
-        if (ch === '\r') { i++; continue; }
-        if (ch === '\n') { row.push(field); out.push(row); row = []; field = ''; i++; continue; }
-        field += ch; i++;
-      }
-      if (field !== '' || row.length) { row.push(field); out.push(row); }
-      return out.filter(r => r.length > 1 || (r.length === 1 && r[0] !== ''));
-    }
-
-    let csvParsedRows = null; // {header, righe}
-    async function anteprimaCsv() {
-      const f = document.getElementById('csvFile').files[0];
-      if (!f) return;
-      const txt = await f.text();
-      const rows = parseCsv(txt);
-      if (!rows.length) { document.getElementById('csvPreview').style.display = 'none'; return; }
-      const header = rows[0].map(h => h.trim());
-      const body = rows.slice(1);
-      csvParsedRows = { header, righe: body };
-
-      document.getElementById('csvPreview').style.display = 'block';
-      document.getElementById('totalRows').textContent = body.length;
-      document.getElementById('previewRows').textContent = Math.min(5, body.length);
-
-      const tbl = document.getElementById('previewTable');
-      const thead = '<thead><tr>' + header.map(h => `<th style="text-align:left; padding: 8px; border-bottom: 1px solid var(--rule); background: var(--panel);">${h}</th>`).join('') + '</tr></thead>';
-      const tbody = '<tbody>' + body.slice(0, 5).map(r =>
-        '<tr>' + header.map((_, ci) => `<td style="padding: 6px 8px; border-bottom: 1px solid var(--rule);">${(r[ci] ?? '').slice(0, 80)}</td>`).join('') + '</tr>'
-      ).join('') + '</tbody>';
-      tbl.innerHTML = thead + tbody;
-    }
-
-    function buildRighePayload() {
-      if (!csvParsedRows) throw new Error('CSV non analizzato. Riseleziona il file.');
-      const { header, righe } = csvParsedRows;
-      const idx = (k) => header.indexOf(k);
-      const iEmail = idx('beneficiario_email');
-      const iCf    = idx('beneficiario_codice_fiscale');
-      const iNome  = idx('beneficiario_nome');
-      const iDati  = idx('dati_certificato');
-      const iDisc  = idx('disciplina_scientifica');
-      const iScad  = idx('data_scadenza');
-      if (iEmail < 0 || iDati < 0) {
-        throw new Error('Intestazione CSV manca di beneficiario_email o dati_certificato.');
-      }
-      const out = [];
-      for (const r of righe) {
-        const email = (r[iEmail] || '').trim();
-        if (!email) continue; // riga vuota
-        let dati = {};
-        const datiRaw = (r[iDati] || '').trim();
-        if (datiRaw) {
-          try { dati = JSON.parse(datiRaw); }
-          catch (e) {
-            throw new Error('JSON non valido in dati_certificato per ' + email + ': ' + e.message);
-          }
-        }
-        const obj = { beneficiario_email: email, dati_certificato: dati };
-        if (iCf   >= 0 && r[iCf])   obj.beneficiario_codice_fiscale = r[iCf].trim();
-        if (iNome >= 0 && r[iNome]) obj.beneficiario_nome           = r[iNome].trim();
-        if (iDisc >= 0 && r[iDisc]) obj.disciplina_scientifica      = r[iDisc].trim();
-        if (iScad >= 0 && r[iScad]) obj.data_scadenza               = r[iScad].trim();
-        out.push(obj);
-      }
-      if (!out.length) throw new Error('Nessuna riga valida trovata nel CSV.');
-      if (out.length > 5000) throw new Error('Massimo 5.000 righe per batch (trovate ' + out.length + ').');
-      return out;
-    }
-
-    async function emettiBatch(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('formMsg');
-      msg.textContent = ''; msg.style.color = '';
-      const jwt = getJwt();
-      if (!jwt) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Accesso richiesto. Vai al login e ritorna.';
+  async function loadList() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("state-empty").hidden = true;
+    document.getElementById("tbl").hidden = true;
+    document.getElementById("rows").innerHTML = "";
+    try {
+      const { data, error } = await supabase
+        .from("cert_lotti")
+        .select("id, codice, totale, emessi, stato, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      document.getElementById("state-loading").hidden = true;
+      if (error) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + error.message;
+        err.hidden = false;
         return;
       }
-      let righe;
-      try { righe = buildRighePayload(); }
-      catch (err) {
-        msg.style.color = 'var(--seal)';
-        msg.textContent = err.message;
+      if (!data || data.length === 0) {
+        document.getElementById("state-empty").hidden = false;
         return;
       }
-      const payload = {
-        istituzione_id: document.getElementById('istituzioneId').value,
-        template_id: document.getElementById('templateId').value || undefined,
-        righe,
-      };
-      btn.disabled = true;
-      btn.innerHTML = `Emissione di ${righe.length} certificati in corso&hellip;`;
-      msg.textContent = 'Il batch pu&ograve; richiedere alcuni minuti.';
-
-      try {
-        const res = await fetch(`${FUNCTIONS_BASE}/cert-emetti-batch`, {
-          method: 'POST', headers: headers(), body: JSON.stringify(payload),
-        });
-        const data = await res.json().catch(() => ({}));
-        btn.disabled = false;
-        btn.innerHTML = 'Emetti il batch <span class="arrow"></span>';
-
-        if (!res.ok || !data.success) {
-          msg.style.color = 'var(--seal)';
-          msg.textContent = data.error || ('Errore HTTP ' + res.status);
-          return;
-        }
-
-        // Risultato atteso: { success, totale, ok, ko, manifest_csv, zip_url, errori? }
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('rEsito').textContent = (data.ko && data.ko > 0)
-          ? `Completato con ${data.ko} errori.`
-          : 'Completato senza errori.';
-        document.getElementById('rOk').textContent = String(data.ok ?? data.emessi ?? '-');
-        document.getElementById('rKo').textContent = String(data.ko ?? data.scartati ?? '0');
-
-        // Manifest: in genere torna come stringa CSV o come URL firmato
-        const manifestA = document.getElementById('rManifest');
-        if (data.manifest_url) {
-          manifestA.href = data.manifest_url;
-        } else if (data.manifest_csv) {
-          const blob = new Blob([data.manifest_csv], { type: 'text/csv;charset=utf-8;' });
-          manifestA.href = URL.createObjectURL(blob);
-        } else {
-          manifestA.removeAttribute('href');
-          manifestA.textContent = '(non disponibile)';
-        }
-
-        // ZIP
-        const zipA = document.getElementById('rZip');
-        if (data.zip_url) {
-          zipA.href = data.zip_url;
-        } else if (data.zip_base64) {
-          // edge function pu&ograve; tornare base64 dello ZIP
-          const bin = atob(data.zip_base64);
-          const buf = new Uint8Array(bin.length);
-          for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
-          const blob = new Blob([buf], { type: 'application/zip' });
-          zipA.href = URL.createObjectURL(blob);
-        } else {
-          document.getElementById('rZipRow').style.display = 'none';
-        }
-
-        if (Array.isArray(data.errori) && data.errori.length) {
-          document.getElementById('rErrori').style.display = 'block';
-          document.getElementById('rErroriPre').textContent = data.errori.map(e =>
-            (e.beneficiario_email || '(?)') + ' - ' + (e.errore || JSON.stringify(e))
-          ).join('\n');
-        }
-
-        msg.textContent = 'Batch completato.';
-        window.scrollTo({ top: document.getElementById('result').offsetTop - 40, behavior: 'smooth' });
-      } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Emetti il batch <span class="arrow"></span>';
-        msg.style.color = 'var(--seal)';
-        msg.textContent = 'Errore di rete: ' + (err?.message ?? err);
-      }
+      const tbody = document.getElementById("rows");
+      data.forEach(l => {
+        const stato = l.stato || "in elaborazione";
+        const ok = /completato|done/i.test(stato);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${fmt(l.created_at)}</td>
+          <td class="mono">${escapeHtml(l.codice || "—")}</td>
+          <td class="mono">${l.totale ?? 0}</td>
+          <td class="mono">${l.emessi ?? 0}</td>
+          <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("tbl").hidden = false;
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
     }
-
-    document.addEventListener('DOMContentLoaded', caricaIstituzioni);
+  }
+  loadList();
   </script>
-
 </body>
 </html>
