@@ -35,7 +35,7 @@
     <!-- Intestazione -->
     <div class="col-narrow" style="padding: 48px 24px 16px;">
       <div class="row-between" style="align-items: flex-end;">
-        <span class="section-num">Sessione &middot; n. <span class="tabular mono" id="sess">S-2026-3F84A21B</span></span>
+        <span class="section-num">Sessione</span>
         <span class="roman">i</span>
       </div>
     </div>
@@ -476,9 +476,6 @@
       return "Non riusciamo ad accedere: " + msg + ". Se il problema persiste, contatta supporto@veylon.app";
     }
 
-    // ---- Codice sessione casuale (decorativo) ----
-    document.getElementById("sess").textContent =
-      "S-2026-" + Math.random().toString(16).slice(2, 10).toUpperCase();
   </script>
 </body>
 </html>
