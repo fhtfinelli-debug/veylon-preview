@@ -92,6 +92,7 @@
 
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
   import { supabase } from "./_shared/supabase-client.js";
   let session;
   document.documentElement.classList.add("veylon-auth-pending");

@@ -76,6 +76,7 @@
 
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
   let session;
   document.documentElement.classList.add("veylon-auth-pending");
   try { ({ session } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
