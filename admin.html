@@ -66,15 +66,18 @@
 </head>
 <body>
 
-  <!-- VEYLON auth guard -->
+    <!-- VEYLON auth guard + sidebar -->
   <style>html.veylon-auth-pending body { visibility: hidden; }</style>
   <script type="module">
-    import { protectPage, bindLogout } from "./_shared/auth-guard.js";
     document.documentElement.classList.add("veylon-auth-pending");
-    try { await protectPage(); } finally {
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try {
+      await protectPage();
+      await renderAppShell("admin");
+    } finally {
       document.documentElement.classList.remove("veylon-auth-pending");
     }
-    bindLogout("#logout");
   </script>
 
   <header class="masthead">

@@ -92,7 +92,7 @@
   let session;
   document.documentElement.classList.add("veylon-auth-pending");
   try { ({ session } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
-  bindLogout("#logout");
+  await renderAppShell("cert-emetti-batch");
 
   const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }

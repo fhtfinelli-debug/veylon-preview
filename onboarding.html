@@ -99,7 +99,7 @@
   } finally {
     document.documentElement.classList.remove("veylon-auth-pending");
   }
-  bindLogout("#logout");
+  await renderAppShell("onboarding");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
   function fmt(d) { return d ? new Date(d).toLocaleDateString("it-IT") : ""; }

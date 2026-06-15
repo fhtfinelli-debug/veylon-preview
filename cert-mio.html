@@ -69,7 +69,7 @@
   let user;
   document.documentElement.classList.add("veylon-auth-pending");
   try { ({ user } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
-  bindLogout("#logout");
+  await renderAppShell("cert-mio");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
   function fmt(d) { return d ? new Date(d).toLocaleDateString("it-IT") : ""; }

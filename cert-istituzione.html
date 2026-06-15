@@ -110,7 +110,7 @@
   let user;
   document.documentElement.classList.add("veylon-auth-pending");
   try { ({ user } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
-  bindLogout("#logout");
+  await renderAppShell("cert-istituzione");
 
   let currentId = null;
 

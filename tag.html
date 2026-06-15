@@ -87,7 +87,7 @@
   } finally {
     document.documentElement.classList.remove("veylon-auth-pending");
   }
-  bindLogout("#logout");
+  await renderAppShell("tag");
 
   async function loadKpis() {
     document.getElementById("state-loading").hidden = false;
