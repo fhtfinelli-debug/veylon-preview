@@ -72,6 +72,70 @@
           <button class="tab" data-mode="hash">Verifica con impronta</button>
         </div>
 
+        <!-- MODO: BLOCKCHAIN — flow combined hash (N.1)
+             Attivato via query string ?blockHash=...&blockchain=...&id=... oppure ?h={file_hash}.
+             Non e selezionabile da tab: si attiva solo se si arriva con i parametri (es. da QR sul PDF). -->
+        <div id="resultBlockchain" style="display:none;" class="panel">
+          <div style="padding: 28px;">
+            <div class="eyebrow seal-c" style="letter-spacing: 0.28em; margin-bottom: 14px;">VERIFICA BLOCKCHAIN</div>
+            <h2 class="serif" style="font-size: 28px; line-height: 1.15; margin: 0 0 24px;">
+              Prova di <em class="serif-italic" style="color: var(--seal);">inclusione.</em>
+            </h2>
+
+            <div class="receipt-row" style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule);">
+              <span class="receipt-key" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2);">Documento</span>
+              <span class="receipt-val" id="bcDoc" style="font-family: var(--serif);">&mdash;</span>
+            </div>
+            <div class="receipt-row" style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule);">
+              <span class="receipt-key" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2);">Atto ID</span>
+              <span class="receipt-val mono" id="bcAttoId" style="font-size: 11px;">&mdash;</span>
+            </div>
+            <div class="receipt-row" style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule);">
+              <span class="receipt-key" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2);">File hash (SHA-256)</span>
+              <span class="receipt-val mono" id="bcFileHash" style="font-size: 11px; word-break: break-all;">&mdash;</span>
+            </div>
+            <div class="receipt-row" style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule);">
+              <span class="receipt-key" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2);">Activities hash</span>
+              <span class="receipt-val mono" id="bcActHash" style="font-size: 11px; word-break: break-all;">&mdash;</span>
+            </div>
+            <div class="receipt-row" style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule); background: var(--paper-2);">
+              <span class="receipt-key" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2);">Combined hash</span>
+              <span class="receipt-val mono" id="bcCombined" style="font-size: 12px; font-weight: bold; word-break: break-all;">&mdash;</span>
+            </div>
+            <div class="receipt-row" id="bcMatchRow" style="display:none; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule);">
+              <span class="receipt-key" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2);">Combined hash atteso</span>
+              <span class="receipt-val mono" id="bcMatch" style="font-size: 12px;">&mdash;</span>
+            </div>
+
+            <div style="margin-top: 32px;">
+              <div class="eyebrow seal-c" style="letter-spacing: 0.16em; margin-bottom: 12px;">Ancoraggi blockchain (Triplo Sigillo)</div>
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                  <tr style="border-bottom: 1px solid var(--ink);">
+                    <th style="text-align: left; padding: 8px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">Blockchain</th>
+                    <th style="text-align: left; padding: 8px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">Tx ref</th>
+                    <th style="text-align: left; padding: 8px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">Blocco</th>
+                    <th style="text-align: left; padding: 8px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">Stato</th>
+                    <th style="text-align: left; padding: 8px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">Datetime</th>
+                  </tr>
+                </thead>
+                <tbody id="bcAnchors"></tbody>
+              </table>
+            </div>
+
+            <div id="bcEmpty" style="display:none; margin-top: 24px; padding: 16px; background: var(--paper-2); font-family: var(--serif); font-style: italic;">
+              Nessun ancoraggio blockchain registrato per questo documento.
+            </div>
+            <div id="bcKo" style="display:none; margin-top: 24px; padding: 16px; background: #fff3e0; color: #6b3a00; font-family: var(--serif);">
+              <span id="bcKoMsg"></span>
+            </div>
+
+            <div style="margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 11px; color: var(--ink-3);">
+              <strong style="color: var(--ink);">Formula:</strong> combined_hash = SHA256( file_hash &Vert; activities_hash )
+            </div>
+          </div>
+        </div>
+
         <!-- MODO: FILE -->
         <div id="modeFile" class="mode">
           <div class="drop" id="drop">
@@ -535,6 +599,102 @@
     const e = el(id);
     if (e) e.addEventListener("click", () => location.reload());
   });
+
+  // ===========================================================================
+  // N.1 Combined Hash flow: attivato via query string ?blockHash, ?h, ?atto_id
+  // ===========================================================================
+  async function loadCombinedVerifyFromQS() {
+    const qs = new URLSearchParams(location.search);
+    const blockHash = (qs.get("blockHash") || qs.get("combined_hash") || "").trim().toLowerCase();
+    const fileHash  = (qs.get("h") || qs.get("file_hash") || "").trim().toLowerCase();
+    const idRaw     = (qs.get("id") || qs.get("atto_id") || "").trim().toLowerCase();
+    const attoId    = idRaw.replace(/\.(pdf|jpg|jpeg|png|webp|heic|heif)$/i, "");
+
+    if (!blockHash && !fileHash && !attoId) return; // nothing to do, lascia il flow standard
+
+    // Nascondi le tab e il drop, mostra il blocco blockchain
+    document.querySelector(".tabs").style.display = "none";
+    el("modeFile").style.display = "none";
+    el("modeHash").style.display = "none";
+    el("resultBlockchain").style.display = "block";
+
+    const params = new URLSearchParams();
+    if (blockHash) params.set("combined_hash", blockHash);
+    if (fileHash)  params.set("file_hash", fileHash);
+    if (attoId)    params.set("atto_id", attoId);
+
+    let data = null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/combined-verify?${params.toString()}`, {
+        method: "GET",
+        headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+      });
+      data = await r.json().catch(() => ({}));
+      if (!r.ok && data?.error) throw new Error(data.error);
+    } catch (err) {
+      el("bcKo").style.display = "block";
+      el("bcKoMsg").textContent = "Errore verifica: " + (err?.message || "sconosciuto");
+      return;
+    }
+
+    if (!data || data.valido === false) {
+      el("bcKo").style.display = "block";
+      el("bcKoMsg").textContent = data?.reason || "Documento non trovato nel registro Veylon.";
+      return;
+    }
+
+    el("bcDoc").textContent      = data.file?.doc_name || "(senza nome)";
+    el("bcAttoId").textContent   = data.file?.atto_id || "—";
+    el("bcFileHash").textContent = data.file?.file_hash || "—";
+    el("bcActHash").textContent  = data.activities_hash || "—";
+    el("bcCombined").textContent = data.combined_hash || "—";
+
+    if (blockHash && data.combined_hash_matches !== null) {
+      el("bcMatchRow").style.display = "grid";
+      const ok = data.combined_hash_matches;
+      el("bcMatch").innerHTML = ok
+        ? `<span style="color: #2e7d32;">${blockHash} (corrisponde &check;)</span>`
+        : `<span style="color: #c62828;">${blockHash} (NON corrisponde &times;)</span>`;
+    }
+
+    const explorers = {
+      bitcoin: (tx) => tx ? `https://mempool.space/tx/${tx}` : null,
+      polygon: (tx) => tx ? `https://polygonscan.com/tx/${tx}` : null,
+      solana:  (tx) => tx ? `https://explorer.solana.com/tx/${tx}` : null,
+    };
+    const labels = { bitcoin: "Bitcoin (OTS)", polygon: "Polygon", solana: "Solana" };
+    const colors = { bitcoin: "#f7931a", polygon: "#8247e5", solana: "#9945ff" };
+
+    const tbody = el("bcAnchors");
+    tbody.innerHTML = "";
+    const anchors = data.anchors || [];
+    if (!anchors.length) {
+      el("bcEmpty").style.display = "block";
+    } else {
+      anchors.forEach((a) => {
+        const tx = a.tx_ref;
+        const explorerUrl = explorers[a.blockchain] ? explorers[a.blockchain](tx) : null;
+        const txDisplay = tx
+          ? (explorerUrl
+              ? `<a href="${explorerUrl}" target="_blank" rel="noopener" style="color: var(--seal); text-decoration: underline;">${tx.length > 24 ? tx.slice(0, 12) + "…" + tx.slice(-8) : tx}</a>`
+              : tx)
+          : "—";
+        const statusColor = a.status === "confirmed" ? "#2e7d32" : (a.status === "failed" ? "#c62828" : "#ef6c00");
+        const tr = document.createElement("tr");
+        tr.style.borderBottom = "1px solid var(--rule)";
+        tr.innerHTML = `
+          <td style="padding: 10px 8px; font-family: var(--mono); font-size: 12px; color: ${colors[a.blockchain] || "#666"}; font-weight: bold;">${labels[a.blockchain] || a.blockchain}</td>
+          <td style="padding: 10px 8px; font-family: var(--mono); font-size: 11px; word-break: break-all;">${txDisplay}</td>
+          <td style="padding: 10px 8px; font-family: var(--mono); font-size: 12px;">${a.block_number ?? "—"}</td>
+          <td style="padding: 10px 8px; font-family: var(--mono); font-size: 11px; color: ${statusColor}; text-transform: uppercase; letter-spacing: 0.08em;">${a.status}</td>
+          <td style="padding: 10px 8px; font-family: var(--mono); font-size: 11px;">${a.datetime_anchor ? new Date(a.datetime_anchor).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "—"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  loadCombinedVerifyFromQS();
   </script>
 </body>
 </html>
