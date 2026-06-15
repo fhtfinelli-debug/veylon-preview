@@ -9,18 +9,21 @@ import { getUser, signOut } from "./supabase-client.js";
 // Lista flat — una voce per sezione. Niente sub-items per non incasinare.
 // Le pagine secondarie (cert-emetti, tag-storico, ecc.) si raggiungono
 // navigando DENTRO la sezione principale.
+// Menu fisso 12 voci richiesto Manuel 2026-06-15.
+// Admin accessibile via URL diretto /admin.html (non in nav).
 const NAV = [
-  { key: "dashboard",   label: "Cruscotto",   href: "dashboard.html" },
-  { key: "notarizza",   label: "Sigillo",     href: "notarizza.html" },
-  { key: "invia",       label: "Send",        href: "invia.html" },
-  { key: "mail",        label: "Mail",        href: "mail.html" },
-  { key: "garanzie",    label: "Garanzie",    href: "garanzie.html" },
-  { key: "archivio",    label: "Registro",    href: "archivio.html" },
-  { key: "tag",         label: "Tag",         href: "tag.html" },
-  { key: "cert",        label: "Cert",        href: "cert.html" },
-  { key: "firma",       label: "Firma",       href: "firma.html" },
-  { key: "onboarding",  label: "Onboarding",  href: "onboarding.html" },
-  { key: "admin",       label: "Admin",       href: "admin.html" },
+  { key: "dashboard",   label: "Cruscotto",  href: "dashboard.html" },
+  { key: "notarizza",   label: "Sigillo",    href: "notarizza.html" },
+  { key: "invia",       label: "Send",       href: "invia.html" },
+  { key: "mail",        label: "Mail",       href: "mail.html" },
+  { key: "firma",       label: "Firma",      href: "firma.html" },
+  { key: "garanzie",    label: "Garanzie",   href: "garanzie.html" },
+  { key: "onboarding",  label: "KYC",        href: "onboarding.html" },
+  { key: "tag",         label: "Tag",        href: "tag.html" },
+  { key: "cert",        label: "Cert",       href: "cert.html" },
+  { key: "archivio",    label: "Archivio",   href: "archivio.html" },
+  { key: "verifica",    label: "Verifica",   href: "verifica.html" },
+  { key: "logout",      label: "Esci",       href: "#",               action: "logout" },
 ];
 
 // Mappa di pagine secondarie -> chiave sezione, per evidenziare correttamente
@@ -47,9 +50,11 @@ export async function renderAppShell(activeKey = "") {
   const email = user?.email ?? "";
   const initials = (email.split("@")[0] || "u").slice(0, 2).toUpperCase();
 
-  const linksHtml = NAV.map((it) => `
-    <li><a href="${it.href}" class="appside-link${it.key === sectionKey ? " is-active" : ""}">${escapeHtml(it.label)}</a></li>
-  `).join("");
+  const linksHtml = NAV.map((it) => {
+    const cls = `appside-link${it.key === sectionKey ? " is-active" : ""}${it.action === "logout" ? " is-logout" : ""}`;
+    const dataAttr = it.action ? ` data-action="${it.action}"` : "";
+    return `<li><a href="${it.href}" class="${cls}"${dataAttr}>${escapeHtml(it.label)}</a></li>`;
+  }).join("");
 
   const sidebarHtml = `
     <button class="app-drawer-toggle" id="app-drawer-toggle" type="button" aria-label="Apri menu" aria-controls="app-sidebar" aria-expanded="false">
@@ -93,11 +98,15 @@ export async function renderAppShell(activeKey = "") {
   body.insertAdjacentHTML("afterbegin", sidebarHtml);
   body.appendChild(main);
 
-  // Logout
-  document.getElementById("appside-logout")?.addEventListener("click", async (e) => {
+  // Logout (sia voce nav "Esci" sia user-card bottom)
+  async function doLogout(e) {
     e.preventDefault();
     await signOut();
-  });
+  }
+  document.getElementById("appside-logout")?.addEventListener("click", doLogout);
+  document.querySelectorAll('.appside-link[data-action="logout"]').forEach((a) =>
+    a.addEventListener("click", doLogout)
+  );
 
   // Drawer mobile
   const toggleBtn = document.getElementById("app-drawer-toggle");

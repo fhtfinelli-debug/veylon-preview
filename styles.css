@@ -1594,3 +1594,15 @@ body.app .masthead { display: none !important; }
 @media (max-width: 600px) {
   .app-main { padding: 56px 14px 24px; }
 }
+/* Voce "Esci" in fondo al menu separata da hairline */
+.appside-link.is-logout {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--app-sidebar-border);
+  color: var(--app-sidebar-ink-muted);
+  font-size: 13px;
+}
+.appside-link.is-logout:hover {
+  background: var(--app-sidebar-hover);
+  color: var(--app-sidebar-ink);
+}
