@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Mock Providers (sviluppo)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .mock-layout { max-width: 1200px; margin: 24px auto; padding: 0 24px 80px; }
+    .mock-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+    .mock-head h1 { font-family: var(--serif); font-weight: normal; margin: 0; font-size: 32px; }
+    .mock-banner { background: #fff3e0; border-left: 4px solid #e65100; padding: 12px 18px; margin: 12px 0 24px; font-family: var(--mono); font-size: 12px; color: #6b3a00; }
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); }
+    .tab { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 12px 18px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; color: var(--ink-2); }
+    .tab.active { color: var(--ink); border-bottom-color: var(--seal); }
+    .tab-panel { display: none; padding: 24px 0; }
+    .tab-panel.active { display: block; }
+    .filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    .filters select, .filters input { padding: 6px 10px; font-family: var(--mono); font-size: 12px; border: 1px solid var(--ink); background: var(--paper); }
+    .filters .auto { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+    table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.t th, table.t td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--rule); font-family: var(--mono); vertical-align: top; }
+    table.t th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); font-weight: normal; }
+    .pill { display: inline-block; padding: 2px 8px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; border: 1px solid var(--rule); }
+    .pill.scope-firma_otp { color: #c62828; border-color: #c62828; }
+    .pill.scope-auth_otp, .pill.scope-login_otp { color: #1565c0; border-color: #1565c0; }
+    .pill.scope-mail_relay { color: #2e7d32; border-color: #2e7d32; }
+    .pill.scope-org_invite { color: #6a1b9a; border-color: #6a1b9a; }
+    .pill.scope-lead_capture { color: #ef6c00; border-color: #ef6c00; }
+    .pill.scope-send_evidence { color: #00695c; border-color: #00695c; }
+    .empty { padding: 32px; text-align: center; color: var(--ink-2); font-family: var(--serif); font-style: italic; }
+    details.email-detail summary { cursor: pointer; color: var(--seal); font-family: var(--mono); font-size: 11px; }
+    details.email-detail[open] { border: 1px solid var(--rule); padding: 12px; margin-top: 8px; background: var(--paper-2); }
+    .body-html { max-height: 360px; overflow-y: auto; background: var(--paper); border: 1px solid var(--rule); padding: 12px; font-family: Georgia, serif; }
+    .body-text { white-space: pre-wrap; font-family: var(--mono); font-size: 12px; color: var(--ink); margin-top: 8px; }
+    .otp-extract { background: #fff8e1; border: 1px solid #fbc02d; padding: 10px 14px; margin: 8px 0; font-family: var(--mono); font-size: 14px; }
+    .otp-extract code { font-size: 18px; font-weight: bold; letter-spacing: 4px; }
+    .age { font-size: 11px; color: var(--ink-2); }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try {
+      await protectPage();
+      await renderAppShell("");
+    } finally {
+      document.documentElement.classList.remove("veylon-auth-pending");
+    }
+  </script>
+
+  <main class="mock-layout">
+    <div class="mock-head">
+      <h1 class="serif">Mock providers <em class="serif-italic" style="color: var(--seal);">sviluppo</em></h1>
+      <button id="refresh-btn" class="btn-ghost">Aggiorna</button>
+    </div>
+
+    <div class="mock-banner">
+      Pagina di sviluppo. Mostra email e SMS che le edge function avrebbero mandato via Mailgun/Twilio
+      ma che — finche' i secret non sono configurati — vengono scritti qui per permettere il test end-to-end.
+      Appena <code>MAILGUN_API_KEY</code> e <code>TWILIO_ACCOUNT_SID</code> saranno settati, queste tabelle resteranno vuote.
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="emails" role="tab" aria-selected="true">Email (<span id="cnt-emails">0</span>)</button>
+      <button class="tab" data-tab="sms" role="tab" aria-selected="false">SMS (<span id="cnt-sms">0</span>)</button>
+    </div>
+
+    <section class="tab-panel active" id="panel-emails" role="tabpanel">
+      <div class="filters">
+        <label>Scope:
+          <select id="filter-scope-email">
+            <option value="">tutti</option>
+            <option value="firma_otp">firma_otp</option>
+            <option value="mail_relay">mail_relay</option>
+            <option value="org_invite">org_invite</option>
+            <option value="lead_capture">lead_capture</option>
+            <option value="send_evidence">send_evidence</option>
+            <option value="auth_otp">auth_otp</option>
+          </select>
+        </label>
+        <input id="filter-to-email" type="text" placeholder="filtro destinatario..." />
+        <span class="auto">aggiornamento ogni 5s</span>
+      </div>
+      <table class="t" id="tbl-emails">
+        <thead><tr><th style="width: 120px;">scope</th><th>destinatari</th><th>oggetto</th><th>quando</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="empty" id="empty-emails" hidden>Nessuna email mock. Esegui un'azione che le scriverebbe (firma, invito org, signup form demo) e ricarica.</div>
+    </section>
+
+    <section class="tab-panel" id="panel-sms" role="tabpanel">
+      <div class="filters">
+        <label>Scope:
+          <select id="filter-scope-sms">
+            <option value="">tutti</option>
+            <option value="auth_otp">auth_otp</option>
+            <option value="login_otp">login_otp</option>
+            <option value="firma_otp">firma_otp</option>
+          </select>
+        </label>
+        <input id="filter-to-sms" type="text" placeholder="filtro numero..." />
+        <span class="auto">aggiornamento ogni 5s</span>
+      </div>
+      <table class="t" id="tbl-sms">
+        <thead><tr><th style="width: 120px;">scope</th><th>numero</th><th>messaggio</th><th>quando</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="empty" id="empty-sms" hidden>Nessun SMS mock. Esegui un signup phone OTP per vederne uno.</div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+
+    const $ = (id) => document.getElementById(id);
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(t => t.addEventListener("click", () => {
+      tabs.forEach(x => { x.classList.remove("active"); x.setAttribute("aria-selected","false"); });
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      t.classList.add("active"); t.setAttribute("aria-selected","true");
+      document.getElementById("panel-" + t.dataset.tab).classList.add("active");
+    }));
+
+    function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+    function ageOf(iso) {
+      const ms = Date.now() - new Date(iso).getTime();
+      if (ms < 60_000) return "ora";
+      if (ms < 3_600_000) return Math.floor(ms / 60_000) + " min fa";
+      if (ms < 86_400_000) return Math.floor(ms / 3_600_000) + " h fa";
+      return new Date(iso).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" });
+    }
+    function fmt(iso) { return new Date(iso).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }); }
+    function extractOtp(text) {
+      if (!text) return null;
+      const m = text.match(/\b(\d{6})\b/);
+      return m ? m[1] : null;
+    }
+
+    async function loadEmails() {
+      const scope = $("filter-scope-email").value;
+      const to = $("filter-to-email").value.trim().toLowerCase();
+      let q = supabase.from("mock_emails")
+        .select("id, from_address, to_addresses, subject, body_html, body_text, scope, related_id, created_at")
+        .order("created_at", { ascending: false })
+        .limit(200);
+      if (scope) q = q.eq("scope", scope);
+      const { data, error } = await q;
+      if (error) {
+        $("tbl-emails").querySelector("tbody").innerHTML =
+          `<tr><td colspan="5" style="color: #c62828">Errore: ${escapeHtml(error.message)}</td></tr>`;
+        return;
+      }
+      const filtered = (data ?? []).filter(r => !to || (r.to_addresses ?? []).some(t => t.toLowerCase().includes(to)));
+      $("cnt-emails").textContent = filtered.length;
+      $("empty-emails").hidden = filtered.length > 0;
+      const rows = filtered.map(r => {
+        const otp = extractOtp(r.body_text || r.body_html || "");
+        const otpHtml = otp ? `<div class="otp-extract">Codice estratto: <code>${otp}</code></div>` : "";
+        const bodyHtml = r.body_html ? `<div class="body-html">${r.body_html}</div>` : "";
+        const bodyText = r.body_text ? `<pre class="body-text">${escapeHtml(r.body_text)}</pre>` : "";
+        return `<tr>
+          <td><span class="pill scope-${escapeHtml(r.scope)}">${escapeHtml(r.scope)}</span></td>
+          <td>${escapeHtml((r.to_addresses ?? []).join(", "))}</td>
+          <td>${escapeHtml(r.subject)}<details class="email-detail"><summary>apri corpo</summary>${otpHtml}${bodyHtml}${bodyText}<div class="age" style="margin-top:8px">from: ${escapeHtml(r.from_address)} · id: ${escapeHtml(r.id)}</div></details></td>
+          <td><span class="age">${escapeHtml(ageOf(r.created_at))}</span><br/><span class="age">${escapeHtml(fmt(r.created_at))}</span></td>
+          <td></td>
+        </tr>`;
+      }).join("");
+      $("tbl-emails").querySelector("tbody").innerHTML = rows;
+    }
+
+    async function loadSms() {
+      const scope = $("filter-scope-sms").value;
+      const to = $("filter-to-sms").value.trim();
+      let q = supabase.from("mock_sms")
+        .select("id, to_number, body, scope, related_id, created_at")
+        .order("created_at", { ascending: false })
+        .limit(200);
+      if (scope) q = q.eq("scope", scope);
+      const { data, error } = await q;
+      if (error) {
+        $("tbl-sms").querySelector("tbody").innerHTML =
+          `<tr><td colspan="4" style="color: #c62828">Errore: ${escapeHtml(error.message)}</td></tr>`;
+        return;
+      }
+      const filtered = (data ?? []).filter(r => !to || r.to_number.includes(to));
+      $("cnt-sms").textContent = filtered.length;
+      $("empty-sms").hidden = filtered.length > 0;
+      const rows = filtered.map(r => {
+        const otp = extractOtp(r.body);
+        return `<tr>
+          <td><span class="pill scope-${escapeHtml(r.scope)}">${escapeHtml(r.scope)}</span></td>
+          <td>${escapeHtml(r.to_number)}</td>
+          <td>${otp ? `<div class="otp-extract">Codice: <code>${otp}</code></div>` : ""}<pre class="body-text">${escapeHtml(r.body)}</pre></td>
+          <td><span class="age">${escapeHtml(ageOf(r.created_at))}</span><br/><span class="age">${escapeHtml(fmt(r.created_at))}</span></td>
+        </tr>`;
+      }).join("");
+      $("tbl-sms").querySelector("tbody").innerHTML = rows;
+    }
+
+    async function loadAll() { await Promise.all([loadEmails(), loadSms()]); }
+    $("refresh-btn").addEventListener("click", loadAll);
+    ["filter-scope-email","filter-to-email","filter-scope-sms","filter-to-sms"].forEach(id => {
+      $(id).addEventListener("input", () => { id.includes("email") ? loadEmails() : loadSms(); });
+    });
+    await loadAll();
+    setInterval(loadAll, 5000);
+  </script>
+</body>
+</html>
