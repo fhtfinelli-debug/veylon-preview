@@ -6,6 +6,7 @@
   <title>VEYLON · Condivisione drive</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -100,7 +101,9 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  const { session } = await protectPage();
+  let session;
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { ({ session } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
   bindLogout("#logout");
 
   const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
@@ -113,7 +116,7 @@
     const sel = document.getElementById("risorsa");
     const { data, error } = await supabase
       .from("veylon_atti")
-      .select("id, titolo, codice")
+      .select("id, doc_name, sha256")
       .order("created_at", { ascending: false })
       .limit(100);
     if (error || !data || data.length === 0) {
@@ -122,7 +125,7 @@
       return;
     }
     sel.innerHTML = '<option value="">Seleziona un documento…</option>' +
-      data.map(a => `<option value="${escapeHtml(a.id)}">${escapeHtml(a.titolo || a.codice || a.id)}</option>`).join("");
+      data.map(a => `<option value="${escapeHtml(a.id)}">${escapeHtml(a.doc_name || (a.sha256 ? a.sha256.substring(0,16) + "…" : a.id))}</option>`).join("");
   }
 
   // --- Crea condivisione ---
@@ -173,7 +176,7 @@
     try {
       const { data, error } = await supabase
         .from("drive_condivisioni")
-        .select("id, risorsa_nome, expires_at, attivo, created_at")
+        .select("id, nota, expires_at, revoked, created_at, veylon_atti:veylon_id(doc_name)")
         .order("created_at", { ascending: false })
         .limit(50);
       document.getElementById("state-loading").hidden = true;
@@ -192,14 +195,16 @@
       data.forEach(d => {
         const exp = d.expires_at ? new Date(d.expires_at).getTime() : null;
         const scaduta = exp && exp < now;
-        const stato = scaduta ? "scaduta" : (d.attivo ? "attiva" : "revocata");
-        const ok = !scaduta && d.attivo;
+        const attiva = !d.revoked;
+        const stato = scaduta ? "scaduta" : (attiva ? "attiva" : "revocata");
+        const ok = !scaduta && attiva;
+        const nome = (d.veylon_atti && d.veylon_atti.doc_name) || d.nota || "—";
         const tr = document.createElement("tr");
         const action = scaduta
           ? `<button class="link-seal small" data-renew="${d.id}">Genera nuovo link →</button>`
           : "";
         tr.innerHTML = `
-          <td>${escapeHtml(d.risorsa_nome || "—")}</td>
+          <td>${escapeHtml(nome)}</td>
           <td>${fmt(d.created_at)}</td>
           <td class="mono">${fmt(d.expires_at)}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>

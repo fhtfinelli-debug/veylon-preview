@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON · Verifica pubblica di garanzia</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
@@ -27,7 +27,7 @@
     <div class="masthead-band">
       <div class="masthead-band-inner">
         <span>Per la stazione appaltante &mdash; <strong style="color: var(--ink);">D.Lgs 36/2023</strong> codice contratti pubblici</span>
-        <span>Bitcoin mainnet &middot; blocco corrente <span class="mono">874.201</span></span>
+        <span>Bitcoin mainnet &middot; registro pubblico</span>
       </div>
     </div>
   </header>
@@ -35,7 +35,7 @@
   <main class="col-narrow" style="padding: 64px 32px 96px;">
 
     <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
-      <span class="section-num">Richiesta n. <span class="tabular mono" id="reqNum">VG-2026-0001</span></span>
+      <span class="section-num">Verifica garanzia</span>
       <span class="roman">i</span>
     </div>
 
@@ -44,7 +44,7 @@
     </h1>
     <p class="lede" style="margin-top: 28px;">
       Inserire il codice riportato sul documento di fideiussione. Il riscontro si
-      fonda sul registro pubblico Bitcoin: <em class="serif-italic">non è
+      fonda sul registro pubblico Bitcoin: <em class="serif-italic">non &egrave;
       falsificabile</em> e non richiede contatto con l'istituto garante.
     </p>
 
@@ -54,12 +54,13 @@
     <section id="form-block">
       <div class="panel" style="padding: 36px;">
         <label class="field-label" for="garCode" style="font-size: 12px;">Codice di verifica della garanzia</label>
-        <input id="garCode" class="field-input mono" type="text" placeholder="APT-GAR-2026-AB12CD" style="font-size: 22px; letter-spacing: 0.1em; padding: 16px 0;" value="APT-GAR-2026-AB12CD"/>
+        <input id="garCode" class="field-input mono" type="text" placeholder="APT-GAR-2026-AB12CD" aria-label="Codice di verifica della garanzia" style="font-size: 22px; letter-spacing: 0.1em; padding: 16px 0;" autocomplete="off"/>
         <p class="small" style="margin-top: 10px;">Formato: <span class="mono">APT-GAR-AAAA-XXXXXX</span> &mdash; reperibile sul documento di fideiussione o sul QR code.</p>
 
-        <button class="btn seal lg" id="verifyBtn" style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
+        <button class="btn seal lg" id="verifyBtn" type="button" style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
           Verifica il codice <span class="arrow"></span>
         </button>
+        <p id="formError" class="small" role="alert" style="margin-top: 12px; color: var(--seal); display: none;"></p>
       </div>
 
       <p class="small" style="margin-top: 18px; text-align: center;">
@@ -74,24 +75,24 @@
           <div class="dot-spinner"></div>
           <div>
             <div class="eyebrow">Procedura di verifica</div>
-            <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;" id="workStep">Interrogazione del registro VEYLON…</div>
+            <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;" id="workStep">Interrogazione del registro VEYLON&hellip;</div>
           </div>
         </div>
         <ol class="checklist" id="checklist">
           <li>Risoluzione del codice nel registro</li>
           <li>Recupero della prova OpenTimestamps</li>
           <li>Validazione su blocco Bitcoin</li>
-          <li>Controllo stato (in essere · escussa · svincolata)</li>
+          <li>Controllo stato (in essere &middot; escussa &middot; svincolata)</li>
         </ol>
       </div>
     </section>
 
-    <!-- ESITO -->
-    <section id="result" style="display:none; margin-top: 32px;">
-      <div class="ornament" style="margin: 0 0 32px;">⁂</div>
+    <!-- ESITO POSITIVO -->
+    <section id="resultOk" style="display:none; margin-top: 32px;">
+      <div class="ornament" style="margin: 0 0 32px;">&#8262;</div>
       <div class="verdict">
         <div class="verdict-mark">
-          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <circle cx="28" cy="28" r="26"/>
             <path d="M16 28 L25 37 L41 19" stroke-linecap="square"/>
           </svg>
@@ -99,85 +100,103 @@
         <div>
           <div class="eyebrow verify-c">Esito della verifica</div>
           <h2 class="serif" style="font-size: 38px; line-height: 1.05; margin: 8px 0 6px;">
-            Garanzia <em class="serif-italic verify-c">autentica e in essere.</em>
+            Garanzia <em class="serif-italic verify-c" id="vEsitoTitle">autentica.</em>
           </h2>
-          <p class="lede" style="font-size: 17px; margin: 0; max-width: 56ch;">
-            La fideiussione è valida, non risulta escussa né svincolata, ed è
-            iscritta nel registro pubblico Bitcoin.
+          <p class="lede" style="font-size: 17px; margin: 0; max-width: 56ch;" id="vEsitoBody">
+            La fideiussione &egrave; iscritta nel registro pubblico Bitcoin.
           </p>
         </div>
       </div>
 
       <!-- Attestazione dettaglio -->
       <div class="receipt" style="margin-top: 32px;">
-        <div class="eyebrow seal-c" style="margin-bottom: 24px;">Attestazione di verifica · n. <span class="mono" id="vNum">VG-2026-04812</span></div>
+        <div class="eyebrow seal-c" style="margin-bottom: 24px;">Attestazione di verifica</div>
 
         <div class="receipt-grid">
           <div class="receipt-row">
-            <div class="receipt-key">Tipo di garanzia</div>
-            <div class="receipt-val">Definitiva &middot; <em class="serif-italic">art. 117 D.Lgs 36/2023</em></div>
-          </div>
-          <div class="receipt-row">
             <div class="receipt-key">Codice</div>
-            <div class="receipt-val mono" style="font-size: 16px;">APT-GAR-2026-AB12CD</div>
+            <div class="receipt-val mono" style="font-size: 16px;" id="vCodice">&mdash;</div>
           </div>
           <div class="receipt-row">
-            <div class="receipt-key">Oggetto</div>
-            <div class="receipt-val serif-italic">Lavori di ristrutturazione plesso scolastico &mdash; Lotto III</div>
+            <div class="receipt-key">Tipo di garanzia</div>
+            <div class="receipt-val" id="vTipo">&mdash;</div>
+          </div>
+          <div class="receipt-row">
+            <div class="receipt-key">Numero</div>
+            <div class="receipt-val mono" id="vNumero">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Stazione appaltante</div>
-            <div class="receipt-val">Comune di Mortara &mdash; Settore LL.PP.</div>
+            <div class="receipt-val" id="vBeneficiario">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Operatore economico</div>
-            <div class="receipt-val">Costruzioni Lemania S.p.A. &middot; <span class="mono small">P.IVA 04812960015</span></div>
+            <div class="receipt-val" id="vContraente">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Garante</div>
-            <div class="receipt-val">Banca del Piemonte &mdash; succ. Torino Centro</div>
+            <div class="receipt-val" id="vGarante">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Importo garantito</div>
-            <div class="receipt-val mono" style="font-size: 18px;">€&nbsp;842.500,00</div>
+            <div class="receipt-val mono" style="font-size: 18px;" id="vImporto">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Data di emissione</div>
-            <div class="receipt-val mono">12 maggio 2026 &middot; ore 11:08 CEST</div>
+            <div class="receipt-val mono" id="vEmissione">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Scadenza</div>
-            <div class="receipt-val mono">14 luglio 2026</div>
+            <div class="receipt-val mono" id="vScadenza">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Stato</div>
-            <div class="receipt-val"><span class="status confirmed"><span class="dot"></span>In essere</span></div>
-          </div>
-          <div class="receipt-row">
-            <div class="receipt-key">Impronta documento</div>
-            <div class="receipt-val mono" style="word-break: break-all; line-height: 1.6;">d71b&nbsp;7e6c&nbsp;8a9f&nbsp;3210 … 4567&nbsp;8901</div>
+            <div class="receipt-val" id="vStato">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Blocco Bitcoin</div>
-            <div class="receipt-val mono">#&nbsp;871.508 &middot; merkle path 14 livelli</div>
+            <div class="receipt-val mono" id="vBlock">&mdash;</div>
           </div>
           <div class="receipt-row" style="border-bottom: 0;">
             <div class="receipt-key">Verifica eseguita il</div>
-            <div class="receipt-val mono" id="vNow">—</div>
+            <div class="receipt-val mono" id="vNow">&mdash;</div>
           </div>
         </div>
 
         <div class="row row-gap" style="margin-top: 36px; justify-content: center; flex-wrap: wrap;">
-          <a class="btn" href="certificato.html">Apri certificato di garanzia</a>
-          <button class="btn ghost">Scarica attestazione &middot; PDF</button>
-          <button class="btn ghost" onclick="location.reload()">Verifica un altro codice</button>
+          <button class="btn ghost" type="button" id="newVerifyOk">Verifica un altro codice</button>
         </div>
       </div>
 
       <p class="small" style="margin-top: 24px; text-align: center;">
-        Le verifiche pubbliche sono registrate nei log di sicurezza per finalità di audit.
-        Nessun dato personale del verificatore è memorizzato.
+        Le verifiche pubbliche sono registrate nei log di sicurezza per finalit&agrave; di audit.
+        Nessun dato personale del verificatore &egrave; memorizzato.
       </p>
+    </section>
+
+    <!-- ESITO NEGATIVO -->
+    <section id="resultKo" style="display:none; margin-top: 32px;">
+      <div class="ornament" style="margin: 0 0 32px;">&#8262;</div>
+      <div class="verdict" style="border-left-color: var(--seal);">
+        <div class="verdict-mark" style="color: var(--seal);">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="28" cy="28" r="26"/>
+            <path d="M19 19 L37 37 M37 19 L19 37" stroke-linecap="square"/>
+          </svg>
+        </div>
+        <div>
+          <div class="eyebrow seal-c">Esito della verifica</div>
+          <h2 class="serif" style="font-size: 38px; line-height: 1.05; margin: 8px 0 6px;">
+            Codice <em class="serif-italic seal-c">non valido.</em>
+          </h2>
+          <p class="lede" style="font-size: 17px; margin: 0;" id="koMsg">
+            Nessuna garanzia risulta inscritta con questo codice nel registro VEYLON.
+          </p>
+        </div>
+      </div>
+      <div class="row row-gap" style="margin-top: 28px; justify-content: center;">
+        <button class="btn ghost" type="button" id="newVerifyKo">Verifica un altro codice</button>
+      </div>
     </section>
 
   </main>
@@ -255,35 +274,168 @@
   }
   </style>
 
-  <script>
-  const el = id => document.getElementById(id);
-  el('reqNum').textContent = 'VG-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random()*9000)+1000);
+  <script type="module">
+  // ===========================================================================
+  // VEYLON Verifica pubblica garanzia - chiama garanzia-verifica (Edge Function)
+  // ===========================================================================
+  import { supabase } from "./_shared/supabase-client.js";
 
-  el('verifyBtn').addEventListener('click', async () => {
-    el('form-block').style.display = 'none';
-    el('working').style.display = 'block';
-    el('working').classList.add('fade-in');
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30." +
+    "feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
 
-    const steps = el('checklist').querySelectorAll('li');
-    const labels = [
-      'Risoluzione del codice nel registro…',
-      'Recupero della prova OpenTimestamps…',
-      'Validazione su blocco Bitcoin…',
-      'Controllo stato (in essere · escussa · svincolata)…'
-    ];
-    for (let i = 0; i < steps.length; i++) {
-      steps[i].classList.add('active');
-      el('workStep').textContent = labels[i];
-      await new Promise(r => setTimeout(r, 550 + Math.random()*400));
-      steps[i].classList.remove('active'); steps[i].classList.add('done');
-    }
-    await new Promise(r => setTimeout(r, 300));
+  const el = (id) => document.getElementById(id);
+  const CODE_RE = /^APT-GAR-\d{4}-[A-Z0-9]{6}$/;
 
-    el('working').style.display = 'none';
-    el('result').style.display = 'block';
-    el('result').classList.add('rise');
-    el('vNow').textContent = new Date().toLocaleString('it-IT', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' CEST';
+  function fmtData(d) {
+    if (!d) return "—";
+    try {
+      return new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" });
+    } catch { return d; }
+  }
+  function fmtDataOra(d) {
+    if (!d) return "—";
+    try {
+      return new Date(d).toLocaleString("it-IT", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    } catch { return d; }
+  }
+  function fmtImporto(v, val) {
+    if (v == null) return "—";
+    try {
+      return new Intl.NumberFormat("it-IT", { style: "currency", currency: val || "EUR" }).format(Number(v));
+    } catch { return (val || "EUR") + " " + v; }
+  }
+  function showError(msg) {
+    const err = el("formError");
+    err.textContent = msg;
+    err.style.display = "block";
+  }
+  function clearError() {
+    el("formError").style.display = "none";
+  }
+
+  // Pre-popola da ?c= o ?codice=
+  const params = new URLSearchParams(location.search);
+  const initial = (params.get("c") || params.get("codice") || "").trim().toUpperCase();
+  if (initial) el("garCode").value = initial;
+
+  el("garCode").addEventListener("input", (e) => {
+    e.target.value = e.target.value.toUpperCase();
+    clearError();
   });
+  el("garCode").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); el("verifyBtn").click(); }
+  });
+
+  el("verifyBtn").addEventListener("click", () => runVerifica());
+  el("newVerifyOk")?.addEventListener("click", () => location.reload());
+  el("newVerifyKo")?.addEventListener("click", () => location.reload());
+
+  async function runVerifica() {
+    clearError();
+    const codice = el("garCode").value.trim().toUpperCase();
+    if (!CODE_RE.test(codice)) {
+      showError("Codice non valido. Formato atteso: APT-GAR-AAAA-XXXXXX (6 caratteri alfanumerici).");
+      return;
+    }
+
+    el("form-block").style.display = "none";
+    el("working").style.display = "block";
+    el("working").classList.add("fade-in");
+
+    const steps = el("checklist").querySelectorAll("li");
+    steps.forEach((s) => { s.classList.remove("done", "active"); });
+    steps[0].classList.add("active");
+    el("workStep").textContent = "Interrogazione del registro VEYLON…";
+
+    let data;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/garanzia-verifica`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({ codice }),
+      });
+      data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || ("http_" + res.status));
+      }
+    } catch (err) {
+      console.error("garanzia_verifica_failed", err);
+      el("working").style.display = "none";
+      el("resultKo").style.display = "block";
+      el("resultKo").classList.add("rise");
+      el("koMsg").textContent = "Errore di rete: " + (err?.message ?? "sconosciuto");
+      return;
+    }
+
+    // Marca step come completati
+    steps.forEach((s) => { s.classList.remove("active"); s.classList.add("done"); });
+    el("working").style.display = "none";
+
+    if (!data.valido) {
+      el("resultKo").style.display = "block";
+      el("resultKo").classList.add("rise");
+      el("koMsg").textContent = data.messaggio || "Nessuna garanzia risulta inscritta con questo codice nel registro VEYLON.";
+      return;
+    }
+
+    // ESITO POSITIVO
+    el("resultOk").style.display = "block";
+    el("resultOk").classList.add("rise");
+
+    // Titolo dinamico in base a stato + scadenza
+    const titolo = el("vEsitoTitle");
+    const body = el("vEsitoBody");
+    if (data.stato === "revocata" || data.stato === "escussa") {
+      titolo.textContent = data.stato + ".";
+      titolo.classList.remove("verify-c"); titolo.classList.add("seal-c");
+      body.textContent = "La garanzia &egrave; iscritta nel registro ma non &egrave; pi&ugrave; in essere.";
+    } else if (data.scaduta) {
+      titolo.textContent = "scaduta.";
+      titolo.classList.remove("verify-c"); titolo.classList.add("seal-c");
+      body.textContent = "La garanzia esiste nel registro VEYLON ma risulta oltre la data di scadenza.";
+    } else {
+      titolo.textContent = "autentica e in essere.";
+      body.textContent = "La fideiussione e' valida, non risulta escussa ne' svincolata, ed e' iscritta nel registro pubblico Bitcoin.";
+    }
+
+    el("vCodice").textContent = data.codice || "—";
+    el("vTipo").textContent = data.tipo || "—";
+    el("vNumero").textContent = data.numero || "—";
+    el("vBeneficiario").textContent = data.beneficiario || "—";
+    el("vContraente").textContent = data.contraente || "—";
+    el("vGarante").textContent = data.garante || "—";
+    el("vImporto").textContent = fmtImporto(data.importo, data.valuta);
+    el("vEmissione").textContent = fmtData(data.data_emissione);
+    el("vScadenza").textContent = data.data_scadenza ? fmtData(data.data_scadenza) : "senza scadenza";
+
+    const statoEl = el("vStato");
+    const statoLabel = (data.stato || "").toString();
+    const statoCls = (data.stato === "in_essere" && !data.scaduta) ? "confirmed"
+      : (data.scaduta || data.stato === "scaduta") ? "pending"
+      : "failed";
+    statoEl.innerHTML = '<span class="status ' + statoCls + '"><span class="dot"></span>' + statoLabel.replace(/_/g, " ") + '</span>';
+
+    if (data.btc_block_height) {
+      el("vBlock").textContent = "# " + data.btc_block_height;
+    } else if (data.documento_notarizzato) {
+      el("vBlock").textContent = "in attesa di blocco";
+    } else {
+      el("vBlock").textContent = "documento non notarizzato";
+    }
+
+    el("vNow").textContent = fmtDataOra(new Date().toISOString());
+  }
+
+  // Auto-run se ?c= o ?codice= presente
+  if (initial && CODE_RE.test(initial)) {
+    setTimeout(() => runVerifica(), 0);
+  }
   </script>
 </body>
 </html>

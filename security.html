@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON &middot; Security policy</title>
+  <meta name="description" content="Security policy di Veylon &mdash; servizio fiduciario digitale."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    main.legal-doc { max-width: 780px; margin: 0 auto; padding: 56px 24px 96px; }
+    main.legal-doc h1 { font-family: var(--serif); font-size: clamp(36px, 4.5vw, 52px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 32px; }
+    main.legal-doc h2 { font-family: var(--serif); font-size: clamp(24px, 3vw, 30px); margin: 48px 0 16px; }
+    main.legal-doc h3 { font-family: var(--serif); font-size: 20px; margin: 32px 0 12px; color: var(--ink-2); }
+    main.legal-doc p { font-size: 15.5px; line-height: 1.7; margin: 12px 0; color: var(--ink); }
+    main.legal-doc ul { padding-left: 24px; margin: 12px 0; }
+    main.legal-doc li { font-size: 15.5px; line-height: 1.7; margin: 4px 0; }
+    main.legal-doc code { font-family: var(--mono); font-size: 13px; background: var(--paper-2); padding: 1px 6px; border: 1px solid var(--rule-2); border-radius: 2px; word-break: break-word; }
+    main.legal-doc a { color: var(--seal); text-decoration: underline; }
+    main.legal-doc hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+    main.legal-doc table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+    main.legal-doc thead { background: var(--paper-2); }
+    main.legal-doc th, main.legal-doc td { border: 1px solid var(--rule); padding: 10px 12px; text-align: left; vertical-align: top; }
+    main.legal-doc th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+    @media (max-width: 600px) {
+      main.legal-doc table { font-size: 12.5px; }
+      main.legal-doc th, main.legal-doc td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-meta">
+        <span>Legali</span>
+        <span class="sep">&middot;</span>
+        <span>Sicurezza & disclosure</span>
+      </div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Termini</a>
+        <a href="cookies.html">Cookie</a>
+        <a href="security.html" class="current">Security</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="legal-doc">
+<h1>Security Policy</h1>
+<p>&gt; Veylon è un prodotto di certificazione legale. La sicurezza non è una feature: è il prodotto. &gt; Questa policy descrive come segnalare vulnerabilità, cosa rientra nello scope, le issue già note in fix e l'architettura di sicurezza della piattaforma.</p>
+<hr/>
+<h2>Vulnerability Disclosure Policy</h2>
+<p>Veylon S.r.l. (in costituzione) accoglie e incoraggia la segnalazione responsabile di vulnerabilità di sicurezza.</p>
+<h3>Come segnalare</h3>
+<ul>
+<li><strong>Email primaria:</strong> <code>security@veylon.app</code></li>
+<li><strong>Email fallback:</strong> <code>dev@veylon.app</code> se la primaria fosse temporaneamente inattiva.</li>
+<li><strong>PGP key:</strong> chiave PGP dedicata in fase di pubblicazione. L'impronta verrà esposta a <code>https://veylon.app/.well-known/security.pgp</code> e su keys.openpgp.org sotto l'identità <code>security@veylon.app</code>. <strong>Placeholder corrente</strong> — <code>0xTBDTBDTBDTBDTBDTBDTBDTBDTBDTBD</code>. Per segnalazioni sensibili prima della pubblicazione della chiave dedicata, scrivere a <code>security@veylon.app</code> chiedendo l'impronta personale del CTO da utilizzare temporaneamente.</li>
+<li><strong>security.txt (RFC 9116):</strong> in pubblicazione a <code>https://veylon.app/.well-known/security.txt</code> con:</li>
+</ul>
+<p>  - <code>Contact: mailto:security@veylon.app</code>   - <code>Expires: 2027-06-10T00:00:00.000Z</code>   - <code>Encryption: https://veylon.app/.well-known/security.pgp</code>   - <code>Preferred-Languages: it, en</code>   - <code>Policy: https://veylon.app/security</code>   - <code>Hiring: https://veylon.app/careers</code></p>
+<h3>Cosa includere</h3>
+<ul>
+<li>Descrizione tecnica della vulnerabilità</li>
+<li>Passi per riprodurla (proof-of-concept)</li>
+<li>Impatto stimato (confidenzialità, integrità, disponibilità)</li>
+<li>Punteggio CVSS v3.1 (se calcolabile)</li>
+<li>Eventuali suggerimenti di mitigazione</li>
+<li>Tuoi contatti per follow-up e credit (opzionale)</li>
+<li>Se hai una preferenza per <strong>anonimato</strong> o <strong>pseudonimo</strong> nel credit pubblico, indicalo</li>
+</ul>
+<h3>Cosa NON fare</h3>
+<ul>
+<li><strong>Non testare in produzione</strong> su account altrui.</li>
+<li><strong>Non esfiltrare dati</strong> di terzi: il PoC va dimostrato su account/dati di test.</li>
+<li><strong>Non pubblicare</strong> i dettagli prima della disclosure coordinata.</li>
+<li><strong>Non eseguire DoS</strong> o stress test senza accordo preventivo.</li>
+<li><strong>Non utilizzare</strong> social engineering contro dipendenti / collaboratori.</li>
+</ul>
+<h3>Tempo di risposta</h3>
+<table>
+<thead><tr><th>Azione</th><th>Tempo massimo</th></tr></thead>
+<tbody>
+<tr><td>Acknowledge ricezione</td><td><strong>48 ore</strong> lavorative</td></tr>
+<tr><td>Triage iniziale + CVSS</td><td><strong>7 giorni</strong></td></tr>
+<tr><td>Comunicazione decisione (in fix / out of scope / duplicato)</td><td><strong>14 giorni</strong></td></tr>
+<tr><td>Disclosure coordinata</td><td><strong>90 giorni</strong> dalla ricezione (estendibili di accordo col reporter)</td></tr>
+</tbody></table>
+<hr/>
+<h2>Responsible Disclosure Timeline</h2>
+<p>Standard a 90 giorni in linea con Google Project Zero e ISO/IEC 29147.</p>
+<table>
+<thead><tr><th>Giorno</th><th>Evento</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>Ricezione + conferma entro 48 ore lavorative</td></tr>
+<tr><td>0-7</td><td>Triage interno, classificazione CVSS</td></tr>
+<tr><td>7-30</td><td>Sviluppo patch, comunicazione settimanale al reporter</td></tr>
+<tr><td>30-60</td><td>Rollout staged in produzione, test regressione</td></tr>
+<tr><td>60-90</td><td>Hardening, validazione esterna se opportuno</td></tr>
+<tr><td>90</td><td>Disclosure pubblica coordinata + credit</td></tr>
+</tbody></table>
+<p>Per vulnerabilità sfruttate attivamente o di rischio sistemico, timeline accelerata d'accordo col reporter.</p>
+<hr/>
+<h2>Scope</h2>
+<h3>In scope</h3>
+<ul>
+<li>Frontend produzione: <code>veylon.app</code> e sottodomini</li>
+<li>Edge function Supabase del progetto <code>hanxxxtgxofjkfdjegfe</code></li>
+<li>Schema database e policy RLS Postgres</li>
+<li>Webhook Mailgun e Twilio + verifica HMAC</li>
+<li>Logica notarizzazione OpenTimestamps</li>
+<li>Flussi OTP (rate-limit, brute-force, token reuse)</li>
+<li>Cifratura E2E modulo Send (key wrapping, IV handling)</li>
+</ul>
+<h3>Out of scope</h3>
+<ul>
+<li>Vulnerabilità note nei vendor upstream (Supabase, Mailgun, Twilio, Bitcoin)</li>
+<li>Self-XSS o issue che richiedono compromissione preventiva del browser</li>
+<li>Social engineering contro dipendenti Veylon</li>
+<li>DDoS volumetrico</li>
+<li>Versioni staging (<code><em>.dev.veylon.app</code>, <code></em>.staging.veylon.app</code>)</li>
+</ul>
+<hr/>
+<h2>Known Issues (pre-MVP — trasparenza totale)</h2>
+<p>Quattro issue CRITICAL identificate dall'audit interno 2026-06-07. Tracciate, in fix prima del go-live commerciale.</p>
+<table>
+<thead><tr><th>ID</th><th>Severità</th><th>Modulo</th><th>Descrizione</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>VLN-001</strong></td><td>CRITICAL</td><td>OTP Firma</td><td>Rate-limit OTP brute-force insufficiente in <code>firma-applica</code>: codice 6 cifre senza counter attempts</td><td>In fix (Q3 2026)</td></tr>
+<tr><td><strong>VLN-002</strong></td><td>CRITICAL</td><td>Cron pg_net</td><td>Service_role nei log pg_net del cron originale (<code>20260607_veylon_cron.sql</code>)</td><td><strong>Non applicabile</strong>: deploy attuale usa cron esterno (cron-job.org) con solo <code>x-cron-secret</code>, mai service_role</td></tr>
+<tr><td><strong>VLN-003</strong></td><td>CRITICAL</td><td>OTS parser</td><td>Parser custom <code>_shared/ots.ts</code> senza bounds check su input binario malformato → potenziale DoS</td><td><strong>Fix applicato 2026-06-08</strong></td></tr>
+<tr><td><strong>VLN-004</strong></td><td>CRITICAL</td><td>Cron auth</td><td>Check <code>CRON_SECRET</code> accettava stringa vuota se var non settata</td><td><strong>Fix applicato 2026-06-08</strong></td></tr>
+</tbody></table>
+<hr/>
+<h2>Bug Bounty</h2>
+<p><strong>Stato corrente:</strong> non attivo. Veylon è in fase di stabilizzazione MVP e preferiamo costruire una pipeline interna di triage prima di esporre un programma a reward monetario.</p>
+<h3>Roadmap del programma</h3>
+<table>
+<thead><tr><th>Fase</th><th>Target</th><th>Modalità</th></tr></thead>
+<tbody>
+<tr><td>Q1 2027</td><td><strong>Programma privato su invito</strong></td><td>Reward per CRITICAL/HIGH, scope ristretto, NDA</td></tr>
+<tr><td>Q3-Q4 2027</td><td><strong>Programma pubblico</strong></td><td>Su una delle piattaforme HackerOne / Intigriti / YesWeHack EU</td></tr>
+<tr><td>2028</td><td><strong>Reward in stablecoin EUR</strong> (opzionale)</td><td>Per bypass crittografici e bypass identità</td></tr>
+</tbody></table>
+<h3>Nel frattempo</h3>
+<p>Le segnalazioni valide ricevono:</p>
+<ul>
+<li><strong>Credit pubblico</strong> nella security advisory (o anonimato/pseudonimo a scelta del reporter).</li>
+<li><strong>Lettera di ringraziamento</strong> ufficiale firmata, utilizzabile per CV e portfolio.</li>
+<li><strong>Inserimento nella Hall of Fame</strong> (vedi sotto).</li>
+<li>Per finding <strong>CRITICAL</strong> prima del go-live commerciale: t-shirt + abbonamento Veylon Pro vitalizio (offerta una tantum, fino esaurimento spirito iniziale).</li>
+</ul>
+<h3>Hall of Fame</h3>
+<p>&gt; <strong>Placeholder corrente — la lista è vuota in attesa della prima segnalazione esterna.</strong></p>
+<table>
+<thead><tr><th>Reporter</th><th>Data</th><th>Issue ID</th><th>Severità</th><th>Descrizione sintetica</th></tr></thead>
+<tbody>
+<tr><td>_Il tuo nome qui_</td><td>—</td><td>—</td><td>—</td><td>Sii il primo a contribuire</td></tr>
+</tbody></table>
+<p>I 4 finding interni VLN-001..004 sono stati identificati dall'audit interno e non figurano in Hall of Fame esterna.</p>
+<hr/>
+<h2>Security Architecture</h2>
+<h3>1. Chiavi private mai sui server</h3>
+<p>Modulo Send: cifratura E2E in browser via Web Crypto API (AES-GCM-256 + X25519). Veylon vede solo ciphertext.</p>
+<h3>2. Row Level Security ovunque</h3>
+<p>Tutte le 15 tabelle Postgres hanno policy RLS attive con pattern <code>(SELECT auth.uid()) = ...</code> per performance. Testate in audit DB.</p>
+<h3>3. HMAC su tutti i webhook</h3>
+<p>Webhook Mailgun + Twilio verificati HMAC-SHA256 prima di mutare lo stato. Tampering loggato e rifiutato.</p>
+<h3>4. OTP rate-limit multilivello</h3>
+<ul>
+<li>Rate-limit per IP sulla generazione codice</li>
+<li>Rate-limit per destinatario (phone/email) sulla validazione</li>
+<li>TTL codice 5 minuti</li>
+<li>Blocco esponenziale dopo tentativi falliti</li>
+<li>Tabella <code>auth_otp</code> con counter <code>attempts</code> (default max 5)</li>
+</ul>
+<h3>5. Bitcoin anchoring come timeline pubblica</h3>
+<p>Notarizzazioni Sigillo ancorate su Bitcoin mainnet via OpenTimestamps. Verifica indipendente da chiunque, anche se Veylon scompare.</p>
+<h3>6. Segregazione key material</h3>
+<ul>
+<li><code>service_role</code> JWT: solo in env edge function, mai client, mai log, mai committed</li>
+<li><code>anon</code> key: pubblica per design, protetta da RLS</li>
+<li><code>CRON_SECRET</code>: validato strict-equality con check anti-empty (fix VLN-004 applicato)</li>
+<li><code>MAILGUN_WEBHOOK_SECRET</code>: HMAC verify timestamp + token anti-replay (window 5 min)</li>
+</ul>
+<h3>7. Audit trail immutabile</h3>
+<p>Ogni evento materiale (notarizzazione, invio email, OTP validato, file trasferito) scritto in tabelle append-only (<code>email_eventi</code>, <code>firma_eventi</code>, <code>garanzia_eventi</code>, <code>auth_otp</code>).</p>
+<h3>8. Sovranità europea del dato</h3>
+<ul>
+<li>Supabase: <code>hanxxxtgxofjkfdjegfe</code> regione EU Ireland (eu-west-1)</li>
+<li>Mailgun: endpoint <code>api.eu.mailgun.net</code> (Frankfurt)</li>
+<li>Twilio: numerazione e routing EU dove disponibile</li>
+<li>Nessun trasferimento extra-UE</li>
+</ul>
+<hr/>
+<h2>Compliance</h2>
+<h3>GDPR (Reg. UE 2016/679)</h3>
+<ul>
+<li><strong>Titolare:</strong> Veylon S.r.l. (in costituzione)</li>
+<li><strong>DPO:</strong> <strong>TBD</strong> — nomina contestuale alla costituzione societaria. Referente operativo: <code>privacy@veylon.app</code></li>
+<li><strong>Base giuridica primaria:</strong> art. 6.1.b (contratto) + art. 6.1.c (obbligo legale) per moduli Cert/Firma/Onboarding</li>
+<li><strong>DPIA:</strong> prevista per moduli ad alto rischio (Onboarding KYC, Mail tracking, Firma)</li>
+<li><strong>Diritti interessato:</strong> procedura attiva via <code>privacy@veylon.app</code></li>
+</ul>
+<h3>eIDAS (Reg. UE 910/2014)</h3>
+<ul>
+<li>Art. 41 (validazione temporale): modulo Sigillo conforme</li>
+<li>Art. 26 (FEA): modulo Firma produce firma elettronica avanzata</li>
+<li>FEQ (firma qualificata): integrazione QTSP terza in roadmap Fase 3</li>
+</ul>
+<h3>Standard tecnici</h3>
+<ul>
+<li>ISO/IEC 27001: allineamento metodologico, certificazione Fase 3</li>
+<li>ISO/IEC 29147 (vulnerability disclosure): questa policy</li>
+<li>OWASP ASVS Level 2: baseline applicativa</li>
+<li>NIST SP 800-63B: linee guida OTP/password</li>
+</ul>
+<hr/>
+<h2>Storia delle modifiche</h2>
+<table>
+<thead><tr><th>Data</th><th>Versione</th><th>Modifica</th></tr></thead>
+<tbody>
+<tr><td>2026-06-07</td><td>1.0</td><td>Prima versione pubblica della security policy (pre-MVP)</td></tr>
+<tr><td>2026-06-08</td><td>1.1</td><td>Aggiunti dettagli sui 4 known issues, marcati VLN-003 e VLN-004 come "fix applicato"</td></tr>
+<tr><td>2026-06-10</td><td>1.2</td><td>Aggiunti dettagli su vulnerability disclosure process, PGP key placeholder, security.txt RFC 9116, bug bounty roadmap, Hall of Fame placeholder</td></tr>
+</tbody></table>
+<hr/>
+<p><em>Per dubbi interpretativi: <code>security@veylon.app</code>. Grazie per contribuire a rendere Veylon più sicura.</em></p>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Legali &middot; Sicurezza & disclosure</span>
+    </div>
+  </footer>
+
+</body>
+</html>

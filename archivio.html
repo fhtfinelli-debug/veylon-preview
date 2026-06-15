@@ -6,6 +6,7 @@
   <title>VEYLON · Archivio</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -89,7 +90,17 @@
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
 
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+
+  try {
+
+    await protectPage();
+
+  } finally {
+
+    document.documentElement.classList.remove("veylon-auth-pending");
+
+  }
   bindLogout("#logout");
 
   const PAGE_SIZE = 50;
@@ -112,7 +123,7 @@
     try {
       const { data, error } = await supabase
         .from("veylon_atti")
-        .select("id, titolo, codice, stato, created_at")
+        .select("id, doc_name, sha256, ots_status, created_at")
         .order("created_at", { ascending: false })
         .range(offset, offset + PAGE_SIZE - 1);
 
@@ -132,14 +143,15 @@
       const tbody = document.getElementById("rows");
       (data || []).forEach(a => {
         const tr = document.createElement("tr");
-        const stato = a.stato || "registrato";
-        const pillCls = stato === "confermato" || stato === "ancorato" ? "ok" : "warn";
+        const stato = a.ots_status || "pending";
+        const pillCls = /confermato|ancorato|confirmed|anchored/i.test(stato) ? "ok" : "warn";
+        const shaShort = a.sha256 ? a.sha256.substring(0, 16) + "…" : "—";
         tr.innerHTML = `
           <td>${fmt(a.created_at)}</td>
-          <td>${escapeHtml(a.titolo || "Atto senza titolo")}</td>
-          <td class="mono">${escapeHtml(a.codice || "—")}</td>
+          <td>${escapeHtml(a.doc_name || "Atto senza titolo")}</td>
+          <td class="mono">${escapeHtml(shaShort)}</td>
           <td><span class="pill ${pillCls}">${escapeHtml(stato)}</span></td>
-          <td style="text-align:right;"><a class="link-seal small" href="verifica.html?codice=${encodeURIComponent(a.codice || "")}">Apri →</a></td>
+          <td style="text-align:right;"><a class="link-seal small" href="verifica.html?sha256=${encodeURIComponent(a.sha256 || "")}">Apri →</a></td>
         `;
         tbody.appendChild(tr);
       });
@@ -164,8 +176,8 @@
     try {
       const { data, error } = await supabase
         .from("drive_condivisioni")
-        .select("id, risorsa_nome, expires_at, attivo, created_at")
-        .eq("attivo", true)
+        .select("id, nota, expires_at, revoked, created_at, veylon_atti:veylon_id(doc_name)")
+        .eq("revoked", false)
         .order("created_at", { ascending: false })
         .limit(20);
 
@@ -189,9 +201,10 @@
       data.forEach(d => {
         const exp = d.expires_at ? new Date(d.expires_at).getTime() : null;
         const scaduto = exp && exp < now;
+        const nome = (d.veylon_atti && d.veylon_atti.doc_name) || d.nota || "—";
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${escapeHtml(d.risorsa_nome || "—")}</td>
+          <td>${escapeHtml(nome)}</td>
           <td class="mono">${fmt(d.expires_at)}</td>
           <td><span class="pill ${scaduto ? "warn" : "ok"}">${scaduto ? "scaduto" : "attivo"}</span></td>
           <td style="text-align:right;">${scaduto ? `<button class="link-seal small" data-renew="${d.id}">Genera nuovo link</button>` : ""}</td>

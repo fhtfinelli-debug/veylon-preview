@@ -6,6 +6,7 @@
   <title>VEYLON Tag · Storico</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -65,7 +66,12 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -79,8 +85,8 @@
     document.getElementById("rows").innerHTML = "";
     try {
       const { data, error } = await supabase
-        .from("tag_prodotti")
-        .select("id, denominazione, sku, lotto, codice, stato, created_at")
+        .from("tag_certificati")
+        .select("id, descrizione, codice_prodotto, lotto, codice_pubblico, stato, created_at")
         .order("created_at", { ascending: false })
         .limit(200);
       document.getElementById("state-loading").hidden = true;
@@ -96,15 +102,15 @@
       }
       const tbody = document.getElementById("rows");
       data.forEach(t => {
-        const stato = t.stato || "attivo";
-        const ok = /attivo|valido/i.test(stato);
+        const stato = t.stato || "emesso";
+        const ok = /emesso|trasferito/i.test(stato);
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${fmt(t.created_at)}</td>
-          <td>${escapeHtml(t.denominazione || "—")}</td>
-          <td class="mono">${escapeHtml(t.sku || "—")}</td>
+          <td>${escapeHtml(t.descrizione || "—")}</td>
+          <td class="mono">${escapeHtml(t.codice_prodotto || "—")}</td>
           <td class="mono">${escapeHtml(t.lotto || "—")}</td>
-          <td class="mono">${escapeHtml(t.codice || "—")}</td>
+          <td class="mono">${escapeHtml(t.codice_pubblico || "—")}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
         `;
         tbody.appendChild(tr);

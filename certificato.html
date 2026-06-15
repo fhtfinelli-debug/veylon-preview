@@ -6,6 +6,7 @@
   <title>VEYLON · Certificato</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -72,7 +73,12 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -88,22 +94,11 @@
       return;
     }
     try {
-      // prova entrambe le tabelle (emessi / a_mio_nome)
-      let { data, error } = await supabase
-        .from("cert_emessi")
-        .select("id, titolo, destinatario_nome, istituzione_nome, codice, stato, created_at, scadenza")
-        .eq("codice", codice)
+      const { data, error } = await supabase
+        .from("cert_certificati")
+        .select("id, codice_pubblico, beneficiario_nome, dati_certificato, stato, data_emissione, data_scadenza, cert_istituzioni:istituzione_id(ragione_sociale)")
+        .eq("codice_pubblico", codice)
         .maybeSingle();
-
-      if ((!data || error) && (!error || /relation|does not exist/i.test(error.message))) {
-        const r2 = await supabase
-          .from("cert_a_mio_nome")
-          .select("id, titolo, destinatario_nome, istituzione_nome, codice, stato, emesso_il, scadenza")
-          .eq("codice", codice)
-          .maybeSingle();
-        data = r2.data; error = r2.error;
-        if (data) data.created_at = data.emesso_il;
-      }
 
       document.getElementById("state-loading").hidden = true;
       if (error) {
@@ -116,18 +111,20 @@
         document.getElementById("state-empty").hidden = false;
         return;
       }
-      document.getElementById("cert-titolo").textContent = data.titolo || "Certificato";
-      document.getElementById("cert-dest").textContent = data.destinatario_nome || "—";
-      document.getElementById("cert-ist").textContent = data.istituzione_nome || "—";
-      document.getElementById("cert-emesso").textContent = fmt(data.created_at);
-      document.getElementById("cert-scadenza").textContent = data.scadenza ? fmt(data.scadenza) : "—";
-      document.getElementById("cert-codice").textContent = data.codice || "—";
-      const st = data.stato || "valido";
-      const ok = /valido|emesso|attivo/i.test(st);
+      const titolo = (data.dati_certificato && (data.dati_certificato.titolo || data.dati_certificato.corso || data.dati_certificato.nome)) || "Certificato";
+      const istNome = (data.cert_istituzioni && data.cert_istituzioni.ragione_sociale) || "—";
+      document.getElementById("cert-titolo").textContent = titolo;
+      document.getElementById("cert-dest").textContent = data.beneficiario_nome || "—";
+      document.getElementById("cert-ist").textContent = istNome;
+      document.getElementById("cert-emesso").textContent = fmt(data.data_emissione);
+      document.getElementById("cert-scadenza").textContent = data.data_scadenza ? fmt(data.data_scadenza) : "—";
+      document.getElementById("cert-codice").textContent = data.codice_pubblico || "—";
+      const st = data.stato || "emesso";
+      const ok = /emesso|ritirato/i.test(st);
       const stEl = document.getElementById("cert-stato");
       stEl.textContent = st;
       stEl.classList.add(ok ? "ok" : "warn");
-      document.getElementById("cert-verifica").href = "cert-verifica.html?codice=" + encodeURIComponent(data.codice || "");
+      document.getElementById("cert-verifica").href = "cert-verifica.html?codice=" + encodeURIComponent(data.codice_pubblico || "");
       document.getElementById("cert-card").hidden = false;
     } catch (e) {
       document.getElementById("state-loading").hidden = true;

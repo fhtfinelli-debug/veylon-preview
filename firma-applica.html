@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON · Apporre la propria firma</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
@@ -19,13 +19,13 @@
       </div>
       <a href="index.html" class="wordmark">VEYLON</a>
       <nav class="masthead-nav" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3);">
-        <span>codice <strong style="color: var(--ink);">VLN-FRM-2026-7C1B98</strong></span>
+        <span>codice <strong style="color: var(--ink);" id="navCodice">&mdash;</strong></span>
       </nav>
     </div>
     <div class="masthead-band">
       <div class="masthead-band-inner">
         <span>Firma elettronica avanzata &mdash; <strong style="color: var(--ink);">CAD art. 20-21</strong> &middot; eIDAS art. 26</span>
-        <span>Magic link valido fino al <span class="mono">13&nbsp;giu&nbsp;2026 · 15:42</span></span>
+        <span>Sessione effimera &middot; OTP via email</span>
       </div>
     </div>
   </header>
@@ -33,138 +33,89 @@
   <main class="col-narrow" style="padding: 56px 32px 96px;">
 
     <div class="row-between" style="margin-bottom: 32px;">
-      <span class="section-num">Sottoscrizione &middot; firmatario 2 di 2</span>
+      <span class="section-num">Sottoscrizione</span>
       <span class="roman">i</span>
     </div>
 
-    <!-- BARRA DI AVANZAMENTO -->
-    <ol class="sig-progress">
-      <li class="done"><div class="sp-circle"><span>I</span></div><div class="sp-lbl">Identificazione</div></li>
-      <li class="current"><div class="sp-circle"><span>II</span></div><div class="sp-lbl">Esame</div></li>
-      <li><div class="sp-circle"><span>III</span></div><div class="sp-lbl">OTP</div></li>
-      <li><div class="sp-circle"><span>IV</span></div><div class="sp-lbl">Firma</div></li>
+    <!-- BARRA DI AVANZAMENTO (3 stadi: Esame -> OTP -> Firma) -->
+    <ol class="sig-progress" id="sigProgress">
+      <li class="current"><div class="sp-circle"><span>I</span></div><div class="sp-lbl">Esame</div></li>
+      <li><div class="sp-circle"><span>II</span></div><div class="sp-lbl">OTP</div></li>
+      <li><div class="sp-circle"><span>III</span></div><div class="sp-lbl">Firma</div></li>
     </ol>
 
     <!-- ============================================================
-         STATO 1 — Identificazione
+         STATO LOADING - recupero metadati richiesta
     ============================================================= -->
-    <section id="state-auth">
-      <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
-        Vi è richiesta una <em class="serif-italic" style="color: var(--seal);">firma elettronica.</em>
-      </h1>
-      <p class="lede" style="margin-bottom: 40px;">
-        Sottoscrivere un atto comporta effetti giuridici. Procedete con calma:
-        potete annullare in qualsiasi momento prima dell'apposizione.
-      </p>
-
-      <!-- Richiedente -->
-      <div class="from-card">
-        <div class="seal-mark"><span class="glyph">V</span></div>
-        <div style="flex: 1; min-width: 0;">
-          <div class="eyebrow">Richiesta proveniente da</div>
-          <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 6px;">Avv. Mario Bertolaso</div>
-          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.04em;">
-            Studio Notarile Bertolaso &amp; Associati &middot; CF BRT MRA 70S30 H501Z
-          </div>
-          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em;">
-            Trasmessa il 6 giu 2026 &middot; ore 15:42 CEST
-          </div>
+    <section id="state-loading">
+      <div class="panel" style="padding: 36px; text-align: center;">
+        <div class="row" style="justify-content: center; gap: 16px;">
+          <div class="dot-spinner" aria-hidden="true"></div>
+          <div class="serif" style="font-size: 22px;">Recupero della richiesta di firma&hellip;</div>
         </div>
       </div>
+    </section>
 
-      <h3 class="serif" style="font-size: 22px; margin: 40px 0 20px;">Identificare il sottoscrittore</h3>
-      <p class="body" style="margin-bottom: 24px;">
-        Selezionare uno strumento per accertare la vostra identità prima di prendere visione dell'atto.
-      </p>
-      <div class="auth-options">
-        <button class="auth-opt" onclick="goAuth('spid')">
-          <div class="ao-letter">A</div>
-          <div class="ao-body">
-            <div class="ao-title">SPID</div>
-            <div class="ao-desc">Sistema Pubblico di Identità Digitale &middot; livello richiesto: <strong>L2</strong></div>
-          </div>
-          <div class="ao-arrow">→</div>
-        </button>
-        <button class="auth-opt selected" onclick="goAuth('email')">
-          <div class="ao-letter">B</div>
-          <div class="ao-body">
-            <div class="ao-title">Email + OTP</div>
-            <div class="ao-desc">Accertamento sul vostro indirizzo <span class="mono">m.vitali@vitalicostruzioni.it</span></div>
-          </div>
-          <div class="ao-arrow">→</div>
-        </button>
-        <button class="auth-opt" onclick="goAuth('cie')">
-          <div class="ao-letter">C</div>
-          <div class="ao-body">
-            <div class="ao-title">CIE</div>
-            <div class="ao-desc">Carta d'Identità Elettronica con app o lettore NFC</div>
-          </div>
-          <div class="ao-arrow">→</div>
-        </button>
-      </div>
-      <p class="small" style="margin-top: 20px;">
-        Annullando, sarete reindirizzati alla pagina di rifiuto. La mancata firma sarà notificata al richiedente.
-        <a href="#" class="link-seal small">Rifiuta la richiesta</a>
+    <!-- ============================================================
+         STATO ERROR - richiesta non trovata / scaduta / errore
+    ============================================================= -->
+    <section id="state-error" style="display: none;">
+      <div class="ornament" style="margin: 0 0 32px;">&#8262;</div>
+      <h1 class="serif" style="font-size: clamp(32px, 4vw, 44px); line-height: 1.1; margin: 0 0 16px;">
+        Richiesta <em class="serif-italic" style="color: var(--seal);" id="errorTitle">non disponibile.</em>
+      </h1>
+      <p class="lede" id="errorBody" style="margin-bottom: 40px;">
+        Verificare il link ricevuto via email o richiedere al mittente di reinviarlo.
       </p>
     </section>
 
     <!-- ============================================================
-         STATO 2 — Esame del documento
+         STATO 1 — Esame del documento
     ============================================================= -->
     <section id="state-review" style="display: none;">
       <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
         Esaminare l'<em class="serif-italic" style="color: var(--seal);">atto da firmare.</em>
       </h1>
       <p class="lede" style="margin-bottom: 40px;">
-        Leggete attentamente il documento. Spuntate la dichiarazione di consenso al
-        termine, poi procedete con il codice OTP.
+        Leggete il documento qui sotto. Spuntate la dichiarazione di consenso al
+        termine, poi richiedete il codice OTP via email.
       </p>
 
+      <!-- Mittente -->
+      <div class="from-card">
+        <div class="seal-mark"><span class="glyph">V</span></div>
+        <div style="flex: 1; min-width: 0;">
+          <div class="eyebrow">Richiesta proveniente da</div>
+          <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 6px;" id="senderName">&mdash;</div>
+          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.04em;" id="senderMeta">&mdash;</div>
+        </div>
+      </div>
+
       <!-- Anteprima documento -->
-      <div class="doc-frame">
+      <div class="doc-frame" style="margin-top: 32px;">
         <div class="doc-frame-head row-between">
           <div class="row" style="gap: 14px;">
             <div class="doc-icon-lg">
-              <span class="ext mono">PDF</span>
+              <span class="ext mono">DOC</span>
             </div>
             <div>
-              <div class="serif" style="font-size: 20px; line-height: 1.2;">Mandato professionale &mdash; rev. 02</div>
+              <div class="serif" style="font-size: 20px; line-height: 1.2;" id="docName">&mdash;</div>
               <div class="mono" style="font-size: 11px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.04em;">
-                412&nbsp;KB &middot; SHA-256 e3b0&nbsp;c442 … b855 &middot; sigillato #&nbsp;874.198
+                SHA-256 <span id="docSha">&mdash;</span>
               </div>
             </div>
           </div>
-          <div class="row row-gap" style="gap: 8px;">
-            <button class="btn ghost" style="padding: 8px 14px;">Scarica</button>
-            <button class="btn ghost" style="padding: 8px 14px;">Stampa</button>
-          </div>
         </div>
-        <!-- Anteprima sintetica -->
         <div class="doc-preview">
           <div class="dp-page">
-            <div class="eyebrow" style="margin-bottom: 14px; letter-spacing: 0.28em;">Mandato professionale</div>
-            <h4 class="serif" style="font-size: 26px; line-height: 1.1; margin: 0 0 28px;">
-              Conferimento di mandato a Studio Bertolaso &amp; Associati
-            </h4>
-            <p class="serif" style="font-size: 15px; line-height: 1.7; color: var(--ink); margin: 0 0 14px;">
-              Il sottoscritto <strong>Marco Vitali</strong>, nato a Mortara (PV) il 30.11.1970,
-              codice fiscale <span class="mono">VTLMRC70S30H501Z</span>, in qualità di legale
-              rappresentante della società <em>Costruzioni Lemania S.p.A.</em>, con sede in
-              Mortara (PV), Via Roma 14, P.IVA <span class="mono">04812960015</span>,
+            <p class="body" style="font-size: 14px; line-height: 1.6; margin: 0;">
+              Il documento da firmare e' gia' stato notarizzato dal mittente: la sua impronta SHA-256 e'
+              inscritta nel registro pubblico Bitcoin. L'apposizione della vostra firma generera' un nuovo
+              atto crittografico che lega la vostra identita' (email accertata via OTP) al documento.
             </p>
-            <p class="serif" style="font-size: 15px; line-height: 1.7; color: var(--ink); margin: 0 0 14px;">
-              <strong>conferisce mandato professionale</strong> all'Avv. Mario Bertolaso, del foro
-              di Roma, affinché lo assista e rappresenti nelle controversie afferenti l'esecuzione
-              del contratto di subfornitura n. 0148/2026, ivi compreso il giudizio dinanzi al
-              Tribunale di Pavia &mdash; Sezione Specializzata Imprese.
-            </p>
-            <p class="serif" style="font-size: 15px; line-height: 1.7; color: var(--ink); margin: 0 0 14px;">
-              Il presente mandato è conferito a titolo oneroso, secondo le condizioni
-              economiche separatamente concordate. È compreso il potere di transigere,
-              conciliare, rinunciare e accettare rinunce, riscuotere somme&hellip;
-            </p>
-            <p class="small" style="text-align: center; margin-top: 32px; color: var(--ink-3);">
-              [pag. 1 di 3 &middot; <a href="#" class="link-seal small">apri il documento integrale</a>]
+            <p class="small" style="margin-top: 16px; color: var(--ink-3);">
+              Se il mittente vi ha inviato il PDF separatamente via email, apritelo prima di procedere.
+              La firma vale per il documento la cui impronta corrisponde a quella mostrata sopra.
             </p>
           </div>
         </div>
@@ -172,76 +123,69 @@
 
       <!-- Dichiarazione di consenso -->
       <div class="consent">
-        <label>
-          <input type="checkbox" id="consent"/>
+        <label for="consent">
+          <input type="checkbox" id="consent" aria-describedby="consentMeta"/>
           <div>
             <div class="serif" style="font-size: 17px; line-height: 1.35; color: var(--ink);">
               Dichiaro di aver letto l'atto, di averne compreso il contenuto e di voler
               <em class="serif-italic" style="color: var(--seal);">apporre la mia firma elettronica avanzata</em>
               al medesimo, ai sensi degli articoli 20 e 21 del Codice dell'Amministrazione Digitale.
             </div>
-            <div class="mono" style="font-size: 10.5px; color: var(--ink-3); margin-top: 12px; letter-spacing: 0.06em;">
-              L'identità è già stata accertata: <strong style="color: var(--ink);">Marco Vitali</strong> &middot;
-              <strong style="color: var(--ink);">m.vitali@vitalicostruzioni.it</strong> &middot;
-              accesso via email + OTP
+            <div id="consentMeta" class="mono" style="font-size: 10.5px; color: var(--ink-3); margin-top: 12px; letter-spacing: 0.06em;">
+              Identita' accertata via email + OTP. Indirizzo del firmatario: <strong style="color: var(--ink);" id="firmatarioEmail">&mdash;</strong>
             </div>
           </div>
         </label>
       </div>
 
-      <button class="btn seal lg" id="goOtpBtn" disabled style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
+      <button class="btn seal lg" id="goOtpBtn" type="button" disabled style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
         Procedere alla firma <span class="arrow"></span>
       </button>
     </section>
 
     <!-- ============================================================
-         STATO 3 — OTP
+         STATO 2 — OTP
     ============================================================= -->
     <section id="state-otp" style="display: none;">
       <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
         Inserire il codice <em class="serif-italic" style="color: var(--seal);">a uso singolo.</em>
       </h1>
       <p class="lede" style="margin-bottom: 40px;">
-        Abbiamo inviato un codice di sei cifre all'indirizzo email del firmatario.
-        Il codice è valido per cinque minuti.
+        Il codice OTP di sei cifre &egrave; quello che il mittente ha inviato al vostro indirizzo email
+        al momento della richiesta. Se non lo trovate, chiedete al mittente di reinviare la richiesta.
       </p>
 
       <div class="otp-card">
         <div class="row-between" style="margin-bottom: 24px;">
           <div>
             <div class="eyebrow">Codice trasmesso a</div>
-            <div class="mono" style="font-size: 15px; margin-top: 4px; color: var(--ink);">m.vitali@vitalicostruzioni.it</div>
-          </div>
-          <div class="mono" style="font-size: 12px; color: var(--seal); letter-spacing: 0.12em;">
-            scade fra <span id="otpClock">04:58</span>
+            <div class="mono" style="font-size: 15px; margin-top: 4px; color: var(--ink);" id="otpEmail">&mdash;</div>
           </div>
         </div>
 
-        <div class="otp-inputs">
-          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
-          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
-          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
-          <span class="otp-sep">·</span>
-          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
-          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
-          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*"/>
+        <div class="otp-inputs" role="group" aria-label="Codice OTP a 6 cifre">
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*" aria-label="Cifra 1"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*" aria-label="Cifra 2"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*" aria-label="Cifra 3"/>
+          <span class="otp-sep" aria-hidden="true">&middot;</span>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*" aria-label="Cifra 4"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*" aria-label="Cifra 5"/>
+          <input class="otp-cell mono" maxlength="1" type="text" inputmode="numeric" pattern="\d*" aria-label="Cifra 6"/>
         </div>
 
-        <p class="small" style="margin-top: 18px; text-align: center;">
-          Non avete ricevuto il codice? <a href="#" id="resend" class="link-seal">Reinvia tra <span id="resendIn">30</span> sec</a>
-        </p>
+        <p id="otpError" class="small" role="alert" style="margin-top: 18px; text-align: center; color: var(--seal); display: none;"></p>
       </div>
 
-      <button class="btn seal lg" id="signBtn" disabled style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
+      <button class="btn seal lg" id="signBtn" type="button" disabled style="width: 100%; justify-content: center; padding: 18px; margin-top: 28px;">
         <span id="signLabel">Apporre la firma</span> <span class="arrow"></span>
       </button>
     </section>
 
     <!-- ============================================================
-         STATO 4 — Atto sigillato
+         STATO 3 — Atto sigillato
     ============================================================= -->
     <section id="state-done" style="display: none;">
-      <div class="ornament" style="margin: 0 0 32px;">⁂</div>
+      <div class="ornament" style="margin: 0 0 32px;">&#8262;</div>
       <div class="receipt">
         <div class="row" style="gap: 24px; justify-content: center; margin-bottom: 24px;">
           <div class="seal-mark seal-mark-lg"><span class="glyph">V</span></div>
@@ -250,47 +194,41 @@
         <h2 class="serif" style="text-align: center; margin-top: 12px; font-size: 44px; line-height: 1.05;">
           Firma <em class="serif-italic" style="color: var(--seal);">apposta.</em>
         </h2>
-        <p class="lede" style="text-align: center; margin: 24px auto 0; max-width: 38ch;">
-          L'atto di firma è inscritto sul registro pubblico Bitcoin. La controparte
-          è stata notificata.
+        <p class="lede" style="text-align: center; margin: 24px auto 0; max-width: 44ch;" id="doneMsg">
+          L'atto di firma &egrave; inscritto sul registro pubblico Bitcoin.
         </p>
 
         <hr class="rule" style="margin: 40px 0;"/>
 
         <div class="receipt-grid">
           <div class="receipt-row">
-            <div class="receipt-key">Sottoscrittore</div>
-            <div class="receipt-val">Sig. Marco Vitali &middot; <span class="mono">VTLMRC70S30H501Z</span></div>
+            <div class="receipt-key">Atto firmato</div>
+            <div class="receipt-val serif-italic" id="doneDocName">&mdash;</div>
           </div>
           <div class="receipt-row">
-            <div class="receipt-key">Atto firmato</div>
-            <div class="receipt-val serif-italic">Mandato professionale &mdash; rev. 02</div>
+            <div class="receipt-key">Sottoscrittore</div>
+            <div class="receipt-val mono" id="doneEmail">&mdash;</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Data e ora di firma</div>
-            <div class="receipt-val mono" id="signedAt">—</div>
+            <div class="receipt-val mono" id="signedAt">&mdash;</div>
           </div>
           <div class="receipt-row">
-            <div class="receipt-key">Modalità</div>
-            <div class="receipt-val mono">FEA &middot; identità email accertata &middot; OTP da email</div>
+            <div class="receipt-key">Modalit&agrave;</div>
+            <div class="receipt-val mono">FEA &middot; email accertata &middot; OTP</div>
           </div>
           <div class="receipt-row">
             <div class="receipt-key">Impronta atto firmato</div>
-            <div class="receipt-val mono" style="word-break: break-all; line-height: 1.6;">e3b0&nbsp;c442&nbsp;98fc&nbsp;1c14 &hellip; 7852&nbsp;b855</div>
+            <div class="receipt-val mono" style="word-break: break-all; line-height: 1.6;" id="attoSha">&mdash;</div>
           </div>
           <div class="receipt-row" style="border-bottom: 0;">
             <div class="receipt-key">Sigillo su Bitcoin</div>
-            <div class="receipt-val mono">in attesa di blocco &middot; previsto #&nbsp;874.203</div>
+            <div class="receipt-val mono">in attesa di blocco</div>
           </div>
         </div>
 
-        <div class="row row-gap" style="margin-top: 40px; justify-content: center; flex-wrap: wrap;">
-          <a class="btn" href="certificato.html">Apri atto di firma &middot; certificato</a>
-          <button class="btn ghost" id="dlBtn">Scarica documento firmato</button>
-        </div>
-
         <p class="small" style="margin-top: 32px; text-align: center;">
-          Una copia dell'atto e del certificato è stata inviata anche al vostro indirizzo email.
+          Una copia dell'atto e del certificato &egrave; stata inviata al vostro indirizzo email.
         </p>
       </div>
     </section>
@@ -462,98 +400,211 @@
   }
   </style>
 
-  <script>
-  // STATO 1 → STATO 2 (con animazione)
-  function goAuth(method) {
-    document.querySelectorAll('.auth-opt').forEach(o => o.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    setTimeout(() => {
-      document.getElementById('state-auth').style.display = 'none';
-      document.getElementById('state-review').style.display = 'block';
-      document.getElementById('state-review').classList.add('rise');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 500);
+  <script type="module">
+  // ===========================================================================
+  // VEYLON Firma applica - chiama firma-applica (Edge Function pubblica)
+  // ===========================================================================
+  // Riceve ?c=<codice> dalla query string.
+  // 1) POST {action:"info", codice} -> metadati documento + email firmatario (mascherata)
+  // 2) Utente conferma consenso, inserisce OTP a 6 cifre
+  // 3) POST {action:"firma", codice, otp} -> esito firma con atto_sha256 + signed_at
+  // ===========================================================================
+  import { supabase } from "./_shared/supabase-client.js";
+
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30." +
+    "feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+
+  const el = (id) => document.getElementById(id);
+
+  function showOnly(stateId) {
+    ["state-loading", "state-error", "state-review", "state-otp", "state-done"].forEach((s) => {
+      const e = el(s);
+      if (e) e.style.display = (s === stateId) ? "block" : "none";
+    });
+  }
+  function showError(title, body) {
+    el("errorTitle").textContent = title;
+    el("errorBody").textContent = body;
+    showOnly("state-error");
+  }
+  function setProgress(idx) {
+    const lis = el("sigProgress").querySelectorAll("li");
+    lis.forEach((li, i) => {
+      li.classList.remove("done", "current");
+      if (i < idx) li.classList.add("done");
+      else if (i === idx) li.classList.add("current");
+    });
+  }
+  function fmtSha(s) {
+    if (!s || typeof s !== "string") return "—";
+    return s.match(/.{1,4}/g).join(" ");
+  }
+  function fmtSignedAt(iso) {
+    if (!iso) return "—";
+    try {
+      return new Date(iso).toLocaleString("it-IT", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    } catch { return iso; }
   }
 
-  // Consenso → abilita pulsante
-  document.getElementById('consent').addEventListener('change', e => {
-    document.getElementById('goOtpBtn').disabled = !e.target.checked;
+  async function callFn(payload) {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/firma-applica`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  // ---------------------------------------------------------------------------
+  // INIT: recupera codice da ?c= e carica info
+  // ---------------------------------------------------------------------------
+  const params = new URLSearchParams(location.search);
+  const codice = (params.get("c") || params.get("codice") || "").trim().toUpperCase();
+
+  if (!/^[A-Z0-9]{8}$/.test(codice)) {
+    showError("non valida.", "Il link non contiene un codice di firma valido (atteso 8 caratteri alfanumerici). Chiedete al mittente di reinviarlo.");
+  } else {
+    el("navCodice").textContent = codice;
+    (async () => {
+      const { ok, status, data } = await callFn({ action: "info", codice });
+      if (!ok || !data?.success) {
+        const reason = data?.error === "rate_limited" ? "Troppe richieste, riprovate fra qualche minuto." : ("Errore: " + (data?.error ?? ("http_" + status)));
+        showError("non disponibile.", reason);
+        return;
+      }
+      if (!data.trovato) {
+        showError("non trovata.", data.messaggio || "La richiesta di firma non esiste o e' stata annullata.");
+        return;
+      }
+      if (data.gia_firmato) {
+        showError("gia' firmata.", "Questo documento risulta gia' sottoscritto.");
+        return;
+      }
+      if (data.scaduto) {
+        showError("scaduta.", "Il termine OTP per questa richiesta e' scaduto. Chiedete al mittente di reinviarla.");
+        return;
+      }
+
+      el("senderName").textContent = "Richiesta di firma";
+      el("senderMeta").textContent = "Codice " + codice;
+      el("docName").textContent = data.doc_name || "(senza nome)";
+      el("docSha").textContent = fmtSha(data.doc_sha256);
+      el("firmatarioEmail").textContent = data.firmatario_email || "—";
+      el("otpEmail").textContent = data.firmatario_email || "—";
+
+      setProgress(0);
+      showOnly("state-review");
+    })();
+  }
+
+  // ---------------------------------------------------------------------------
+  // STATO REVIEW -> consenso -> OTP
+  // ---------------------------------------------------------------------------
+  el("consent").addEventListener("change", (e) => {
+    el("goOtpBtn").disabled = !e.target.checked;
   });
 
-  // STATO 2 → STATO 3
-  document.getElementById('goOtpBtn').addEventListener('click', () => {
-    document.getElementById('state-review').style.display = 'none';
-    document.querySelectorAll('.sig-progress li')[1].classList.remove('current');
-    document.querySelectorAll('.sig-progress li')[1].classList.add('done');
-    document.querySelectorAll('.sig-progress li')[2].classList.add('current');
-    document.getElementById('state-otp').style.display = 'block';
-    document.getElementById('state-otp').classList.add('rise');
-    document.querySelector('.otp-cell').focus();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Avvio countdown OTP
-    let secs = 298;
-    const tick = () => {
-      const m = String(Math.floor(secs / 60)).padStart(2,'0');
-      const s = String(secs % 60).padStart(2,'0');
-      document.getElementById('otpClock').textContent = m + ':' + s;
-      if (secs-- > 0) setTimeout(tick, 1000);
-    };
-    tick();
-
-    // Resend countdown
-    let r = 30;
-    const tickR = () => {
-      document.getElementById('resendIn').textContent = r;
-      if (r-- > 0) setTimeout(tickR, 1000);
-      else document.getElementById('resend').textContent = 'Reinvia il codice';
-    };
-    tickR();
+  el("goOtpBtn").addEventListener("click", () => {
+    setProgress(1);
+    showOnly("state-otp");
+    setTimeout(() => document.querySelector(".otp-cell")?.focus(), 50);
   });
 
   // OTP cells handling
-  const cells = document.querySelectorAll('.otp-cell');
+  const cells = document.querySelectorAll(".otp-cell");
   cells.forEach((c, i) => {
-    c.addEventListener('input', e => {
-      e.target.value = e.target.value.replace(/\D/g, '').slice(0,1);
-      if (e.target.value && cells[i+1]) cells[i+1].focus();
+    c.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/\D/g, "").slice(0, 1);
+      if (e.target.value && cells[i + 1]) cells[i + 1].focus();
       checkOtp();
     });
-    c.addEventListener('keydown', e => {
-      if (e.key === 'Backspace' && !e.target.value && cells[i-1]) cells[i-1].focus();
+    c.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && !e.target.value && cells[i - 1]) cells[i - 1].focus();
+    });
+    c.addEventListener("paste", (e) => {
+      const txt = (e.clipboardData?.getData("text") || "").replace(/\D/g, "").slice(0, 6);
+      if (txt.length === 6) {
+        e.preventDefault();
+        for (let k = 0; k < 6; k++) cells[k].value = txt[k];
+        cells[5].focus();
+        checkOtp();
+      }
     });
   });
   function checkOtp() {
-    const filled = [...cells].every(c => c.value);
-    document.getElementById('signBtn').disabled = !filled;
+    const filled = [...cells].every((c) => c.value);
+    el("signBtn").disabled = !filled;
+  }
+  function getOtp() {
+    return [...cells].map((c) => c.value).join("");
+  }
+  function showOtpError(msg) {
+    const err = el("otpError");
+    err.textContent = msg;
+    err.style.display = "block";
+  }
+  function clearOtpError() {
+    el("otpError").style.display = "none";
   }
 
-  // STATO 3 → STATO 4 (apposizione firma)
-  document.getElementById('signBtn').addEventListener('click', async () => {
-    const btn = document.getElementById('signBtn');
-    btn.disabled = true; btn.classList.add('signing');
-    document.getElementById('signLabel').textContent = 'Verifica OTP…';
-    await new Promise(r => setTimeout(r, 800));
-    document.getElementById('signLabel').textContent = 'Cifratura dell\'atto di firma…';
-    await new Promise(r => setTimeout(r, 900));
-    document.getElementById('signLabel').textContent = 'Apposizione sigillo su Bitcoin…';
-    await new Promise(r => setTimeout(r, 1000));
-    document.getElementById('signLabel').textContent = 'Notifica al richiedente…';
-    await new Promise(r => setTimeout(r, 500));
+  // ---------------------------------------------------------------------------
+  // STATO OTP -> firma
+  // ---------------------------------------------------------------------------
+  el("signBtn").addEventListener("click", async () => {
+    const btn = el("signBtn");
+    const lbl = el("signLabel");
+    clearOtpError();
+    btn.disabled = true; btn.classList.add("signing");
+    lbl.textContent = "Verifica OTP…";
 
-    // Vai allo stato 4
-    document.getElementById('state-otp').style.display = 'none';
-    document.querySelectorAll('.sig-progress li')[2].classList.remove('current');
-    document.querySelectorAll('.sig-progress li')[2].classList.add('done');
-    document.querySelectorAll('.sig-progress li')[3].classList.add('done');
+    const otp = getOtp();
+    const { ok, status, data } = await callFn({ action: "firma", codice, otp });
 
-    const now = new Date();
-    document.getElementById('signedAt').textContent =
-      now.toLocaleString('it-IT', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' CEST';
+    if (!ok || !data?.success) {
+      btn.classList.remove("signing");
+      lbl.textContent = "Apporre la firma";
+      const code = data?.error;
+      if (code === "otp_errato") {
+        showOtpError("Codice OTP errato. Verificate e riprovate.");
+        // Reset cells
+        cells.forEach((c) => { c.value = ""; });
+        cells[0]?.focus();
+        btn.disabled = true;
+        return;
+      }
+      if (code === "too_many_attempts") {
+        showError("annullata.", "Troppi tentativi OTP errati. La richiesta e' stata annullata per sicurezza. Chiedete al mittente di reinviarla.");
+        return;
+      }
+      if (code === "otp_scaduto") {
+        showError("scaduta.", "Il codice OTP e' scaduto. Chiedete al mittente di reinviare la richiesta.");
+        return;
+      }
+      if (code === "gia_firmato") {
+        showError("gia' firmata.", "Questo documento risulta gia' sottoscritto.");
+        return;
+      }
+      showOtpError("Errore: " + (code || ("http_" + status)));
+      btn.disabled = false;
+      return;
+    }
 
-    document.getElementById('state-done').style.display = 'block';
-    document.getElementById('state-done').classList.add('rise');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Successo
+    setProgress(2);
+    el("doneDocName").textContent = el("docName").textContent;
+    el("doneEmail").textContent = el("firmatarioEmail").textContent;
+    el("signedAt").textContent = fmtSignedAt(data.signed_at);
+    el("attoSha").textContent = fmtSha(data.atto_sha256);
+    if (data.messaggio) el("doneMsg").textContent = data.messaggio;
+    showOnly("state-done");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
   </script>
 </body>

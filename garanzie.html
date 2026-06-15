@@ -6,6 +6,7 @@
   <title>VEYLON · Garanzie</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -68,7 +69,12 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -84,7 +90,7 @@
     try {
       const { data, error } = await supabase
         .from("garanzie")
-        .select("id, codice, beneficiario, importo, scadenza, stato, created_at")
+        .select("id, codice_verifica, beneficiario, importo, data_scadenza, stato, created_at")
         .order("created_at", { ascending: false })
         .limit(100);
       document.getElementById("state-loading").hidden = true;
@@ -101,16 +107,16 @@
       const tbody = document.getElementById("rows");
       const now = Date.now();
       data.forEach(g => {
-        const sc = g.scadenza ? new Date(g.scadenza).getTime() : null;
+        const sc = g.data_scadenza ? new Date(g.data_scadenza).getTime() : null;
         const scaduta = sc && sc < now;
         const stato = g.stato || (scaduta ? "scaduta" : "attiva");
         const ok = stato === "attiva" && !scaduta;
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td class="mono">${escapeHtml(g.codice || "—")}</td>
+          <td class="mono">${escapeHtml(g.codice_verifica || "—")}</td>
           <td>${escapeHtml(g.beneficiario || "—")}</td>
           <td class="mono">${eur(g.importo)}</td>
-          <td class="mono">${fmt(g.scadenza)}</td>
+          <td class="mono">${fmt(g.data_scadenza)}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
         `;
         tbody.appendChild(tr);

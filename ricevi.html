@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON · Ricezione di plico cifrato</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
@@ -19,13 +19,13 @@
       </div>
       <a href="index.html" class="wordmark">VEYLON</a>
       <nav class="masthead-nav" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3);">
-        <span class="mono">codice <strong style="color: var(--ink);">VLN-TX-2026-A8F4C2D1</strong></span>
+        <span class="mono">codice <strong style="color: var(--ink);" id="navCodice">&mdash;</strong></span>
       </nav>
     </div>
     <div class="masthead-band">
       <div class="masthead-band-inner">
         <span>Trasmissione cifrata end-to-end &mdash; <strong style="color: var(--ink);">solo voi potete decifrare il documento</strong></span>
-        <span>Magic link &middot; valido fino al <span class="mono">14 giu 2026 · 14:38</span></span>
+        <span>Sessione effimera</span>
       </div>
     </div>
   </header>
@@ -55,60 +55,32 @@
     </ol>
 
     <!-- ============================================================
-         STATO 1 — Identificazione (visibile inizialmente)
+         STATO 1 — Recupero metadati (poi sostituito dal JS)
     ============================================================= -->
     <section id="state-auth" style="display: none;">
       <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
-        Vi è stato trasmesso un <em class="serif-italic" style="color: var(--seal);">documento riservato.</em>
+        Vi &egrave; stato trasmesso un <em class="serif-italic" style="color: var(--seal);">documento riservato.</em>
       </h1>
       <p class="lede" style="margin-bottom: 40px;">
-        Per aprirlo è necessario accertare la vostra identità. Il documento
-        sarà decifrato esclusivamente sul vostro dispositivo.
+        Per aprirlo &egrave; necessario accertare la vostra identit&agrave;. Il documento
+        sar&agrave; decifrato esclusivamente sul vostro dispositivo.
       </p>
 
       <div class="rcv-from">
         <div class="seal-mark"><span class="glyph">V</span></div>
         <div>
           <div class="eyebrow">Mittente</div>
-          <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;">Studio Notarile Bertolaso &amp; Associati</div>
+          <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;">&mdash;</div>
           <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.06em;">
-            avv.bertolaso@studiobertolaso.it &middot; verificato SPID Liv. 2
-          </div>
-          <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.06em;">
-            Trasmesso il 7 giu 2026 &middot; ore 14:38 CEST
+            &mdash;
           </div>
         </div>
       </div>
 
-      <div class="auth-options">
-        <button class="auth-opt selected" onclick="goAuth('spid')">
-          <div class="ao-letter">A</div>
-          <div class="ao-body">
-            <div class="ao-title">Accedi con SPID</div>
-            <div class="ao-desc">Livello richiesto dal mittente: <em>Standard</em></div>
-          </div>
-          <div class="ao-arrow">→</div>
-        </button>
-        <button class="auth-opt" onclick="goAuth('cie')">
-          <div class="ao-letter">B</div>
-          <div class="ao-body">
-            <div class="ao-title">Accedi con CIE</div>
-            <div class="ao-desc">Carta d'Identità Elettronica</div>
-          </div>
-          <div class="ao-arrow">→</div>
-        </button>
-        <button class="auth-opt" onclick="goAuth('cns')">
-          <div class="ao-letter">C</div>
-          <div class="ao-body">
-            <div class="ao-title">Accedi con CNS</div>
-            <div class="ao-desc">Carta Nazionale dei Servizi (smart card)</div>
-          </div>
-          <div class="ao-arrow">→</div>
-        </button>
-      </div>
+      <div class="auth-options"></div>
 
       <p class="small" style="margin-top: 32px; text-align: center;">
-        L'apertura sarà inscritta su Bitcoin come <em class="serif-italic">ricevuta di apertura</em>,
+        L'apertura sar&agrave; inscritta su Bitcoin come <em class="serif-italic">ricevuta di apertura</em>,
         a tutela del mittente e vostra.
       </p>
     </section>
@@ -147,7 +119,7 @@
          STATO 3 — Documento aperto
     ============================================================= -->
     <section id="state-open" style="display: none;">
-      <div class="ornament" style="margin: 0 0 32px;">⁂</div>
+      <div class="ornament" style="margin: 0 0 32px;">&#8262;</div>
       <h1 class="serif" style="font-size: clamp(36px, 4.5vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch;">
         Documento <em class="serif-italic" style="color: var(--verify);">aperto.</em>
       </h1>
@@ -159,30 +131,22 @@
       <div class="open-doc">
         <div class="row" style="gap: 18px; padding: 24px 28px; border-bottom: var(--hairline);">
           <div class="doc-icon-lg">
-            <span class="ext mono">PDF</span>
+            <span class="ext mono" id="oExt">FILE</span>
           </div>
           <div style="flex: 1;">
-            <div class="serif" style="font-size: 22px; line-height: 1.2;">Proposta transattiva &mdash; Vitali / Lemania S.p.A.</div>
-            <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 8px; letter-spacing: 0.04em;">
-              412&nbsp;KB &middot; application/pdf &middot; SHA-256 e3b0&nbsp;c442 … b855
-            </div>
+            <div class="serif" style="font-size: 22px; line-height: 1.2;" id="oNome">&mdash;</div>
+            <div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 8px; letter-spacing: 0.04em;" id="oMeta">&mdash;</div>
           </div>
           <a class="btn" href="#" id="dlBtn">Scarica</a>
         </div>
 
         <div class="open-grid">
-          <div class="og-row"><div class="og-k">Mittente</div><div class="og-v">Studio Notarile Bertolaso</div></div>
-          <div class="og-row"><div class="og-k">Inviato il</div><div class="og-v mono">07 giu 2026 · 14:38:02 CEST</div></div>
-          <div class="og-row"><div class="og-k">Aperto il</div><div class="og-v mono" id="openedAt">—</div></div>
-          <div class="og-row"><div class="og-k">Identità verificata</div><div class="og-v">SPID Liv. 2 · CF VTLMRC70S30H501Z</div></div>
+          <div class="og-row"><div class="og-k">Mittente</div><div class="og-v" id="oMittente">&mdash;</div></div>
+          <div class="og-row"><div class="og-k">Inviato il</div><div class="og-v mono" id="oInviato">&mdash;</div></div>
+          <div class="og-row"><div class="og-k">Aperto il</div><div class="og-v mono" id="openedAt">&mdash;</div></div>
           <div class="og-row"><div class="og-k">Cifratura</div><div class="og-v mono">X25519 + AES-GCM-256</div></div>
-          <div class="og-row" style="border-bottom: 0;"><div class="og-k">Ricevuta di apertura</div><div class="og-v mono">apposta &middot; #&nbsp;<span id="newBlock">874.203</span></div></div>
+          <div class="og-row" style="border-bottom: 0;"><div class="og-k">Ricevuta di apertura</div><div class="og-v mono" id="newBlock">apposta</div></div>
         </div>
-      </div>
-
-      <div class="row row-gap" style="margin-top: 32px; justify-content: center; flex-wrap: wrap;">
-        <a class="btn" href="certificato.html">Apri certificato di trasmissione</a>
-        <a class="btn ghost" href="verifica.html">Verifica indipendente</a>
       </div>
     </section>
 
@@ -359,7 +323,11 @@
   // ===========================================================================
 
   const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-  const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+  const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? (
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30." +
+    "feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw"
+  );
   const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
 
   // ---- Utility -----------------------------------------------------------
@@ -383,7 +351,10 @@
   }
   async function callFn(path, body, opts) {
     const headers = { 'Content-Type': 'application/json' };
-    if (SUPABASE_ANON_KEY) headers['apikey'] = SUPABASE_ANON_KEY;
+    if (SUPABASE_ANON_KEY) {
+      headers['apikey'] = SUPABASE_ANON_KEY;
+      headers['Authorization'] = 'Bearer ' + SUPABASE_ANON_KEY;
+    }
     const res = await fetch(`${FUNCTIONS_BASE}/${path}`, {
       method: (opts && opts.method) || 'POST',
       headers,
@@ -493,6 +464,17 @@
     }
     const t = info.trasmissione;
 
+    // Mostra codice in navbar
+    const navCodice = document.getElementById('navCodice');
+    if (navCodice && t.codice) navCodice.textContent = t.codice;
+
+    // Controllo scadenza magic link
+    if (t.expires_at && new Date(t.expires_at) < new Date()) {
+      showAuth();
+      $auth.innerHTML = '<h1 class="serif" style="font-size:36px;">Link scaduto</h1><p class="lede">Chiedi al mittente di reinviarlo.</p>';
+      return;
+    }
+
     // Mostra metadati mittente nella sezione auth
     showAuth();
     const fromBox = document.querySelector('.rcv-from');
@@ -500,23 +482,23 @@
       fromBox.innerHTML = '<div class="seal-mark"><span class="glyph">V</span></div>'
         + '<div>'
         + '<div class="eyebrow">Mittente</div>'
-        + '<div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;">' + (t.mittente_email ?? '-') + '</div>'
+        + '<div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;">' + escapeHtml(t.mittente_email ?? '-') + '</div>'
         + '<div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.06em;">'
-        + 'Codice ' + t.codice + ' . Livello richiesto: ' + t.livello_identita_richiesto.toUpperCase()
+        + 'Codice ' + escapeHtml(t.codice ?? '') + (t.livello_identita_richiesto ? ' &middot; Livello richiesto: ' + escapeHtml(String(t.livello_identita_richiesto).toUpperCase()) : '')
         + '</div>'
         + '<div class="mono" style="font-size: 11.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.06em;">'
-        + 'Trasmesso il ' + new Date(t.created_at).toLocaleString('it-IT')
+        + (t.created_at ? 'Trasmesso il ' + new Date(t.created_at).toLocaleString('it-IT') : '')
         + '</div>'
         + '</div>';
     }
 
-    // Sostituisce i bottoni SPID/CIE/CNS con un solo bottone "Decifra ora"
+    // Un solo bottone "Decifra ora"
     const authOptions = document.querySelector('.auth-options');
     if (authOptions) {
-      authOptions.innerHTML = '<button class="auth-opt selected" id="decryptNowBtn">'
+      authOptions.innerHTML = '<button class="auth-opt selected" type="button" id="decryptNowBtn">'
         + '<div class="ao-letter">A</div>'
         + '<div class="ao-body">'
-        + '<div class="ao-title">Decifra ora (email + magic link)</div>'
+        + '<div class="ao-title">Decifra ora</div>'
         + '<div class="ao-desc">La decifratura avviene sul vostro dispositivo. La chiave privata non viene mai inviata.</div>'
         + '</div>'
         + '<div class="ao-arrow">&rarr;</div>'
@@ -524,6 +506,10 @@
       document.getElementById('decryptNowBtn').addEventListener('click', () => startFlow(t, info.blob_download_url, token));
     }
   })();
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
 
   async function startFlow(t, blobUrl, token) {
     showDecrypt();
@@ -584,10 +570,30 @@
         dlBtn.href = dlUrl;
         dlBtn.download = t.nome_file || 'documento';
       }
+      // Popola dettaglio documento
+      const oNome = document.getElementById('oNome');
+      if (oNome) oNome.textContent = t.nome_file || '(senza nome)';
+      const oExt = document.getElementById('oExt');
+      if (oExt) {
+        const ext = (t.nome_file || '').split('.').pop().toUpperCase().slice(0, 4) || 'FILE';
+        oExt.textContent = ext;
+      }
+      const oMeta = document.getElementById('oMeta');
+      if (oMeta) {
+        const parts = [];
+        if (typeof plainBytes.length === 'number') parts.push(Math.round(plainBytes.length / 1024) + ' KB');
+        if (t.mime) parts.push(t.mime);
+        if (sha) parts.push('SHA-256 ' + sha.slice(0, 8) + ' &hellip; ' + sha.slice(-4));
+        oMeta.innerHTML = parts.join(' &middot; ');
+      }
+      const oMittente = document.getElementById('oMittente');
+      if (oMittente) oMittente.textContent = t.mittente_email || '—';
+      const oInviato = document.getElementById('oInviato');
+      if (oInviato) oInviato.textContent = t.created_at ? new Date(t.created_at).toLocaleString('it-IT') : '—';
       const openedAtEl = document.getElementById('openedAt');
       if (openedAtEl) openedAtEl.textContent = new Date(confirmRes.opened_at).toLocaleString('it-IT', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' });
       const newBlock = document.getElementById('newBlock');
-      if (newBlock) newBlock.textContent = 'in conferma';
+      if (newBlock) newBlock.textContent = 'apposta &middot; in conferma su Bitcoin';
     } catch (err) {
       console.error('decrypt_failed:', err);
       $stepEl.textContent = 'Errore: ' + (err?.message ?? 'sconosciuto');

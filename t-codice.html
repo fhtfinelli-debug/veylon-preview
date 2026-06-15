@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>VEYLON Tag · Verifica certificato</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <meta name="theme-color" content="#fefbf3"/>
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
@@ -214,9 +214,14 @@
 
   </div>
 
-  <script>
-    const SUPABASE_URL = window.VEYLON_SUPABASE_URL ?? 'https://hanxxxtgxofjkfdjegfe.supabase.co';
-    const SUPABASE_ANON_KEY = window.VEYLON_SUPABASE_ANON_KEY ?? '';
+  <script type="module">
+    // Importa il client condiviso per ottenere apikey/Authorization automatici.
+    import { supabase } from "./_shared/supabase-client.js";
+
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+      "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30." +
+      "feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
     const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
 
     function escapeHtml(s) {

@@ -6,6 +6,7 @@
   <title>VEYLON Send · Trasmissione cifrata</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -45,10 +46,6 @@
           <div style="margin-top: 18px;">
             <label class="field-label" for="dest">Email destinatario</label>
             <input class="field-input mono" type="email" id="dest" required placeholder="nome@dominio.it"/>
-          </div>
-          <div style="margin-top: 18px;">
-            <label class="field-label" for="oggetto">Oggetto</label>
-            <input class="field-input" type="text" id="oggetto" required placeholder="Es. Atto di mandato"/>
           </div>
           <div style="margin-top: 18px;">
             <label class="field-label">Livello identità destinatario</label>
@@ -117,7 +114,9 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  const { session } = await protectPage();
+  let session;
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { ({ session } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
   bindLogout("#logout");
 
   const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
@@ -129,7 +128,7 @@
     const sel = document.getElementById("documento");
     const { data, error } = await supabase
       .from("veylon_atti")
-      .select("id, titolo, codice")
+      .select("id, doc_name, sha256")
       .order("created_at", { ascending: false })
       .limit(100);
     if (error || !data || data.length === 0) {
@@ -138,17 +137,19 @@
       return;
     }
     sel.innerHTML = '<option value="">Seleziona un documento…</option>' +
-      data.map(a => `<option value="${escapeHtml(a.id)}">${escapeHtml(a.titolo || a.codice || a.id)}</option>`).join("");
+      data.map(a => {
+        const label = a.doc_name || (a.sha256 ? a.sha256.substring(0, 16) + "…" : a.id);
+        return `<option value="${escapeHtml(a.id)}">${escapeHtml(label)}</option>`;
+      }).join("");
   }
 
   document.getElementById("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
     const atto_id = document.getElementById("documento").value;
     const dest = document.getElementById("dest").value.trim();
-    const oggetto = document.getElementById("oggetto").value.trim();
     const liv = document.querySelector('input[name="liv"]:checked').value;
     const dur = parseInt(document.querySelector('input[name="dur"]:checked').value, 10);
-    if (!atto_id || !dest || !oggetto) { alert("Compila tutti i campi."); return; }
+    if (!atto_id || !dest) { alert("Compila tutti i campi."); return; }
     if (![1,2,3].includes(dur)) { alert("Durata non valida."); return; }
     const btn = document.getElementById("submit");
     btn.disabled = true;
@@ -158,11 +159,11 @@
       const res = await fetch(`${SUPABASE_URL}/functions/v1/send-create`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
-        body: JSON.stringify({ atto_id, destinatario_email: dest, oggetto, livello: liv, expires_in_days: dur }),
+        body: JSON.stringify({ atto_id, destinatario_email: dest, livello_identita_richiesto: liv, expires_in_days: dur }),
       });
       const j = await res.json();
       if (!res.ok || !j.success) throw new Error(j?.error || "errore_invio");
-      document.getElementById("result-codice").textContent = j.codice || j.id || "Inviato";
+      document.getElementById("result-codice").textContent = j.codice_verifica || j.id || "Inviato";
       document.getElementById("result-msg").textContent = "Il destinatario ha ricevuto il link.";
       document.getElementById("result").hidden = false;
       document.getElementById("form").reset();
@@ -184,7 +185,7 @@
     try {
       const { data, error } = await supabase
         .from("trasmissioni")
-        .select("id, destinatario_email, scadenza, stato, created_at")
+        .select("id, destinatario_email, magic_token_expires_at, stato, created_at")
         .order("created_at", { ascending: false })
         .limit(10);
       document.getElementById("state-loading").hidden = true;
@@ -201,7 +202,7 @@
       const tbody = document.getElementById("rows");
       const now = Date.now();
       data.forEach(t => {
-        const sc = t.scadenza ? new Date(t.scadenza).getTime() : null;
+        const sc = t.magic_token_expires_at ? new Date(t.magic_token_expires_at).getTime() : null;
         const scaduta = sc && sc < now;
         const stato = scaduta ? "scaduta" : (t.stato || "attiva");
         const ok = !scaduta;
@@ -209,7 +210,7 @@
         tr.innerHTML = `
           <td>${fmt(t.created_at)}</td>
           <td class="mono">${escapeHtml(t.destinatario_email || "—")}</td>
-          <td class="mono">${fmt(t.scadenza)}</td>
+          <td class="mono">${fmt(t.magic_token_expires_at)}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
         `;
         tbody.appendChild(tr);

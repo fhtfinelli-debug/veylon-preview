@@ -6,6 +6,7 @@
   <title>VEYLON Tag · Emetti</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -82,7 +83,9 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  const { session } = await protectPage();
+  let session;
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { ({ session } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
   bindLogout("#logout");
 
   const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
@@ -90,25 +93,25 @@
   document.getElementById("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
     const payload = {
-      denominazione: document.getElementById("prod").value.trim(),
-      sku: document.getElementById("sku").value.trim() || null,
+      descrizione: document.getElementById("prod").value.trim(),
+      codice_prodotto: document.getElementById("sku").value.trim() || null,
       lotto: document.getElementById("lotto").value.trim() || null,
       applicazione: document.querySelector('input[name="app"]:checked').value,
     };
-    if (!payload.denominazione) { alert("Inserisci la denominazione."); return; }
+    if (!payload.descrizione) { alert("Inserisci la descrizione del prodotto."); return; }
     const btn = document.getElementById("submit");
     btn.disabled = true;
     const original = btn.querySelector(".btn-label").textContent;
     btn.querySelector(".btn-label").textContent = "Emissione…";
     try {
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-emetti`, {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-certificato-crea`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
         body: JSON.stringify(payload),
       });
       const j = await res.json();
       if (!res.ok || !j.success) throw new Error(j?.error || "errore");
-      document.getElementById("result-codice").textContent = j.codice || j.id;
+      document.getElementById("result-codice").textContent = j.codice_pubblico || j.codice || j.id;
       if (j.url) document.getElementById("result-link").textContent = "Verifica: " + j.url;
       document.getElementById("result").hidden = false;
       document.getElementById("form").reset();

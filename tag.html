@@ -6,6 +6,7 @@
   <title>VEYLON Tag · Passaporti digitali</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -80,7 +81,12 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
   bindLogout("#logout");
 
   async function loadKpis() {
@@ -98,9 +104,9 @@
       } catch (e) { return { n: 0, err: e }; }
     }
 
-    const tot = await cnt("tag_prodotti");
-    const att = await cnt("tag_prodotti", q => q.eq("stato", "attivo"));
-    const tra = await cnt("tag_prodotti", q => q.eq("stato", "trasferito"));
+    const tot = await cnt("tag_certificati");
+    const att = await cnt("tag_certificati", q => q.eq("stato", "emesso"));
+    const tra = await cnt("tag_certificati", q => q.eq("stato", "trasferito"));
 
     const anyHard = [tot, att, tra].find(x => x.err && !/relation|does not exist|permission/i.test(x.err.message || ""));
     document.getElementById("state-loading").hidden = true;

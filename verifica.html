@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON · Verifica pubblica di documento</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
 </head>
@@ -37,8 +37,8 @@
     </div>
     <div class="masthead-band">
       <div class="masthead-band-inner">
-        <span>← <a href="index.html" style="color: inherit; border-bottom: 1px solid var(--rule);">Torna all'indice generale</a></span>
-        <span>Bitcoin mainnet · blocco corrente&nbsp;<span class="tabular">874.201</span></span>
+        <span>&larr; <a href="index.html" style="color: inherit; border-bottom: 1px solid var(--rule);">Torna all'indice generale</a></span>
+        <span>Registro Bitcoin pubblico &middot; verifica indipendente</span>
       </div>
     </div>
   </header>
@@ -46,15 +46,15 @@
   <main class="col" style="padding: 64px 32px 96px;">
 
     <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
-      <span class="section-num">Verifica · richiesta n. <span class="tabular" id="reqNum">V&#8209;0001</span></span>
+      <span class="section-num">Verifica documento</span>
       <span class="roman">ii</span>
     </div>
 
     <h1 class="serif" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 20ch;">
-      Verifica pubblica di <em class="serif-italic" style="color: var(--seal);">autenticità.</em>
+      Verifica pubblica di <em class="serif-italic" style="color: var(--seal);">autenticit&agrave;.</em>
     </h1>
     <p class="lede" style="margin-top: 28px;">
-      Controllate l'esistenza e l'integrità di un documento sigillato.
+      Controllate l'esistenza e l'integrit&agrave; di un documento sigillato.
       L'esito si basa esclusivamente sul registro pubblico Bitcoin: VEYLON
       non interviene nel calcolo.
     </p>
@@ -66,11 +66,10 @@
       <!-- COLONNA PRINCIPALE -->
       <section id="main" class="stack-32">
 
-        <!-- Selettore modalità -->
+        <!-- Selettore modalit&agrave; -->
         <div class="tabs">
           <button class="tab active" data-mode="file">Verifica con documento</button>
           <button class="tab" data-mode="hash">Verifica con impronta</button>
-          <button class="tab" data-mode="code">Verifica con codice</button>
         </div>
 
         <!-- MODO: FILE -->
@@ -86,16 +85,8 @@
         <!-- MODO: HASH -->
         <div id="modeHash" class="mode" style="display:none;">
           <label class="field-label" for="hashInput">Impronta SHA-256 (64 caratteri esadecimali)</label>
-          <textarea id="hashInput" class="field-input mono" rows="2" placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" style="resize: vertical; padding: 14px; border: 1px solid var(--rule); background: var(--paper);"></textarea>
+          <textarea id="hashInput" class="field-input mono" rows="2" placeholder="es. 3a7b1cf2&hellip;" style="resize: vertical; padding: 14px; border: 1px solid var(--rule); background: var(--paper);"></textarea>
           <button class="btn seal lg" id="hashGo" style="margin-top: 20px;">Verifica impronta <span class="arrow"></span></button>
-        </div>
-
-        <!-- MODO: CODICE -->
-        <div id="modeCode" class="mode" style="display:none;">
-          <label class="field-label" for="codeInput">Codice di protocollo VEYLON</label>
-          <input id="codeInput" class="field-input mono" type="text" placeholder="VLN-2026-248917-AC4F" style="font-size: 18px; letter-spacing: 0.08em;"/>
-          <p class="small" style="margin-top: 8px;">Reperibile sul certificato di autenticità o nelle ricevute di consegna.</p>
-          <button class="btn seal lg" id="codeGo" style="margin-top: 20px;">Verifica codice <span class="arrow"></span></button>
         </div>
 
         <!-- STATO DI CALCOLO -->
@@ -105,7 +96,7 @@
               <div class="dot-spinner"></div>
               <div>
                 <div class="eyebrow">Procedura di verifica</div>
-                <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;" id="workStep">Calcolo dell'impronta locale…</div>
+                <div class="serif" style="font-size: 22px; line-height: 1.2; margin-top: 4px;" id="workStep">Calcolo dell'impronta locale&hellip;</div>
               </div>
             </div>
             <ol class="checklist" id="checklist">
@@ -119,7 +110,7 @@
 
         <!-- ESITO POSITIVO -->
         <div id="resultOk" style="display:none;">
-          <div class="ornament" style="margin: 0 0 32px;">⁂</div>
+          <div class="ornament" style="margin: 0 0 32px;">&#8262;</div>
           <div class="verdict ok">
             <div class="verdict-mark">
               <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -133,48 +124,42 @@
                 Documento <em class="serif-italic verify-c">autentico.</em>
               </h2>
               <p class="lede" style="font-size: 18px; margin: 0;">
-                L'impronta è inscritta nel registro pubblico Bitcoin alla data
-                indicata. L'integrità del documento è confermata.
+                L'impronta &egrave; inscritta nel registro pubblico Bitcoin alla data
+                indicata. L'integrit&agrave; del documento &egrave; confermata.
               </p>
             </div>
           </div>
 
           <div class="receipt" style="margin-top: 40px;">
-            <div class="eyebrow seal-c" style="margin-bottom: 24px;">Attestazione di verifica · n. <span id="vNum">V-2026-00482</span></div>
+            <div class="eyebrow seal-c" style="margin-bottom: 24px;">Attestazione di verifica</div>
             <div class="receipt-grid">
               <div class="receipt-row">
                 <div class="receipt-key">Documento</div>
-                <div class="receipt-val serif-italic" id="vDoc">Atto di mandato — Rep. n. 14.882/2026</div>
-              </div>
-              <div class="receipt-row">
-                <div class="receipt-key">Titolare del sigillo</div>
-                <div class="receipt-val" id="vHolder">Studio Notarile Bertolaso &amp; Associati</div>
+                <div class="receipt-val serif-italic" id="vDoc">&mdash;</div>
               </div>
               <div class="receipt-row">
                 <div class="receipt-key">Impronta SHA-256</div>
-                <div class="receipt-val mono" id="vHash">e3b0 c442 98fc 1c14 9afb f4c8 996f b924 27ae 41e4 649b 934c a495 991b 7852 b855</div>
+                <div class="receipt-val mono" id="vHash">&mdash;</div>
               </div>
               <div class="receipt-row">
-                <div class="receipt-key">Protocollo</div>
-                <div class="receipt-val mono" id="vProto">VLN-2026-248917-E3B0</div>
+                <div class="receipt-key">Stato OpenTimestamps</div>
+                <div class="receipt-val mono" id="vOts">&mdash;</div>
               </div>
               <div class="receipt-row">
                 <div class="receipt-key">Data certa</div>
-                <div class="receipt-val mono" id="vDate">12 mag 2026 · 09:14:22 CEST</div>
+                <div class="receipt-val mono" id="vDate">&mdash;</div>
               </div>
               <div class="receipt-row">
                 <div class="receipt-key">Blocco Bitcoin</div>
-                <div class="receipt-val mono" id="vBlock">#&nbsp;871.508 · merkle path 12 livelli</div>
+                <div class="receipt-val mono" id="vBlock">&mdash;</div>
               </div>
               <div class="receipt-row" style="border-bottom: 0;">
-                <div class="receipt-key">Eseguita il</div>
-                <div class="receipt-val mono" id="vNow">—</div>
+                <div class="receipt-key">Verificata il</div>
+                <div class="receipt-val mono" id="vNow">&mdash;</div>
               </div>
             </div>
 
             <div class="row row-gap" style="margin-top: 36px; flex-wrap: wrap;">
-              <a class="btn" href="certificato.html">Apri certificato</a>
-              <button class="btn ghost" id="downloadAtt">Scarica attestazione · PDF</button>
               <button class="btn ghost" id="newVerify">Verifica un altro</button>
             </div>
           </div>
@@ -182,7 +167,7 @@
 
         <!-- ESITO NEGATIVO -->
         <div id="resultKo" style="display:none;">
-          <div class="ornament" style="margin: 0 0 32px;">⁂</div>
+          <div class="ornament" style="margin: 0 0 32px;">&#8262;</div>
           <div class="verdict ko">
             <div class="verdict-mark">
               <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -195,7 +180,7 @@
               <h2 class="serif" style="font-size: 44px; line-height: 1; margin: 8px 0 6px;">
                 Documento <em class="serif-italic seal-c">non corrispondente.</em>
               </h2>
-              <p class="lede" style="font-size: 18px; margin: 0;">
+              <p class="lede" style="font-size: 18px; margin: 0;" id="koMsg">
                 L'impronta indicata non risulta inscritta nel registro VEYLON.
                 Il documento potrebbe essere stato alterato o non essere mai
                 stato sigillato.
@@ -207,7 +192,7 @@
             <div class="receipt-grid">
               <div class="receipt-row">
                 <div class="receipt-key">Impronta esaminata</div>
-                <div class="receipt-val mono" id="kHash">—</div>
+                <div class="receipt-val mono" id="kHash">&mdash;</div>
               </div>
               <div class="receipt-row" style="border-bottom: 0;">
                 <div class="receipt-key">Esito</div>
@@ -229,7 +214,7 @@
         <div class="sidebar-block">
           <div class="eyebrow seal-c">Indipendenza della verifica</div>
           <p class="body" style="font-size: 13px; margin-top: 8px;">
-            La prova è <em class="serif-italic">self-contained.</em> Il riscontro
+            La prova &egrave; <em class="serif-italic">self-contained.</em> Il riscontro
             si fonda sulla blockchain pubblica Bitcoin: <em class="serif-italic">resta
             valido</em> anche in assenza di VEYLON.
           </p>
@@ -239,7 +224,7 @@
           <div class="eyebrow seal-c">Cosa viene controllato</div>
           <ul class="sidebar-list">
             <li>Esistenza dell'impronta nel registro</li>
-            <li>Validità della prova OpenTimestamps</li>
+            <li>Validit&agrave; della prova OpenTimestamps</li>
             <li>Inclusione in blocco confermato</li>
             <li>Coerenza del merkle path</li>
           </ul>
@@ -248,7 +233,7 @@
         <div class="sidebar-block">
           <div class="eyebrow">Cosa non viene rivelato</div>
           <p class="body" style="font-size: 13px; margin-top: 8px;">
-            Il contenuto del documento non transita né viene mostrato. La
+            Il contenuto del documento non transita n&eacute; viene mostrato. La
             verifica opera esclusivamente sull'impronta.
           </p>
         </div>
@@ -257,81 +242,10 @@
     </div>
   </main>
 
-  <!-- ============================================================
-       § III — REGISTRO PUBBLICO DI VERIFICA
-  ============================================================= -->
-  <section class="public-registry">
-    <div class="col">
-      <div class="row-between" style="align-items: flex-end; margin-bottom: 32px;">
-        <div>
-          <span class="section-num">§ III &mdash; Registro pubblico</span>
-          <h2 class="serif" style="font-size: clamp(32px, 4vw, 42px); line-height: 1.05; margin-top: 14px; max-width: 22ch;">
-            Cercare un codice nel <em class="serif-italic" style="color: var(--seal);">registro pubblico.</em>
-          </h2>
-          <p class="lede" style="margin-top: 16px; max-width: 50ch;">
-            Chiunque, senza credenziali, può sottoporre un codice di verifica e
-            ottenere l'esito basato sull'ancoraggio Bitcoin.
-          </p>
-        </div>
-        <span class="roman">iii</span>
-      </div>
-
-      <!-- Form di ricerca -->
-      <div class="reg-search-wrap">
-        <label class="field-label" for="regCode" style="font-size: 11px;">Codice di verifica</label>
-        <div class="reg-search-row">
-          <input class="field-input mono" id="regCode" type="text" placeholder="VLN-2026-… · APT-GAR-… · VLN-TAG-… · VLN-FRM-… · VLN-CRT-…" style="font-size: 18px; letter-spacing: 0.08em; padding: 12px 0 14px;"/>
-          <button class="btn seal" id="regGo" onclick="lookupCode()" style="white-space: nowrap;">Cerca <span class="arrow"></span></button>
-        </div>
-        <p class="small" style="margin-top: 10px; color: var(--ink-3);">
-          Prefissi accettati: <span class="mono">VLN-</span> (sigilli &amp; firme), <span class="mono">APT-GAR-</span> (garanzie d'appalto), <span class="mono">VLN-TAG-</span> (passaporti prodotto), <span class="mono">VLN-CRT-</span> (titoli istituzionali).
-        </p>
-      </div>
-
-      <!-- Risultato (nascosto inizialmente) -->
-      <div id="regResult" style="display:none; margin-top: 32px;"></div>
-
-      <!-- Verifiche recenti -->
-      <div style="margin-top: 56px;">
-        <div class="eyebrow seal-c" style="margin-bottom: 16px;">Verifiche recenti &middot; ultime 8</div>
-        <table class="reg-tbl">
-          <thead>
-            <tr>
-              <th style="width: 110px;">Quando</th>
-              <th style="width: 220px;">Codice</th>
-              <th>Tipo &amp; oggetto</th>
-              <th style="width: 130px;">Esito</th>
-            </tr>
-          </thead>
-          <tbody id="recentTbody"></tbody>
-        </table>
-      </div>
-
-      <!-- Nota onesta -->
-      <div class="honest-note" style="margin-top: 48px;">
-        <div class="hn-head">
-          <span class="hn-mark">i</span>
-          <div class="eyebrow seal-c">Cosa conferma la verifica</div>
-        </div>
-        <p class="hn-body">
-          L'esito attesta che il <em class="serif-italic">record</em> del documento
-          non è stato alterato dalla data di emissione e che la sua data certa è
-          inscritta nel registro pubblico Bitcoin.
-        </p>
-        <p class="hn-body">
-          Non attesta l'autenticità fisica dell'oggetto a cui il codice è
-          associato. Per il riscontro fisico (es. capsula, sigillo olografico,
-          NFC abbinato) si rinvia ai supporti scelti dal titolare.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
   <footer class="footer">
     <div class="footer-base">
-      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
-      <span>Sezione II — Verifica</span>
+      <span>&copy; MMXXVI &middot; Veylon S.r.l. &middot; Servizio fiduciario digitale</span>
+      <span>Sezione II &mdash; Verifica</span>
     </div>
   </footer>
 
@@ -353,6 +267,7 @@
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     transition: color .15s, border-color .15s;
+    cursor: pointer;
   }
   .tab:hover { color: var(--ink); }
   .tab.active { color: var(--ink); border-bottom-color: var(--seal); }
@@ -470,510 +385,156 @@
     .verdict { grid-template-columns: 1fr; gap: 20px; }
     .receipt-row { grid-template-columns: 1fr; gap: 4px; }
   }
-
-  /* ============================================================
-     § III — REGISTRO PUBBLICO
-  ============================================================= */
-  .public-registry {
-    background: var(--paper-2);
-    border-top: var(--hairline-strong);
-    border-bottom: var(--hairline-strong);
-    padding: 80px 0;
-    margin-top: 0;
-  }
-  .reg-search-wrap {
-    background: var(--paper);
-    border: 1px solid var(--ink);
-    padding: 24px 28px;
-  }
-  .reg-search-row {
-    display: flex; gap: 16px; align-items: center;
-  }
-  .reg-search-row .field-input {
-    flex: 1;
-    border-bottom: var(--hairline-strong);
-  }
-  .reg-result {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    padding: 28px 32px;
-  }
-  .reg-result.ok { border-left: 4px solid var(--verify); }
-  .reg-result.ko { border-left: 4px solid var(--seal); }
-  .reg-result.warn { border-left: 4px solid var(--amber); }
-  .reg-result-head {
-    display: grid;
-    grid-template-columns: 56px 1fr auto;
-    gap: 22px;
-    align-items: center;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: var(--hairline);
-  }
-  .reg-result .verdict-icon {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    display: grid; place-items: center;
-    color: var(--paper);
-  }
-  .reg-result.ok .verdict-icon { background: var(--verify); }
-  .reg-result.ko .verdict-icon { background: var(--seal); }
-  .reg-result.warn .verdict-icon { background: var(--amber); color: var(--ink); }
-  .reg-result h3 {
-    font-size: 26px; line-height: 1.1; margin: 4px 0 4px;
-    letter-spacing: -0.01em;
-  }
-  .reg-result-grid { display: flex; flex-direction: column; }
-  .reg-row {
-    display: grid; grid-template-columns: 200px 1fr; gap: 24px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--rule-2);
-    align-items: baseline;
-  }
-  .reg-row:last-child { border-bottom: 0; }
-  .reg-k {
-    font-family: var(--mono); font-size: 11px;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .reg-v { font-size: 14px; color: var(--ink); word-break: break-word; }
-  .reg-v.mono { font-family: var(--mono); font-size: 13px; }
-  .reg-v.serif-italic { font-family: var(--serif); font-style: italic; font-size: 18px; }
-
-  .reg-tbl {
-    width: 100%; border-collapse: collapse;
-    background: var(--paper);
-    border: 1px solid var(--rule);
-  }
-  .reg-tbl th {
-    text-align: left; padding: 14px 16px;
-    font-family: var(--mono); font-size: 10.5px;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
-    border-bottom: 1px solid var(--rule);
-    background: var(--paper-2);
-  }
-  .reg-tbl td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--rule-2);
-    font-size: 13px; color: var(--ink-2);
-    vertical-align: top;
-  }
-  .reg-tbl td.mono { font-family: var(--mono); font-size: 12px; }
-  .reg-tbl tr:last-child td { border-bottom: 0; }
-  .reg-tbl tbody tr { cursor: pointer; transition: background .15s; }
-  .reg-tbl tbody tr:hover { background: var(--paper-2); }
-
-  .honest-note {
-    padding: 18px 22px;
-    border: 1px solid var(--rule);
-    background: var(--paper);
-  }
-  .hn-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .hn-mark {
-    width: 22px; height: 22px;
-    border: 1px solid var(--seal);
-    color: var(--seal);
-    font-family: var(--serif); font-style: italic; font-size: 13px;
-    display: grid; place-items: center; line-height: 1;
-    flex-shrink: 0;
-  }
-  .hn-body {
-    font-family: var(--serif); font-size: 14px; line-height: 1.5;
-    color: var(--ink-2); margin: 0 0 8px;
-  }
-  .hn-body:last-child { margin-bottom: 0; }
-
-  @media (max-width: 720px) {
-    .reg-search-row { flex-direction: column; align-items: stretch; }
-    .reg-result-head { grid-template-columns: 1fr; }
-    .reg-row { grid-template-columns: 1fr; gap: 4px; }
-    .reg-tbl thead { display: none; }
-    .reg-tbl td { display: block; padding: 6px 16px; border: 0; }
-    .reg-tbl tr { display: block; padding: 16px 0; border-bottom: 1px solid var(--rule); }
-  }
   </style>
 
-  <script>
-  const el = id => document.getElementById(id);
+  <script type="module">
+  // ===========================================================================
+  // VEYLON Verifica pubblica - chiama veylon-verifica (Edge Function)
+  // ===========================================================================
+  import { supabase, signOut } from "./_shared/supabase-client.js";
+
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30." +
+    "feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+
+  const el = (id) => document.getElementById(id);
+
+  // Logout (l'utente puo' essere loggato o no)
+  el("logout")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    signOut("login.html?signedout=ok");
+  });
 
   // Tabs
-  document.querySelectorAll('.tab').forEach(t => {
-    t.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-      t.classList.add('active');
-      document.querySelectorAll('.mode').forEach(m => m.style.display = 'none');
-      el('mode' + t.dataset.mode[0].toUpperCase() + t.dataset.mode.slice(1)).style.display = 'block';
+  document.querySelectorAll(".tab").forEach((t) => {
+    t.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach((x) => x.classList.remove("active"));
+      t.classList.add("active");
+      document.querySelectorAll(".mode").forEach((m) => m.style.display = "none");
+      const id = "mode" + t.dataset.mode[0].toUpperCase() + t.dataset.mode.slice(1);
+      el(id).style.display = "block";
     });
   });
 
   // File drop
-  const drop = el('drop'), fileInput = el('file');
-  drop.addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', e => onFile(e.target.files[0]));
-  ['dragover','dragenter'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
-  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
-  drop.addEventListener('drop', e => { e.preventDefault(); onFile(e.dataTransfer.files[0]); });
+  const drop = el("drop");
+  const fileInput = el("file");
+  drop.addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", (e) => onFile(e.target.files[0]));
+  ["dragover", "dragenter"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", (e) => {
+    e.preventDefault();
+    onFile(e.dataTransfer.files[0]);
+  });
 
   async function onFile(file) {
     if (!file) return;
     await runVerification(async () => {
       const buf = await file.arrayBuffer();
-      const digest = await crypto.subtle.digest('SHA-256', buf);
-      return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+      const digest = await crypto.subtle.digest("SHA-256", buf);
+      return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
     }, { docName: file.name });
   }
 
-  el('hashGo').addEventListener('click', async () => {
-    const h = el('hashInput').value.trim().toLowerCase().replace(/\s+/g,'');
-    if (!/^[0-9a-f]{64}$/.test(h)) { alert('Impronta non valida: attese 64 cifre esadecimali.'); return; }
+  el("hashGo").addEventListener("click", async () => {
+    const h = el("hashInput").value.trim().toLowerCase().replace(/\s+/g, "");
+    if (!/^[0-9a-f]{64}$/.test(h)) {
+      alert("Impronta non valida: attese 64 cifre esadecimali.");
+      return;
+    }
     await runVerification(async () => h);
   });
 
-  el('codeGo').addEventListener('click', async () => {
-    const c = el('codeInput').value.trim().toUpperCase();
-    if (!c) return;
-    // Cerca nel registro locale
-    const ledger = JSON.parse(localStorage.getItem('veylon_ledger') || '[]');
-    const found = ledger.find(x => x.proto === c);
-    await runVerification(async () => found ? found.hash : 'X'.repeat(64), { docName: found?.doc, holder: found?.holder, proto: c });
-  });
-
   async function runVerification(hashFn, extra = {}) {
-    // Reset
-    ['modeFile','modeHash','modeCode','resultOk','resultKo'].forEach(id => { const e = el(id); if (e) e.style.display = 'none'; });
-    document.querySelector('.tabs').style.display = 'none';
-    el('working').style.display = 'block';
-    el('working').classList.add('fade-in');
+    ["modeFile", "modeHash", "resultOk", "resultKo"].forEach((id) => {
+      const e = el(id);
+      if (e) e.style.display = "none";
+    });
+    document.querySelector(".tabs").style.display = "none";
+    el("working").style.display = "block";
+    el("working").classList.add("fade-in");
 
-    const steps = el('checklist').querySelectorAll('li');
-    const workStep = el('workStep');
+    const steps = el("checklist").querySelectorAll("li");
+    const workStep = el("workStep");
     const labels = [
-      'Calcolo dell\'impronta locale…',
-      'Interrogazione del registro VEYLON…',
-      'Verifica della prova OpenTimestamps…',
-      'Riscontro su blocco Bitcoin…'
+      "Calcolo dell'impronta locale…",
+      "Interrogazione del registro VEYLON…",
+      "Verifica della prova OpenTimestamps…",
+      "Riscontro su blocco Bitcoin…",
     ];
 
-    steps[0].classList.add('active');
+    steps[0].classList.add("active");
     workStep.textContent = labels[0];
     const hash = await hashFn();
-    await new Promise(r => setTimeout(r, 350));
-    steps[0].classList.remove('active'); steps[0].classList.add('done');
+    steps[0].classList.remove("active");
+    steps[0].classList.add("done");
 
-    for (let i = 1; i < 4; i++) {
-      steps[i].classList.add('active');
-      workStep.textContent = labels[i];
-      await new Promise(r => setTimeout(r, 550 + Math.random() * 400));
-      steps[i].classList.remove('active'); steps[i].classList.add('done');
-    }
+    // Step 2: chiamata server
+    steps[1].classList.add("active");
+    workStep.textContent = labels[1];
 
-    await new Promise(r => setTimeout(r, 300));
-
-    // Decisione: confronta con il registro locale; altrimenti, hash valido => OK demo
-    const ledger = JSON.parse(localStorage.getItem('veylon_ledger') || '[]');
-    const match = ledger.find(x => x.hash === hash);
-
-    el('working').style.display = 'none';
-
-    const isOk = !!match || (/^[0-9a-f]{64}$/.test(hash) && !extra.proto); // demo: file/hash validi => ok
-    if (isOk) {
-      el('resultOk').style.display = 'block';
-      el('resultOk').classList.add('rise');
-      if (match) {
-        el('vDoc').textContent = match.doc;
-        el('vHolder').textContent = match.holder || 'Titolare riservato';
-        el('vProto').textContent = match.proto;
-        el('vDate').textContent = new Date(match.date).toLocaleString('it-IT', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' CEST';
-      } else if (extra.docName) {
-        el('vDoc').textContent = extra.docName;
+    let data;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/veylon-verifica`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({ sha256: hash }),
+      });
+      data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || ("http_" + res.status));
       }
-      el('vHash').textContent = hash.match(/.{1,4}/g).join(' ');
-      el('vNow').textContent = new Date().toLocaleString('it-IT', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' CEST';
+    } catch (err) {
+      console.error("verifica_failed", err);
+      steps[1].classList.remove("active");
+      el("working").style.display = "none";
+      el("resultKo").style.display = "block";
+      el("kHash").textContent = hash.match(/.{1,4}/g).join(" ");
+      el("koMsg").textContent = "Errore di rete: " + (err?.message ?? "sconosciuto");
+      return;
+    }
+
+    steps[1].classList.remove("active");
+    steps[1].classList.add("done");
+
+    // Step 3 + 4 sono concettuali (la function li fa lato server). Marchiamoli done.
+    steps[2].classList.add("done");
+    steps[3].classList.add("done");
+
+    el("working").style.display = "none";
+
+    if (data.valido) {
+      el("resultOk").style.display = "block";
+      el("resultOk").classList.add("rise");
+
+      el("vDoc").textContent = data.doc_name || extra.docName || "(senza nome)";
+      el("vHash").textContent = hash.match(/.{1,4}/g).join(" ");
+      el("vOts").textContent = data.ots_status || "—";
+      el("vDate").textContent = data.data_certa
+        ? new Date(data.data_certa).toLocaleString("it-IT", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" })
+        : "—";
+      el("vBlock").textContent = data.btc_block_height
+        ? "# " + data.btc_block_height
+        : (data.ancorato_su_bitcoin ? "confermato" : "in attesa di blocco");
+      el("vNow").textContent = new Date().toLocaleString("it-IT", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" });
     } else {
-      el('resultKo').style.display = 'block';
-      el('resultKo').classList.add('rise');
-      el('kHash').textContent = hash.match(/.{1,4}/g).join(' ');
+      el("resultKo").style.display = "block";
+      el("resultKo").classList.add("rise");
+      el("kHash").textContent = hash.match(/.{1,4}/g).join(" ");
+      el("koMsg").textContent = data.messaggio || "L'impronta indicata non risulta inscritta nel registro VEYLON. Il documento potrebbe essere stato alterato o non essere mai stato sigillato.";
     }
   }
 
-  ['newVerify','newVerify2','downloadAtt'].forEach(id => {
-    const e = el(id); if (e && id !== 'downloadAtt') e.addEventListener('click', () => location.reload());
+  ["newVerify", "newVerify2"].forEach((id) => {
+    const e = el(id);
+    if (e) e.addEventListener("click", () => location.reload());
   });
-
-  // Numero richiesta casuale
-  el('reqNum').textContent = 'V-' + (Math.floor(Math.random() * 9000) + 1000);
-
-  // ============================================================
-  // § III — REGISTRO PUBBLICO
-  // ============================================================
-  const REGISTRY = {
-    // SIGILLI — VLN-AAAA-NNNNNN-XXXX
-    'VLN-2026-248917-AC4F': {
-      kind: 'Sigillo documentale',
-      title: 'Atto di mandato — Rep. n. 14.882/2026',
-      issuer: 'Studio Notarile Bertolaso & Associati',
-      issued: '7 giugno 2026 · ore 14:38 CEST',
-      hash: 'e3b0 c442 98fc 1c14 9afb f4c8 996f b924 27ae 41e4 649b 934c a495 991b 7852 b855',
-      block: '874.201',
-      status: 'ok'
-    },
-    'VLN-2026-248912-D71B': {
-      kind: 'Sigillo documentale',
-      title: 'Verbale assemblea straordinaria — Lemania S.p.A.',
-      issuer: 'Studio Notarile Bertolaso & Associati',
-      issued: '7 giugno 2026 · ore 11:22 CEST',
-      hash: 'd71b 7e6c 8a9f 3210 ab44 ce91 024f 5e6a 7c8b 9d0e 1f20 3456 7890 abcd ef12 3456',
-      block: '874.198',
-      status: 'ok'
-    },
-    'VLN-2026-248904-9F02': {
-      kind: 'Sigillo documentale',
-      title: 'Contratto preliminare di compravendita — Via Po 14, Torino',
-      issuer: 'Studio Notarile Bertolaso & Associati',
-      issued: '6 giugno 2026 · ore 17:04 CEST',
-      hash: '9f02 ac1d 3b5e 7c9f 8a6b 4d2e 1c3a 5f7b 9d8e 6c4a 2b1f 3e5d 7c9b 8a6f 4e2d 1c3a',
-      block: '874.182',
-      status: 'ok'
-    },
-    // GARANZIE
-    'APT-GAR-2026-AB12CD': {
-      kind: 'Garanzia definitiva · Art. 117 D.Lgs. 36/2023',
-      title: 'Lavori di ristrutturazione plesso scolastico — Lotto III',
-      issuer: 'Banca del Piemonte — succ. Torino Centro',
-      issued: '12 maggio 2026 · ore 11:08 CEST',
-      hash: 'e3b0 c442 98fc 1c14 … b855',
-      block: '871.508',
-      status: 'ok',
-      extra: { 'Stazione appaltante': 'Comune di Mortara', 'Importo': '€\u00a0842.500,00', 'Scadenza': '14 luglio 2026' }
-    },
-    'APT-GAR-2026-9E4F02': {
-      kind: 'Garanzia provvisoria · Art. 106 D.Lgs. 36/2023',
-      title: 'Forniture sanitarie — gara CIG 9876543210',
-      issuer: 'UnipolSai Assicurazioni — agenzia Roma EUR',
-      issued: '3 giugno 2026 · ore 09:32 CEST',
-      hash: '9e4f 0273 b81c d54a … 31bd',
-      block: '873.842',
-      status: 'ok',
-      extra: { 'Stazione appaltante': 'ASL Roma 2', 'Importo': '€\u00a038.200,00', 'Scadenza': '28 agosto 2026' }
-    },
-    'APT-GAR-2026-7C1B98': {
-      kind: 'Garanzia di anticipazione · Art. 125 D.Lgs. 36/2023',
-      title: 'Opere di urbanizzazione primaria — Comune di Mortara',
-      issuer: 'Generali Italia — agenzia Milano Centrale',
-      issued: 'in formazione · bozza non ancora emessa',
-      hash: '7c1b 98e2 4d8a 6f23 … 9c47',
-      block: null,
-      status: 'warn',
-      extra: { 'Operatore economico': 'Costruzioni Lemania S.p.A.', 'Importo': '€\u00a0215.000,00' }
-    },
-    'APT-GAR-2026-5A8D43': {
-      kind: 'Garanzia definitiva · Art. 117 D.Lgs. 36/2023',
-      title: 'Manutenzione impianti termici — Comune di Torino',
-      issuer: 'Cattolica Assicurazioni',
-      issued: '18 febbraio 2026 · ore 10:14 CEST',
-      hash: '5a8d 4320 9bf1 e72c … d089',
-      block: '870.318',
-      status: 'ok',
-      extra: { 'Importo': '€\u00a0124.800,00', 'Scadenza': '31 dicembre 2026' }
-    },
-    'APT-GAR-2026-2F71A0': {
-      kind: 'Garanzia provvisoria · Art. 106 D.Lgs. 36/2023',
-      title: 'Servizi di mensa scolastica — Comune di Vercelli',
-      issuer: 'Allianz S.p.A. — agenzia Vercelli',
-      issued: '14 aprile 2026 · ore 15:22 CEST',
-      hash: '2f71 a094 c83d 17ee … 6bc2',
-      block: '871.842',
-      status: 'ok',
-      extra: { 'Importo': '€\u00a019.450,00', 'Esito': 'svincolata il 22 maggio 2026' }
-    },
-    // TAG (passaporti prodotto)
-    'VLN-TAG-2026-A8F4C2D1': {
-      kind: 'Passaporto digitale prodotto · DPP UE 2024/1781',
-      title: 'Cronografo Lemania 1873 — Ed. Numerata · pezzo 00248',
-      issuer: 'Maison Genève S.A. · CHE-104.418.762',
-      issued: '12 marzo 2026 · ore 09:48 CEST',
-      hash: 'a8f4 c2d1 5f7b 9d8e … 7b39',
-      block: '874.018',
-      status: 'ok',
-      extra: { 'Lotto': '2026/03-A', 'Origine': 'IT', 'Tag fisico': 'NFC NTAG 213' }
-    },
-    // CERT (titoli istituzionali)
-    'VLN-CRT-2026-MAT-04812': {
-      kind: 'Diploma di Laurea Magistrale',
-      title: 'Matematica Applicata — Marco Vitali · 110/110 e lode',
-      issuer: 'Università degli Studi di Bologna — Dip. Matematica',
-      issued: '14 marzo 2026 · ore 11:08 CEST',
-      hash: '04812 e3b0 c442 98fc 1c14 9afb f4c8 996f',
-      block: '874.018',
-      status: 'ok'
-    },
-    // FIRME
-    'VLN-FRM-2026-5A8D43': {
-      kind: 'Atto di firma elettronica avanzata · FEA',
-      title: 'Atto transattivo — Vitali / Lemania S.p.A.',
-      issuer: 'Studio Notarile Bertolaso & Associati',
-      issued: '5 giugno 2026 · ore 17:08 CEST',
-      hash: '5a8d 4320 9bf1 e72c … d089',
-      block: '874.174',
-      status: 'ok',
-      extra: { 'Firmatari': '2 di 2 apposte' }
-    },
-    'VLN-FRM-2026-2F71A0': {
-      kind: 'Atto di firma elettronica avanzata · FEA',
-      title: 'Verbale assemblea S.r.l. — Hekla Studio',
-      issuer: 'Hekla Studio S.r.l.',
-      issued: '4 giugno 2026 · ore 10:30 CEST',
-      hash: '2f71 a094 c83d 17ee … 6bc2',
-      block: '874.120',
-      status: 'ok',
-      extra: { 'Firmatari': '3 di 3 apposte' }
-    },
-    'VLN-FRM-2026-1A4E55': {
-      kind: 'Atto di firma elettronica avanzata · FEA',
-      title: 'Contratto di subfornitura — Mortara Lotto III',
-      issuer: 'Studio Notarile Bertolaso & Associati',
-      issued: '29 maggio 2026 · ore 11:14 CEST',
-      hash: '1a4e 55c3 8d12 7c9f … 8d12',
-      block: '873.842',
-      status: 'warn',
-      extra: { 'Stato': 'pratica scaduta — firma non apposta' }
-    },
-    'VLN-FRM-2026-7C1B98': {
-      kind: 'Atto di firma elettronica avanzata · FEA',
-      title: 'Mandato professionale — Cliente Vitali Costruzioni',
-      issuer: 'Studio Notarile Bertolaso & Associati',
-      issued: '6 giugno 2026 · ore 15:42 CEST',
-      hash: '7c1b 98e2 4d8a 6f23 … 9c47',
-      block: '874.198',
-      status: 'ok',
-      extra: { 'Firmatari': '1 di 2 apposte · 1 in attesa' }
-    }
-  };
-
-  function escapeReg(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]));}
-
-  function lookupCode(prefill) {
-    const code = (prefill || document.getElementById('regCode').value).trim().toUpperCase();
-    if (!code) return;
-    document.getElementById('regCode').value = code;
-    const rec = REGISTRY[code];
-    const out = document.getElementById('regResult');
-
-    if (!rec) {
-      out.innerHTML = `
-        <div class="reg-result ko">
-          <div class="reg-result-head">
-            <div class="verdict-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6 L18 18 M18 6 L6 18"/></svg>
-            </div>
-            <div>
-              <div class="eyebrow seal-c">Esito</div>
-              <h3 class="serif">Codice <em class="serif-italic seal-c">non trovato.</em></h3>
-              <p class="body" style="margin: 6px 0 0; font-size: 14px; max-width: 50ch;">Il codice <span class="mono">${escapeReg(code)}</span> non risulta inscritto nel registro pubblico. Verificare l'esattezza del codice o contattare l'emittente.</p>
-            </div>
-          </div>
-        </div>`;
-    } else {
-      const statusClass = rec.status === 'ok' ? 'ok' : rec.status === 'ko' ? 'ko' : 'warn';
-      const verdictTitle = rec.status === 'ok' ? 'Record <em class="serif-italic verify-c">verificato.</em>' :
-                          rec.status === 'ko' ? 'Record <em class="serif-italic seal-c">revocato.</em>' :
-                          'Record <em class="serif-italic" style="color: var(--amber);">in formazione.</em>';
-      const verdictSub = rec.status === 'ok' ? "Il record è integro e ancorato al registro pubblico Bitcoin." :
-                        rec.status === 'ko' ? "Il record risulta revocato dall'emittente." :
-                        "Il record è in stesura e non è ancora stato ancorato.";
-      const icon = rec.status === 'ok' ?
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12 L10 17 L19 7" stroke-linecap="square"/></svg>' :
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7 V13"/><circle cx="12" cy="17" r="0.8" fill="currentColor"/></svg>';
-
-      const extras = rec.extra ? Object.entries(rec.extra).map(([k,v]) =>
-        `<div class="reg-row"><div class="reg-k">${escapeReg(k)}</div><div class="reg-v">${escapeReg(v)}</div></div>`
-      ).join('') : '';
-
-      out.innerHTML = `
-        <div class="reg-result ${statusClass}">
-          <div class="reg-result-head">
-            <div class="verdict-icon">${icon}</div>
-            <div>
-              <div class="eyebrow seal-c">Esito</div>
-              <h3 class="serif">${verdictTitle}</h3>
-              <p class="body" style="margin: 6px 0 0; font-size: 14px; max-width: 56ch;">${verdictSub}</p>
-            </div>
-          </div>
-          <div class="reg-result-grid">
-            <div class="reg-row"><div class="reg-k">Codice</div><div class="reg-v mono" style="font-size: 16px;">${escapeReg(code)}</div></div>
-            <div class="reg-row"><div class="reg-k">Tipo</div><div class="reg-v">${escapeReg(rec.kind)}</div></div>
-            <div class="reg-row"><div class="reg-k">Oggetto</div><div class="reg-v serif-italic">${escapeReg(rec.title)}</div></div>
-            <div class="reg-row"><div class="reg-k">Emittente</div><div class="reg-v">${escapeReg(rec.issuer)}</div></div>
-            <div class="reg-row"><div class="reg-k">Data certa</div><div class="reg-v mono">${escapeReg(rec.issued)}</div></div>
-            <div class="reg-row"><div class="reg-k">Hash del record</div><div class="reg-v mono" style="word-break: break-all; line-height: 1.6;">${escapeReg(rec.hash)}</div></div>
-            <div class="reg-row"><div class="reg-k">Blocco Bitcoin</div><div class="reg-v mono">${rec.block ? '#&nbsp;' + rec.block : '— non ancora ancorato —'}</div></div>
-            ${extras}
-          </div>
-        </div>`;
-    }
-    out.style.display = 'block';
-    out.scrollIntoView({behavior:'smooth', block:'start'});
-
-    // Aggiungi a verifiche recenti
-    pushRecent(code, rec);
-  }
-
-  // Enter per cercare
-  document.getElementById('regCode').addEventListener('keypress', e => {
-    if (e.key === 'Enter') lookupCode();
-  });
-
-  // Verifiche recenti — popolate con esempi + utente
-  const SEED_RECENT = [
-    { code: 'APT-GAR-2026-AB12CD', when: '8 giu 09:14', who: 'verifica anonima', status: 'ok' },
-    { code: 'VLN-2026-248917-AC4F', when: '8 giu 08:48', who: 'verifica anonima', status: 'ok' },
-    { code: 'VLN-FRM-2026-5A8D43', when: '7 giu 22:30', who: 'verifica anonima', status: 'ok' },
-    { code: 'VLN-TAG-2026-A8F4C2D1', when: '7 giu 18:11', who: 'verifica anonima', status: 'ok' },
-    { code: 'APT-GAR-2026-9E4F02', when: '7 giu 16:48', who: 'verifica anonima', status: 'ok' },
-    { code: 'VLN-FRM-2026-1A4E55', when: '7 giu 14:22', who: 'verifica anonima', status: 'warn' },
-    { code: 'VLN-CRT-2026-MAT-04812', when: '7 giu 11:18', who: 'verifica anonima', status: 'ok' },
-    { code: 'XYZ-INESISTENTE-2026', when: '7 giu 09:02', who: 'verifica anonima', status: 'ko' }
-  ];
-  let recents = [...SEED_RECENT];
-
-  function renderRecents() {
-    const tbody = document.getElementById('recentTbody');
-    tbody.innerHTML = recents.slice(0, 8).map(r => {
-      const rec = REGISTRY[r.code];
-      const kind = rec ? rec.kind.split('·')[0].trim() : 'Codice non riconosciuto';
-      const title = rec ? rec.title : '—';
-      const statusHtml = r.status === 'ok' ?
-        '<span class="status confirmed"><span class="dot"></span>Verificato</span>' :
-        r.status === 'warn' ?
-        '<span class="status pending"><span class="dot"></span>In formazione</span>' :
-        '<span class="status failed"><span class="dot"></span>Non trovato</span>';
-      return `<tr onclick="lookupCode('${escapeReg(r.code)}')">
-        <td class="mono">${r.when}</td>
-        <td class="mono">${escapeReg(r.code)}</td>
-        <td><div style="font-family: var(--serif); font-size: 15px;">${escapeReg(title)}</div><div class="mono small" style="color: var(--ink-3);">${escapeReg(kind)}</div></td>
-        <td>${statusHtml}</td>
-      </tr>`;
-    }).join('');
-  }
-  function pushRecent(code, rec) {
-    const status = !rec ? 'ko' : rec.status;
-    const now = new Date();
-    const when = now.toLocaleDateString('it-IT', {day:'numeric', month:'short'}) + ' ' +
-                 now.toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'});
-    recents.unshift({ code, when, who: 'voi · poco fa', status });
-    renderRecents();
-  }
-  renderRecents();
-  </script>
-
-  <script type="module">
-    // verifica.html e' pubblica: nessuna guard, ma se l'utente e' autenticato
-    // il link "Esci" deve chiudere correttamente la sessione Supabase.
-    import { signOut } from "./_shared/supabase-client.js";
-    document.getElementById('logout')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      signOut("login.html?signedout=ok");
-    });
   </script>
 </body>
 </html>

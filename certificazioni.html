@@ -6,6 +6,7 @@
   <title>VEYLON · Trust center</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -51,7 +52,7 @@
         <div id="audit-err" class="state-msg state-err" hidden><span></span></div>
         <div id="audit-empty" class="state-msg" hidden>Nessun evento di sistema da mostrare.</div>
         <table class="t" id="audit-tbl" hidden>
-          <thead><tr><th>Data</th><th>Evento</th><th>Esito</th></tr></thead>
+          <thead><tr><th>Data</th><th>Azione</th><th>Entità</th></tr></thead>
           <tbody id="audit-rows"></tbody>
         </table>
       </article>
@@ -80,7 +81,12 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -89,8 +95,8 @@
   async function loadAudit() {
     try {
       const { data, error } = await supabase
-        .from("audit_log_public")
-        .select("created_at, evento, esito")
+        .from("audit_log")
+        .select("created_at, action, entity_type")
         .order("created_at", { ascending: false })
         .limit(20);
       document.getElementById("audit-loading").hidden = true;
@@ -110,12 +116,13 @@
       }
       const tbody = document.getElementById("audit-rows");
       data.forEach(e => {
-        const ok = /ok|success|success|valido/i.test(e.esito || "");
+        const action = e.action || "—";
+        const isErr = /error|fail|deny|revoke|delete/i.test(action);
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${fmt(e.created_at)}</td>
-          <td>${escapeHtml(e.evento || "—")}</td>
-          <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(e.esito || "—")}</span></td>
+          <td>${escapeHtml(action)}</td>
+          <td><span class="pill ${isErr ? "warn" : "ok"}">${escapeHtml(e.entity_type || "—")}</span></td>
         `;
         tbody.appendChild(tr);
       });

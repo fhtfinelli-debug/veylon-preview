@@ -54,47 +54,10 @@
   </url>
 
   <!-- Pagine prodotto / landing per atto -->
-  <url>
-    <loc>https://veylon.app/notarizza.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://veylon.app/invia.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://veylon.app/mail.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://veylon.app/garanzie.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://veylon.app/tag.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://veylon.app/cert.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://veylon.app/firma.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <!-- RIMOSSE 2026-06-14: notarizza/invia/mail/garanzie/tag/cert/firma sono dietro
+       auth (protectPage redirect a /login). Esporle in sitemap causava
+       indicizzazione di pagine login. La landing principale `/` contiene gia'
+       descrizioni di tutti gli atti per SEO. -->
 
   <!-- Pagine di servizio pubblico -->
   <url>

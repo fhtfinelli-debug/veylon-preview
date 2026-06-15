@@ -6,6 +6,7 @@
   <title>VEYLON Cert · I miei certificati</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -65,7 +66,9 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  let user;
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { ({ user } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -78,10 +81,17 @@
     document.getElementById("tbl").hidden = true;
     document.getElementById("rows").innerHTML = "";
     try {
+      const email = (user && user.email) ? user.email.toLowerCase() : "";
+      if (!email) {
+        document.getElementById("state-loading").hidden = true;
+        document.getElementById("state-empty").hidden = false;
+        return;
+      }
       const { data, error } = await supabase
-        .from("cert_a_mio_nome")
-        .select("id, titolo, istituzione_nome, codice, stato, emesso_il")
-        .order("emesso_il", { ascending: false })
+        .from("cert_certificati")
+        .select("id, codice_pubblico, dati_certificato, stato, data_emissione, cert_istituzioni:istituzione_id(ragione_sociale)")
+        .ilike("beneficiario_email", email)
+        .order("data_emissione", { ascending: false })
         .limit(100);
       document.getElementById("state-loading").hidden = true;
       if (error) {
@@ -96,14 +106,16 @@
       }
       const tbody = document.getElementById("rows");
       data.forEach(c => {
-        const stato = c.stato || "valido";
-        const ok = /valido|attivo/i.test(stato);
+        const stato = c.stato || "emesso";
+        const ok = /emesso|ritirato/i.test(stato);
+        const titolo = (c.dati_certificato && (c.dati_certificato.titolo || c.dati_certificato.corso || c.dati_certificato.nome)) || "—";
+        const istNome = (c.cert_istituzioni && c.cert_istituzioni.ragione_sociale) || "—";
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${fmt(c.emesso_il)}</td>
-          <td>${escapeHtml(c.titolo || "—")}</td>
-          <td>${escapeHtml(c.istituzione_nome || "—")}</td>
-          <td class="mono">${escapeHtml(c.codice || "—")}</td>
+          <td>${fmt(c.data_emissione)}</td>
+          <td>${escapeHtml(titolo)}</td>
+          <td>${escapeHtml(istNome)}</td>
+          <td class="mono">${escapeHtml(c.codice_pubblico || "—")}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
         `;
         tbody.appendChild(tr);

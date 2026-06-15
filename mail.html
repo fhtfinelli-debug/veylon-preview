@@ -6,6 +6,7 @@
   <title>VEYLON Mail · Email certificate</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -71,7 +72,17 @@
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
 
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+
+  try {
+
+    await protectPage();
+
+  } finally {
+
+    document.documentElement.classList.remove("veylon-auth-pending");
+
+  }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -86,8 +97,8 @@
     try {
       const { data, error } = await supabase
         .from("email_certificate")
-        .select("id, destinatario, oggetto, stato, created_at")
-        .order("created_at", { ascending: false })
+        .select("id, destinatari_to, oggetto, consegna_stato, data_invio")
+        .order("data_invio", { ascending: false })
         .limit(50);
       document.getElementById("state-loading").hidden = true;
       if (error) {
@@ -102,12 +113,14 @@
       }
       const tbody = document.getElementById("rows");
       data.forEach(m => {
-        const stato = m.stato || "in coda";
+        const stato = m.consegna_stato || "in coda";
         const ok = /consegnata|delivered|recapitata/i.test(stato);
+        const to = Array.isArray(m.destinatari_to) ? m.destinatari_to : [];
+        const dest = to.length === 0 ? "—" : (to.length === 1 ? to[0] : `${to[0]} +${to.length - 1}`);
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${fmt(m.created_at)}</td>
-          <td class="mono">${escapeHtml(m.destinatario || "—")}</td>
+          <td>${fmt(m.data_invio)}</td>
+          <td class="mono">${escapeHtml(dest)}</td>
           <td>${escapeHtml(m.oggetto || "—")}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
         `;

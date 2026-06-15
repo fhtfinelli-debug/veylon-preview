@@ -6,6 +6,7 @@
   <title>VEYLON Cert · Hub certificati</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -106,7 +107,9 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  let user;
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { ({ user } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
   bindLogout("#logout");
 
   async function loadKpis() {
@@ -114,9 +117,9 @@
     document.getElementById("state-error").hidden = true;
     document.getElementById("kpis").hidden = true;
 
-    async function count(table, filter) {
+    async function count(filter) {
       try {
-        let q = supabase.from(table).select("*", { count: "exact", head: true });
+        let q = supabase.from("cert_certificati").select("*", { count: "exact", head: true });
         if (filter) q = filter(q);
         const { count: n, error } = await q;
         if (error) return { n: 0, err: error };
@@ -124,9 +127,13 @@
       } catch (e) { return { n: 0, err: e }; }
     }
 
-    const a = await count("cert_emessi");
-    const b = await count("cert_a_mio_nome");
-    const c = await count("cert_emessi", q => q.eq("stato", "in_attesa"));
+    const email = (user && user.email) ? user.email.toLowerCase() : "";
+    // i: emessi da me (lato istituzione) — RLS filtra su user_id; combiniamo anche eq esplicita per chiarezza
+    const a = await count(q => user ? q.eq("user_id", user.id) : q);
+    // ii: a mio nome (lato beneficiario)
+    const b = email ? await count(q => q.ilike("beneficiario_email", email)) : { n: 0, err: null };
+    // iii: in attesa (sempre lato istituzione)
+    const c = await count(q => (user ? q.eq("user_id", user.id) : q).eq("stato", "in_attesa"));
 
     const anyHard = [a, b, c].find(x => x.err && !/relation|does not exist|permission/i.test(x.err.message || ""));
     document.getElementById("state-loading").hidden = true;

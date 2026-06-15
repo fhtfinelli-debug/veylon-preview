@@ -6,6 +6,7 @@
   <title>VEYLON Send · Trasmissioni</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -42,7 +43,7 @@
           Non hai ancora inviato alcuna trasmissione. <a href="invia.html" class="link-seal">Apri Send &rarr;</a>
         </div>
         <table class="t" id="tbl" hidden>
-          <thead><tr><th>Inviata</th><th>Destinatario</th><th>Oggetto</th><th>Scadenza link</th><th>Stato</th><th></th></tr></thead>
+          <thead><tr><th>Inviata</th><th>Destinatario</th><th>File</th><th>Scadenza link</th><th>Stato</th><th></th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </article>
@@ -68,7 +69,12 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -83,7 +89,7 @@
     try {
       const { data, error } = await supabase
         .from("trasmissioni")
-        .select("id, codice, destinatario_email, oggetto, scadenza, stato, created_at")
+        .select("id, codice_verifica, destinatario_email, nome_file_originale, magic_token_expires_at, stato, created_at")
         .order("created_at", { ascending: false })
         .limit(100);
       document.getElementById("state-loading").hidden = true;
@@ -100,7 +106,7 @@
       const tbody = document.getElementById("rows");
       const now = Date.now();
       data.forEach(t => {
-        const sc = t.scadenza ? new Date(t.scadenza).getTime() : null;
+        const sc = t.magic_token_expires_at ? new Date(t.magic_token_expires_at).getTime() : null;
         const scaduta = sc && sc < now;
         const stato = scaduta ? "scaduta" : (t.stato || "attiva");
         const ok = !scaduta && /aperta|consegnata|attiva|in_consegna/i.test(stato);
@@ -111,8 +117,8 @@
         tr.innerHTML = `
           <td>${fmt(t.created_at)}</td>
           <td class="mono">${escapeHtml(t.destinatario_email || "—")}</td>
-          <td>${escapeHtml(t.oggetto || "—")}</td>
-          <td class="mono">${fmt(t.scadenza)}</td>
+          <td>${escapeHtml(t.nome_file_originale || "—")}</td>
+          <td class="mono">${fmt(t.magic_token_expires_at)}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
           <td style="text-align:right;">${reinvia}</td>
         `;

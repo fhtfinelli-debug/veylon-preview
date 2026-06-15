@@ -6,6 +6,7 @@
   <title>VEYLON Cert · Emissione massiva (CSV)</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -55,13 +56,14 @@
     </section>
 
     <section style="margin-top: 40px;">
-      <h2 class="serif" style="font-size: 22px;">Lotti di emissione</h2>
+      <h2 class="serif" style="font-size: 22px;">Ultime emissioni batch</h2>
+      <p class="small" style="margin: 4px 0 16px; color: var(--ink-3);">Certificati emessi tramite caricamento CSV (raggruppati per lotto).</p>
       <article class="panel-card">
-        <div id="state-loading" class="state-msg">Caricamento lotti&hellip;</div>
+        <div id="state-loading" class="state-msg">Caricamento certificati&hellip;</div>
         <div id="state-error" class="state-msg state-err" hidden><span></span></div>
-        <div id="state-empty" class="state-msg" hidden>Non hai ancora avviato lotti.</div>
+        <div id="state-empty" class="state-msg" hidden>Non hai ancora emesso certificati tramite CSV. Carica un file qui sopra per iniziare.</div>
         <table class="t" id="tbl" hidden>
-          <thead><tr><th>Avviato</th><th>Codice lotto</th><th>Righe</th><th>Emessi</th><th>Stato</th></tr></thead>
+          <thead><tr><th>Emesso</th><th>Codice</th><th>Beneficiario</th><th>Lotto</th><th>Stato</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </article>
@@ -87,7 +89,9 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  const { session } = await protectPage();
+  let session;
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { ({ session } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
   bindLogout("#logout");
 
   const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
@@ -130,11 +134,13 @@
     document.getElementById("tbl").hidden = true;
     document.getElementById("rows").innerHTML = "";
     try {
+      // Cerchiamo gli ultimi certificati emessi via batch (metadata.batch_id non null).
       const { data, error } = await supabase
-        .from("cert_lotti")
-        .select("id, codice, totale, emessi, stato, created_at")
-        .order("created_at", { ascending: false })
-        .limit(50);
+        .from("cert_certificati")
+        .select("id, codice_pubblico, beneficiario_nome, beneficiario_email, stato, data_emissione, metadata")
+        .not("metadata->>batch_id", "is", null)
+        .order("data_emissione", { ascending: false })
+        .limit(100);
       document.getElementById("state-loading").hidden = true;
       if (error) {
         const err = document.getElementById("state-error");
@@ -147,15 +153,17 @@
         return;
       }
       const tbody = document.getElementById("rows");
-      data.forEach(l => {
-        const stato = l.stato || "in elaborazione";
-        const ok = /completato|done/i.test(stato);
+      data.forEach(c => {
+        const stato = c.stato || "emesso";
+        const ok = /emesso|ritirato/i.test(stato);
+        const beneficiario = c.beneficiario_nome || c.beneficiario_email || "—";
+        const batchId = (c.metadata && c.metadata.batch_id) ? String(c.metadata.batch_id).substring(0, 12) : "—";
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${fmt(l.created_at)}</td>
-          <td class="mono">${escapeHtml(l.codice || "—")}</td>
-          <td class="mono">${l.totale ?? 0}</td>
-          <td class="mono">${l.emessi ?? 0}</td>
+          <td>${fmt(c.data_emissione)}</td>
+          <td class="mono">${escapeHtml(c.codice_pubblico || "—")}</td>
+          <td>${escapeHtml(beneficiario)}</td>
+          <td class="mono">${escapeHtml(batchId)}</td>
           <td><span class="pill ${ok ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
         `;
         tbody.appendChild(tr);

@@ -6,6 +6,7 @@
   <title>VEYLON · Firma elettronica</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
 </head>
 <body>
   <header class="masthead">
@@ -68,7 +69,12 @@
   <script type="module">
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { supabase } from "./_shared/supabase-client.js";
-  await protectPage();
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
   bindLogout("#logout");
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -83,7 +89,7 @@
     try {
       const { data, error } = await supabase
         .from("firme")
-        .select("id, documento_titolo, firmatario_email, scadenza, stato, created_at")
+        .select("id, doc_name, firmatario_email, otp_expires_at, stato, created_at")
         .order("created_at", { ascending: false })
         .limit(100);
       document.getElementById("state-loading").hidden = true;
@@ -104,9 +110,9 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${fmt(f.created_at)}</td>
-          <td>${escapeHtml(f.documento_titolo || "—")}</td>
+          <td>${escapeHtml(f.doc_name || "—")}</td>
           <td class="mono">${escapeHtml(f.firmatario_email || "—")}</td>
-          <td class="mono">${fmt(f.scadenza)}</td>
+          <td class="mono">${fmt(f.otp_expires_at)}</td>
           <td><span class="pill ${firmata ? "ok" : "warn"}">${escapeHtml(stato)}</span></td>
         `;
         tbody.appendChild(tr);
