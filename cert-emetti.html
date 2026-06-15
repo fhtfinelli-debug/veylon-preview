@@ -53,6 +53,28 @@
             <label class="field-label" for="scadenza">Scadenza (facoltativa)</label>
             <input class="field-input" type="date" id="scadenza"/>
           </div>
+
+          <fieldset style="margin-top: 24px; padding: 18px; border: 1px solid var(--rule); background: var(--paper-2);">
+            <legend style="padding: 0 8px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2);">Asset del certificato</legend>
+            <div role="radiogroup" aria-label="Modalita asset" style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <label class="radio-pill" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--rule); cursor: pointer; font-family: var(--serif); font-size: 14px; background: var(--paper);">
+                <input type="radio" name="asset-mode" value="generate" checked/> Genera attestato (Veylon)
+              </label>
+              <label class="radio-pill" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--rule); cursor: pointer; font-family: var(--serif); font-size: 14px; background: var(--paper);">
+                <input type="radio" name="asset-mode" value="upload"/> Carica file pronto (foto o PDF)
+              </label>
+            </div>
+            <div id="upload-block" hidden style="margin-top: 16px;">
+              <label class="field-label" for="file-upload">File del certificato (PDF, JPG, PNG, WEBP, HEIC — max 10 MB)</label>
+              <input class="field-input" type="file" id="file-upload" accept="application/pdf,image/jpeg,image/png,image/webp,image/heic,image/heif"/>
+              <p class="small" style="margin-top: 6px; color: var(--ink-3);">Utile per attestati cartacei scansionati, badge stampati, foto autografate. L'asset viene sigillato (SHA-256) e ancorato in blockchain come per i PDF generati.</p>
+              <div id="file-preview" hidden style="margin-top: 12px; padding: 12px; background: var(--paper); border: 1px solid var(--rule);">
+                <div class="mono" style="font-size: 11px; color: var(--ink-2);">Anteprima</div>
+                <div id="preview-content" style="margin-top: 6px;"></div>
+              </div>
+            </div>
+          </fieldset>
+
           <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
             <span class="btn-label">Emetti certificato</span>
           </button>
@@ -108,6 +130,51 @@
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
   function fmt(d) { return d ? new Date(d).toLocaleDateString("it-IT") : ""; }
 
+  // Toggle upload block + preview
+  const modeRadios = document.querySelectorAll('input[name="asset-mode"]');
+  modeRadios.forEach(r => r.addEventListener("change", () => {
+    const upload = document.querySelector('input[name="asset-mode"]:checked').value === "upload";
+    document.getElementById("upload-block").hidden = !upload;
+  }));
+
+  const fileInput = document.getElementById("file-upload");
+  fileInput.addEventListener("change", () => {
+    const f = fileInput.files?.[0];
+    const prev = document.getElementById("file-preview");
+    const pc = document.getElementById("preview-content");
+    if (!f) { prev.hidden = true; pc.innerHTML = ""; return; }
+    if (f.size > 10 * 1024 * 1024) {
+      alert("File troppo grande (max 10 MB).");
+      fileInput.value = "";
+      prev.hidden = true;
+      return;
+    }
+    prev.hidden = false;
+    if (f.type.startsWith("image/")) {
+      const url = URL.createObjectURL(f);
+      pc.innerHTML = `<img src="${url}" alt="anteprima" style="max-width: 100%; max-height: 240px; display: block;"/>` +
+                     `<div class="mono" style="font-size: 10px; color: var(--ink-3); margin-top: 6px;">${escapeHtml(f.name)} · ${(f.size/1024).toFixed(1)} KB · ${escapeHtml(f.type)}</div>`;
+    } else if (f.type === "application/pdf") {
+      pc.innerHTML = `<div style="font-family: var(--serif); font-size: 14px;">${escapeHtml(f.name)} (PDF, ${(f.size/1024).toFixed(1)} KB) — anteprima non disponibile prima dell'invio.</div>`;
+    } else {
+      pc.innerHTML = `<div style="color: var(--seal);">Formato non ammesso. Usa PDF, JPG, PNG, WEBP o HEIC.</div>`;
+      fileInput.value = "";
+    }
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => {
+        const data = r.result;
+        const b64 = String(data).replace(/^data:[^;]+;base64,/, "");
+        resolve(b64);
+      };
+      r.onerror = () => reject(new Error("read_error"));
+      r.readAsDataURL(file);
+    });
+  }
+
   document.getElementById("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
     const titolo = document.getElementById("titolo").value.trim();
@@ -115,15 +182,36 @@
     const dest_email = document.getElementById("dest-email").value.trim();
     const scadenza = document.getElementById("scadenza").value || null;
     if (!titolo || !dest_nome || !dest_email) { alert("Compila tutti i campi obbligatori."); return; }
+
+    const mode = document.querySelector('input[name="asset-mode"]:checked').value;
+    let uploadedFileBase64 = null;
+    let uploadedFileMime = null;
+    if (mode === "upload") {
+      const f = fileInput.files?.[0];
+      if (!f) { alert("Seleziona un file da caricare."); return; }
+      try {
+        uploadedFileBase64 = await fileToBase64(f);
+        uploadedFileMime = f.type;
+      } catch (e) {
+        alert("Errore lettura file: " + (e.message || e));
+        return;
+      }
+    }
+
     const btn = document.getElementById("submit");
     btn.disabled = true;
     const original = btn.querySelector(".btn-label").textContent;
-    btn.querySelector(".btn-label").textContent = "Emissione…";
+    btn.querySelector(".btn-label").textContent = mode === "upload" ? "Caricamento e sigillo..." : "Emissione…";
     try {
+      const payload = { titolo, destinatario_nome: dest_nome, destinatario_email: dest_email, scadenza };
+      if (uploadedFileBase64) {
+        payload.uploaded_file_base64 = uploadedFileBase64;
+        payload.uploaded_file_mime_type = uploadedFileMime;
+      }
       const res = await fetch(`${SUPABASE_URL}/functions/v1/cert-emetti`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
-        body: JSON.stringify({ titolo, destinatario_nome: dest_nome, destinatario_email: dest_email, scadenza }),
+        body: JSON.stringify(payload),
       });
       const j = await res.json();
       if (!res.ok || !j.success) throw new Error(j?.error || "errore");
