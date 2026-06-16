@@ -8,42 +8,25 @@
   <link rel="stylesheet" href="styles.css"/>
   <style>html.veylon-auth-pending body { visibility: hidden; }</style>
   <style>
-    .wiz-layout { max-width: 720px; margin: 64px auto 96px; padding: 0 24px; }
-    .wiz-head { text-align: center; margin-bottom: 48px; }
-    .wiz-head h1 { font-family: var(--serif); font-weight: normal; font-size: 36px; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 12px; }
-    .wiz-head p { color: var(--ink-2); font-family: var(--serif); font-size: 16px; margin: 0; }
-
-    .stepper { display: flex; gap: 8px; justify-content: center; margin-bottom: 40px; }
-    .step-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rule); transition: all .3s; }
-    .step-dot.active { background: var(--seal); transform: scale(1.5); }
-    .step-dot.done { background: var(--seal); }
-
-    .card { background: var(--paper); border: 1px solid var(--rule); padding: 36px 32px; margin-bottom: 24px; }
-    .card h2 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 8px; }
-    .card .lede { color: var(--ink-2); font-family: var(--serif); font-size: 14px; margin: 0 0 24px; }
-
-    .field { margin-bottom: 18px; }
+    .wiz-page { max-width: 720px; margin: 64px auto 96px; padding: 0 24px; }
+    .wiz-intro { text-align: center; margin-bottom: 32px; }
+    .wiz-intro h1 { font-family: var(--serif); font-weight: normal; font-size: 36px; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 12px; }
+    .wiz-intro p { color: var(--ink-2); font-family: var(--serif); font-size: 16px; margin: 0; }
+    .wiz-host { border: 1px solid var(--rule); background: var(--paper); display: flex; flex-direction: column; min-height: 480px; }
+    .field { margin-bottom: 14px; }
     .field-label { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); margin-bottom: 6px; }
     .field-input { width: 100%; padding: 12px 14px; font-family: var(--serif); font-size: 15px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box; }
     .field-input.mono { font-family: var(--mono); font-size: 13px; }
-
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
-
-    .actions { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; }
-    .btn-skip { background: transparent; border: 0; font-family: var(--serif); font-size: 14px; color: var(--ink-2); cursor: pointer; text-decoration: underline; }
-    .btn-skip:hover { color: var(--ink); }
-    .btn-next { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); padding: 12px 28px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; cursor: pointer; border-radius: 999px; }
-    .btn-next:hover { background: var(--ink); border-color: var(--ink); }
-    .btn-next:disabled { opacity: 0.5; cursor: not-allowed; }
-
     .summary-row { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
     .summary-row:last-child { border-bottom: 0; }
     .summary-row .k { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); }
     .summary-row .v { font-family: var(--serif); }
-
-    .x25519-block { background: var(--paper-2); border: 1px solid var(--rule); padding: 16px; margin-top: 16px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+    .x25519-block { background: var(--paper-2); border: 1px solid var(--rule); padding: 14px; margin-top: 16px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
     .x25519-block strong { color: var(--ink); }
+    .skip-all { text-align: center; margin-top: 24px; }
+    .skip-all a { font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; }
   </style>
 </head>
 <body>
@@ -59,222 +42,179 @@
     }
   </script>
 
-  <main class="wiz-layout">
-    <div class="wiz-head">
+  <main class="wiz-page">
+    <div class="wiz-intro">
       <h1>Benvenuto in <em class="serif-italic" style="color: var(--seal);">Veylon.</em></h1>
       <p>3 passi per configurare il vostro spazio operativo.</p>
     </div>
 
-    <div class="stepper" id="stepper">
-      <div class="step-dot active" data-step="1"></div>
-      <div class="step-dot" data-step="2"></div>
-      <div class="step-dot" data-step="3"></div>
-    </div>
+    <div class="wiz-host" id="wiz-host" aria-live="polite"></div>
 
-    <!-- STEP 1: Profilo personale -->
-    <section class="card" id="card-1">
-      <h2>Il vostro profilo</h2>
-      <p class="lede">Come dobbiamo presentarvi nei certificati e nelle ricevute.</p>
-      <div class="row">
-        <div class="field">
-          <label class="field-label" for="f-nome">Nome</label>
-          <input class="field-input" type="text" id="f-nome" placeholder="es. Manuel"/>
-        </div>
-        <div class="field">
-          <label class="field-label" for="f-cognome">Cognome</label>
-          <input class="field-input" type="text" id="f-cognome" placeholder="es. Finelli"/>
-        </div>
-      </div>
-      <div class="field">
-        <label class="field-label" for="f-ruolo">Ruolo professionale (facoltativo)</label>
-        <input class="field-input" type="text" id="f-ruolo" placeholder="es. Studio legale, Notaio, Consulente"/>
-      </div>
-      <div class="actions">
-        <button class="btn-skip" id="skip-1">Salta per ora</button>
-        <button class="btn-next" id="next-1">Avanti</button>
-      </div>
-    </section>
-
-    <!-- STEP 2: Organizzazione (opzionale) -->
-    <section class="card" id="card-2" hidden>
-      <h2>La vostra organizzazione</h2>
-      <p class="lede">Compilare solo se operate per un'azienda o studio. Potete saltare e configurare dopo.</p>
-      <div class="field">
-        <label class="field-label" for="f-org-nome">Denominazione</label>
-        <input class="field-input" type="text" id="f-org-nome" placeholder="es. Studio Legale Finelli &amp; Partners"/>
-      </div>
-      <div class="row">
-        <div class="field">
-          <label class="field-label" for="f-org-piva">P.IVA</label>
-          <input class="field-input mono" type="text" id="f-org-piva" maxlength="11" placeholder="11 cifre"/>
-        </div>
-        <div class="field">
-          <label class="field-label" for="f-org-tipo">Tipo</label>
-          <select class="field-input" id="f-org-tipo">
-            <option value="">scegli...</option>
-            <option value="studio_professionale">Studio professionale</option>
-            <option value="azienda_privata">Azienda privata</option>
-            <option value="ente_pubblico">Ente pubblico</option>
-            <option value="universita">Universita</option>
-            <option value="ospedale">Ospedale</option>
-            <option value="altro">Altro</option>
-          </select>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="btn-skip" id="skip-2">Salta per ora</button>
-        <button class="btn-next" id="next-2">Avanti</button>
-      </div>
-    </section>
-
-    <!-- STEP 3: Conferma + chiave Send -->
-    <section class="card" id="card-3" hidden>
-      <h2>Pronti a partire</h2>
-      <p class="lede">Riepilogo configurazione. Generiamo subito la chiave X25519 per l'atto ii Send (cifratura E2E).</p>
-
-      <div id="summary"></div>
-
-      <div class="x25519-block">
-        <strong>Chiave Send (X25519):</strong> generata localmente nel vostro browser.<br/>
-        La chiave PRIVATA non lascia mai questo dispositivo. Solo la chiave PUBBLICA viene registrata su Veylon, permettendo agli altri di inviarvi documenti cifrati.<br/>
-        <span id="x25519-status" style="display:block; margin-top: 8px;">Generazione in corso&hellip;</span>
-      </div>
-
-      <div class="actions">
-        <button class="btn-skip" id="back-3">Indietro</button>
-        <button class="btn-next" id="finish">Vai al cruscotto &rarr;</button>
-      </div>
-    </section>
-
-    <div style="text-align: center; margin-top: 32px;">
-      <a href="dashboard.html" style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase;">Salta tutto e vai al cruscotto</a>
+    <div class="skip-all">
+      <a href="dashboard.html">Salta tutto e vai al cruscotto</a>
     </div>
   </main>
 
   <script type="module">
     import { supabase } from "./_shared/supabase-client.js";
+    import { mountWizard } from "./_shared/wizard-stepper.js";
 
-    const $ = (id) => document.getElementById(id);
-    const data = { nome: "", cognome: "", ruolo: "", org_nome: "", org_piva: "", org_tipo: "", x25519_pub: null };
-    let step = 1;
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
-    function showStep(n) {
-      [1, 2, 3].forEach((i) => {
-        const c = $("card-" + i);
-        if (c) c.hidden = (i !== n);
-        const dot = document.querySelector('.step-dot[data-step="' + i + '"]');
-        if (dot) {
-          dot.classList.remove("active", "done");
-          if (i < n) dot.classList.add("done");
-          else if (i === n) dot.classList.add("active");
-        }
-      });
-      step = n;
-      if (n === 3) renderSummary();
-    }
-
-    function renderSummary() {
-      const rows = [
-        ["Nome", (data.nome + " " + data.cognome).trim() || "non specificato"],
-        ["Ruolo", data.ruolo || "non specificato"],
-      ];
-      if (data.org_nome) rows.push(["Organizzazione", data.org_nome + (data.org_tipo ? " (" + data.org_tipo + ")" : "")]);
-      if (data.org_piva) rows.push(["P.IVA", data.org_piva]);
-      const html = rows.map(([k, v]) =>
-        '<div class="summary-row"><div class="k">' + k + '</div><div class="v">' + escapeHtml(v) + '</div></div>'
-      ).join("");
-      $("summary").innerHTML = html;
-    }
-
-    function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
-
-    $("next-1").addEventListener("click", () => {
-      data.nome = $("f-nome").value.trim();
-      data.cognome = $("f-cognome").value.trim();
-      data.ruolo = $("f-ruolo").value.trim();
-      showStep(2);
-    });
-    $("skip-1").addEventListener("click", () => showStep(2));
-
-    $("next-2").addEventListener("click", () => {
-      data.org_nome = $("f-org-nome").value.trim();
-      data.org_piva = $("f-org-piva").value.trim();
-      data.org_tipo = $("f-org-tipo").value;
-      if (data.org_piva && !/^\d{11}$/.test(data.org_piva)) {
-        alert("P.IVA deve essere 11 cifre.");
-        return;
-      }
-      showStep(3);
-      generateX25519();
-    });
-    $("skip-2").addEventListener("click", () => {
-      data.org_nome = ""; data.org_piva = ""; data.org_tipo = "";
-      showStep(3);
-      generateX25519();
-    });
-
-    $("back-3").addEventListener("click", () => showStep(2));
-
-    async function generateX25519() {
+    async function generateEcdh(ctx) {
       try {
-        // Web Crypto: X25519 non e standard in tutti i browser; uso ECDH P-256 come fallback compat
-        // (per il MVP basta avere un meccanismo asincrono di generazione chiave).
+        // Web Crypto: X25519 non e standard in tutti i browser; uso ECDH P-256 come fallback
         const kp = await crypto.subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveKey", "deriveBits"]);
         const pubRaw = await crypto.subtle.exportKey("raw", kp.publicKey);
         const pubHex = [...new Uint8Array(pubRaw)].map(b => b.toString(16).padStart(2, "0")).join("");
-        data.x25519_pub = pubHex;
+        ctx.x25519_pub = pubHex;
 
-        // Esporta la chiave privata in JWK e salvala in localStorage del browser (NON viene mai inviata al server)
         const privJwk = await crypto.subtle.exportKey("jwk", kp.privateKey);
         localStorage.setItem("veylon_send_priv_jwk", JSON.stringify(privJwk));
 
-        $("x25519-status").textContent = "Chiave pubblica: " + pubHex.slice(0, 16) + "..." + pubHex.slice(-8);
+        const el = document.getElementById("x25519-status");
+        if (el) el.textContent = "Chiave pubblica: " + pubHex.slice(0, 16) + "..." + pubHex.slice(-8);
       } catch (e) {
         console.error("x25519_gen_failed", e);
-        $("x25519-status").textContent = "Generazione fallita: " + (e?.message ?? "errore");
+        const el = document.getElementById("x25519-status");
+        if (el) el.textContent = "Generazione fallita: " + (e?.message ?? "errore");
       }
     }
 
-    $("finish").addEventListener("click", async () => {
-      const btn = $("finish");
-      btn.disabled = true;
-      btn.textContent = "Salvataggio...";
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        // Salva preferenze user_metadata (best-effort, non bloccante)
-        if (user) {
-          try {
-            const fullName = (data.nome + " " + data.cognome).trim();
-            await supabase.auth.updateUser({
-              data: {
-                full_name: fullName,
-                nome: data.nome,
-                cognome: data.cognome,
-                ruolo: data.ruolo,
-                org_nome: data.org_nome,
-                org_piva: data.org_piva,
-                org_tipo: data.org_tipo,
-                onboarding_completed: true,
-                onboarded_at: new Date().toISOString(),
-              }
-            });
-          } catch (e) { console.error("updateUser_failed", e); }
+    function renderSummary(ctx) {
+      const rows = [
+        ["Nome", (ctx.nome + " " + ctx.cognome).trim() || "non specificato"],
+        ["Ruolo", ctx.ruolo || "non specificato"],
+      ];
+      if (ctx.org_nome) rows.push(["Organizzazione", ctx.org_nome + (ctx.org_tipo ? " (" + ctx.org_tipo + ")" : "")]);
+      if (ctx.org_piva) rows.push(["P.IVA", ctx.org_piva]);
+      return rows.map(([k, v]) =>
+        '<div class="summary-row"><div class="k">' + k + '</div><div class="v">' + escapeHtml(v) + '</div></div>'
+      ).join("");
+    }
 
-          // Registra chiave pubblica X25519 in chiavi_pubbliche_utenti (per atto ii Send)
-          if (data.x25519_pub) {
-            try {
-              await supabase.from("chiavi_pubbliche_utenti").upsert({
-                user_id: user.id,
-                public_key_hex: data.x25519_pub,
-                key_algo: "ecdh-p256-fallback",
-              }, { onConflict: "user_id" });
-            } catch (e) { console.error("pubkey_upsert_failed", e); }
-          }
+    mountWizard(document.getElementById("wiz-host"), {
+      // Per la pagina onboarding skip "per ora" e' la voce naturale del footer
+      allowSkip: true,
+      finishLabel: "Vai al cruscotto →",
+      context: { nome: "", cognome: "", ruolo: "", org_nome: "", org_piva: "", org_tipo: "", x25519_pub: null },
+      steps: [
+        {
+          id: "profilo",
+          title: "Il vostro profilo",
+          lede: "Come dobbiamo presentarvi nei certificati e nelle ricevute.",
+          render: (ctx) => `
+            <div class="row">
+              <div class="field"><label class="field-label" for="f-nome">Nome</label>
+                <input class="field-input" type="text" id="f-nome" value="${escapeHtml(ctx.nome)}" placeholder="es. Manuel"/></div>
+              <div class="field"><label class="field-label" for="f-cognome">Cognome</label>
+                <input class="field-input" type="text" id="f-cognome" value="${escapeHtml(ctx.cognome)}" placeholder="es. Finelli"/></div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-ruolo">Ruolo professionale (facoltativo)</label>
+              <input class="field-input" type="text" id="f-ruolo" value="${escapeHtml(ctx.ruolo)}" placeholder="es. Studio legale, Notaio, Consulente"/>
+            </div>
+          `,
+          beforeNext: (ctx) => {
+            ctx.nome = document.getElementById("f-nome").value.trim();
+            ctx.cognome = document.getElementById("f-cognome").value.trim();
+            ctx.ruolo = document.getElementById("f-ruolo").value.trim();
+            return true;
+          },
+        },
+        {
+          id: "organizzazione",
+          title: "La vostra organizzazione",
+          lede: "Compilare solo se operate per un'azienda o studio. Potete saltare e configurare dopo.",
+          render: (ctx) => `
+            <div class="field">
+              <label class="field-label" for="f-org-nome">Denominazione</label>
+              <input class="field-input" type="text" id="f-org-nome" value="${escapeHtml(ctx.org_nome)}" placeholder="es. Studio Legale Finelli &amp; Partners"/>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label class="field-label" for="f-org-piva">P.IVA</label>
+                <input class="field-input mono" type="text" id="f-org-piva" value="${escapeHtml(ctx.org_piva)}" maxlength="11" placeholder="11 cifre"/>
+              </div>
+              <div class="field">
+                <label class="field-label" for="f-org-tipo">Tipo</label>
+                <select class="field-input" id="f-org-tipo">
+                  <option value="">scegli...</option>
+                  <option value="studio_professionale" ${ctx.org_tipo === "studio_professionale" ? "selected" : ""}>Studio professionale</option>
+                  <option value="azienda_privata" ${ctx.org_tipo === "azienda_privata" ? "selected" : ""}>Azienda privata</option>
+                  <option value="ente_pubblico" ${ctx.org_tipo === "ente_pubblico" ? "selected" : ""}>Ente pubblico</option>
+                  <option value="universita" ${ctx.org_tipo === "universita" ? "selected" : ""}>Universita</option>
+                  <option value="ospedale" ${ctx.org_tipo === "ospedale" ? "selected" : ""}>Ospedale</option>
+                  <option value="altro" ${ctx.org_tipo === "altro" ? "selected" : ""}>Altro</option>
+                </select>
+              </div>
+            </div>
+          `,
+          beforeNext: (ctx, { setError }) => {
+            ctx.org_nome = document.getElementById("f-org-nome").value.trim();
+            ctx.org_piva = document.getElementById("f-org-piva").value.trim();
+            ctx.org_tipo = document.getElementById("f-org-tipo").value;
+            if (ctx.org_piva && !/^\d{11}$/.test(ctx.org_piva)) {
+              setError("P.IVA deve essere 11 cifre.");
+              return false;
+            }
+            return true;
+          },
+        },
+        {
+          id: "conferma",
+          title: "Pronti a partire",
+          lede: "Riepilogo configurazione. Generiamo la chiave ECDH per l'atto ii Send (cifratura E2E).",
+          render: (ctx) => `
+            <div id="summary">${renderSummary(ctx)}</div>
+            <div class="x25519-block">
+              <strong>Chiave Send (ECDH P-256):</strong> generata localmente nel vostro browser.<br/>
+              La chiave PRIVATA non lascia mai questo dispositivo (salvata in localStorage del browser).
+              Solo la chiave PUBBLICA viene registrata su Veylon, permettendo agli altri di inviarvi documenti cifrati.<br/>
+              <span id="x25519-status" style="display:block; margin-top: 8px;">Generazione in corso&hellip;</span>
+            </div>
+          `,
+        },
+      ],
+      onChange: (stepId, ctx) => {
+        if (stepId === "conferma") {
+          // Aggiorna sommario + genera chiave quando si arriva sulla 3a step
+          const sum = document.getElementById("summary");
+          if (sum) sum.innerHTML = renderSummary(ctx);
+          generateEcdh(ctx);
         }
-      } catch (e) {
-        console.error("finish_failed", e);
-      }
-      location.href = "dashboard.html?onboarded=1";
+      },
+      onFinish: async (ctx) => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            const fullName = (ctx.nome + " " + ctx.cognome).trim();
+            try {
+              await supabase.auth.updateUser({
+                data: {
+                  full_name: fullName,
+                  nome: ctx.nome, cognome: ctx.cognome, ruolo: ctx.ruolo,
+                  org_nome: ctx.org_nome, org_piva: ctx.org_piva, org_tipo: ctx.org_tipo,
+                  onboarding_completed: true,
+                  onboarded_at: new Date().toISOString(),
+                },
+              });
+            } catch (e) { console.error("updateUser_failed", e); }
+
+            if (ctx.x25519_pub) {
+              try {
+                await supabase.from("chiavi_pubbliche_utenti").upsert({
+                  user_id: user.id,
+                  public_key_hex: ctx.x25519_pub,
+                  key_algo: "ecdh-p256-fallback",
+                }, { onConflict: "user_id" });
+              } catch (e) { console.error("pubkey_upsert_failed", e); }
+            }
+          }
+        } catch (e) { console.error("finish_failed", e); }
+        location.href = "dashboard.html?onboarded=1";
+        return true;
+      },
     });
   </script>
 </body>

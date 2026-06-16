@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Apponi firma grafica</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .fg-layout { max-width: 1120px; margin: 24px auto 96px; padding: 0 24px; }
+    .fg-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .fg-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
+    .fg-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+
+    .fg-grid { display: grid; grid-template-columns: 320px 1fr; gap: 22px; }
+    @media (max-width: 880px) { .fg-grid { grid-template-columns: 1fr; } }
+
+    .fg-side { border: 1px solid var(--rule); background: var(--paper); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .fg-side h3 { font-family: var(--serif); font-weight: normal; font-size: 17px; margin: 0; }
+    .fg-side label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .fg-side select, .fg-side input[type="file"] { width: 100%; padding: 8px 10px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); }
+    .fg-iden-preview { padding: 12px; background: var(--paper-2); border: 1px solid var(--rule); }
+    .fg-iden-preview img { display: block; width: 100%; max-height: 80px; object-fit: contain; background: white; border: 1px solid var(--rule); }
+    .fg-iden-preview .name { font-family: var(--serif); font-size: 14px; margin-top: 6px; }
+
+    .fg-coord { font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding: 10px; background: var(--paper-2); border: 1px solid var(--rule); }
+    .fg-coord strong { color: var(--ink); }
+
+    .fg-actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+    .fg-btn { padding: 12px 20px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .fg-btn:hover { background: var(--seal); border-color: var(--seal); }
+    .fg-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .fg-btn.ghost { background: transparent; color: var(--ink); }
+    .fg-btn.ghost:hover { background: var(--ink); color: var(--paper); }
+
+    .fg-viewer-wrap { border: 1px solid var(--rule); background: var(--paper); padding: 0; min-height: 600px; position: relative; }
+    .fg-viewer-empty { padding: 60px 30px; text-align: center; color: var(--ink-2); font-family: var(--serif); font-style: italic; }
+
+    .fg-result { margin-top: 18px; padding: 18px; background: #e8f5e9; border-left: 4px solid #1e6e3e; }
+    .fg-result h4 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 8px; color: #1e6e3e; }
+    .fg-result a { font-family: var(--mono); font-size: 12px; color: var(--ink); text-decoration: underline; }
+    .fg-err { margin-top: 18px; padding: 14px 18px; background: #fde7e4; border-left: 4px solid #b00020; color: #5a0a0a; font-family: var(--serif); font-size: 14px; }
+
+    /* Marker visivo sopra il viewer */
+    .fg-marker { position: absolute; pointer-events: none; outline: 2px dashed var(--seal); background: rgba(122, 45, 31, 0.08); display: none; z-index: 10; }
+    .fg-marker.is-visible { display: block; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("firma"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="fg-layout">
+    <header class="fg-head">
+      <span class="sub">Atto viii · Firma grafica · Apposizione (fase 2)</span>
+      <h1>Apponi <em class="serif-italic" style="color: var(--seal);">la tua firma</em> sul documento.</h1>
+      <p class="sub">Carica un PDF, scegli la tua identita firmataria salvata, clicca dove vuoi posizionare la firma e conferma.</p>
+    </header>
+
+    <div class="fg-grid">
+
+      <aside class="fg-side">
+        <h3>1 · Identita</h3>
+        <div>
+          <label for="identita-sel">Firma salvata</label>
+          <select id="identita-sel">
+            <option value="">Caricamento...</option>
+          </select>
+        </div>
+        <div id="iden-preview" class="fg-iden-preview" style="display: none;">
+          <img id="iden-img" alt=""/>
+          <div class="name" id="iden-name">&mdash;</div>
+        </div>
+        <div>
+          <a href="firma-grafica.html" style="font-family: var(--mono); font-size: 11px; color: var(--seal); text-decoration: underline;">+ Crea una nuova firma</a>
+        </div>
+
+        <h3 style="margin-top: 12px;">2 · Documento</h3>
+        <div>
+          <label for="pdf-input">PDF da firmare (max 10 MB)</label>
+          <input type="file" id="pdf-input" accept="application/pdf"/>
+        </div>
+
+        <h3 style="margin-top: 12px;">3 · Posizione</h3>
+        <div class="fg-coord" id="coord-info">
+          Clicca sulla pagina PDF per scegliere il punto.<br/>
+          <span id="coord-detail">Coordinate: <em>nessuna selezione</em></span>
+        </div>
+        <div>
+          <label for="size-sel">Dimensione firma</label>
+          <select id="size-sel">
+            <option value="small">Piccola (90 x 45 pt)</option>
+            <option value="medium" selected>Media (160 x 80 pt)</option>
+            <option value="large">Grande (240 x 120 pt)</option>
+          </select>
+        </div>
+
+        <h3 style="margin-top: 12px;">4 · Apposizione</h3>
+        <div class="fg-actions">
+          <button class="fg-btn" id="btn-apply" disabled>Apponi e ancora su Bitcoin</button>
+          <a class="fg-btn ghost" href="firma.html" style="text-align: center; text-decoration: none;">Torna al hub Firma</a>
+        </div>
+      </aside>
+
+      <section>
+        <div class="fg-viewer-wrap" id="viewer-wrap">
+          <div class="fg-viewer-empty" id="viewer-empty">Carica un PDF per iniziare.</div>
+          <div id="viewer" style="display: none;"></div>
+          <div class="fg-marker" id="marker"></div>
+        </div>
+        <div id="result-box"></div>
+        <div id="err-box"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    import { mountPdfViewer } from "./_shared/pdf-viewer.js";
+
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    const SIZE_MAP = {
+      small:  { width: 90,  height: 45  },
+      medium: { width: 160, height: 80  },
+      large:  { width: 240, height: 120 },
+    };
+
+    const state = {
+      identita: null,
+      pdfBytes: null,    // Uint8Array originale
+      pdfUrl: null,      // blob URL per il viewer
+      pdfHandle: null,   // handle dal mountPdfViewer
+      pageNum: 1,
+      pdfX: null,
+      pdfY: null,
+    };
+
+    function showError(msg) { $("err-box").innerHTML = `<div class="fg-err">${escapeHtml(msg)}</div>`; }
+    function clearError() { $("err-box").innerHTML = ""; }
+
+    function updateApplyButton() {
+      $("btn-apply").disabled = !(state.identita && state.pdfBytes && state.pdfX != null && state.pdfY != null);
+    }
+
+    function getSize() {
+      const v = $("size-sel").value;
+      return SIZE_MAP[v] || SIZE_MAP.medium;
+    }
+
+    function updateCoordInfo() {
+      const c = $("coord-detail");
+      if (state.pdfX == null) {
+        c.innerHTML = "Coordinate: <em>nessuna selezione</em>";
+      } else {
+        const sz = getSize();
+        c.innerHTML = `Pagina <strong>${state.pageNum}</strong> &middot; X: <strong>${Math.round(state.pdfX)}pt</strong>, Y: <strong>${Math.round(state.pdfY)}pt</strong> &middot; Firma <strong>${sz.width} &times; ${sz.height}pt</strong>`;
+      }
+    }
+
+    function showMarker(pageX, pageY) {
+      // Posiziona il marker visivo (in coordinate canvas viewer) per feedback utente
+      const sz = getSize();
+      const m = $("marker");
+      const canvas = $("viewer").querySelector("canvas");
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const wrapRect = $("viewer-wrap").getBoundingClientRect();
+      // pageX/Y sono coord canvas relativi al wrapper
+      // approx: width/height in punti, ma in canvas i pt sono renderizzati a scala
+      // utilizziamo le coordinate canvas trasmesse dal viewer
+      const scale = canvas.width / canvas.getBoundingClientRect().width;
+      const visW = sz.width / scale * (canvas.width / canvas.getBoundingClientRect().width);
+      // Fallback semplice: mostra rettangolo di 80x40 px in viewport, all'incirca proporzionale
+      m.style.left = (pageX - 40) + "px";
+      m.style.top  = (pageY - 20) + "px";
+      m.style.width = "80px";
+      m.style.height = "40px";
+      m.classList.add("is-visible");
+    }
+
+    async function loadIdentita() {
+      const sel = $("identita-sel");
+      sel.innerHTML = '<option value="">Caricamento...</option>';
+      const { data, error } = await supabase
+        .from("firme_grafiche_identita")
+        .select("id, nome, cognome, email, png_storage_path, default_id")
+        .order("default_id", { ascending: false })
+        .order("created_at", { ascending: false });
+      if (error) {
+        sel.innerHTML = '<option value="">Errore caricamento</option>';
+        return;
+      }
+      if (!data || data.length === 0) {
+        sel.innerHTML = '<option value="">Nessuna identita salvata</option>';
+        return;
+      }
+      sel.innerHTML = '<option value="">Seleziona identita...</option>' +
+        data.map(i => `<option value="${i.id}">${escapeHtml(i.nome + " " + i.cognome)}${i.default_id ? " (default)" : ""}</option>`).join("");
+      sel.dataset.cache = JSON.stringify(data);
+    }
+
+    $("identita-sel").addEventListener("change", async (e) => {
+      const id = e.target.value;
+      const data = JSON.parse(e.target.dataset.cache || "[]");
+      const found = data.find(x => x.id === id);
+      if (!found) { state.identita = null; $("iden-preview").style.display = "none"; updateApplyButton(); return; }
+      const { data: signed } = await supabase.storage.from("veylon-firme-png").createSignedUrl(found.png_storage_path, 600);
+      $("iden-img").src = signed?.signedUrl || "";
+      $("iden-name").textContent = found.nome + " " + found.cognome;
+      $("iden-preview").style.display = "block";
+      state.identita = found;
+      updateApplyButton();
+    });
+
+    $("pdf-input").addEventListener("change", async (e) => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      if (f.size > 10 * 1024 * 1024) {
+        showError("PDF troppo grande (max 10 MB).");
+        return;
+      }
+      clearError();
+      const buf = await f.arrayBuffer();
+      state.pdfBytes = new Uint8Array(buf);
+      if (state.pdfUrl) URL.revokeObjectURL(state.pdfUrl);
+      state.pdfUrl = URL.createObjectURL(new Blob([buf], { type: "application/pdf" }));
+
+      $("viewer-empty").style.display = "none";
+      const viewer = $("viewer");
+      viewer.style.display = "block";
+
+      try {
+        if (state.pdfHandle) { state.pdfHandle.destroy(); }
+        state.pdfHandle = await mountPdfViewer(viewer, state.pdfUrl, {
+          maxWidth: 720,
+          onPageChange: (n) => { state.pageNum = n; },
+          onClick: (event, pageNum, pdfX, pdfY) => {
+            state.pageNum = pageNum;
+            state.pdfX = pdfX;
+            state.pdfY = pdfY;
+            updateCoordInfo();
+            updateApplyButton();
+            // marker visivo grezzo
+            const wrapRect = $("viewer-wrap").getBoundingClientRect();
+            showMarker(event.clientX - wrapRect.left, event.clientY - wrapRect.top);
+          },
+        });
+        updateApplyButton();
+      } catch (err) {
+        console.error("pdf_viewer_failed", err);
+        showError("Caricamento viewer fallito: " + (err.message || err));
+      }
+    });
+
+    $("size-sel").addEventListener("change", updateCoordInfo);
+
+    $("btn-apply").addEventListener("click", async () => {
+      clearError();
+      if (!state.identita || !state.pdfBytes || state.pdfX == null) return;
+      const btn = $("btn-apply");
+      const original = btn.textContent;
+      btn.textContent = "Apposizione in corso...";
+      btn.disabled = true;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const sz = getSize();
+        // Base64 del PDF originale
+        const b64 = await new Promise((resolve, reject) => {
+          const r = new FileReader();
+          r.onload = () => resolve(String(r.result).replace(/^data:[^;]+;base64,/, ""));
+          r.onerror = () => reject(new Error("read_error"));
+          r.readAsDataURL(new Blob([state.pdfBytes], { type: "application/pdf" }));
+        });
+
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/firma-grafica-apponi`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify({
+            identita_id: state.identita.id,
+            pdf_base64: b64,
+            pos_x: state.pdfX,
+            pos_y: state.pdfY,
+            width: sz.width,
+            height: sz.height,
+            scale: 1,
+            find_page: state.pageNum,
+            stamp_qr: true,
+          }),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) {
+          throw new Error(j?.error || ("HTTP " + r.status));
+        }
+        $("result-box").innerHTML = `
+          <div class="fg-result">
+            <h4>&check; Firma apposta e sigillata</h4>
+            <div>Atto Veylon: <code class="mono">${escapeHtml(j.atto_id)}</code></div>
+            <div style="margin-top: 4px;">SHA-256: <code class="mono" style="font-size: 11px;">${escapeHtml(j.sha256)}</code></div>
+            <div style="margin-top: 6px;">Stato OTS: <strong>${escapeHtml(j.ots_status)}</strong></div>
+            ${j.download_url ? `<div style="margin-top: 10px;"><a href="${escapeHtml(j.download_url)}" target="_blank" rel="noopener">Scarica PDF firmato (link 15 min)</a></div>` : ""}
+            <div style="margin-top: 10px;"><a href="sigillo.html?id=${encodeURIComponent(j.atto_id)}">Vai al sigillo dell&apos;atto &rarr;</a></div>
+          </div>`;
+        // reset selezione coord per consentire nuova apposizione
+        state.pdfX = null; state.pdfY = null; updateCoordInfo();
+        $("marker").classList.remove("is-visible");
+      } catch (e) {
+        showError(e.message || String(e));
+      } finally {
+        btn.textContent = original;
+        updateApplyButton();
+      }
+    });
+
+    loadIdentita();
+  </script>
+</body>
+</html>
