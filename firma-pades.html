@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>VEYLON · Firma PAdES (certificato X.509)</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://esm.sh https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <style>html.veylon-auth-pending body { visibility: hidden; }</style>
   <style>
@@ -12,10 +12,8 @@
     .fp-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
     .fp-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
     .fp-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
-
     .fp-card { background: var(--paper); border: 1px solid var(--rule); padding: 26px; margin-bottom: 18px; }
     .fp-card h2 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 14px; }
-
     .field { margin-bottom: 14px; }
     .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
     .field input[type="text"], .field input[type="password"], .field input[type="email"], .field input[type="file"] {
@@ -24,21 +22,22 @@
     .field input.mono { font-family: var(--mono); font-size: 13px; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
-
-    .privacy-strip { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 14px 18px; margin-bottom: 18px; font-family: var(--serif); font-size: 13px; line-height: 1.55; color: #6b3a00; }
-    .privacy-strip strong { color: #4a2900; }
-
+    .privacy-strip { background: #ddf3df; border-left: 4px solid #1e6e3e; padding: 14px 18px; margin-bottom: 18px; font-family: var(--serif); font-size: 13px; line-height: 1.55; color: #16482a; }
+    .privacy-strip strong { color: #0b2a17; }
     .fp-actions { display: flex; gap: 12px; flex-wrap: wrap; }
     .fp-btn { padding: 12px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
     .fp-btn:hover { background: var(--seal); border-color: var(--seal); }
     .fp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .fp-btn.ghost { background: transparent; color: var(--ink); }
-
     .fp-result { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 18px; }
     .fp-result h4 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: #1e6e3e; }
     .fp-result a { font-family: var(--mono); font-size: 12px; color: var(--ink); text-decoration: underline; }
     .fp-result .mono { font-family: var(--mono); font-size: 11px; word-break: break-all; }
     .fp-err { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; }
+    .progress { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 8px; }
+    .cert-preview { background: var(--paper-2); border: 1px solid var(--rule); padding: 12px 14px; margin-top: 10px; font-family: var(--mono); font-size: 11px; line-height: 1.5; color: var(--ink-2); display: none; }
+    .cert-preview.visible { display: block; }
+    .cert-preview strong { color: var(--ink); }
   </style>
 </head>
 <body>
@@ -54,14 +53,13 @@
     <header class="fp-head">
       <span class="sub">Atto viii · Firma · Certificato X.509 PAdES-B (K-S.1)</span>
       <h1>Firma con il <em class="serif-italic" style="color: var(--seal);">tuo certificato</em>.</h1>
-      <p class="sub">PAdES-B baseline (ETSI EN 319 142). In-house Veylon, zero server esterni, zero abbonamento.</p>
+      <p class="sub">PAdES-B baseline (ETSI EN 319 142). Firma eseguita 100% nel tuo browser. Il server riceve solo il PDF firmato.</p>
     </header>
 
     <div class="privacy-strip">
-      <strong>Privacy by design.</strong> Il tuo certificato <code>.p12</code> e la password vengono
-      ricevuti solo per la firma corrente e <strong>NON vengono persistiti, loggati o conservati</strong> in alcun modo
-      sui server Veylon. La firma viene eseguita in memoria nell'edge function e i bytes del certificato
-      vengono garbage-collected al termine della richiesta.
+      <strong>Massima privacy.</strong> Il tuo certificato <code>.p12</code> e la password <strong>non lasciano mai questo dispositivo</strong>.
+      La firma viene eseguita interamente nel tuo browser usando <code>pdf-lib</code> e <code>@signpdf</code>.
+      Il server Veylon riceve solo il PDF gia firmato, calcola lo SHA-256 e lo ancora su Bitcoin.
     </div>
 
     <form id="form" class="fp-card">
@@ -80,6 +78,7 @@
         <label for="p12-pwd">Password del certificato</label>
         <input type="password" id="p12-pwd" autocomplete="off" required/>
       </div>
+      <div class="cert-preview" id="cert-preview"></div>
 
       <h2 style="margin-top: 18px;">3 · Metadati firma (facoltativi)</h2>
       <div class="row">
@@ -104,9 +103,10 @@
       </div>
 
       <div class="fp-actions" style="margin-top: 22px;">
-        <button type="submit" class="fp-btn" id="btn-sign">Firma PAdES &amp; sigilla Bitcoin</button>
+        <button type="submit" class="fp-btn" id="btn-sign">Firma nel browser &amp; sigilla Bitcoin</button>
         <a href="firma.html" class="fp-btn ghost" style="text-decoration: none; text-align: center;">Torna al hub Firma</a>
       </div>
+      <div class="progress" id="progress" hidden></div>
     </form>
 
     <div id="result-box"></div>
@@ -114,19 +114,56 @@
 
   <script type="module">
     import { supabase } from "./_shared/supabase-client.js";
+    import * as forge from "https://esm.sh/node-forge@1.3.1";
 
     const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
     const $ = (id) => document.getElementById(id);
     const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const setProgress = (txt) => { const el = $("progress"); el.hidden = false; el.textContent = txt; };
 
-    function readAsBase64(file) {
+    function readAsArrayBuffer(file) {
       return new Promise((resolve, reject) => {
         const r = new FileReader();
-        r.onload = () => resolve(String(r.result).replace(/^data:[^;]+;base64,/, ""));
+        r.onload = () => resolve(r.result);
         r.onerror = () => reject(new Error("read_error"));
-        r.readAsDataURL(file);
+        r.readAsArrayBuffer(file);
       });
     }
+
+    function bufToBase64(buf) {
+      const bytes = new Uint8Array(buf);
+      let bin = "";
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+      return btoa(bin);
+    }
+
+    // Parser PKCS#12 con node-forge per preview cert info (anteprima soggetto+scadenza)
+    $("p12-input").addEventListener("change", async (ev) => {
+      const file = ev.target.files?.[0];
+      const preview = $("cert-preview");
+      const pwd = $("p12-pwd").value;
+      if (!file || !pwd) { preview.classList.remove("visible"); preview.innerHTML = ""; return; }
+      try {
+        const buf = await readAsArrayBuffer(file);
+        const der = forge.util.binary.raw.encode(new Uint8Array(buf));
+        const asn1 = forge.asn1.fromDer(der);
+        const p12 = forge.pkcs12.pkcs12FromAsn1(asn1, pwd);
+        const bags = p12.getBags({ bagType: forge.pki.oids.certBag });
+        const certBag = bags[forge.pki.oids.certBag]?.[0];
+        if (!certBag) throw new Error("Nessun certificato nel .p12");
+        const cert = certBag.cert;
+        const subjCN = cert.subject.getField("CN")?.value ?? "(senza CN)";
+        const issCN = cert.issuer.getField("CN")?.value ?? "(senza CN)";
+        const notAfter = cert.validity.notAfter.toISOString().slice(0, 10);
+        preview.innerHTML = `<strong>Certificato letto OK:</strong><br/>Soggetto CN: ${escapeHtml(subjCN)}<br/>Emittente CN: ${escapeHtml(issCN)}<br/>Valido fino: ${escapeHtml(notAfter)}`;
+        preview.classList.add("visible");
+      } catch (e) {
+        preview.innerHTML = `Errore lettura .p12: ${escapeHtml(e.message || String(e))}. Verifica password.`;
+        preview.classList.add("visible");
+      }
+    });
+    $("p12-pwd").addEventListener("blur", () => { $("p12-input").dispatchEvent(new Event("change")); });
 
     $("form").addEventListener("submit", async (ev) => {
       ev.preventDefault();
@@ -140,64 +177,112 @@
         box.innerHTML = '<div class="fp-err">Compila tutti i campi obbligatori.</div>';
         return;
       }
-      if (pdfFile.size > 10 * 1024 * 1024) {
-        box.innerHTML = '<div class="fp-err">PDF troppo grande (max 10 MB).</div>';
-        return;
-      }
-      if (p12File.size > 1024 * 1024) {
-        box.innerHTML = '<div class="fp-err">Certificato troppo grande (max 1 MB).</div>';
-        return;
-      }
+      if (pdfFile.size > 10 * 1024 * 1024) { box.innerHTML = '<div class="fp-err">PDF troppo grande (max 10 MB).</div>'; return; }
+      if (p12File.size > 1024 * 1024) { box.innerHTML = '<div class="fp-err">Certificato troppo grande (max 1 MB).</div>'; return; }
 
       const btn = $("btn-sign");
       const original = btn.textContent;
-      btn.textContent = "Firma in corso...";
       btn.disabled = true;
 
       try {
+        setProgress("Carico librerie crittografiche...");
+        const [signpdfMod, signerMod, utilsMod] = await Promise.all([
+          import("https://esm.sh/@signpdf/signpdf@3.2.4"),
+          import("https://esm.sh/@signpdf/signer-p12@3.2.4"),
+          import("https://esm.sh/@signpdf/utils@3.2.4"),
+        ]);
+        const SignPdf = signpdfMod.SignPdf ?? signpdfMod.default?.SignPdf ?? signpdfMod.default;
+        const P12Signer = signerMod.P12Signer ?? signerMod.default?.P12Signer ?? signerMod.default;
+        const plainAddPlaceholder = utilsMod.plainAddPlaceholder ?? utilsMod.default?.plainAddPlaceholder ?? utilsMod.default;
+
+        if (!SignPdf || !P12Signer || !plainAddPlaceholder) {
+          throw new Error("Moduli signpdf non disponibili (SignPdf/P12Signer/plainAddPlaceholder)");
+        }
+
+        setProgress("Leggo PDF e certificato...");
+        const [pdfBuf, p12Buf] = await Promise.all([
+          readAsArrayBuffer(pdfFile),
+          readAsArrayBuffer(p12File),
+        ]);
+        const pdfBytes = new Uint8Array(pdfBuf);
+        const p12Bytes = new Uint8Array(p12Buf);
+
+        setProgress("Estraggo info certificato per metadata atto...");
+        let certSubject = null, certIssuer = null, certSerial = null, certNotAfter = null;
+        try {
+          const der = forge.util.binary.raw.encode(p12Bytes);
+          const asn1 = forge.asn1.fromDer(der);
+          const p12 = forge.pkcs12.pkcs12FromAsn1(asn1, pwd);
+          const bags = p12.getBags({ bagType: forge.pki.oids.certBag });
+          const cert = bags[forge.pki.oids.certBag]?.[0]?.cert;
+          if (cert) {
+            certSubject = cert.subject.attributes.map(a => `${a.shortName}=${a.value}`).join(", ");
+            certIssuer = cert.issuer.attributes.map(a => `${a.shortName}=${a.value}`).join(", ");
+            certSerial = cert.serialNumber;
+            certNotAfter = cert.validity.notAfter.toISOString();
+          }
+        } catch (e) { console.warn("cert parse for metadata failed:", e); }
+
+        setProgress("Aggiungo placeholder firma al PDF...");
+        const reasonVal = $("m-reason").value.trim() || "Approvazione documento";
+        const locationVal = $("m-location").value.trim() || "";
+        const contactVal = $("m-contact").value.trim() || "";
+        const nameVal = $("m-name").value.trim() || "Veylon Signer";
+        const pdfWithPlaceholder = plainAddPlaceholder({
+          pdfBuffer: pdfBytes,
+          reason: reasonVal,
+          contactInfo: contactVal,
+          name: nameVal,
+          location: locationVal,
+        });
+
+        setProgress("Firmo PDF con certificato (CMS PKCS#7)...");
+        const signer = new P12Signer(p12Bytes, { passphrase: pwd });
+        const signpdfInstance = new SignPdf();
+        const signedBuffer = await signpdfInstance.sign(pdfWithPlaceholder, signer);
+        const signedBytes = signedBuffer instanceof Uint8Array ? signedBuffer : new Uint8Array(signedBuffer);
+
+        setProgress("Invio PDF firmato al server per sigillo Bitcoin (~30s OTS)...");
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
 
-        const [pdf_b64, p12_b64] = await Promise.all([
-          readAsBase64(pdfFile),
-          readAsBase64(p12File),
-        ]);
-
         const payload = {
-          pdf_base64: pdf_b64,
-          p12_base64: p12_b64,
-          p12_password: pwd,
-          reason: $("m-reason").value.trim() || undefined,
-          location: $("m-location").value.trim() || undefined,
-          name: $("m-name").value.trim() || undefined,
-          contact_info: $("m-contact").value.trim() || undefined,
+          pdf_signed_base64: bufToBase64(signedBytes.buffer),
+          reason: reasonVal || undefined,
+          location: locationVal || undefined,
+          name: nameVal || undefined,
+          contact_info: contactVal || undefined,
+          signer_cert_subject: certSubject || undefined,
+          signer_cert_issuer: certIssuer || undefined,
+          signer_cert_serial: certSerial || undefined,
+          signer_cert_not_after: certNotAfter || undefined,
         };
-
         const r = await fetch(`${SUPABASE_URL}/functions/v1/firma-pades-applica`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
           body: JSON.stringify(payload),
         });
         const j = await r.json();
-        if (!r.ok || !j.success) {
-          throw new Error(j?.error + (j?.detail ? " - " + j.detail : "") + (j?.hint ? " (" + j.hint + ")" : ""));
-        }
+        if (!r.ok || !j.success) throw new Error(j?.error + (j?.detail ? " - " + j.detail : "") + (j?.hint ? " (" + j.hint + ")" : ""));
 
-        // Reset password subito per sicurezza UX
         $("p12-pwd").value = "";
+        $("progress").hidden = true;
+        try { if (window.plausible) window.plausible("atto_completato", { props: { atto: "viii_firma", fn: "firma-pades-applica" } }); } catch(_) {}
 
         box.innerHTML = `
           <div class="fp-result">
-            <h4>&check; Firma PAdES-B applicata e sigillata su Bitcoin</h4>
+            <h4>&check; PDF firmato e sigillato su Bitcoin</h4>
             <div>Atto Veylon: <span class="mono">${escapeHtml(j.atto_id)}</span></div>
             <div style="margin-top: 4px;">SHA-256 PDF firmato: <span class="mono">${escapeHtml(j.sha256)}</span></div>
             <div style="margin-top: 4px;">Stato OTS Bitcoin: <strong>${escapeHtml(j.ots_status)}</strong></div>
             <div style="margin-top: 4px;">Baseline: <strong>PAdES ${escapeHtml(j.pades_baseline)}</strong></div>
+            ${certSubject ? `<div style="margin-top: 4px;">Firmatario: <span class="mono">${escapeHtml(certSubject)}</span></div>` : ""}
             ${j.download_url ? `<div style="margin-top: 10px;"><a href="${escapeHtml(j.download_url)}" target="_blank" rel="noopener">Scarica PDF firmato (link 15 min)</a></div>` : ""}
             <div style="margin-top: 10px;"><a href="sigillo.html?id=${encodeURIComponent(j.atto_id)}">Vai al sigillo dell&apos;atto &rarr;</a></div>
             <div style="margin-top: 10px;"><a href="${escapeHtml(j.verifica_url)}" target="_blank" rel="noopener">Verifica pubblica &rarr;</a></div>
           </div>`;
       } catch (e) {
+        $("progress").hidden = true;
         box.innerHTML = `<div class="fp-err">Errore firma: ${escapeHtml(e.message || String(e))}</div>`;
       } finally {
         btn.textContent = original;

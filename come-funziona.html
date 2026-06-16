@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon · Come funziona — La suite di certificazione in 9 atti</title>
+  <meta name="description" content="Veylon trasforma documenti, email, file, prodotti e identita in prove legali ancorate a Bitcoin. Scopri i 9 atti della suite di certificazione."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/come-funziona.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon · Come funziona — 9 atti di certificazione legale"/>
+  <meta property="og:description" content="Sigillo, Send, Mail, Garanzie, Registro, Tag, Cert, Firma, Onboarding. Una piattaforma per ogni prova legale."/>
+  <meta property="og:url" content="https://veylon.app/come-funziona.html"/>
+  <meta property="og:locale" content="it_IT"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .cf-hero { padding: 64px 32px 32px; max-width: 980px; margin: 0 auto; text-align: center; border-bottom: 1px solid var(--rule); }
+    .cf-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 18px; }
+    .cf-hero p { font-family: var(--serif); font-size: 18px; line-height: 1.5; color: var(--ink-2); max-width: 620px; margin: 0 auto 24px; }
+    .cf-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); margin-bottom: 18px; display: inline-block; }
+
+    .cf-atti { max-width: 980px; margin: 0 auto; padding: 56px 32px 32px; }
+    .cf-atto { display: grid; grid-template-columns: 96px 1fr; gap: 36px; padding: 36px 0; border-bottom: 1px solid var(--rule); }
+    .cf-atto:last-child { border-bottom: 0; }
+    @media (max-width: 720px) { .cf-atto { grid-template-columns: 1fr; gap: 14px; } }
+    .cf-num { font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 1; color: var(--seal); }
+    .cf-atto h2 { font-family: var(--serif); font-weight: normal; font-size: 26px; line-height: 1.15; margin: 0 0 8px; }
+    .cf-atto .name { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 4px; }
+    .cf-atto p { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--ink-2); margin: 0 0 12px; }
+    .cf-atto .example { background: var(--paper-2); border-left: 3px solid var(--seal); padding: 12px 16px; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-2); margin-top: 14px; }
+    .cf-atto .ctas { margin-top: 14px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .cf-atto a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--seal); padding-bottom: 2px; }
+    .cf-atto a:hover { color: var(--seal); }
+
+    .cf-base { max-width: 980px; margin: 64px auto 0; padding: 56px 32px; border-top: 1px solid var(--rule); }
+    .cf-base h3 { font-family: var(--serif); font-size: 28px; margin: 0 0 16px; }
+    .cf-base p { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+    .cf-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .cf-nav { max-width: 980px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .cf-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .cf-nav .brand em { color: var(--seal); }
+    .cf-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .cf-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .cf-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 540px) { .cf-nav-links { display: none; } }
+  </style>
+</head>
+<body>
+  <nav class="cf-nav">
+    <a href="index.html" class="brand"><em>Veylon</em></a>
+    <div class="cf-nav-links">
+      <a href="come-funziona.html">Come funziona</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="demo.html">Demo</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero">
+    <span class="kicker">La suite di certificazione, in nove atti</span>
+    <h1>Una piattaforma. <em class="serif-italic" style="color: var(--seal);">Nove atti.</em><br/>Ogni prova legale che ti serve.</h1>
+    <p>Veylon trasforma documenti, email, file, prodotti, identita in prove legali ancorate a Bitcoin tramite OpenTimestamps. Conforme eIDAS art. 41, L. 12/2019 art. 8-ter, GDPR.</p>
+    <a href="signup.html" class="btn-primary">Inizia gratis &mdash; 10 sigilli/mese</a>
+  </header>
+
+  <main class="cf-atti">
+    <article class="cf-atto">
+      <div class="cf-num">i</div>
+      <div>
+        <span class="name">Sigillo</span>
+        <h2>Notarizzazione documenti</h2>
+        <p>Calcoli l'impronta SHA-256 del documento e la ancori a Bitcoin. Il documento non lascia il tuo perimetro &mdash; viene trasmessa solo l'impronta.</p>
+        <div class="example">"Ho inviato il contratto al cliente il 14 giugno alle 15:30." &mdash; Lo dimostri con un sigillo Bitcoin verificabile per sempre.</div>
+        <div class="ctas">
+          <a href="notarizza.html">Crea un sigillo &rarr;</a>
+          <a href="verifica.html">Verifica un sigillo &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">ii</div>
+      <div>
+        <span class="name">Send</span>
+        <h2>Trasmissione file con prova</h2>
+        <p>Carichi un file, generi un link cifrato E2E con scadenza. Quando il destinatario lo scarica viene creata una ricevuta con timestamp e IP.</p>
+        <div class="example">Hai inviato un piano tariffario riservato? Prova quando, a chi, e che il file e' stato letto.</div>
+        <div class="ctas">
+          <a href="invia.html">Invia un file &rarr;</a>
+          <a href="trasmissioni.html">Le tue trasmissioni &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">iii</div>
+      <div>
+        <span class="name">Mail</span>
+        <h2>Email certificate (3 modalita)</h2>
+        <p>BCC stamp (la mail dal tuo client passa per Veylon che la sigilla), Relay SMTP outbound (le tue mail uscenti vengono firmate), o Vault inbound (alias <code>@mg.veylon.app</code> per ricezione certificata).</p>
+        <div class="example">Sostituisci la PEC con un sistema cross-EU riconosciuto: marca temporale eIDAS art. 41, prova opponibile a terzi in tutta Europa.</div>
+        <div class="ctas">
+          <a href="mail.html">Configura mail &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">iv</div>
+      <div>
+        <span class="name">Garanzie</span>
+        <h2>Garanzie commerciali certificate</h2>
+        <p>Emetti una garanzia su un prodotto/servizio con codice univoco, scadenza, condizioni. Il cliente la verifica scansionando un QR.</p>
+        <div class="example">Vendi un mobile artigianale con garanzia 10 anni. Il cliente la verifica su veylon.app/verifica-garanzia.</div>
+        <div class="ctas">
+          <a href="garanzie.html">Le tue garanzie &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">v</div>
+      <div>
+        <span class="name">Registro</span>
+        <h2>Registro attivita certificato</h2>
+        <p>Log immutabile di azioni con marcatura temporale. Per audit interni, compliance, tracciamento attivita team.</p>
+        <div class="example">Studio medico: cronologia interventi su cartelle cliniche, conforme privacy GDPR + valore legale eIDAS.</div>
+        <div class="ctas">
+          <a href="dashboard.html">Apri dashboard &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">vi</div>
+      <div>
+        <span class="name">Tag</span>
+        <h2>Tag prodotti DPP UE</h2>
+        <p>Tag fisici (etichetta, inciso, NFC dinamico) per il Digital Product Passport europeo. 3 attori: produttore, consumatore, secondo acquirente.</p>
+        <div class="example">Conformita ESPR 2024/1781 + Battery Reg 2023/1542 + EUDR 2023/1115. Pronto per i settori batterie, tessile, mobili.</div>
+        <div class="ctas">
+          <a href="tag.html">Crea un tag &rarr;</a>
+          <a href="tag-onboarding.html">Guida tag &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">vii</div>
+      <div>
+        <span class="name">Cert</span>
+        <h2>Certificati istituzionali</h2>
+        <p>Università, scuole, federazioni sportive, enti emettono certificati con QR di verifica. Accetta sia PDF che foto.</p>
+        <div class="example">L'Universita rilascia diplomi con QR. Il datore di lavoro li verifica in 2 secondi su veylon.app/cert-verifica.</div>
+        <div class="ctas">
+          <a href="cert-emetti.html">Emetti certificato &rarr;</a>
+          <a href="cert-emetti-batch.html">Batch &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">viii</div>
+      <div>
+        <span class="name">Firma</span>
+        <h2>Firma elettronica (3 modalita)</h2>
+        <p>Firma OTP via email (FEA debole), firma grafica drawn canvas (apponi PNG su PDF), firma PAdES-B con certificato X.509 client-side (privacy massima, K-S.1).</p>
+        <div class="example">Contratti, NDA, lettere di incarico. Firma nel browser, ancoraggio Bitcoin per la marca temporale, conforme ETSI EN 319 142.</div>
+        <div class="ctas">
+          <a href="firma.html">Hub firma &rarr;</a>
+          <a href="firma-pades.html">Firma PAdES X.509 &rarr;</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cf-atto">
+      <div class="cf-num">ix</div>
+      <div>
+        <span class="name">Onboarding</span>
+        <h2>KYC e onboarding identita</h2>
+        <p>Riconoscimento documento identita + scansione volto + match biometrico opzionale. Per banche, exchange, intermediari finanziari, accesso a servizi PA.</p>
+        <div class="example">Verifica AML compliant: documento + selfie + liveness check. Tutto cifrato + GDPR art. 9 dati biometrici.</div>
+        <div class="ctas">
+          <a href="onboarding.html">KYC &rarr;</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <section class="cf-base">
+    <h3>Sotto a tutto: un'ancora <em class="serif-italic" style="color: var(--seal);">indistruttibile</em>.</h3>
+    <p>
+      Ogni atto Veylon produce uno SHA-256 deterministico del contenuto e lo ancora alla blockchain Bitcoin tramite il protocollo aperto OpenTimestamps.
+      Chiunque, in qualunque momento, con qualunque client compatibile, puo verificare in autonomia data e contenuto.
+      Anche se Veylon dovesse cessare l'attivita: le tue prove restano valide per sempre.
+    </p>
+    <div class="cf-cta-row">
+      <a href="signup.html" class="btn-primary">Inizia gratis</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+      <a href="security.html" class="btn-ghost">Sicurezza &amp; eIDAS</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>9 atti, 1 sigillo Bitcoin.</span></div>
+  </footer>
+</body>
+</html>

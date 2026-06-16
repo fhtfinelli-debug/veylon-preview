@@ -20,7 +20,33 @@
       </div>
     </section>
 
-    <section style="margin-top: 40px;">
+    <section style="margin-top: 32px;">
+      <div class="firma-tools">
+        <a href="firma-applica.html" class="firma-tool">
+          <span class="tool-num">i</span>
+          <span class="tool-label">Firma OTP via email</span>
+          <span class="tool-desc">Richiedi a un firmatario terzo di approvare con codice OTP. Tradizionale.</span>
+        </a>
+        <a href="firma-grafica-apponi.html" class="firma-tool">
+          <span class="tool-num">ii</span>
+          <span class="tool-label">Firma grafica (canvas)</span>
+          <span class="tool-desc">N.2 — Disegna la tua firma e posizionala sul PDF con il viewer.</span>
+        </a>
+        <a href="firma-pades.html" class="firma-tool firma-tool-new">
+          <span class="tool-num">iii</span>
+          <span class="tool-label">Firma PAdES (certificato X.509)</span>
+          <span class="tool-desc">K-S.1 — PAdES-B con il tuo .p12. In-house, privacy by design.</span>
+        </a>
+        <a href="firma-multi-applica.html" class="firma-tool firma-tool-new">
+          <span class="tool-num">iv</span>
+          <span class="tool-label">Firma multi-parte</span>
+          <span class="tool-desc">K-S.2 — Piu firmatari sullo stesso documento. NDA, contratti B2B.</span>
+        </a>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <h2 class="serif" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px;">Richieste in corso</h2>
       <article class="panel-card">
         <div id="state-loading" class="state-msg">Caricamento richieste&hellip;</div>
         <div id="state-error" class="state-msg state-err" hidden>
@@ -51,6 +77,15 @@
   .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
   .pill.ok { color: var(--verify); border-color: var(--verify); }
   .pill.warn { color: var(--seal); border-color: var(--seal); }
+
+  .firma-tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 880px) { .firma-tools { grid-template-columns: 1fr; } }
+  .firma-tool { display: block; background: var(--paper); border: 1px solid var(--rule); padding: 22px 22px 24px; text-decoration: none; color: inherit; transition: border-color 120ms ease, transform 120ms ease; position: relative; }
+  .firma-tool:hover { border-color: var(--ink); transform: translateY(-1px); }
+  .firma-tool .tool-num { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); padding-bottom: 12px; }
+  .firma-tool .tool-label { display: block; font-family: var(--serif); font-size: 18px; line-height: 1.2; color: var(--ink); margin: 0 0 8px; }
+  .firma-tool .tool-desc { display: block; font-family: var(--serif); font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+  .firma-tool-new::after { content: "NEW"; position: absolute; top: 14px; right: 14px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: var(--seal); border: 1px solid var(--seal); padding: 2px 6px; }
   </style>
 
   <script type="module">

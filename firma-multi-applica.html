@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Firma multi-parte (K-S.2)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .fm-layout { max-width: 760px; margin: 24px auto 96px; padding: 0 24px; }
+    .fm-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .fm-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
+    .fm-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+    .fm-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px; margin-bottom: 18px; }
+    .fm-card h2 { font-family: var(--serif); font-weight: normal; font-size: 18px; margin: 0 0 14px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+    .field input.mono { font-family: var(--mono); font-size: 13px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
+    .firmatario-row { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 10px; margin-bottom: 8px; align-items: end; }
+    .firmatario-row button.del { padding: 10px; font-family: var(--mono); font-size: 14px; cursor: pointer; border: 1px solid var(--rule); background: transparent; color: var(--ink-3); }
+    .firmatario-row button.del:hover { color: var(--seal); border-color: var(--seal); }
+    .add-firmatario { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--seal); cursor: pointer; background: transparent; border: 1px dashed var(--seal); padding: 10px 18px; margin-top: 8px; }
+    .fm-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .fm-btn { padding: 12px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .fm-btn:hover { background: var(--seal); border-color: var(--seal); }
+    .fm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .fm-btn.ghost { background: transparent; color: var(--ink); }
+    .fm-result { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 18px; margin-bottom: 14px; }
+    .fm-result h4 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: #1e6e3e; }
+    .fm-result .mono { font-family: var(--mono); font-size: 11px; word-break: break-all; }
+    .fm-result table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    .fm-result th, .fm-result td { padding: 6px 8px; border-bottom: 1px solid #cfead4; text-align: left; }
+    .fm-result th { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #16482a; }
+    .fm-err { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; }
+    .info-strip { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 12px 16px; margin-bottom: 18px; font-family: var(--serif); font-size: 13px; line-height: 1.5; color: #6b3a00; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("firma"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="fm-layout">
+    <header class="fm-head">
+      <span class="sub">Atto viii · Firma · Multi-parte K-S.2 Shared-Signing</span>
+      <h1>Firma <em class="serif-italic" style="color: var(--seal);">a piu mani</em>.</h1>
+      <p class="sub">Contratti B2B, NDA multi-parte, lettere di incarico. Tutti i firmatari ricevono OTP via email.</p>
+    </header>
+
+    <div class="info-strip">
+      <strong>K-S.2 v1 MVP:</strong> modalita <strong>parallelo</strong> funzionante end-to-end (tutti i firmatari firmano in qualsiasi ordine).
+      Modalita <strong>sequenziale</strong> in beta: solo il primo firmatario riceve l&apos;OTP. Per gli altri serve attivazione manuale post-firma del precedente
+      (Fase 2 K-S.2 v1.1: cron automatico in arrivo).
+    </div>
+
+    <form id="form" class="fm-card">
+      <h2>1 · Documento</h2>
+      <div class="field">
+        <label for="f-doc-name">Nome documento</label>
+        <input type="text" id="f-doc-name" required placeholder="Es. NDA Veylon - Cliente Acme"/>
+      </div>
+      <div class="field">
+        <label for="f-doc-sha">SHA-256 documento (facoltativo, 64 hex)</label>
+        <input type="text" id="f-doc-sha" class="mono" maxlength="64" placeholder="Lascia vuoto se non hai gia notarizzato"/>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="f-ordine">Modalita</label>
+          <select id="f-ordine">
+            <option value="parallelo">Parallelo (tutti subito)</option>
+            <option value="sequenziale">Sequenziale (uno per volta) BETA</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-scadenza">Scadenza (ore)</label>
+          <input type="number" id="f-scadenza" min="1" max="8760" value="168"/>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-motivo">Motivo (facoltativo)</label>
+        <input type="text" id="f-motivo" placeholder="Es. Approvazione NDA reciproco"/>
+      </div>
+
+      <h2 style="margin-top: 20px;">2 · Firmatari</h2>
+      <div id="firmatari-list">
+        <div class="firmatario-row">
+          <div class="field" style="margin: 0;"><label>Email firmatario 1 *</label><input type="email" class="f-email" required placeholder="firma@example.com"/></div>
+          <div class="field" style="margin: 0;"><label>Nome (facoltativo)</label><input type="text" class="f-nome" placeholder="Mario Rossi"/></div>
+          <button type="button" class="del" disabled>&times;</button>
+        </div>
+      </div>
+      <button type="button" class="add-firmatario" id="btn-add">+ Aggiungi firmatario</button>
+
+      <div class="fm-actions">
+        <button type="submit" class="fm-btn" id="btn-submit">Crea richiesta multi-firma</button>
+        <a href="firma.html" class="fm-btn ghost" style="text-decoration: none; text-align: center;">Torna al hub Firma</a>
+      </div>
+    </form>
+
+    <div id="result-box"></div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    let firmatariCount = 1;
+    const MAX = 20;
+
+    function updateDelButtons() {
+      document.querySelectorAll(".firmatario-row .del").forEach((b, i, all) => { b.disabled = all.length === 1; });
+    }
+
+    $("btn-add").addEventListener("click", () => {
+      if (firmatariCount >= MAX) { alert("Massimo " + MAX + " firmatari"); return; }
+      firmatariCount++;
+      const div = document.createElement("div");
+      div.className = "firmatario-row";
+      div.innerHTML = `
+        <div class="field" style="margin: 0;"><label>Email firmatario ${firmatariCount}</label><input type="email" class="f-email" required placeholder="firma@example.com"/></div>
+        <div class="field" style="margin: 0;"><label>Nome (facoltativo)</label><input type="text" class="f-nome" placeholder="Mario Rossi"/></div>
+        <button type="button" class="del">&times;</button>
+      `;
+      div.querySelector(".del").addEventListener("click", () => { div.remove(); firmatariCount--; updateDelButtons(); });
+      $("firmatari-list").appendChild(div);
+      updateDelButtons();
+    });
+
+    $("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box");
+      box.innerHTML = "";
+
+      const doc_name = $("f-doc-name").value.trim();
+      const doc_sha256 = $("f-doc-sha").value.trim().toLowerCase();
+      const ordine_tipo = $("f-ordine").value;
+      const scadenza_hours = Number($("f-scadenza").value);
+      const motivo = $("f-motivo").value.trim();
+
+      if (doc_sha256 && !/^[0-9a-f]{64}$/.test(doc_sha256)) {
+        box.innerHTML = '<div class="fm-err">SHA-256 deve essere 64 caratteri esadecimali oppure lasciato vuoto.</div>';
+        return;
+      }
+
+      const firmatari = [];
+      const rows = document.querySelectorAll(".firmatario-row");
+      for (const r of rows) {
+        const email = r.querySelector(".f-email").value.trim().toLowerCase();
+        const nome = r.querySelector(".f-nome").value.trim();
+        if (!email) continue;
+        firmatari.push({ email, nome: nome || undefined });
+      }
+      if (firmatari.length === 0) {
+        box.innerHTML = '<div class="fm-err">Almeno un firmatario richiesto.</div>';
+        return;
+      }
+
+      const btn = $("btn-submit");
+      btn.disabled = true; const original = btn.textContent; btn.textContent = "Creazione in corso...";
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const payload = { doc_name, ordine_tipo, scadenza_hours, firmatari };
+        if (doc_sha256) payload.doc_sha256 = doc_sha256;
+        if (motivo) payload.motivo = motivo;
+
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/firma-multi-crea`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify(payload),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error + (j?.detail ? " - " + j.detail : ""));
+
+        try { if (window.plausible) window.plausible("multi_firma_creata", { props: { n: j.n_firmatari, ordine: j.ordine_tipo } }); } catch(_) {}
+
+        const rowsHtml = j.firme.map(f => `<tr>
+          <td>${f.ordine + 1}</td>
+          <td>${escapeHtml(f.firmatario_email)}</td>
+          <td class="mono">${escapeHtml(f.codice)}</td>
+          <td>${f.email_inviata ? "&check;" : "&minus;"}</td>
+        </tr>`).join("");
+
+        box.innerHTML = `
+          <div class="fm-result">
+            <h4>&check; Richiesta multi-firma creata</h4>
+            <div>Gruppo: <span class="mono">${escapeHtml(j.gruppo_id)}</span></div>
+            <div style="margin-top: 4px;">Modalita: <strong>${escapeHtml(j.ordine_tipo)}</strong> &middot; Firmatari: <strong>${j.n_firmatari}</strong> &middot; Scadenza: ${escapeHtml(new Date(j.scadenza_at).toLocaleString("it-IT"))}</div>
+            <table>
+              <thead><tr><th>#</th><th>Firmatario</th><th>Codice</th><th>Email</th></tr></thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+            <p style="font-family: var(--serif); font-size: 13px; color: #16482a; margin-top: 14px;">${escapeHtml(j.nota)}</p>
+          </div>`;
+        // Reset form
+        $("form").reset();
+        document.querySelectorAll(".firmatario-row").forEach((r, i) => { if (i > 0) r.remove(); });
+        firmatariCount = 1; updateDelButtons();
+      } catch (e) {
+        box.innerHTML = `<div class="fm-err">Errore: ${escapeHtml(e.message || String(e))}</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>
