@@ -202,6 +202,30 @@
         </div>
       </div>
 
+      <!-- NT.5 Proprieta + alert secondo acquirente -->
+      <div class="tcv-card" id="dProprietaCard">
+        <div class="tcv-card-head">Proprieta</div>
+        <div class="tcv-row"><span class="tcv-k">Stato</span><span class="tcv-v" id="dPropStato">—</span></div>
+        <div class="tcv-row" id="dPropOwnerRow" style="display: none;">
+          <span class="tcv-k">Proprietario attuale</span>
+          <span class="tcv-v mono" id="dPropOwner">—</span>
+        </div>
+        <div class="tcv-row" id="dPropCountRow" style="display: none;">
+          <span class="tcv-k">Trasferimenti</span>
+          <span class="tcv-v mono" id="dPropCount">—</span>
+        </div>
+        <!-- Alert ROSSO per secondo acquirente -->
+        <div id="dPropAlert" class="tcv-alert" style="display:none; margin-top: 12px; padding: 12px 14px; background: #fde7e4; border-left: 4px solid #b00020; color: #5a0a0a; font-size: 14px; line-height: 1.5;">
+          <strong>Attenzione</strong> &mdash; se chi te lo sta vendendo non corrisponde al
+          <strong id="dPropAlertOwner">proprietario registrato</strong>, rifiuta l'acquisto:
+          potrebbe essere un tentativo di vendita di un prodotto rubato o contraffatto.
+        </div>
+        <details id="dPropStoriaWrap" style="display:none; margin-top: 12px;">
+          <summary style="cursor: pointer; font-size: 12px; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.1em; font-family: var(--mono, monospace);">Storia trasferimenti</summary>
+          <ul id="dPropStoria" style="list-style: none; padding: 0; margin: 12px 0 0; font-size: 13px;"></ul>
+        </details>
+      </div>
+
       <a id="verifyIndependent" class="tcv-btn ghost" href="verifica.html">
         Verifica indipendente su Bitcoin
       </a>
@@ -347,6 +371,40 @@
         if (c.data_scadenza) {
           document.getElementById('dScadRow').style.display = 'flex';
           setText('dScad', fmtDate(c.data_scadenza));
+        }
+
+        // NT.5 Proprieta + alert secondo acquirente
+        const prop = json.proprieta || {};
+        if (prop.proprietario_e_produttore) {
+          setText('dPropStato', 'Originale, mai trasferito');
+          document.getElementById('dPropStato').style.color = '#1e6e3e';
+        } else if (prop.proprietario_attuale_email_mask) {
+          setText('dPropStato', 'Trasferito al consumatore');
+          document.getElementById('dPropStato').style.color = '#c4781f';
+          document.getElementById('dPropOwnerRow').style.display = 'flex';
+          setText('dPropOwner', prop.proprietario_attuale_email_mask);
+          // Alert visibile solo quando c'e' un proprietario diverso dal produttore
+          document.getElementById('dPropAlert').style.display = 'block';
+          setText('dPropAlertOwner', prop.proprietario_attuale_email_mask);
+        } else {
+          setText('dPropStato', '—');
+        }
+        if (typeof prop.n_trasferimenti_completati === 'number' && prop.n_trasferimenti_completati > 0) {
+          document.getElementById('dPropCountRow').style.display = 'flex';
+          setText('dPropCount', String(prop.n_trasferimenti_completati));
+        }
+        if (Array.isArray(prop.storia) && prop.storia.length > 0) {
+          document.getElementById('dPropStoriaWrap').style.display = 'block';
+          document.getElementById('dPropStoria').innerHTML = prop.storia.map(t => {
+            const statoLabel = (t.stato === 'completato' || t.stato === 'completed')
+              ? `<span style="color:#1e6e3e;">completato</span>`
+              : `<span style="color:#c4781f;">${escapeHtml(t.stato)}</span>`;
+            return `<li style="padding: 8px 0; border-top: 1px solid #eee;">
+              <span class="mono" style="font-size: 12px;">${escapeHtml(t.a_email_mask || '—')}</span>
+              &middot; ${statoLabel}
+              &middot; <span class="mono" style="font-size: 11px; color: var(--ink-3);">${fmtDate(t.completed_at || t.created_at)}</span>
+            </li>`;
+          }).join('');
         }
 
         document.getElementById('detail').style.display = 'block';
