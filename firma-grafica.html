@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Firma grafica</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .firma-layout { max-width: 980px; margin: 24px auto 96px; padding: 0 24px; }
+    .stepper { display: flex; gap: 8px; justify-content: center; margin: 24px 0 32px; }
+    .step-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--rule); transition: all .3s; }
+    .step-dot.active { background: var(--seal); transform: scale(1.4); }
+    .step-dot.done { background: var(--seal); }
+
+    .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; margin-bottom: 16px; }
+    .canvas-wrap { background: var(--paper); border: 2px dashed var(--rule); padding: 12px; }
+    .canvas-wrap canvas { display: block; width: 100%; max-width: 720px; height: 240px; background: white; touch-action: none; cursor: crosshair; }
+    .canvas-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .btn-mini { padding: 8px 14px; font-family: var(--mono); font-size: 11px; border: 1px solid var(--ink); background: var(--paper); cursor: pointer; text-transform: uppercase; letter-spacing: 0.12em; }
+    .btn-mini:hover { background: var(--ink); color: var(--paper); }
+
+    .identita-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .identita-card { padding: 16px; border: 1px solid var(--rule); background: var(--paper); }
+    .identita-card .nome { font-family: var(--serif); font-size: 16px; margin: 0 0 4px; }
+    .identita-card .email { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin: 0 0 12px; }
+    .identita-card img { display: block; width: 100%; max-height: 80px; object-fit: contain; background: white; border: 1px solid var(--rule); }
+    .identita-card .actions { display: flex; gap: 8px; margin-top: 12px; }
+    .identita-card .badge-default { display: inline-block; padding: 2px 6px; font-family: var(--mono); font-size: 9px; background: var(--seal); color: var(--paper); margin-left: 6px; vertical-align: middle; text-transform: uppercase; letter-spacing: 0.1em; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("firma"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="firma-layout">
+    <div style="text-align: center; margin-bottom: 16px;">
+      <span class="section-num">Atto viii · Firma</span>
+      <h1 class="serif" style="font-weight: normal; font-size: clamp(36px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.01em; margin: 12px 0 8px;">
+        Firma <em class="serif-italic" style="color: var(--seal);">grafica.</em>
+      </h1>
+      <p class="lede" style="max-width: 560px; margin: 0 auto;">
+        Crea la tua identita firmataria. Disegna la firma una volta, riutilizzala su tanti documenti.
+      </p>
+    </div>
+
+    <div class="stepper">
+      <div class="step-dot active" data-step="1"></div>
+      <div class="step-dot" data-step="2"></div>
+    </div>
+
+    <!-- STEP 1: Disegna firma -->
+    <section class="panel-card" id="step-1">
+      <h2 class="serif" style="font-weight: normal; font-size: 22px; margin: 0 0 16px;">1. Crea o seleziona la tua firma</h2>
+      <p style="font-family: var(--serif); color: var(--ink-2); margin: 0 0 20px;">
+        Disegna la tua firma nella casella sotto. Puoi usare mouse, trackpad o touch su mobile/tablet.
+      </p>
+      <div class="canvas-wrap">
+        <canvas id="sig-canvas" width="1440" height="480"></canvas>
+      </div>
+      <div class="canvas-actions">
+        <button class="btn-mini" id="sig-clear">Cancella</button>
+        <button class="btn-mini" id="sig-undo">Annulla ultimo tratto</button>
+        <span style="flex: 1;"></span>
+        <span class="mono" style="font-size: 10px; color: var(--ink-3);" id="sig-info">vuoto</span>
+      </div>
+
+      <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div>
+          <label class="field-label">Nome</label>
+          <input class="field-input" type="text" id="f-nome" required placeholder="Nome"/>
+        </div>
+        <div>
+          <label class="field-label">Cognome</label>
+          <input class="field-input" type="text" id="f-cognome" required placeholder="Cognome"/>
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <label class="field-label">Email (facoltativa)</label>
+        <input class="field-input mono" type="email" id="f-email" placeholder="nome@dominio.it"/>
+      </div>
+      <div style="margin-top: 12px;">
+        <label style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--serif); font-size: 14px;">
+          <input type="checkbox" id="f-default"/> Imposta come firma predefinita
+        </label>
+      </div>
+
+      <div style="margin-top: 24px; text-align: right;">
+        <button class="btn seal lg" id="btn-save">Salva firma</button>
+      </div>
+      <div id="save-msg" style="margin-top: 12px; text-align: right; font-family: var(--mono); font-size: 11px;"></div>
+    </section>
+
+    <!-- STEP 2: Identita esistenti -->
+    <section class="panel-card" id="step-2">
+      <h2 class="serif" style="font-weight: normal; font-size: 22px; margin: 0 0 16px;">2. Le tue firme salvate</h2>
+      <div id="ident-state-loading" class="state-msg" style="font-family: var(--serif); font-style: italic; color: var(--ink-2);">Caricamento...</div>
+      <div id="ident-state-empty" class="state-msg" hidden style="font-family: var(--serif); font-style: italic; color: var(--ink-2);">
+        Nessuna identita firmataria salvata. Crea la prima qui sopra.
+      </div>
+      <div class="identita-grid" id="ident-grid" hidden></div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+
+    const $ = (id) => document.getElementById(id);
+    const canvas = $("sig-canvas");
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+    let strokes = [[]];
+    let currentStroke = strokes[strokes.length - 1];
+
+    function resize() {
+      // Mantiene il rapporto 3:1 fisso, dispone i bordi puliti
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+      ctx.scale(dpr, dpr);
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#1c1c1c";
+      redraw();
+    }
+    window.addEventListener("resize", resize);
+    requestAnimationFrame(resize);
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const t = e.touches?.[0] ?? e;
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+    }
+
+    function start(e) { e.preventDefault(); drawing = true; currentStroke = []; strokes.push(currentStroke); const p = getPos(e); currentStroke.push(p); }
+    function move(e) { if (!drawing) return; e.preventDefault(); const p = getPos(e); currentStroke.push(p); redraw(); }
+    function end(e) { drawing = false; updateInfo(); }
+    function redraw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 2;
+      strokes.forEach(s => {
+        if (s.length < 2) return;
+        ctx.beginPath();
+        ctx.moveTo(s[0].x, s[0].y);
+        for (let i = 1; i < s.length; i++) ctx.lineTo(s[i].x, s[i].y);
+        ctx.stroke();
+      });
+    }
+    function updateInfo() {
+      const points = strokes.reduce((n, s) => n + s.length, 0);
+      $("sig-info").textContent = points === 0 ? "vuoto" : (strokes.length - 1) + " tratti, " + points + " punti";
+    }
+
+    canvas.addEventListener("mousedown", start);
+    canvas.addEventListener("mousemove", move);
+    canvas.addEventListener("mouseup", end);
+    canvas.addEventListener("mouseleave", end);
+    canvas.addEventListener("touchstart", start, { passive: false });
+    canvas.addEventListener("touchmove", move, { passive: false });
+    canvas.addEventListener("touchend", end);
+
+    $("sig-clear").addEventListener("click", () => { strokes = [[]]; currentStroke = strokes[0]; redraw(); updateInfo(); });
+    $("sig-undo").addEventListener("click", () => { if (strokes.length > 1) strokes.pop(); redraw(); updateInfo(); });
+
+    function isEmpty() {
+      return strokes.every(s => s.length < 2);
+    }
+
+    async function canvasToPngBlob() {
+      // Genera un canvas pulito senza il dpr scaling per esport
+      const out = document.createElement("canvas");
+      out.width = canvas.width;
+      out.height = canvas.height;
+      const octx = out.getContext("2d");
+      octx.lineWidth = 2;
+      octx.lineCap = "round";
+      octx.lineJoin = "round";
+      octx.strokeStyle = "#1c1c1c";
+      strokes.forEach(s => {
+        if (s.length < 2) return;
+        octx.beginPath();
+        octx.moveTo(s[0].x, s[0].y);
+        for (let i = 1; i < s.length; i++) octx.lineTo(s[i].x, s[i].y);
+        octx.stroke();
+      });
+      return await new Promise(res => out.toBlob(b => res(b), "image/png"));
+    }
+
+    async function sha256OfBlob(blob) {
+      const buf = await blob.arrayBuffer();
+      const digest = await crypto.subtle.digest("SHA-256", buf);
+      return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    $("btn-save").addEventListener("click", async () => {
+      if (isEmpty()) { alert("Disegna prima la tua firma."); return; }
+      const nome = $("f-nome").value.trim();
+      const cognome = $("f-cognome").value.trim();
+      const email = $("f-email").value.trim();
+      const setDefault = $("f-default").checked;
+      if (!nome || !cognome) { alert("Inserisci nome e cognome."); return; }
+
+      $("save-msg").textContent = "Salvataggio...";
+      $("save-msg").style.color = "";
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) { alert("Sessione scaduta."); return; }
+
+        const blob = await canvasToPngBlob();
+        const sha = await sha256OfBlob(blob);
+        const path = `${user.id}/${sha}.png`;
+
+        // Upload nel bucket
+        const { error: upErr } = await supabase.storage.from("veylon-firme-png").upload(path, blob, { contentType: "image/png", upsert: true });
+        if (upErr) throw upErr;
+
+        // Se default, sresetta gli altri
+        if (setDefault) {
+          await supabase.from("firme_grafiche_identita").update({ default_id: false }).eq("user_id", user.id);
+        }
+
+        // Insert/Upsert identita
+        const { error: insErr } = await supabase.from("firme_grafiche_identita").insert({
+          user_id: user.id,
+          nome, cognome,
+          email: email || null,
+          png_storage_path: path,
+          png_sha256: sha,
+          default_id: setDefault,
+        });
+        if (insErr) throw insErr;
+
+        $("save-msg").textContent = "Firma salvata correttamente.";
+        $("save-msg").style.color = "var(--verify, #2e7d32)";
+        $("f-nome").value = ""; $("f-cognome").value = ""; $("f-email").value = ""; $("f-default").checked = false;
+        strokes = [[]]; redraw(); updateInfo();
+        await loadIdentita();
+      } catch (e) {
+        console.error("save_failed", e);
+        $("save-msg").textContent = "Errore: " + (e.message || e);
+        $("save-msg").style.color = "var(--seal, #c62828)";
+      }
+    });
+
+    async function loadIdentita() {
+      $("ident-state-loading").hidden = false;
+      $("ident-state-empty").hidden = true;
+      $("ident-grid").hidden = true;
+      $("ident-grid").innerHTML = "";
+
+      const { data, error } = await supabase
+        .from("firme_grafiche_identita")
+        .select("id, nome, cognome, email, png_storage_path, default_id, created_at")
+        .order("default_id", { ascending: false })
+        .order("created_at", { ascending: false });
+
+      $("ident-state-loading").hidden = true;
+      if (error) {
+        $("ident-grid").innerHTML = `<div style="color: var(--seal);">Errore: ${error.message}</div>`;
+        $("ident-grid").hidden = false;
+        return;
+      }
+      if (!data || data.length === 0) {
+        $("ident-state-empty").hidden = false;
+        return;
+      }
+      $("ident-grid").hidden = false;
+      const fragments = await Promise.all(data.map(async (i) => {
+        // Signed url per leggere l'immagine
+        const { data: signed } = await supabase.storage.from("veylon-firme-png").createSignedUrl(i.png_storage_path, 600);
+        const url = signed?.signedUrl || "";
+        return `
+          <div class="identita-card">
+            <div class="nome">${escapeHtml(i.nome + " " + i.cognome)}${i.default_id ? '<span class="badge-default">default</span>' : ''}</div>
+            <div class="email">${escapeHtml(i.email || "(senza email)")}</div>
+            <img src="${url}" alt="firma di ${escapeHtml(i.nome)}" loading="lazy"/>
+            <div class="actions">
+              <button class="btn-mini" data-id="${i.id}" data-action="del">Elimina</button>
+            </div>
+          </div>
+        `;
+      }));
+      $("ident-grid").innerHTML = fragments.join("");
+      $("ident-grid").querySelectorAll('button[data-action="del"]').forEach(b => b.addEventListener("click", async () => {
+        if (!confirm("Eliminare questa firma?")) return;
+        const id = b.dataset.id;
+        const { error } = await supabase.from("firme_grafiche_identita").delete().eq("id", id);
+        if (error) alert("Errore: " + error.message);
+        else loadIdentita();
+      }));
+    }
+    function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+    loadIdentita();
+  </script>
+</body>
+</html>
