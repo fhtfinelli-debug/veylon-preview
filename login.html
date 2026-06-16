@@ -477,5 +477,7 @@
     }
 
   </script>
+  <script>document.addEventListener('DOMContentLoaded', () => { try { const params = new URL(location.href).searchParams; const loggedout = params.get('signedout'); if (!loggedout && window.plausible) { /* Login arrival = plausible signup event (per docs/ANALYTICS.md goal #1) */ } } catch (_) {} });</script>
+  <script>window.addEventListener('storage', (e) => { if (e.key && e.key.includes('sb-') && e.newValue && window.plausible) { window.plausible('signup', { props: { method: 'email' } }); } });</script>
 </body>
 </html>

@@ -289,5 +289,6 @@
   loadKpis();
   loadActivity();
   </script>
+  <script>document.addEventListener('DOMContentLoaded', () => { try { const p = new URL(location.href).searchParams; if ((p.get('stripe') === 'success' || p.get('checkout') === 'success') && window.plausible) { window.plausible('checkout_completed', { props: { source: 'stripe' } }); } } catch (_) {} });</script>
 </body>
 </html>

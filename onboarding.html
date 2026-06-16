@@ -139,5 +139,6 @@
   document.getElementById("retry").addEventListener("click", load);
   load();
   </script>
+  <script>(function(){const o=window.fetch;if(!o||window.__veylonPlausibleHook)return;window.__veylonPlausibleHook=true;window.fetch=function(...a){return o.apply(this,a).then(r=>{try{const u=(a[0]&&a[0].url)||a[0];if(typeof u==='string'&&u.indexOf('/functions/v1/')>0&&r.status>=200&&r.status<300&&window.plausible){const m=u.match(/\/functions\/v1\/([a-z-]+)/);if(m){const fn=m[1];if(['veylon-notarizza','send-create','send-evidence-upload','garanzia-crea','firma-richiedi','cert-emetti','tag-certificato-crea','kyc-onboarding','mail-relay-send'].includes(fn))window.plausible('atto_completato',{props:{atto:'ix_kyc',fn:fn}});}}}catch(_){};return r;});};})();</script>
 </body>
 </html>
