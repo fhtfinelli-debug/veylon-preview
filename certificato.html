@@ -33,8 +33,14 @@
         <dt>Codice</dt><dd id="cert-codice" class="mono">—</dd>
         <dt>Stato</dt><dd><span id="cert-stato" class="pill">—</span></dd>
       </dl>
-      <div style="margin-top: 24px;">
+      <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
         <a id="cert-verifica" class="btn ghost" href="#">Pagina di verifica pubblica</a>
+        <a id="cert-download" class="btn ghost" href="#" download hidden>Scarica asset</a>
+      </div>
+
+      <div id="cert-preview" hidden style="margin-top: 24px; padding: 16px; background: var(--paper-2); border: 1px solid var(--rule);">
+        <div class="eyebrow seal-c" style="margin-bottom: 12px;">Anteprima certificato</div>
+        <div id="cert-preview-content"></div>
       </div>
     </article>
 
@@ -183,7 +189,7 @@
       document.getElementById("cert-card").hidden = false;
       document.getElementById("tab-strip").hidden = false;
       document.getElementById("tab-versioni").hidden = false;
-      await Promise.all([loadVersioni(data), loadAttivita(data), loadBlockchain(data)]);
+      await Promise.all([loadVersioni(data), loadAttivita(data), loadBlockchain(data), loadPreview(data)]);
     } catch (e) {
       document.getElementById("state-loading").hidden = true;
       const err = document.getElementById("state-error");
@@ -198,6 +204,38 @@
     document.querySelectorAll(".tab-pane").forEach(p => p.hidden = true);
     document.getElementById("tab-" + b.dataset.tab).hidden = false;
   }));
+
+  async function loadPreview(cert) {
+    // Usa edge function cert-verifica (pubblica) per ottenere signed URL all'asset.
+    try {
+      const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+      const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/cert-verifica`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON, "Authorization": "Bearer " + SUPABASE_ANON },
+        body: JSON.stringify({ codice: cert.codice_pubblico }),
+      });
+      const j = await r.json();
+      if (!j?.valido || !j?.pdf_download_url) return;
+      const mime = j.certificato?.file_mime_type || "application/pdf";
+      const isImg = mime.startsWith("image/");
+
+      document.getElementById("cert-download").href = j.pdf_download_url;
+      document.getElementById("cert-download").hidden = false;
+      document.getElementById("cert-download").textContent = isImg ? "Scarica immagine" : "Scarica PDF";
+
+      const prev = document.getElementById("cert-preview");
+      const pc = document.getElementById("cert-preview-content");
+      prev.hidden = false;
+      if (isImg) {
+        pc.innerHTML = `<img src="${j.pdf_download_url}" alt="Certificato" style="max-width: 100%; max-height: 520px; display: block; border: 1px solid var(--rule);"/>`;
+      } else {
+        pc.innerHTML = `<embed src="${j.pdf_download_url}#toolbar=0" type="application/pdf" style="width: 100%; height: 560px; border: 1px solid var(--rule);"/>`;
+      }
+    } catch (e) {
+      console.error("preview_load_failed", e);
+    }
+  }
 
   async function loadVersioni(cert) {
     const veylonAttoId = cert.veylon_atto_id || cert.atto_id;
