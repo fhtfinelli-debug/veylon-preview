@@ -22,6 +22,131 @@
 
     <section style="margin-top: 40px;">
       <article class="panel-card">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 6px;">Modalita di certificazione</h2>
+        <p class="small" style="margin: 0 0 18px; color: var(--ink-3);">
+          Veylon Mail certifica le tue email in tre modi diversi. Scegli quello che si adatta al tuo flusso.
+        </p>
+        <div class="mode-strip" role="tablist">
+          <button class="mode-btn active" data-mode="bcc" role="tab" aria-selected="true">A &middot; BCC stamp</button>
+          <button class="mode-btn" data-mode="relay" role="tab" aria-selected="false">B &middot; Relay SMTP</button>
+          <button class="mode-btn" data-mode="vault" role="tab" aria-selected="false">C &middot; Vault inbox</button>
+        </div>
+
+        <!-- BCC -->
+        <div class="mode-pane active" id="mode-bcc" role="tabpanel">
+          <p>
+            <strong>Tu continui a mandare email come sempre dal tuo client.</strong> Aggiungi semplicemente
+            <code class="kbd">stamp@mg.veylon.app</code> in <strong>CCN</strong> (BCC).
+            Per ogni email ricevi 2 ricevute certificate:
+            <em>Ricevuta di Invio</em> e <em>Contenuto Sigillato</em>.
+            La Consegna alla casella SMTP non e tracciabile in questa modalita.
+          </p>
+          <div class="step-box">
+            <div class="step-num">1</div>
+            <div>Copia l'indirizzo: <button class="copy-btn" data-copy="stamp@mg.veylon.app">stamp@mg.veylon.app</button></div>
+          </div>
+          <div class="step-box">
+            <div class="step-num">2</div>
+            <div>
+              Configura il tuo client come al solito:
+              <ul>
+                <li><strong>Gmail</strong>: nuovo messaggio &rarr; campo Ccn &rarr; incolla</li>
+                <li><strong>Outlook</strong>: Opzioni &rarr; Mostra Ccn &rarr; campo Ccn &rarr; incolla</li>
+                <li><strong>Apple Mail</strong>: Visualizza &rarr; Mostra campo Ccn &rarr; incolla</li>
+                <li><strong>Thunderbird</strong>: tasto Ccn nella barra destinatari &rarr; incolla</li>
+              </ul>
+            </div>
+          </div>
+          <div class="step-box">
+            <div class="step-num">3</div>
+            <div>Veylon registra ogni email che riceve via BCC. Riceverai ricevuta + certificato PDF entro pochi minuti.</div>
+          </div>
+          <p class="status-line">
+            <span class="status-dot" id="bcc-status"></span>
+            <span id="bcc-status-text">Verifica configurazione...</span>
+          </p>
+        </div>
+
+        <!-- RELAY -->
+        <div class="mode-pane" id="mode-relay" role="tabpanel">
+          <p>
+            <strong>Configura Veylon come server SMTP outbound nel tuo client di posta.</strong>
+            Tutte le email che mandi passano attraverso Veylon (che firma + ancora + inoltra al destinatario) e
+            tu ricevi <em>tutte e 3</em> le ricevute: Invio, Consegna alla casella SMTP, Contenuto Sigillato.
+            Il mittente nominale resta il tuo From abituale.
+          </p>
+          <div class="step-box">
+            <div class="step-num">1</div>
+            <div>Genera credenziali SMTP personali (username + password applicativa):</div>
+          </div>
+          <div style="margin: 12px 0;">
+            <button class="btn-primary" id="btn-gen-smtp">Genera credenziali SMTP</button>
+            <span class="small" style="margin-left: 12px; color: var(--ink-3);">
+              Le credenziali sono valide solo per il tuo account, mai condividerle.
+            </span>
+          </div>
+          <div id="smtp-credentials" hidden class="cred-box">
+            <div><span class="k">Host</span> <code id="smtp-host">smtp.veylon.app</code></div>
+            <div><span class="k">Porta</span> <code id="smtp-port">587</code> <span class="small">(STARTTLS)</span></div>
+            <div><span class="k">Sicurezza</span> <code>STARTTLS</code></div>
+            <div><span class="k">Username</span> <code id="smtp-username">—</code></div>
+            <div><span class="k">Password</span> <code id="smtp-password">—</code></div>
+            <div><span class="k">From</span> <code id="smtp-from">tua@email.com (resta la tua)</code></div>
+          </div>
+          <div class="step-box">
+            <div class="step-num">2</div>
+            <div>
+              Configura il tuo client:
+              <ul>
+                <li><strong>Gmail</strong> (web): Impostazioni &rarr; Account &rarr; Aggiungi un altro indirizzo &rarr; usa il server SMTP Veylon</li>
+                <li><strong>Outlook desktop</strong>: File &rarr; Impostazioni account &rarr; Modifica server uscita SMTP</li>
+                <li><strong>Apple Mail</strong>: Preferenze &rarr; Account &rarr; Server posta in uscita &rarr; modifica</li>
+                <li><strong>Thunderbird</strong>: Impostazioni account &rarr; Server posta in uscita (SMTP) &rarr; modifica</li>
+              </ul>
+            </div>
+          </div>
+          <div class="step-box">
+            <div class="step-num">3</div>
+            <div>Manda le tue email come sempre, dal tuo client preferito. Veylon le firma e le inoltra al destinatario, e ti recapita 3 ricevute certificate.</div>
+          </div>
+          <div class="info-strip warn" id="relay-todo">
+            <strong>Stato:</strong> Backend Relay parzialmente operativo. L'invio HTTP (via API JSON) funziona.
+            Il gateway SMTP vero (host smtp.veylon.app) richiede ancora setup container Postfix o passaggio a Mailgun Submission API.
+            Vedi PROGRESS.md sezione N-Mail.NM-B.1 per le opzioni.
+          </div>
+        </div>
+
+        <!-- VAULT -->
+        <div class="mode-pane" id="mode-vault" role="tabpanel">
+          <p>
+            <strong>Ricevi email su un alias dedicato.</strong> Comunica ai tuoi mittenti il tuo indirizzo
+            Veylon Vault. Le email arrivate vengono archiviate sigillate, e per ognuna emettiamo
+            ricevuta Consegna + Contenuto Sigillato.
+          </p>
+          <div class="step-box">
+            <div class="step-num">1</div>
+            <div>
+              Il tuo indirizzo Vault personale e:
+              <button class="copy-btn" id="vault-addr">caricamento...</button>
+            </div>
+          </div>
+          <div class="step-box">
+            <div class="step-num">2</div>
+            <div>Pubblica/comunica questo indirizzo nei contesti in cui vuoi tracciare le email ricevute (es. firma email, contratto cliente, modulo registrazione).</div>
+          </div>
+          <div class="step-box">
+            <div class="step-num">3</div>
+            <div>Le email arrivate compaiono nella tabella sotto, con corpo decifrato lato browser e allegati sigillati su Bitcoin.</div>
+          </div>
+          <div class="info-strip warn" id="vault-todo">
+            <strong>Stato:</strong> Backend webhook ingresso pronto (mail-inbound-webhook).
+            Per attivare il routing serve la route Mailgun catch-all <code>*@mg.veylon.app</code> &rarr; mail-inbound-webhook.
+            Vedi PROGRESS.md sezione N-Mail.NM-C.1.
+          </div>
+        </div>
+
+        <hr class="rule" style="margin: 36px 0;"/>
+
         <h2 class="serif" style="font-size: 22px; margin: 0 0 14px;">Le tue email certificate</h2>
         <div id="state-loading" class="state-msg">Caricamento email&hellip;</div>
         <div id="state-error" class="state-msg state-err" hidden>
@@ -53,6 +178,33 @@
   .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
   .pill.ok { color: var(--verify); border-color: var(--verify); }
   .pill.warn { color: var(--seal); border-color: var(--seal); }
+  .mode-strip { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+  .mode-btn { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 12px 18px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; color: var(--ink-2); }
+  .mode-btn.active { color: var(--ink); border-bottom-color: var(--seal); }
+  .mode-pane { display: none; padding: 8px 0; }
+  .mode-pane.active { display: block; }
+  .mode-pane p { font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--ink); margin: 0 0 16px; }
+  .step-box { display: grid; grid-template-columns: 32px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--rule-2); align-items: start; }
+  .step-box:last-of-type { border-bottom: 0; }
+  .step-box ul { margin: 8px 0 0; padding-left: 18px; font-family: var(--serif); font-size: 14px; line-height: 1.5; }
+  .step-num { width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 50%; background: var(--seal); color: var(--paper); font-family: var(--mono); font-size: 12px; }
+  .kbd { font-family: var(--mono); font-size: 13px; padding: 3px 8px; background: var(--paper-2); border: 1px solid var(--rule); }
+  .copy-btn { font-family: var(--mono); font-size: 13px; padding: 6px 12px; background: var(--paper); border: 1px solid var(--ink); cursor: pointer; }
+  .copy-btn:hover { background: var(--ink); color: var(--paper); }
+  .copy-btn.copied { background: var(--verify, #2e7d32); color: var(--paper); border-color: var(--verify, #2e7d32); }
+  .status-line { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); display: inline-block; }
+  .status-dot.ok { background: var(--verify, #2e7d32); }
+  .status-dot.warn { background: #ef6c00; }
+  .status-dot.err { background: var(--seal, #c62828); }
+  .info-strip { padding: 14px 18px; font-family: var(--serif); font-size: 13px; margin: 16px 0 0; }
+  .info-strip.warn { background: #fff3e0; border-left: 4px solid #ef6c00; color: #6b3a00; }
+  .info-strip.ok { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #1b5e20; }
+  .btn-primary { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); padding: 10px 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+  .btn-primary:hover { background: var(--ink); border-color: var(--ink); }
+  .cred-box { padding: 16px; background: var(--paper-2); border: 1px solid var(--rule); margin: 12px 0; font-family: var(--mono); font-size: 12px; display: grid; grid-template-columns: 100px 1fr; gap: 8px 16px; align-items: center; }
+  .cred-box .k { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
+  .cred-box code { background: var(--paper); padding: 2px 6px; border: 1px solid var(--rule); }
   </style>
 
   <script type="module">
@@ -75,6 +227,73 @@
 
   function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
   function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : ""; }
+
+  // ===========================================================================
+  // 3 modalita Mail: BCC stamp / Relay SMTP / Vault inbox
+  // ===========================================================================
+  document.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll(".mode-btn").forEach(x => { x.classList.remove("active"); x.setAttribute("aria-selected","false"); });
+    document.querySelectorAll(".mode-pane").forEach(p => p.classList.remove("active"));
+    b.classList.add("active"); b.setAttribute("aria-selected","true");
+    document.getElementById("mode-" + b.dataset.mode).classList.add("active");
+  }));
+  document.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const txt = btn.dataset.copy || btn.textContent;
+      try { await navigator.clipboard.writeText(txt); }
+      catch (e) { /* fallback */ }
+      const original = btn.textContent;
+      btn.textContent = "Copiato!";
+      btn.classList.add("copied");
+      setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
+    });
+  });
+
+  // Stato BCC: ha gia mandato email con modalita 'bcc'?
+  (async () => {
+    try {
+      const { count } = await supabase
+        .from("email_certificate")
+        .select("id", { count: "exact", head: true })
+        .eq("metadata->>modalita", "bcc");
+      const dot = document.getElementById("bcc-status");
+      const txt = document.getElementById("bcc-status-text");
+      if (count && count > 0) {
+        dot.classList.add("ok");
+        txt.textContent = `Modalita BCC operativa (${count} email certificate)`;
+      } else {
+        dot.classList.add("warn");
+        txt.textContent = "Modalita BCC pronta. Mandami una email di test in BCC per confermarne il funzionamento.";
+      }
+    } catch (e) {
+      const dot = document.getElementById("bcc-status");
+      dot.classList.add("warn");
+    }
+  })();
+
+  // Stato Relay: genera credenziali fake (UI flow, backend richiesto)
+  document.getElementById("btn-gen-smtp").addEventListener("click", async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const usernameSeed = user.email.replace(/[^a-z0-9]/gi, "").toLowerCase().slice(0, 12) + "_" + user.id.slice(0, 8);
+    const passwordSeed = Array.from(crypto.getRandomValues(new Uint8Array(12))).map(b => b.toString(36).padStart(2, "0")).join("").slice(0, 20);
+    document.getElementById("smtp-username").textContent = usernameSeed;
+    document.getElementById("smtp-password").textContent = passwordSeed;
+    document.getElementById("smtp-from").textContent = user.email + " (resta il tuo)";
+    document.getElementById("smtp-credentials").hidden = false;
+    // TODO N-Mail.NM-B.3: persistere credenziali in user_smtp_credentials con hash bcrypt server-side
+  });
+
+  // Vault address: slug deterministico user.email -> {slug}@mg.veylon.app
+  (async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const slug = user.email.split("@")[0].replace(/[^a-z0-9]/gi, "").toLowerCase().slice(0, 20) + user.id.slice(0, 6);
+    const addr = `${slug}@mg.veylon.app`;
+    const btn = document.getElementById("vault-addr");
+    btn.textContent = addr;
+    btn.dataset.copy = addr;
+  })();
 
   async function load() {
     document.getElementById("state-loading").hidden = false;
