@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Tag EUDR DDS (Reg UE 2023/1115)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .te-layout { max-width: 880px; margin: 24px auto 96px; padding: 0 24px; }
+    .te-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .te-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
+    .te-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+    .te-card { background: var(--paper); border: 1px solid var(--rule); padding: 22px; margin-bottom: 14px; }
+    .te-card h2 { font-family: var(--serif); font-weight: normal; font-size: 18px; margin: 0 0 14px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+    .field input.mono, .field textarea.mono { font-family: var(--mono); font-size: 12px; }
+    .field textarea { min-height: 80px; resize: vertical; }
+    .field textarea.geo { min-height: 200px; }
+    .field .hint { font-family: var(--serif); font-size: 12px; color: var(--ink-3); font-style: italic; margin-top: 4px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .row, .row3 { grid-template-columns: 1fr; } }
+    .te-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .te-btn { padding: 12px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .te-btn:hover { background: var(--seal); border-color: var(--seal); }
+    .te-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .te-btn.ghost { background: transparent; color: var(--ink); text-decoration: none; text-align: center; }
+    .te-btn.small { padding: 8px 14px; font-size: 11px; }
+    .te-result { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 18px; margin-bottom: 14px; }
+    .te-result h4 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: #1e6e3e; }
+    .te-result .mono { font-family: var(--mono); font-size: 11px; word-break: break-all; }
+    .te-err { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; }
+    .te-warn { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 12px 16px; margin-bottom: 14px; font-family: var(--serif); font-size: 13px; line-height: 1.5; color: #6b3a00; }
+    .geo-stats { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 6px; padding: 8px 10px; background: var(--paper-2); border: 1px solid var(--rule); }
+    .geo-stats.ok { color: #16482a; background: #ddf3df; border-color: #1e6e3e; }
+    .geo-stats.err { color: #5a0a0a; background: #fde7e4; border-color: #b00020; }
+    .req-mark { color: var(--seal); }
+    .mitig-row { display: grid; grid-template-columns: 1fr 40px; gap: 10px; align-items: end; margin-bottom: 8px; }
+    .mitig-row .del { padding: 10px; font-family: var(--mono); font-size: 14px; cursor: pointer; border: 1px solid var(--rule); background: transparent; color: var(--ink-3); }
+    .mitig-row .del:hover { color: var(--seal); border-color: var(--seal); }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("tag"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="te-layout">
+    <header class="te-head">
+      <span class="sub">Atto vi · Tag · EUDR Due Diligence Statement · Reg UE 2023/1115</span>
+      <h1>EUDR <em class="serif-italic" style="color: var(--seal);">DDS</em>.</h1>
+      <p class="sub">Tracciabilita filiera 7 commodity. Notarizziamo il payload conforme; la submission a TRACES NT resta a tuo carico.</p>
+    </header>
+
+    <div class="te-warn">
+      <strong>Scope:</strong> 30.12.2025 (grandi operatori) / 30.06.2026 (PMI). Veylon Tag <strong>non sostituisce TRACES NT</strong>:
+      genera il DDS conforme Art. 9 + lo ancora su Bitcoin via OpenTimestamps. Tu inserisci il reference number ottenuto.
+    </div>
+
+    <form id="form">
+      <div class="te-card">
+        <h2>0 · Produttore e prodotto base</h2>
+        <div class="field">
+          <label for="f-produttore-id">Produttore <span class="req-mark">*</span></label>
+          <select id="f-produttore-id" required>
+            <option value="">Caricamento produttori...</option>
+          </select>
+          <div class="hint">Se la lista e vuota, completa prima l onboarding produttore.</div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-codice-prodotto">Codice prodotto / SKU</label>
+            <input type="text" id="f-codice-prodotto" placeholder="Es. CAC-2026-Q2-001"/>
+          </div>
+          <div class="field">
+            <label for="f-lotto">Lotto</label>
+            <input type="text" id="f-lotto" placeholder="Es. L-2026-04"/>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-descrizione">Descrizione esemplare</label>
+          <textarea id="f-descrizione" placeholder="Cacao fave essiccate, single origin Madagascar..."></textarea>
+        </div>
+        <div class="field">
+          <label for="f-sha">SHA-256 documentazione DDS (64 hex) <span class="req-mark">*</span></label>
+          <input type="text" id="f-sha" class="mono" required maxlength="64" placeholder="Hash del PDF di Due Diligence completa"/>
+        </div>
+      </div>
+
+      <div class="te-card">
+        <h2>1 · Identificazione DDS</h2>
+        <div class="row">
+          <div class="field">
+            <label for="f-dds-ref">DDS reference number TRACES</label>
+            <input type="text" id="f-dds-ref" class="mono" placeholder="UUID restituito da TRACES NT"/>
+            <div class="hint">Lascia vuoto se non hai ancora effettuato submission TRACES.</div>
+          </div>
+          <div class="field">
+            <label for="f-commodity">Commodity <span class="req-mark">*</span></label>
+            <select id="f-commodity" required>
+              <option value="">Seleziona...</option>
+              <option value="legno">Legno e prodotti del legno</option>
+              <option value="cacao">Cacao</option>
+              <option value="caffe">Caffe</option>
+              <option value="soia">Soia</option>
+              <option value="gomma">Gomma naturale</option>
+              <option value="manzo">Bovini / carne bovina</option>
+              <option value="palma">Olio di palma</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-hs-code">HS code (HS6) <span class="req-mark">*</span></label>
+            <input type="text" id="f-hs-code" class="mono" pattern="\d{4}\.\d{2}|\d{6}" placeholder="Es. 1801.00 (cacao)"/>
+          </div>
+          <div class="field">
+            <label for="f-product-description">Product description <span class="req-mark">*</span></label>
+            <input type="text" id="f-product-description" placeholder="Descrizione merceologica completa"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="te-card">
+        <h2>2 · Quantita</h2>
+        <div class="row3">
+          <div class="field">
+            <label for="f-net-mass">Net mass (kg)</label>
+            <input type="number" id="f-net-mass" min="0" step="0.001" placeholder="1500"/>
+          </div>
+          <div class="field">
+            <label for="f-volume">Volume (m3)</label>
+            <input type="number" id="f-volume" min="0" step="0.001" placeholder="Solo per legno"/>
+          </div>
+          <div class="field">
+            <label for="f-units">Units (n)</label>
+            <input type="number" id="f-units" min="0" step="1" placeholder="Solo per bovini"/>
+          </div>
+        </div>
+        <div class="hint" style="font-family: var(--serif); font-size: 12px; color: var(--ink-3); font-style: italic;">Almeno uno dei tre richiesto.</div>
+      </div>
+
+      <div class="te-card">
+        <h2>3 · Origine e produzione</h2>
+        <div class="row">
+          <div class="field">
+            <label for="f-country-prod">Country of production (ISO-3166-1 alpha-2) <span class="req-mark">*</span></label>
+            <input type="text" id="f-country-prod" class="mono" maxlength="2" pattern="[A-Z]{2}" style="text-transform: uppercase;" placeholder="MG"/>
+            <div class="hint">Es. MG=Madagascar, BR=Brasile, CI=Costa Avorio.</div>
+          </div>
+          <div class="field">
+            <label for="f-subdivision">Subdivision ISO-3166-2 (facoltativa)</label>
+            <input type="text" id="f-subdivision" class="mono" placeholder="Es. MG-D, BR-PA"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-period-from">Production period from <span class="req-mark">*</span></label>
+            <input type="date" id="f-period-from"/>
+          </div>
+          <div class="field">
+            <label for="f-period-to">Production period to <span class="req-mark">*</span></label>
+            <input type="date" id="f-period-to"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="te-card">
+        <h2>4 · Geolocazione (GeoJSON FeatureCollection) <span class="req-mark">*</span></h2>
+        <div class="te-warn">
+          <strong>Vincoli:</strong> WGS84, almeno 6 decimali. Plot &gt; 4 ha: <strong>Polygon obbligatorio</strong>. Plot &le; 4 ha o bovini: Point ammesso. Max payload 25 MB.
+          Geometrie chiuse, senza overlap.
+        </div>
+        <div class="field">
+          <label for="f-geojson">Incolla qui il GeoJSON FeatureCollection <span class="req-mark">*</span></label>
+          <textarea id="f-geojson" class="mono geo" required placeholder='{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"plot_id":"P1","area_ha":2.4},"geometry":{"type":"Polygon","coordinates":[[[47.531234,-19.123456],[47.532500,-19.123456],[47.532500,-19.124700],[47.531234,-19.124700],[47.531234,-19.123456]]]}}]}'></textarea>
+          <button type="button" class="te-btn small ghost" id="btn-validate-geo" style="margin-top: 8px;">Valida GeoJSON ora</button>
+          <div id="geo-stats" class="geo-stats" style="display: none;"></div>
+        </div>
+      </div>
+
+      <div class="te-card">
+        <h2>5 · Filiera upstream (supplier)</h2>
+        <div class="row">
+          <div class="field">
+            <label for="f-supplier-name">Supplier name <span class="req-mark">*</span></label>
+            <input type="text" id="f-supplier-name" placeholder="Ragione sociale fornitore"/>
+          </div>
+          <div class="field">
+            <label for="f-supplier-eori">Supplier EORI</label>
+            <input type="text" id="f-supplier-eori" class="mono" placeholder="Es. IT12345678901"/>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-supplier-address">Supplier address</label>
+          <textarea id="f-supplier-address" placeholder="Indirizzo completo fornitore"></textarea>
+        </div>
+      </div>
+
+      <div class="te-card">
+        <h2>6 · Filiera downstream (customer)</h2>
+        <div class="row">
+          <div class="field">
+            <label for="f-customer-name">Customer name</label>
+            <input type="text" id="f-customer-name" placeholder="Ragione sociale cliente (se gia noto)"/>
+          </div>
+          <div class="field">
+            <label for="f-customer-address">Customer address</label>
+            <input type="text" id="f-customer-address" placeholder="Sede"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="te-card">
+        <h2>7 · Risk assessment (Art. 10)</h2>
+        <div class="row">
+          <div class="field">
+            <label for="f-risk-level">Risk level <span class="req-mark">*</span></label>
+            <select id="f-risk-level" required>
+              <option value="low">low - rischio basso</option>
+              <option value="standard">standard - rischio standard</option>
+              <option value="high">high - rischio alto</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-deforestation-eval">Deforestation-free assessment URL/note</label>
+            <input type="text" id="f-deforestation-eval" placeholder="Link evidenze satellitari o nota sintetica"/>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-legality-eval">Legality assessment (leggi paese origine)</label>
+          <textarea id="f-legality-eval" placeholder="Riferimenti normativi paese di origine, autorizzazioni..."></textarea>
+        </div>
+        <div class="field">
+          <label>Mitigation measures (richieste se risk &ne; low)</label>
+          <div id="mitig-list">
+            <div class="mitig-row">
+              <input type="text" class="mitig-input" placeholder="Misura di mitigazione (testo libero)"/>
+              <button type="button" class="del" disabled>&times;</button>
+            </div>
+          </div>
+          <button type="button" class="te-btn small ghost" id="add-mitig" style="margin-top: 4px;">+ Aggiungi misura</button>
+        </div>
+      </div>
+
+      <div class="te-actions">
+        <button type="submit" class="te-btn" id="btn-submit">Emetti DDS EUDR</button>
+        <a href="tag.html" class="te-btn ghost">Torna al hub Tag</a>
+      </div>
+    </form>
+
+    <div id="result-box" style="margin-top: 22px;"></div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    // Mitigation list
+    function updateMitigDelButtons() {
+      const rows = document.querySelectorAll("#mitig-list .mitig-row");
+      rows.forEach(r => { r.querySelector(".del").disabled = rows.length === 1; });
+    }
+    $("add-mitig").addEventListener("click", () => {
+      const div = document.createElement("div");
+      div.className = "mitig-row";
+      div.innerHTML = `<input type="text" class="mitig-input" placeholder="Misura di mitigazione"/><button type="button" class="del">&times;</button>`;
+      div.querySelector(".del").addEventListener("click", () => { div.remove(); updateMitigDelButtons(); });
+      $("mitig-list").appendChild(div);
+      updateMitigDelButtons();
+    });
+
+    // Carica produttori
+    async function loadProduttori() {
+      const select = $("f-produttore-id");
+      try {
+        const { data, error } = await supabase
+          .from("tag_produttori")
+          .select("id, ragione_sociale, segmento")
+          .order("ragione_sociale", { ascending: true });
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          select.innerHTML = '<option value="">Nessun produttore. Vai a /tag-onboarding</option>';
+          return;
+        }
+        select.innerHTML = '<option value="">Seleziona produttore...</option>' +
+          data.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.ragione_sociale)} (${escapeHtml(p.segmento)})</option>`).join("");
+      } catch (e) {
+        select.innerHTML = '<option value="">Errore caricamento produttori</option>';
+      }
+    }
+    loadProduttori();
+
+    // GeoJSON validation client-side (basic): struttura + decimali + chiusura polygon
+    function validateGeoJSON(text) {
+      const result = { ok: false, errors: [], stats: {} };
+      let obj;
+      try { obj = JSON.parse(text); } catch (e) { result.errors.push("JSON non valido: " + e.message); return result; }
+      if (obj.type !== "FeatureCollection") { result.errors.push("Tipo deve essere FeatureCollection"); return result; }
+      if (!Array.isArray(obj.features) || obj.features.length === 0) { result.errors.push("Almeno una feature richiesta"); return result; }
+
+      let polyCount = 0, pointCount = 0, plotsLowDecimals = 0, plotsUnclosed = 0;
+      const sizeKB = Math.round(text.length / 1024);
+      if (sizeKB > 25 * 1024) { result.errors.push(`Payload ${sizeKB} KB supera limite 25 MB`); }
+
+      for (const [i, f] of obj.features.entries()) {
+        if (!f.geometry || !f.geometry.type) { result.errors.push(`Feature ${i}: geometry mancante`); continue; }
+        const g = f.geometry;
+        if (g.type === "Point") {
+          pointCount++;
+          if (!Array.isArray(g.coordinates) || g.coordinates.length < 2) { result.errors.push(`Feature ${i}: Point coordinates invalide`); continue; }
+          const decimals = Math.max(decimalsOf(g.coordinates[0]), decimalsOf(g.coordinates[1]));
+          if (decimals < 6) plotsLowDecimals++;
+        } else if (g.type === "Polygon") {
+          polyCount++;
+          if (!Array.isArray(g.coordinates) || !Array.isArray(g.coordinates[0])) { result.errors.push(`Feature ${i}: Polygon coordinates invalide`); continue; }
+          const ring = g.coordinates[0];
+          const first = ring[0], last = ring[ring.length - 1];
+          if (!first || !last || first[0] !== last[0] || first[1] !== last[1]) plotsUnclosed++;
+          let maxDec = 0;
+          for (const c of ring) { maxDec = Math.max(maxDec, decimalsOf(c[0]), decimalsOf(c[1])); }
+          if (maxDec < 6) plotsLowDecimals++;
+        } else {
+          result.errors.push(`Feature ${i}: tipo ${g.type} non ammesso (solo Point/Polygon)`);
+        }
+      }
+      result.stats = { features: obj.features.length, polygons: polyCount, points: pointCount, sizeKB, plotsLowDecimals, plotsUnclosed };
+      if (plotsLowDecimals > 0) result.errors.push(`${plotsLowDecimals} plot con meno di 6 decimali (vincolo EUDR)`);
+      if (plotsUnclosed > 0) result.errors.push(`${plotsUnclosed} polygon non chiusi (primo != ultimo punto)`);
+      result.ok = result.errors.length === 0;
+      return result;
+    }
+    function decimalsOf(n) {
+      if (typeof n !== "number") return 0;
+      const s = String(n);
+      const idx = s.indexOf(".");
+      return idx < 0 ? 0 : s.length - idx - 1;
+    }
+
+    function renderGeoStats(res) {
+      const el = $("geo-stats");
+      el.style.display = "block";
+      if (res.ok) {
+        el.className = "geo-stats ok";
+        el.innerHTML = `OK &middot; ${res.stats.features} feature (${res.stats.polygons} polygon, ${res.stats.points} point) &middot; ${res.stats.sizeKB} KB`;
+      } else {
+        el.className = "geo-stats err";
+        const stats = res.stats.features ? `${res.stats.features} feature (${res.stats.polygons} polygon, ${res.stats.points} point) &middot; ${res.stats.sizeKB} KB &middot; ` : "";
+        el.innerHTML = `ERRORI: ${stats}${res.errors.map(escapeHtml).join("; ")}`;
+      }
+    }
+
+    $("btn-validate-geo").addEventListener("click", () => {
+      const text = $("f-geojson").value.trim();
+      if (!text) { renderGeoStats({ ok: false, errors: ["GeoJSON vuoto"], stats: {} }); return; }
+      renderGeoStats(validateGeoJSON(text));
+    });
+
+    $("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box");
+      box.innerHTML = "";
+
+      const produttore_id = $("f-produttore-id").value;
+      const sha256 = $("f-sha").value.trim().toLowerCase();
+      if (!produttore_id) { box.innerHTML = '<div class="te-err">Seleziona un produttore.</div>'; return; }
+      if (!/^[0-9a-f]{64}$/.test(sha256)) { box.innerHTML = '<div class="te-err">SHA-256 deve essere 64 hex lowercase.</div>'; return; }
+
+      const geoText = $("f-geojson").value.trim();
+      const geoRes = validateGeoJSON(geoText);
+      renderGeoStats(geoRes);
+      if (!geoRes.ok) { box.innerHTML = '<div class="te-err">GeoJSON non valido: correggi prima di emettere.</div>'; return; }
+
+      const country = $("f-country-prod").value.trim().toUpperCase();
+      if (!/^[A-Z]{2}$/.test(country)) { box.innerHTML = '<div class="te-err">Country of production deve essere ISO-3166-1 alpha-2 (2 lettere).</div>'; return; }
+
+      const netMass = $("f-net-mass").value ? Number($("f-net-mass").value) : null;
+      const volume = $("f-volume").value ? Number($("f-volume").value) : null;
+      const units = $("f-units").value ? Number($("f-units").value) : null;
+      if (!netMass && !volume && !units) { box.innerHTML = '<div class="te-err">Almeno uno tra net_mass, volume, units richiesto.</div>'; return; }
+
+      const periodFrom = $("f-period-from").value;
+      const periodTo = $("f-period-to").value;
+      if (!periodFrom || !periodTo) { box.innerHTML = '<div class="te-err">Production period from/to obbligatori.</div>'; return; }
+      if (periodFrom > periodTo) { box.innerHTML = '<div class="te-err">Production period: from successivo a to.</div>'; return; }
+
+      const riskLevel = $("f-risk-level").value;
+      const mitigations = Array.from(document.querySelectorAll(".mitig-input")).map(i => i.value.trim()).filter(v => v.length > 0);
+      if (riskLevel !== "low" && mitigations.length === 0) {
+        box.innerHTML = '<div class="te-err">Risk level non basso: almeno una mitigation measure richiesta.</div>'; return;
+      }
+
+      const eudr_data = {
+        dds_reference_number: $("f-dds-ref").value.trim() || undefined,
+        hs_code: $("f-hs-code").value.trim(),
+        commodity: $("f-commodity").value,
+        product_description: $("f-product-description").value.trim(),
+        quantita: { net_mass_kg: netMass || undefined, volume_m3: volume || undefined, units: units || undefined },
+        country_of_production: country,
+        subdivision: $("f-subdivision").value.trim().toUpperCase() || undefined,
+        production_period_from: periodFrom,
+        production_period_to: periodTo,
+        geolocation: JSON.parse(geoText),
+        geolocation_stats: geoRes.stats,
+        supplier: {
+          name: $("f-supplier-name").value.trim(),
+          address: $("f-supplier-address").value.trim() || undefined,
+          eori: $("f-supplier-eori").value.trim() || undefined,
+        },
+        customer: {
+          name: $("f-customer-name").value.trim() || undefined,
+          address: $("f-customer-address").value.trim() || undefined,
+        },
+        risk_assessment: {
+          risk_level: riskLevel,
+          deforestation_free_assessment: $("f-deforestation-eval").value.trim() || undefined,
+          legality_assessment: $("f-legality-eval").value.trim() || undefined,
+          mitigation_measures: mitigations,
+        },
+      };
+
+      const payload = {
+        produttore_id,
+        codice_prodotto: $("f-codice-prodotto").value.trim() || undefined,
+        lotto: $("f-lotto").value.trim() || undefined,
+        descrizione: $("f-descrizione").value.trim() || undefined,
+        sha256_dichiarazione: sha256,
+        applicazione: "qr_adesivo",
+        regulatory_compliance: {
+          dpp: { regolamento: "UE_2023_1115", articolo: "9" },
+          eudr: eudr_data,
+        },
+        metadata: {
+          categoria_dpp: "eudr",
+          ui_version: "tag-eudr v1",
+          commodity: eudr_data.commodity,
+        },
+      };
+
+      const btn = $("btn-submit");
+      btn.disabled = true; const original = btn.textContent; btn.textContent = "Emissione in corso...";
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/tag-certificato-crea`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify(payload),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error + (j?.detail ? " - " + j.detail : ""));
+
+        try { if (window.plausible) window.plausible("tag_eudr_emesso", { props: { categoria: "eudr", commodity: eudr_data.commodity, risk: riskLevel } }); } catch(_) {}
+
+        box.innerHTML = `
+          <div class="te-result">
+            <h4>&check; DDS EUDR emesso</h4>
+            <div>Codice pubblico: <span class="mono">${escapeHtml(j.codice_pubblico)}</span></div>
+            <div style="margin-top: 4px;">URL verifica QR: <a href="${escapeHtml(j.qr_url)}" target="_blank" class="mono">${escapeHtml(j.qr_url)}</a></div>
+            <div style="margin-top: 4px;">Commodity: <strong>${escapeHtml(eudr_data.commodity)}</strong> &middot; Risk: <strong>${escapeHtml(riskLevel)}</strong> &middot; Feature: ${geoRes.stats.features}</div>
+            <div style="margin-top: 4px;">OTS status: <strong>${escapeHtml(j.ots_status)}</strong></div>
+            ${j.qr_png_data_url ? `<div style="margin-top: 12px;"><img src="${j.qr_png_data_url}" alt="QR" style="width: 180px; height: 180px;"/></div>` : ""}
+            <p style="font-family: var(--serif); font-size: 13px; color: #16482a; margin-top: 14px;">Ricorda: per validita legale UE, effettua submission a TRACES NT e inserisci il reference number ricevuto in un secondo passaggio.</p>
+          </div>`;
+        $("form").reset();
+        $("geo-stats").style.display = "none";
+        loadProduttori();
+      } catch (e) {
+        box.innerHTML = `<div class="te-err">Errore: ${escapeHtml(e.message || String(e))}</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>

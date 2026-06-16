@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Tag Tessile (ESPR Reg UE 2024/1781)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .tt-layout { max-width: 820px; margin: 24px auto 96px; padding: 0 24px; }
+    .tt-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .tt-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
+    .tt-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+    .tt-card { background: var(--paper); border: 1px solid var(--rule); padding: 22px; margin-bottom: 14px; }
+    .tt-card h2 { font-family: var(--serif); font-weight: normal; font-size: 18px; margin: 0 0 14px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+    .field input.mono { font-family: var(--mono); font-size: 13px; }
+    .field textarea { font-family: var(--mono); font-size: 12px; min-height: 80px; resize: vertical; }
+    .field .hint { font-family: var(--serif); font-size: 12px; color: var(--ink-3); font-style: italic; margin-top: 4px; }
+    .field.check-row { display: flex; align-items: center; gap: 10px; }
+    .field.check-row input[type="checkbox"] { width: auto; margin: 0; }
+    .field.check-row label { margin: 0; text-transform: none; letter-spacing: normal; font-family: var(--serif); font-size: 14px; color: var(--ink); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+    .fibra-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr 40px; gap: 10px; align-items: end; margin-bottom: 8px; }
+    .fibra-row .del { padding: 10px; font-family: var(--mono); font-size: 14px; cursor: pointer; border: 1px solid var(--rule); background: transparent; color: var(--ink-3); }
+    .fibra-row .del:hover { color: var(--seal); border-color: var(--seal); }
+    @media (max-width: 640px) { .fibra-row { grid-template-columns: 1fr 40px; } .fibra-row .field:not(:first-child):not(:last-child) { display: none; } }
+    .svhc-row { display: grid; grid-template-columns: 1fr 40px; gap: 10px; align-items: end; margin-bottom: 8px; }
+    .svhc-row .del { padding: 10px; font-family: var(--mono); font-size: 14px; cursor: pointer; border: 1px solid var(--rule); background: transparent; color: var(--ink-3); }
+    .svhc-row .del:hover { color: var(--seal); border-color: var(--seal); }
+    .add-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--seal); cursor: pointer; background: transparent; border: 1px dashed var(--seal); padding: 8px 14px; margin-top: 4px; }
+    .tt-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .tt-btn { padding: 12px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .tt-btn:hover { background: var(--seal); border-color: var(--seal); }
+    .tt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .tt-btn.ghost { background: transparent; color: var(--ink); text-decoration: none; text-align: center; }
+    .tt-result { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 18px; margin-bottom: 14px; }
+    .tt-result h4 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: #1e6e3e; }
+    .tt-result .mono { font-family: var(--mono); font-size: 11px; word-break: break-all; }
+    .tt-err { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; }
+    .info-strip { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 12px 16px; margin-bottom: 18px; font-family: var(--serif); font-size: 13px; line-height: 1.5; color: #6b3a00; }
+    .req-mark { color: var(--seal); }
+    .totale-fibre { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 6px; padding: 8px 10px; background: var(--paper-2); border: 1px solid var(--rule); }
+    .totale-fibre.ok { color: #16482a; background: #ddf3df; border-color: #1e6e3e; }
+    .totale-fibre.err { color: #5a0a0a; background: #fde7e4; border-color: #b00020; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("tag"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="tt-layout">
+    <header class="tt-head">
+      <span class="sub">Atto vi · Tag · Tessile · ESPR Reg UE 2024/1781</span>
+      <h1>DPP <em class="serif-italic" style="color: var(--seal);">tessile</em>.</h1>
+      <p class="sub">Composizione fibre, paesi di lavorazione, carbon footprint, riciclato, microplastiche, REACH SVHC.</p>
+    </header>
+
+    <div class="info-strip">
+      <strong>Scope:</strong> delegated act tessile Q2 2026, DPP attivo dal 2027. Veylon Tag mette gia in produzione il DPP
+      ancorato su Bitcoin, conforme by-design ai requisiti noti del primo DA. Bacino italiano: Prato, Carpi, Biella.
+    </div>
+
+    <form id="form">
+      <div class="tt-card">
+        <h2>0 · Produttore e prodotto base</h2>
+        <div class="field">
+          <label for="f-produttore-id">Produttore <span class="req-mark">*</span></label>
+          <select id="f-produttore-id" required>
+            <option value="">Caricamento produttori...</option>
+          </select>
+          <div class="hint">Se la lista e vuota, completa prima l onboarding produttore.</div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-codice-prodotto">Codice prodotto / SKU</label>
+            <input type="text" id="f-codice-prodotto" placeholder="Es. SHIRT-LIN-M-2026-001"/>
+          </div>
+          <div class="field">
+            <label for="f-lotto">Lotto</label>
+            <input type="text" id="f-lotto" placeholder="Es. L-2026-SS-23"/>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-descrizione">Descrizione esemplare</label>
+          <textarea id="f-descrizione" placeholder="Camicia uomo lino 100%, collo italiano..."></textarea>
+        </div>
+        <div class="field">
+          <label for="f-sha">SHA-256 scheda tecnica (64 hex) <span class="req-mark">*</span></label>
+          <input type="text" id="f-sha" class="mono" required maxlength="64" placeholder="Hash della scheda tecnica firmata"/>
+        </div>
+      </div>
+
+      <div class="tt-card">
+        <h2>1 · Composizione fibre <span class="req-mark">*</span></h2>
+        <div class="hint" style="font-family: var(--serif); font-size: 13px; color: var(--ink-3); font-style: italic; margin-bottom: 12px;">Inserisci una riga per ogni fibra. La somma percentuali deve essere esattamente 100.</div>
+        <div id="fibre-list">
+          <div class="fibra-row">
+            <div class="field" style="margin: 0;">
+              <label>Nome fibra</label>
+              <input type="text" class="fibra-nome" placeholder="Es. Lino, Cotone, Lana merino"/>
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>%</label>
+              <input type="number" class="fibra-pct" min="0" max="100" step="0.01" placeholder="100"/>
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Origine (paese ISO2)</label>
+              <input type="text" class="fibra-origine mono" maxlength="2" pattern="[A-Z]{2}" style="text-transform: uppercase;" placeholder="IT"/>
+            </div>
+            <button type="button" class="del" disabled>&times;</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" id="add-fibra">+ Aggiungi fibra</button>
+        <div id="totale-fibre" class="totale-fibre">Totale fibre: 0%</div>
+      </div>
+
+      <div class="tt-card">
+        <h2>2 · Paesi di lavorazione</h2>
+        <div class="row">
+          <div class="field">
+            <label for="f-paese-taglio">Paese di taglio (ISO-3166-1 alpha-2) <span class="req-mark">*</span></label>
+            <input type="text" id="f-paese-taglio" class="mono" maxlength="2" pattern="[A-Z]{2}" style="text-transform: uppercase;" placeholder="IT"/>
+          </div>
+          <div class="field">
+            <label for="f-paese-confezione">Paese di confezione (ISO-3166-1 alpha-2) <span class="req-mark">*</span></label>
+            <input type="text" id="f-paese-confezione" class="mono" maxlength="2" pattern="[A-Z]{2}" style="text-transform: uppercase;" placeholder="IT"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="tt-card">
+        <h2>3 · Sostenibilita</h2>
+        <div class="row">
+          <div class="field">
+            <label for="f-carbon">Carbon footprint (kgCO2e per esemplare)</label>
+            <input type="number" id="f-carbon" min="0" step="0.01" placeholder="4.20"/>
+            <div class="hint">Calcolato secondo PEF / ISO 14067, ente verificatore in note.</div>
+          </div>
+          <div class="field">
+            <label for="f-recycled">Contenuto riciclato (%)</label>
+            <input type="number" id="f-recycled" min="0" max="100" step="0.1" placeholder="35"/>
+          </div>
+        </div>
+        <div class="field check-row">
+          <input type="checkbox" id="f-microplastiche"/>
+          <label for="f-microplastiche">Il capo rilascia microplastiche significative (fibre sintetiche &gt; 50%)</label>
+        </div>
+        <div class="field">
+          <label for="f-verifier">Note verifica (ente verificatore, certificazioni)</label>
+          <input type="text" id="f-verifier" placeholder="Es. Bureau Veritas, GOTS, OEKO-TEX 100"/>
+        </div>
+      </div>
+
+      <div class="tt-card">
+        <h2>4 · REACH SVHC list</h2>
+        <div class="hint" style="font-family: var(--serif); font-size: 13px; color: var(--ink-3); font-style: italic; margin-bottom: 12px;">Sostanze estremamente preoccupanti presenti (lista candidata ECHA). Lascia vuoto se nessuna.</div>
+        <div id="svhc-list">
+          <div class="svhc-row">
+            <input type="text" class="svhc-input" placeholder="Es. Cromo VI, DEHP, CAS 117-81-7"/>
+            <button type="button" class="del" disabled>&times;</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" id="add-svhc">+ Aggiungi SVHC</button>
+      </div>
+
+      <div class="tt-actions">
+        <button type="submit" class="tt-btn" id="btn-submit">Emetti DPP Tessile</button>
+        <a href="tag.html" class="tt-btn ghost">Torna al hub Tag</a>
+      </div>
+    </form>
+
+    <div id="result-box" style="margin-top: 22px;"></div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    // Fibre dinamiche
+    function updateFibraDelButtons() {
+      const rows = document.querySelectorAll("#fibre-list .fibra-row");
+      rows.forEach(r => { r.querySelector(".del").disabled = rows.length === 1; });
+    }
+    function recalcTotaleFibre() {
+      const inputs = document.querySelectorAll(".fibra-pct");
+      let totale = 0;
+      inputs.forEach(i => { const v = Number(i.value); if (!isNaN(v)) totale += v; });
+      const el = $("totale-fibre");
+      const totaleRound = Math.round(totale * 100) / 100;
+      if (Math.abs(totaleRound - 100) < 0.01) {
+        el.className = "totale-fibre ok";
+        el.textContent = `Totale fibre: ${totaleRound}% (OK)`;
+      } else {
+        el.className = "totale-fibre err";
+        el.textContent = `Totale fibre: ${totaleRound}% (deve essere 100%)`;
+      }
+    }
+    document.addEventListener("input", (e) => {
+      if (e.target.classList.contains("fibra-pct")) recalcTotaleFibre();
+    });
+    $("add-fibra").addEventListener("click", () => {
+      const div = document.createElement("div");
+      div.className = "fibra-row";
+      div.innerHTML = `
+        <div class="field" style="margin: 0;"><label>Nome fibra</label><input type="text" class="fibra-nome" placeholder="Es. Lino, Cotone"/></div>
+        <div class="field" style="margin: 0;"><label>%</label><input type="number" class="fibra-pct" min="0" max="100" step="0.01" placeholder="0"/></div>
+        <div class="field" style="margin: 0;"><label>Origine (ISO2)</label><input type="text" class="fibra-origine mono" maxlength="2" pattern="[A-Z]{2}" style="text-transform: uppercase;" placeholder="IT"/></div>
+        <button type="button" class="del">&times;</button>
+      `;
+      div.querySelector(".del").addEventListener("click", () => { div.remove(); updateFibraDelButtons(); recalcTotaleFibre(); });
+      $("fibre-list").appendChild(div);
+      updateFibraDelButtons();
+    });
+
+    // SVHC dinamici
+    function updateSvhcDelButtons() {
+      const rows = document.querySelectorAll("#svhc-list .svhc-row");
+      rows.forEach(r => { r.querySelector(".del").disabled = rows.length === 1; });
+    }
+    $("add-svhc").addEventListener("click", () => {
+      const div = document.createElement("div");
+      div.className = "svhc-row";
+      div.innerHTML = `<input type="text" class="svhc-input" placeholder="Sostanza SVHC o CAS"/><button type="button" class="del">&times;</button>`;
+      div.querySelector(".del").addEventListener("click", () => { div.remove(); updateSvhcDelButtons(); });
+      $("svhc-list").appendChild(div);
+      updateSvhcDelButtons();
+    });
+
+    // Carica produttori
+    async function loadProduttori() {
+      const select = $("f-produttore-id");
+      try {
+        const { data, error } = await supabase
+          .from("tag_produttori")
+          .select("id, ragione_sociale, segmento")
+          .order("ragione_sociale", { ascending: true });
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          select.innerHTML = '<option value="">Nessun produttore. Vai a /tag-onboarding</option>';
+          return;
+        }
+        select.innerHTML = '<option value="">Seleziona produttore...</option>' +
+          data.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.ragione_sociale)} (${escapeHtml(p.segmento)})</option>`).join("");
+      } catch (e) {
+        select.innerHTML = '<option value="">Errore caricamento produttori</option>';
+      }
+    }
+    loadProduttori();
+
+    $("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box");
+      box.innerHTML = "";
+
+      const produttore_id = $("f-produttore-id").value;
+      const sha256 = $("f-sha").value.trim().toLowerCase();
+      if (!produttore_id) { box.innerHTML = '<div class="tt-err">Seleziona un produttore.</div>'; return; }
+      if (!/^[0-9a-f]{64}$/.test(sha256)) { box.innerHTML = '<div class="tt-err">SHA-256 deve essere 64 hex lowercase.</div>'; return; }
+
+      // Raccoglie fibre
+      const fibre = [];
+      let totale = 0;
+      document.querySelectorAll("#fibre-list .fibra-row").forEach(r => {
+        const nome = r.querySelector(".fibra-nome").value.trim();
+        const pct = Number(r.querySelector(".fibra-pct").value);
+        const origine = r.querySelector(".fibra-origine").value.trim().toUpperCase();
+        if (!nome && !pct) return;
+        fibre.push({ nome, percentuale: pct, origine_iso2: origine || undefined });
+        totale += pct;
+      });
+      if (fibre.length === 0) { box.innerHTML = '<div class="tt-err">Almeno una fibra richiesta.</div>'; return; }
+      const totaleRound = Math.round(totale * 100) / 100;
+      if (Math.abs(totaleRound - 100) > 0.01) { box.innerHTML = `<div class="tt-err">Somma percentuali fibre = ${totaleRound}%, deve essere 100%.</div>`; return; }
+      for (const f of fibre) {
+        if (!f.nome) { box.innerHTML = '<div class="tt-err">Tutte le fibre devono avere un nome.</div>'; return; }
+        if (f.origine_iso2 && !/^[A-Z]{2}$/.test(f.origine_iso2)) { box.innerHTML = `<div class="tt-err">Origine fibra "${escapeHtml(f.nome)}": codice ISO2 non valido.</div>`; return; }
+      }
+
+      const paeseTaglio = $("f-paese-taglio").value.trim().toUpperCase();
+      const paeseConfezione = $("f-paese-confezione").value.trim().toUpperCase();
+      if (!/^[A-Z]{2}$/.test(paeseTaglio)) { box.innerHTML = '<div class="tt-err">Paese di taglio: ISO2 non valido.</div>'; return; }
+      if (!/^[A-Z]{2}$/.test(paeseConfezione)) { box.innerHTML = '<div class="tt-err">Paese di confezione: ISO2 non valido.</div>'; return; }
+
+      const svhc = Array.from(document.querySelectorAll(".svhc-input"))
+        .map(i => i.value.trim())
+        .filter(v => v.length > 0);
+
+      const tessile_data = {
+        composizione_fibre: fibre,
+        paese_taglio: paeseTaglio,
+        paese_confezione: paeseConfezione,
+        carbon_footprint_kgco2e: $("f-carbon").value ? Number($("f-carbon").value) : undefined,
+        recycled_content_pct: $("f-recycled").value ? Number($("f-recycled").value) : undefined,
+        rilascia_microplastiche: $("f-microplastiche").checked,
+        verifier_notes: $("f-verifier").value.trim() || undefined,
+        reach_svhc: svhc,
+      };
+
+      const payload = {
+        produttore_id,
+        codice_prodotto: $("f-codice-prodotto").value.trim() || undefined,
+        lotto: $("f-lotto").value.trim() || undefined,
+        descrizione: $("f-descrizione").value.trim() || undefined,
+        sha256_dichiarazione: sha256,
+        applicazione: "qr_adesivo",
+        regulatory_compliance: {
+          dpp: { regolamento: "UE_2024_1781", categoria: "tessile" },
+          tessile: tessile_data,
+        },
+        metadata: {
+          categoria_dpp: "tessile",
+          ui_version: "tag-tessile v1",
+        },
+      };
+
+      const btn = $("btn-submit");
+      btn.disabled = true; const original = btn.textContent; btn.textContent = "Emissione in corso...";
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/tag-certificato-crea`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify(payload),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error + (j?.detail ? " - " + j.detail : ""));
+
+        try { if (window.plausible) window.plausible("tag_tessile_emesso", { props: { categoria: "tessile", fibre: fibre.length, riciclato: tessile_data.recycled_content_pct ?? 0 } }); } catch(_) {}
+
+        box.innerHTML = `
+          <div class="tt-result">
+            <h4>&check; DPP Tessile emesso</h4>
+            <div>Codice pubblico: <span class="mono">${escapeHtml(j.codice_pubblico)}</span></div>
+            <div style="margin-top: 4px;">URL verifica QR: <a href="${escapeHtml(j.qr_url)}" target="_blank" class="mono">${escapeHtml(j.qr_url)}</a></div>
+            <div style="margin-top: 4px;">Fibre: <strong>${fibre.length}</strong> &middot; Taglio: <strong>${escapeHtml(paeseTaglio)}</strong> &middot; Confezione: <strong>${escapeHtml(paeseConfezione)}</strong></div>
+            <div style="margin-top: 4px;">OTS status: <strong>${escapeHtml(j.ots_status)}</strong></div>
+            ${j.qr_png_data_url ? `<div style="margin-top: 12px;"><img src="${j.qr_png_data_url}" alt="QR" style="width: 180px; height: 180px;"/></div>` : ""}
+          </div>`;
+        $("form").reset();
+        $("totale-fibre").className = "totale-fibre";
+        $("totale-fibre").textContent = "Totale fibre: 0%";
+        loadProduttori();
+      } catch (e) {
+        box.innerHTML = `<div class="tt-err">Errore: ${escapeHtml(e.message || String(e))}</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>

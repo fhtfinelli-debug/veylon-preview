@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Tag Battery Passport (Reg UE 2023/1542)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .tb-layout { max-width: 880px; margin: 24px auto 96px; padding: 0 24px; }
+    .tb-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .tb-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
+    .tb-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+    .tb-card { background: var(--paper); border: 1px solid var(--rule); margin-bottom: 14px; }
+    .tb-acc-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; cursor: pointer; user-select: none; background: var(--paper); }
+    .tb-acc-head h2 { font-family: var(--serif); font-weight: normal; font-size: 18px; margin: 0; }
+    .tb-acc-head .badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+    .tb-acc-head .chev { font-family: var(--mono); font-size: 14px; color: var(--ink-3); transition: transform 200ms ease; }
+    .tb-acc-head.open .chev { transform: rotate(90deg); }
+    .tb-acc-body { padding: 0 22px 22px; display: none; border-top: 1px solid var(--rule); padding-top: 18px; }
+    .tb-acc-body.open { display: block; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+    .field input.mono { font-family: var(--mono); font-size: 13px; }
+    .field textarea { font-family: var(--mono); font-size: 12px; min-height: 80px; resize: vertical; }
+    .field .hint { font-family: var(--serif); font-size: 12px; color: var(--ink-3); font-style: italic; margin-top: 4px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .row, .row3 { grid-template-columns: 1fr; } }
+    .list-row { display: grid; grid-template-columns: 1fr 40px; gap: 10px; align-items: end; margin-bottom: 8px; }
+    .list-row .del { padding: 10px; font-family: var(--mono); font-size: 14px; cursor: pointer; border: 1px solid var(--rule); background: transparent; color: var(--ink-3); }
+    .list-row .del:hover { color: var(--seal); border-color: var(--seal); }
+    .add-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--seal); cursor: pointer; background: transparent; border: 1px dashed var(--seal); padding: 8px 14px; margin-top: 4px; }
+    .tb-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; padding: 0 22px; }
+    .tb-btn { padding: 12px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .tb-btn:hover { background: var(--seal); border-color: var(--seal); }
+    .tb-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .tb-btn.ghost { background: transparent; color: var(--ink); text-decoration: none; text-align: center; }
+    .tb-result { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 18px; margin-bottom: 14px; }
+    .tb-result h4 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: #1e6e3e; }
+    .tb-result .mono { font-family: var(--mono); font-size: 11px; word-break: break-all; }
+    .tb-err { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; }
+    .info-strip { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 12px 16px; margin-bottom: 18px; font-family: var(--serif); font-size: 13px; line-height: 1.5; color: #6b3a00; }
+    .req-mark { color: var(--seal); }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("tag"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="tb-layout">
+    <header class="tb-head">
+      <span class="sub">Atto vi · Tag · Battery Passport · Reg UE 2023/1542 Allegato XIII</span>
+      <h1>Battery <em class="serif-italic" style="color: var(--seal);">Passport</em>.</h1>
+      <p class="sub">Emissione DPP batteria conforme Annex XIII. Visibilita a tre livelli: pubblico, professionisti, regolatori.</p>
+    </header>
+
+    <div class="info-strip">
+      <strong>Scope:</strong> batterie EV, industriali superiori a 2 kWh, LMT, fotovoltaico stazionario. <strong>Deadline 18.02.2027.</strong>
+      Compila tutte le sezioni rilevanti. I campi <span class="req-mark">*</span> sono obbligatori.
+      I dati di filiera (sezione 7) sono visibili solo a regolatori autorizzati.
+    </div>
+
+    <form id="form">
+      <!-- Produttore (richiesto da tag-certificato-crea) -->
+      <div class="tb-card">
+        <div class="tb-acc-head open" data-acc="prod">
+          <h2>0 · Produttore e prodotto base</h2>
+          <span class="badge">5 campi base <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body open" data-acc-body="prod">
+          <div class="field">
+            <label for="f-produttore-id">Produttore <span class="req-mark">*</span></label>
+            <select id="f-produttore-id" required>
+              <option value="">Caricamento produttori...</option>
+            </select>
+            <div class="hint">Se la lista e vuota, completa prima l onboarding produttore.</div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="f-codice-prodotto">Codice prodotto / SKU</label>
+              <input type="text" id="f-codice-prodotto" placeholder="Es. BAT-LFP-5KWH-2026-001"/>
+            </div>
+            <div class="field">
+              <label for="f-lotto">Lotto</label>
+              <input type="text" id="f-lotto" placeholder="Es. L-2026-Q2-W23"/>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-descrizione">Descrizione esemplare</label>
+            <textarea id="f-descrizione" placeholder="Battery stazionaria 5 kWh LFP per residenziale, modello..."></textarea>
+          </div>
+          <div class="field">
+            <label for="f-sha">SHA-256 scheda tecnica (64 hex) <span class="req-mark">*</span></label>
+            <input type="text" id="f-sha" class="mono" required maxlength="64" placeholder="Calcolato sul PDF della scheda tecnica firmata"/>
+            <div class="hint">Suggerimento: usa veylon notarizza per ottenere lo SHA-256, poi incolla qui.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 1 - Identita (5 campi) -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="ident">
+          <h2>1 · Identita (Annex XIII §1)</h2>
+          <span class="badge">5 campi <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="ident">
+          <div class="row">
+            <div class="field">
+              <label for="f-manufacturer-name">Manufacturer name <span class="req-mark">*</span></label>
+              <input type="text" id="f-manufacturer-name" placeholder="Ragione sociale fabbricante"/>
+            </div>
+            <div class="field">
+              <label for="f-battery-model">Battery model <span class="req-mark">*</span></label>
+              <input type="text" id="f-battery-model" placeholder="Es. VLN-LFP-5K"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="f-gtin">GTIN (8/12/13/14 cifre) <span class="req-mark">*</span></label>
+              <input type="text" id="f-gtin" class="mono" pattern="\d{8}|\d{12}|\d{13}|\d{14}" placeholder="08001234567890"/>
+            </div>
+            <div class="field">
+              <label for="f-manufacturing-date">Manufacturing date <span class="req-mark">*</span></label>
+              <input type="date" id="f-manufacturing-date"/>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-manufacturing-site-geo">Manufacturing site (GeoJSON Point) <span class="req-mark">*</span></label>
+            <textarea id="f-manufacturing-site-geo" placeholder='{"type":"Point","coordinates":[9.18854,45.46427]}'></textarea>
+            <div class="hint">Coordinate WGS84 del sito produttivo. Lon prima di lat.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 2 - Composizione (7-12) -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="comp">
+          <h2>2 · Composizione (pubblico parziale)</h2>
+          <span class="badge">3 campi <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="comp">
+          <div class="field">
+            <label for="f-chemistry">Chemistry <span class="req-mark">*</span></label>
+            <select id="f-chemistry">
+              <option value="">Seleziona...</option>
+              <option value="LFP">LFP - Litio Ferro Fosfato</option>
+              <option value="NMC">NMC - Nickel Manganese Cobalto</option>
+              <option value="NCA">NCA - Nickel Cobalto Alluminio</option>
+              <option value="LCO">LCO - Litio Cobalto Ossido</option>
+              <option value="LMO">LMO - Litio Manganese Ossido</option>
+              <option value="LTO">LTO - Litio Titanato</option>
+              <option value="NaIon">Na-Ion - Sodio Ione</option>
+              <option value="Pb">Pb - Piombo Acido</option>
+              <option value="NiMH">NiMH - Nickel Metallo Idruro</option>
+              <option value="Solid">Solid State</option>
+              <option value="altro">Altro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Critical raw materials presenti (CRM)</label>
+            <div id="crm-list">
+              <div class="list-row">
+                <input type="text" class="crm-input" placeholder="Es. Cobalt, Lithium, Nickel, Natural graphite, Lead"/>
+                <button type="button" class="del" disabled>&times;</button>
+              </div>
+            </div>
+            <button type="button" class="add-btn" id="add-crm">+ Aggiungi CRM</button>
+          </div>
+          <div class="field">
+            <label>Hazardous substances (REACH SVHC)</label>
+            <div id="haz-list">
+              <div class="list-row">
+                <input type="text" class="haz-input" placeholder="Sostanza pericolosa o CAS number"/>
+                <button type="button" class="del" disabled>&times;</button>
+              </div>
+            </div>
+            <button type="button" class="add-btn" id="add-haz">+ Aggiungi sostanza</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 3 - Sostenibilita (13-14) -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="sost">
+          <h2>3 · Sostenibilita (carbon footprint)</h2>
+          <span class="badge">2 campi · Art. 7 <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="sost">
+          <div class="row">
+            <div class="field">
+              <label for="f-cf-kgco2e">Carbon footprint (kgCO2e per kWh) <span class="req-mark">*</span></label>
+              <input type="number" id="f-cf-kgco2e" step="0.01" min="0" placeholder="42.50"/>
+              <div class="hint">Verificato da ente terzo accreditato.</div>
+            </div>
+            <div class="field">
+              <label for="f-cf-class">Carbon footprint class (A-G)</label>
+              <select id="f-cf-class">
+                <option value="">Non assegnata</option>
+                <option value="A">A (migliore)</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G (peggiore)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 4 - Riciclato (15-18) -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="ric">
+          <h2>4 · Contenuto riciclato (Art. 8)</h2>
+          <span class="badge">4 campi <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="ric">
+          <div class="row">
+            <div class="field">
+              <label for="f-rec-cobalt">Cobalto riciclato (%)</label>
+              <input type="number" id="f-rec-cobalt" step="0.1" min="0" max="100" placeholder="16.0"/>
+            </div>
+            <div class="field">
+              <label for="f-rec-lithium">Litio riciclato (%)</label>
+              <input type="number" id="f-rec-lithium" step="0.1" min="0" max="100" placeholder="6.0"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="f-rec-nickel">Nichel riciclato (%)</label>
+              <input type="number" id="f-rec-nickel" step="0.1" min="0" max="100" placeholder="6.0"/>
+            </div>
+            <div class="field">
+              <label for="f-rec-lead">Piombo riciclato (%)</label>
+              <input type="number" id="f-rec-lead" step="0.1" min="0" max="100" placeholder="85.0"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 5 - Performance (19-28) -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="perf">
+          <h2>5 · Performance elettrica</h2>
+          <span class="badge">10 campi <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="perf">
+          <div class="row3">
+            <div class="field">
+              <label for="f-cap-ah">Rated capacity (Ah) <span class="req-mark">*</span></label>
+              <input type="number" id="f-cap-ah" step="0.01" min="0" placeholder="100"/>
+            </div>
+            <div class="field">
+              <label for="f-volt-v">Nominal voltage (V) <span class="req-mark">*</span></label>
+              <input type="number" id="f-volt-v" step="0.01" min="0" placeholder="51.2"/>
+            </div>
+            <div class="field">
+              <label for="f-energy-density">Energy density (Wh/kg)</label>
+              <input type="number" id="f-energy-density" step="0.1" min="0" placeholder="160"/>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="field">
+              <label for="f-cycle-life">Cycle life</label>
+              <input type="number" id="f-cycle-life" min="0" placeholder="6000"/>
+            </div>
+            <div class="field">
+              <label for="f-lifetime-years">Expected lifetime (anni)</label>
+              <input type="number" id="f-lifetime-years" min="0" step="0.1" placeholder="15"/>
+            </div>
+            <div class="field">
+              <label for="f-soh-initial">State of health iniziale (%)</label>
+              <input type="number" id="f-soh-initial" min="0" max="100" step="0.1" placeholder="100"/>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="field">
+              <label for="f-power-w">Power capability (W)</label>
+              <input type="number" id="f-power-w" min="0" step="1" placeholder="5000"/>
+            </div>
+            <div class="field">
+              <label for="f-resistance-mohm">Internal resistance (mOhm)</label>
+              <input type="number" id="f-resistance-mohm" min="0" step="0.01" placeholder="15"/>
+            </div>
+            <div class="field">
+              <label for="f-rtefficiency">Round-trip efficiency (%)</label>
+              <input type="number" id="f-rtefficiency" min="0" max="100" step="0.01" placeholder="95"/>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-crate">C-rate</label>
+            <input type="text" id="f-crate" class="mono" placeholder="Es. 0.5C / 1C / 2C"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 6 - Ciclo vita (29-32) -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="cv">
+          <h2>6 · Ciclo vita e riparabilita</h2>
+          <span class="badge">4 campi <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="cv">
+          <div class="row">
+            <div class="field">
+              <label for="f-disassembly-url">URL istruzioni disassemblaggio</label>
+              <input type="url" id="f-disassembly-url" placeholder="https://..."/>
+            </div>
+            <div class="field">
+              <label for="f-sds-url">URL Safety Data Sheet</label>
+              <input type="url" id="f-sds-url" placeholder="https://..."/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="f-spare-parts">Disponibilita ricambi</label>
+              <select id="f-spare-parts">
+                <option value="">Non specificata</option>
+                <option value="si_oem">Si tramite OEM</option>
+                <option value="si_terzi">Si tramite terzi</option>
+                <option value="limitata">Limitata</option>
+                <option value="no">Non disponibile</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-firmware">Firmware version</label>
+              <input type="text" id="f-firmware" class="mono" placeholder="Es. v2.4.1"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 7 - Filiera (33-36) regulator-only -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="fil">
+          <h2>7 · Filiera due diligence (solo regolatori · Art. 49)</h2>
+          <span class="badge">4 campi <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="fil">
+          <div class="info-strip" style="background: #fde7e4; border-left-color: #b00020; color: #5a0a0a;">
+            <strong>Visibilita ristretta.</strong> Questi campi sono accessibili solo a regolatori autorizzati tramite endpoint dedicato.
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="f-sccd-url">Supply chain due diligence report URL</label>
+              <input type="url" id="f-sccd-url" placeholder="https://..."/>
+            </div>
+            <div class="field">
+              <label for="f-cell-manufacturer">Cell manufacturer</label>
+              <input type="text" id="f-cell-manufacturer" placeholder="Ragione sociale produttore celle"/>
+            </div>
+          </div>
+          <div class="field">
+            <label>Raw material suppliers</label>
+            <div id="rms-list">
+              <div class="list-row">
+                <input type="text" class="rms-input" placeholder="Nome fornitore materia prima"/>
+                <button type="button" class="del" disabled>&times;</button>
+              </div>
+            </div>
+            <button type="button" class="add-btn" id="add-rms">+ Aggiungi fornitore</button>
+          </div>
+          <div class="field">
+            <label>Recycler partners</label>
+            <div id="rec-list">
+              <div class="list-row">
+                <input type="text" class="rec-input" placeholder="Nome partner riciclo"/>
+                <button type="button" class="del" disabled>&times;</button>
+              </div>
+            </div>
+            <button type="button" class="add-btn" id="add-rec">+ Aggiungi partner</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sezione 8 - End-of-life (37-39) -->
+      <div class="tb-card">
+        <div class="tb-acc-head" data-acc="eol">
+          <h2>8 · End-of-life e EPR</h2>
+          <span class="badge">3 campi <span class="chev">&rsaquo;</span></span>
+        </div>
+        <div class="tb-acc-body" data-acc-body="eol">
+          <div class="field">
+            <label for="f-collection">Collection scheme</label>
+            <input type="text" id="f-collection" placeholder="Es. Cobat, ERP Italia, consorzio dedicato"/>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="f-rec-eff-target">Recycling efficiency target (%)</label>
+              <input type="number" id="f-rec-eff-target" min="0" max="100" step="0.1" placeholder="65"/>
+            </div>
+            <div class="field">
+              <label for="f-epr-id">Extended producer responsibility ID</label>
+              <input type="text" id="f-epr-id" class="mono" placeholder="ID EPR registrato"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-actions">
+        <button type="submit" class="tb-btn" id="btn-submit">Emetti Battery Passport</button>
+        <a href="tag.html" class="tb-btn ghost">Torna al hub Tag</a>
+      </div>
+    </form>
+
+    <div id="result-box" style="margin-top: 22px;"></div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    // Accordion toggle
+    document.querySelectorAll(".tb-acc-head").forEach(h => {
+      h.addEventListener("click", () => {
+        const key = h.getAttribute("data-acc");
+        const body = document.querySelector(`[data-acc-body="${key}"]`);
+        h.classList.toggle("open");
+        body.classList.toggle("open");
+      });
+    });
+
+    // Dynamic list helpers (CRM, hazardous, raw material suppliers, recyclers)
+    function setupDynamicList(listId, addBtnId, inputClass, placeholder) {
+      const list = $(listId);
+      $(addBtnId).addEventListener("click", () => {
+        const div = document.createElement("div");
+        div.className = "list-row";
+        div.innerHTML = `<input type="text" class="${inputClass}" placeholder="${placeholder}"/><button type="button" class="del">&times;</button>`;
+        div.querySelector(".del").addEventListener("click", () => {
+          div.remove();
+          updateDelButtons(listId);
+        });
+        list.appendChild(div);
+        updateDelButtons(listId);
+      });
+    }
+    function updateDelButtons(listId) {
+      const rows = $(listId).querySelectorAll(".list-row");
+      rows.forEach(r => {
+        const del = r.querySelector(".del");
+        del.disabled = rows.length === 1;
+      });
+    }
+    setupDynamicList("crm-list", "add-crm", "crm-input", "Es. Cobalt, Lithium, Nickel, Natural graphite, Lead");
+    setupDynamicList("haz-list", "add-haz", "haz-input", "Sostanza pericolosa o CAS number");
+    setupDynamicList("rms-list", "add-rms", "rms-input", "Nome fornitore materia prima");
+    setupDynamicList("rec-list", "add-rec", "rec-input", "Nome partner riciclo");
+
+    // Carica produttori per dropdown
+    async function loadProduttori() {
+      const select = $("f-produttore-id");
+      try {
+        const { data, error } = await supabase
+          .from("tag_produttori")
+          .select("id, ragione_sociale, segmento")
+          .order("ragione_sociale", { ascending: true });
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          select.innerHTML = '<option value="">Nessun produttore. Vai a /tag-onboarding</option>';
+          return;
+        }
+        select.innerHTML = '<option value="">Seleziona produttore...</option>' +
+          data.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.ragione_sociale)} (${escapeHtml(p.segmento)})</option>`).join("");
+      } catch (e) {
+        select.innerHTML = '<option value="">Errore caricamento produttori</option>';
+      }
+    }
+    loadProduttori();
+
+    function collectList(inputClass) {
+      return Array.from(document.querySelectorAll("." + inputClass))
+        .map(i => i.value.trim())
+        .filter(v => v.length > 0);
+    }
+
+    function parseJSONorNull(text) {
+      const t = text.trim();
+      if (!t) return null;
+      try { return JSON.parse(t); } catch { return null; }
+    }
+
+    $("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box");
+      box.innerHTML = "";
+
+      const produttore_id = $("f-produttore-id").value;
+      const sha256 = $("f-sha").value.trim().toLowerCase();
+      if (!produttore_id) { box.innerHTML = '<div class="tb-err">Seleziona un produttore.</div>'; return; }
+      if (!/^[0-9a-f]{64}$/.test(sha256)) { box.innerHTML = '<div class="tb-err">SHA-256 deve essere 64 caratteri esadecimali lowercase.</div>'; return; }
+
+      const gtin = $("f-gtin").value.trim();
+      if (gtin && !/^(\d{8}|\d{12}|\d{13}|\d{14})$/.test(gtin)) {
+        box.innerHTML = '<div class="tb-err">GTIN non valido: deve essere 8, 12, 13 o 14 cifre.</div>'; return;
+      }
+
+      const siteGeo = parseJSONorNull($("f-manufacturing-site-geo").value);
+      if ($("f-manufacturing-site-geo").value.trim() && !siteGeo) {
+        box.innerHTML = '<div class="tb-err">Manufacturing site: GeoJSON non valido.</div>'; return;
+      }
+
+      // Costruisce regulatory_compliance con tutti i 39 campi Annex XIII
+      const battery_data = {
+        identita: {
+          manufacturer_name: $("f-manufacturer-name").value.trim() || undefined,
+          battery_model: $("f-battery-model").value.trim() || undefined,
+          gtin: gtin || undefined,
+          manufacturing_date: $("f-manufacturing-date").value || undefined,
+          manufacturing_site_geo: siteGeo || undefined,
+        },
+        composizione: {
+          chemistry: $("f-chemistry").value || undefined,
+          critical_raw_materials: collectList("crm-input"),
+          hazardous_substances: collectList("haz-input"),
+        },
+        sostenibilita: {
+          carbon_footprint_kgco2e_per_kwh: $("f-cf-kgco2e").value ? Number($("f-cf-kgco2e").value) : undefined,
+          carbon_footprint_class: $("f-cf-class").value || undefined,
+        },
+        riciclato: {
+          cobalt_pct: $("f-rec-cobalt").value ? Number($("f-rec-cobalt").value) : undefined,
+          lithium_pct: $("f-rec-lithium").value ? Number($("f-rec-lithium").value) : undefined,
+          nickel_pct: $("f-rec-nickel").value ? Number($("f-rec-nickel").value) : undefined,
+          lead_pct: $("f-rec-lead").value ? Number($("f-rec-lead").value) : undefined,
+        },
+        performance: {
+          rated_capacity_ah: $("f-cap-ah").value ? Number($("f-cap-ah").value) : undefined,
+          nominal_voltage_v: $("f-volt-v").value ? Number($("f-volt-v").value) : undefined,
+          energy_density_wh_kg: $("f-energy-density").value ? Number($("f-energy-density").value) : undefined,
+          cycle_life: $("f-cycle-life").value ? Number($("f-cycle-life").value) : undefined,
+          expected_lifetime_years: $("f-lifetime-years").value ? Number($("f-lifetime-years").value) : undefined,
+          state_of_health_initial: $("f-soh-initial").value ? Number($("f-soh-initial").value) : undefined,
+          power_capability_w: $("f-power-w").value ? Number($("f-power-w").value) : undefined,
+          internal_resistance_mohm: $("f-resistance-mohm").value ? Number($("f-resistance-mohm").value) : undefined,
+          round_trip_efficiency_pct: $("f-rtefficiency").value ? Number($("f-rtefficiency").value) : undefined,
+          c_rate: $("f-crate").value.trim() || undefined,
+        },
+        ciclo_vita: {
+          disassembly_instructions_url: $("f-disassembly-url").value.trim() || undefined,
+          safety_data_sheet_url: $("f-sds-url").value.trim() || undefined,
+          spare_parts_availability: $("f-spare-parts").value || undefined,
+          firmware_version: $("f-firmware").value.trim() || undefined,
+        },
+        filiera_regulator_only: {
+          supply_chain_due_diligence_report_url: $("f-sccd-url").value.trim() || undefined,
+          cell_manufacturer: $("f-cell-manufacturer").value.trim() || undefined,
+          raw_material_suppliers: collectList("rms-input"),
+          recycler_partners: collectList("rec-input"),
+        },
+        end_of_life: {
+          collection_scheme: $("f-collection").value.trim() || undefined,
+          recycling_efficiency_target_pct: $("f-rec-eff-target").value ? Number($("f-rec-eff-target").value) : undefined,
+          extended_producer_responsibility_id: $("f-epr-id").value.trim() || undefined,
+        },
+      };
+
+      const payload = {
+        produttore_id,
+        codice_prodotto: $("f-codice-prodotto").value.trim() || undefined,
+        lotto: $("f-lotto").value.trim() || undefined,
+        descrizione: $("f-descrizione").value.trim() || undefined,
+        sha256_dichiarazione: sha256,
+        applicazione: "qr_adesivo",
+        regulatory_compliance: {
+          dpp: { regolamento: "UE_2023_1542", annex: "XIII" },
+          battery: battery_data,
+        },
+        metadata: {
+          categoria_dpp: "battery",
+          ui_version: "tag-battery v1",
+        },
+      };
+
+      const btn = $("btn-submit");
+      btn.disabled = true; const original = btn.textContent; btn.textContent = "Emissione in corso...";
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/tag-certificato-crea`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify(payload),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error + (j?.detail ? " - " + j.detail : ""));
+
+        try { if (window.plausible) window.plausible("tag_battery_emesso", { props: { categoria: "battery", chemistry: battery_data.composizione.chemistry || "n/a" } }); } catch(_) {}
+
+        box.innerHTML = `
+          <div class="tb-result">
+            <h4>&check; Battery Passport emesso</h4>
+            <div>Codice pubblico: <span class="mono">${escapeHtml(j.codice_pubblico)}</span></div>
+            <div style="margin-top: 4px;">URL verifica QR: <a href="${escapeHtml(j.qr_url)}" target="_blank" class="mono">${escapeHtml(j.qr_url)}</a></div>
+            <div style="margin-top: 4px;">OTS status: <strong>${escapeHtml(j.ots_status)}</strong> &middot; Veylon atto: <span class="mono">${escapeHtml(j.veylon_atto_id || "n/a")}</span></div>
+            ${j.qr_png_data_url ? `<div style="margin-top: 12px;"><img src="${j.qr_png_data_url}" alt="QR" style="width: 180px; height: 180px;"/></div>` : ""}
+            <p style="font-family: var(--serif); font-size: 13px; color: #16482a; margin-top: 14px;">Sezione 7 (filiera) salvata con visibilita ristretta a regolatori.</p>
+          </div>`;
+        $("form").reset();
+        loadProduttori();
+      } catch (e) {
+        box.innerHTML = `<div class="tb-err">Errore: ${escapeHtml(e.message || String(e))}</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>
