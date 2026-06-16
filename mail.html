@@ -271,17 +271,47 @@
     }
   })();
 
-  // Stato Relay: genera credenziali fake (UI flow, backend richiesto)
+  // NM-B.3 — Genera credenziali SMTP via edge function (persiste hash PBKDF2 server-side)
   document.getElementById("btn-gen-smtp").addEventListener("click", async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    const usernameSeed = user.email.replace(/[^a-z0-9]/gi, "").toLowerCase().slice(0, 12) + "_" + user.id.slice(0, 8);
-    const passwordSeed = Array.from(crypto.getRandomValues(new Uint8Array(12))).map(b => b.toString(36).padStart(2, "0")).join("").slice(0, 20);
-    document.getElementById("smtp-username").textContent = usernameSeed;
-    document.getElementById("smtp-password").textContent = passwordSeed;
-    document.getElementById("smtp-from").textContent = user.email + " (resta il tuo)";
-    document.getElementById("smtp-credentials").hidden = false;
-    // TODO N-Mail.NM-B.3: persistere credenziali in user_smtp_credentials con hash bcrypt server-side
+    const btn = document.getElementById("btn-gen-smtp");
+    const originalText = btn.textContent;
+    btn.textContent = "Generazione...";
+    btn.disabled = true;
+    try {
+      const { data: { user, session } } = (await supabase.auth.getUser()).data
+        ? { data: { user: (await supabase.auth.getUser()).data.user, session: (await supabase.auth.getSession()).data.session } }
+        : { data: { user: null, session: null } };
+      const tk = session?.access_token;
+      if (!tk) { alert("Sessione scaduta."); return; }
+      const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/mail-smtp-credentials-create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+      });
+      const j = await r.json();
+      if (!r.ok || !j.success) { throw new Error(j?.error || ("http_" + r.status)); }
+      const cred = j.credential;
+      document.getElementById("smtp-host").textContent = cred.smtp_host || "smtp.veylon.app";
+      document.getElementById("smtp-port").textContent = String(cred.smtp_port || 587);
+      document.getElementById("smtp-username").textContent = cred.smtp_username;
+      document.getElementById("smtp-password").textContent = cred.smtp_password_plain;
+      document.getElementById("smtp-from").textContent = (user?.email || "tua@email.com") + " (resta la tua)";
+      document.getElementById("smtp-credentials").hidden = false;
+      // Warning visibile sotto le credenziali
+      const credBox = document.getElementById("smtp-credentials");
+      if (!credBox.querySelector(".cred-warn")) {
+        const warn = document.createElement("div");
+        warn.className = "cred-warn";
+        warn.style.cssText = "grid-column: 1 / -1; padding: 10px 12px; margin-top: 8px; background: #fff3e0; border-left: 3px solid #ef6c00; color: #6b3a00; font-size: 12px;";
+        warn.textContent = j.warning || "La password e visibile UNA volta. Copiala adesso. Se la perdi devi generarne una nuova.";
+        credBox.appendChild(warn);
+      }
+    } catch (e) {
+      alert("Errore generazione credenziali: " + (e.message || e));
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   });
 
   // Vault address: slug deterministico user.email -> {slug}@mg.veylon.app
