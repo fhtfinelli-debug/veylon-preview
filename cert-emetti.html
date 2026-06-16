@@ -25,16 +25,35 @@
         <h2 class="serif" style="font-size: 22px; margin: 0 0 18px;">Nuovo certificato</h2>
         <form id="form" novalidate>
           <div>
+            <label class="field-label" for="istituzione">Istituzione emittente</label>
+            <select class="field-input" id="istituzione" required>
+              <option value="">Caricamento istituzioni...</option>
+            </select>
+            <p class="small" id="ist-empty-hint" hidden style="margin-top: 6px; color: var(--seal);">
+              Nessuna istituzione configurata. <a href="cert-istituzione.html" style="color: var(--seal);">Configurane una qui</a>.
+            </p>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="template">Template (facoltativo)</label>
+            <select class="field-input" id="template">
+              <option value="">Nessun template (certificato generico)</option>
+            </select>
+          </div>
+          <div style="margin-top: 18px;">
             <label class="field-label" for="titolo">Titolo del certificato</label>
             <input class="field-input" type="text" id="titolo" required placeholder="Es. Diploma di Master"/>
           </div>
           <div style="margin-top: 18px;">
-            <label class="field-label" for="dest-nome">Nome del destinatario</label>
-            <input class="field-input" type="text" id="dest-nome" required placeholder="Nome e cognome"/>
+            <label class="field-label" for="dest-nome">Nome del beneficiario</label>
+            <input class="field-input" type="text" id="dest-nome" placeholder="Nome e cognome (facoltativo)"/>
           </div>
           <div style="margin-top: 18px;">
-            <label class="field-label" for="dest-email">Email del destinatario</label>
+            <label class="field-label" for="dest-email">Email del beneficiario</label>
             <input class="field-input mono" type="email" id="dest-email" required placeholder="nome@dominio.it"/>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label" for="dest-cf">Codice fiscale beneficiario (facoltativo)</label>
+            <input class="field-input mono" type="text" id="dest-cf" maxlength="16" placeholder="16 caratteri"/>
           </div>
           <div style="margin-top: 18px;">
             <label class="field-label" for="scadenza">Scadenza (facoltativa)</label>
@@ -162,13 +181,55 @@
     });
   }
 
+  // Carica istituzioni del user al boot
+  async function loadIstituzioni() {
+    const sel = document.getElementById("istituzione");
+    const { data, error } = await supabase
+      .from("cert_istituzioni")
+      .select("id, ragione_sociale, settore, tipo")
+      .order("ragione_sociale");
+    if (error) {
+      sel.innerHTML = '<option value="">Errore caricamento</option>';
+      console.error("ist_load_failed", error);
+      return;
+    }
+    if (!data || data.length === 0) {
+      sel.innerHTML = '<option value="">Nessuna istituzione</option>';
+      document.getElementById("ist-empty-hint").hidden = false;
+      return;
+    }
+    sel.innerHTML = '<option value="">Seleziona istituzione...</option>' +
+      data.map(i => `<option value="${i.id}">${escapeHtml(i.ragione_sociale)} (${escapeHtml(i.settore)})</option>`).join("");
+  }
+  async function loadTemplate(istId) {
+    const sel = document.getElementById("template");
+    sel.innerHTML = '<option value="">Nessun template (certificato generico)</option>';
+    if (!istId) return;
+    const { data, error } = await supabase
+      .from("cert_template")
+      .select("id, nome, tipo")
+      .eq("istituzione_id", istId)
+      .eq("attivo", true)
+      .order("nome");
+    if (error) { console.error("tpl_load_failed", error); return; }
+    if (data?.length) {
+      sel.innerHTML += data.map(t => `<option value="${t.id}">${escapeHtml(t.nome)} (${escapeHtml(t.tipo)})</option>`).join("");
+    }
+  }
+  document.getElementById("istituzione").addEventListener("change", (e) => loadTemplate(e.target.value));
+  loadIstituzioni();
+
   document.getElementById("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
+    const istituzione_id = document.getElementById("istituzione").value;
+    const template_id = document.getElementById("template").value || null;
     const titolo = document.getElementById("titolo").value.trim();
     const dest_nome = document.getElementById("dest-nome").value.trim();
     const dest_email = document.getElementById("dest-email").value.trim();
+    const dest_cf = document.getElementById("dest-cf").value.trim().toUpperCase();
     const scadenza = document.getElementById("scadenza").value || null;
-    if (!titolo || !dest_nome || !dest_email) { alert("Compila tutti i campi obbligatori."); return; }
+    if (!istituzione_id) { alert("Seleziona un'istituzione emittente."); return; }
+    if (!titolo || !dest_email) { alert("Compila titolo ed email beneficiario."); return; }
 
     const mode = document.querySelector('input[name="asset-mode"]:checked').value;
     let uploadedFileBase64 = null;
@@ -190,7 +251,16 @@
     const original = btn.querySelector(".btn-label").textContent;
     btn.querySelector(".btn-label").textContent = mode === "upload" ? "Caricamento e sigillo..." : "Emissione…";
     try {
-      const payload = { titolo, destinatario_nome: dest_nome, destinatario_email: dest_email, scadenza };
+      // Mappa al CertEmettiSchema (validators-cert.ts)
+      const payload = {
+        istituzione_id,
+        template_id,
+        beneficiario_email: dest_email,
+        beneficiario_nome: dest_nome || undefined,
+        beneficiario_codice_fiscale: dest_cf || undefined,
+        dati_certificato: { titolo },
+        data_scadenza: scadenza,
+      };
       if (uploadedFileBase64) {
         payload.uploaded_file_base64 = uploadedFileBase64;
         payload.uploaded_file_mime_type = uploadedFileMime;
@@ -202,7 +272,8 @@
       });
       const j = await res.json();
       if (!res.ok || !j.success) throw new Error(j?.error || "errore");
-      document.getElementById("result-codice").textContent = j.codice_pubblico || j.codice || j.id;
+      const c = j.certificato || {};
+      document.getElementById("result-codice").textContent = c.codice_pubblico || j.codice_pubblico || j.codice || j.id;
       document.getElementById("result").hidden = false;
       document.getElementById("form").reset();
       loadList();
