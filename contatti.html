@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon · Contatti</title>
+  <meta name="description" content="Contatta Veylon: vendite enterprise, supporto tecnico, partnership, stampa, sicurezza."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/contatti.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .ct-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .ct-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .ct-nav .brand em { color: var(--seal); }
+    .ct-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .ct-nav-links a { color: var(--ink-2); text-decoration: none; }
+
+    .ct-layout { max-width: 980px; margin: 0 auto; padding: 64px 32px 96px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+    @media (max-width: 720px) { .ct-layout { grid-template-columns: 1fr; gap: 36px; } }
+    .ct-hero h1 { font-family: var(--serif); font-weight: normal; font-size: 56px; line-height: 1.05; margin: 0 0 18px; }
+    .ct-hero h1 em { color: var(--seal); }
+    .ct-hero p { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-2); margin: 0 0 28px; }
+
+    .ct-channels { font-family: var(--serif); font-size: 14px; line-height: 1.7; }
+    .ct-channels .ch { display: block; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+    .ct-channels .ch:last-child { border-bottom: 0; }
+    .ct-channels .ch .label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); margin-bottom: 4px; }
+    .ct-channels .ch a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--seal); padding-bottom: 1px; }
+
+    .ct-form-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px 28px 32px; }
+    .ct-form-card h2 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 16px; }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select, .field textarea { width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box; }
+    .field textarea { min-height: 100px; resize: vertical; }
+    .honeypot { position: absolute; left: -9999px; visibility: hidden; }
+    .btn { background: var(--ink); color: var(--paper); padding: 12px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 0; cursor: pointer; border-radius: 999px; margin-top: 8px; }
+    .btn:hover { background: var(--seal); }
+    .btn:disabled { opacity: 0.6; }
+    .ok-strip { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 14px 18px; color: #16482a; font-family: var(--serif); font-size: 14px; margin-top: 14px; }
+    .err-strip { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <nav class="ct-nav">
+    <a href="index.html" class="brand"><em>Veylon</em></a>
+    <div class="ct-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="enterprise.html">Enterprise</a>
+      <a href="developers.html">API</a>
+      <a href="pricing.html">Prezzi</a>
+    </div>
+  </nav>
+
+  <main class="ct-layout">
+    <section class="ct-hero">
+      <h1>Parliamoci.<br/><em class="serif-italic">Ti rispondiamo</em>.</h1>
+      <p>Vendite, supporto tecnico, partnership, stampa, sicurezza. Scegli il canale giusto qui sotto, o compila il form.</p>
+
+      <div class="ct-channels">
+        <span class="ch">
+          <span class="label">Enterprise (banche, pharma, PA)</span>
+          <a href="mailto:enterprise@veylon.app">enterprise@veylon.app</a> · risposta entro 24h lavorative
+        </span>
+        <span class="ch">
+          <span class="label">Supporto utenti</span>
+          <a href="mailto:supporto@veylon.app">supporto@veylon.app</a> · risposta entro 48h
+        </span>
+        <span class="ch">
+          <span class="label">Sicurezza (responsible disclosure)</span>
+          <a href="mailto:security@veylon.app">security@veylon.app</a> · PGP key in <a href="security.html">/security</a>
+        </span>
+        <span class="ch">
+          <span class="label">Stampa / media</span>
+          <a href="mailto:press@veylon.app">press@veylon.app</a>
+        </span>
+        <span class="ch">
+          <span class="label">Privacy / GDPR (DPO)</span>
+          <a href="mailto:dpo@veylon.app">dpo@veylon.app</a>
+        </span>
+        <span class="ch">
+          <span class="label">Abuse</span>
+          <a href="mailto:abuse@veylon.app">abuse@veylon.app</a>
+        </span>
+      </div>
+    </section>
+
+    <div class="ct-form-card">
+      <h2>Form contatto generale</h2>
+      <form id="form" autocomplete="on">
+        <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off"/>
+
+        <div class="field"><label for="f-nome">Nome *</label><input type="text" id="f-nome" required maxlength="200"/></div>
+        <div class="field"><label for="f-email">Email *</label><input type="email" id="f-email" required maxlength="254"/></div>
+        <div class="field"><label for="f-azienda">Azienda / Ente</label><input type="text" id="f-azienda" maxlength="200"/></div>
+        <div class="field"><label for="f-messaggio">Messaggio *</label><textarea id="f-messaggio" required maxlength="2000" placeholder="Come possiamo aiutarti?"></textarea></div>
+        <button type="submit" class="btn" id="btn-submit">Invia messaggio</button>
+      </form>
+      <div id="result-box"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Contatti</span></div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    $("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box"); box.innerHTML = "";
+      const btn = $("btn-submit");
+      btn.disabled = true;
+      const original = btn.textContent; btn.textContent = "Invio...";
+
+      const payload = {
+        source: "contact",
+        nome: $("f-nome").value.trim(),
+        email: $("f-email").value.trim().toLowerCase(),
+        azienda: $("f-azienda").value.trim() || undefined,
+        messaggio: $("f-messaggio").value.trim() || undefined,
+        website: document.querySelector("[name=website]").value,
+      };
+
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/lead-capture`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "apikey": ANON },
+          body: JSON.stringify(payload),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error || "submit_failed");
+        try { if (window.plausible) window.plausible("lead_contact"); } catch(_) {}
+        box.innerHTML = `<div class="ok-strip"><strong>Grazie.</strong> Abbiamo ricevuto il tuo messaggio (id: <code>${esc(j.lead_id)}</code>). Risposta entro 48h.</div>`;
+        $("form").reset();
+      } catch (e) {
+        box.innerHTML = `<div class="err-strip">Errore: ${esc(e.message)}. Scrivici a <a href="mailto:supporto@veylon.app" style="color:#b00020">supporto@veylon.app</a>.</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>

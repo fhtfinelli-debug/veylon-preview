@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Enterprise · DPP, GMP, Audit Trail, API REST</title>
+  <meta name="description" content="Veylon Enterprise: piano Business con SLA 99.9%, API REST, audit DPP/GMP/Annex 11, white-label, escrow. Per banche, pharma, PA, manifatturiero."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/enterprise.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Enterprise · Per chi ha bisogno di certificare a scala"/>
+  <meta property="og:description" content="DPP UE-compliant, GMP Annex 11, API REST, SLA, white-label. Demo in 24h."/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .en-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .en-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .en-nav .brand em { color: var(--seal); }
+    .en-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .en-nav-links a { color: var(--ink-2); text-decoration: none; }
+
+    .en-hero { padding: 64px 32px 32px; max-width: 980px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
+    .en-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); margin-bottom: 18px; display: inline-block; }
+    .en-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(40px, 5.5vw, 72px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 20px; }
+    .en-hero p { font-family: var(--serif); font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: 720px; }
+
+    .en-features { max-width: 980px; margin: 0 auto; padding: 56px 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 720px) { .en-features { grid-template-columns: 1fr; } }
+    .en-feature { background: var(--paper); border: 1px solid var(--rule); padding: 28px 26px; }
+    .en-feature .num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 36px; line-height: 1; }
+    .en-feature h3 { font-family: var(--serif); font-weight: normal; font-size: 20px; margin: 12px 0 8px; }
+    .en-feature p { font-family: var(--serif); font-size: 14px; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+    .en-form-wrap { max-width: 720px; margin: 0 auto; padding: 56px 32px 96px; }
+    .en-form-card { background: var(--paper); border: 1px solid var(--rule); padding: 36px; }
+    .en-form-card h2 { font-family: var(--serif); font-weight: normal; font-size: 30px; margin: 0 0 8px; }
+    .en-form-card p { font-family: var(--serif); font-size: 15px; line-height: 1.5; color: var(--ink-2); margin: 0 0 24px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 11px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+    .field textarea { min-height: 120px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
+    .honeypot { position: absolute; left: -9999px; visibility: hidden; }
+    .btn { background: var(--ink); color: var(--paper); padding: 14px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 0; cursor: pointer; border-radius: 999px; margin-top: 10px; }
+    .btn:hover { background: var(--seal); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .ok-strip { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 16px 20px; color: #16482a; font-family: var(--serif); font-size: 15px; margin-top: 18px; }
+    .err-strip { background: #fde7e4; border-left: 4px solid #b00020; padding: 16px 20px; color: #5a0a0a; font-family: var(--serif); font-size: 15px; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <nav class="en-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Enterprise</a>
+    <div class="en-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="developers.html">API</a>
+      <a href="pricing.html">Prezzi</a>
+    </div>
+  </nav>
+
+  <header class="en-hero">
+    <span class="kicker">Veylon Enterprise · Piano Business</span>
+    <h1>Per chi <em class="serif-italic" style="color: var(--seal);">certifica</em> a scala.</h1>
+    <p>DPP UE-compliant (Battery Reg + EUDR + ESPR), GMP Annex 11 + 21 CFR Part 11 audit trail, API REST 50k atti/mese inclusi, white-label dominio, SLA 99.9%, escrow conformita. Per banche, casa farmaceutiche, PA, atenei, manifatturiero.</p>
+  </header>
+
+  <section class="en-features">
+    <div class="en-feature"><span class="num">i</span><h3>API REST 50k/mese</h3><p>POST /v1/sigillo, GET /v1/verifica, multi-firma. SDK Node/Python. Webhook outbound HMAC. Vedi <a href="developers.html" style="color: var(--seal);">docs developers</a>.</p></div>
+    <div class="en-feature"><span class="num">ii</span><h3>DPP UE pieno</h3><p>Battery Passport 39 campi, EUDR DDS geo-polygon, EPCIS 2.0 Bitcoin-anchored, GS1 Digital Link, NTAG 424 DNA SUN. Unico DPP con prova Bitcoin.</p></div>
+    <div class="en-feature"><span class="num">iii</span><h3>GMP / 21 CFR Part 11</h3><p>Audit trail ALCOA+, e-signature con meaning + re-prompt password, 4-eyes rule lot release, ICSR E2B(R3). Pharma CMO/CDMO ready.</p></div>
+    <div class="en-feature"><span class="num">iv</span><h3>White-label</h3><p>Dominio cliente (es. cert.tuoazienda.com), logo, palette colore. Veylon invisibile, voi protagonisti.</p></div>
+    <div class="en-feature"><span class="num">v</span><h3>SLA 99.9%</h3><p>Uptime mensile, latenza P95 &lt;800ms, OTS conferma 1-3h, supporto &lt;4h business day, bug critici &lt;24h.</p></div>
+    <div class="en-feature"><span class="num">vi</span><h3>Escrow conformita</h3><p>Snapshot DB + edge function source code in escrow notarile. Garantiamo persistenza prove anche se Veylon dovesse cessare.</p></div>
+  </section>
+
+  <section class="en-form-wrap">
+    <div class="en-form-card">
+      <h2>Demo in 24 ore</h2>
+      <p>Compila il form. Ti chiamiamo entro 24 ore lavorative con una demo live + valutazione concreta del tuo caso d'uso. Nessun impegno.</p>
+      <form id="form" autocomplete="on">
+        <!-- Honeypot anti-spam (deve restare vuoto) -->
+        <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off"/>
+
+        <div class="row">
+          <div class="field"><label for="f-nome">Nome e Cognome *</label><input type="text" id="f-nome" required maxlength="200"/></div>
+          <div class="field"><label for="f-email">Email aziendale *</label><input type="email" id="f-email" required maxlength="254"/></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="f-azienda">Azienda *</label><input type="text" id="f-azienda" required maxlength="200"/></div>
+          <div class="field"><label for="f-ruolo">Ruolo</label><input type="text" id="f-ruolo" maxlength="100" placeholder="Es. CTO, CISO, QA Manager"/></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="f-telefono">Telefono</label><input type="tel" id="f-telefono" maxlength="30"/></div>
+          <div class="field"><label for="f-segmento">Settore</label>
+            <select id="f-segmento">
+              <option value="">Seleziona...</option>
+              <option value="legal">Studio legale / Consulenza</option>
+              <option value="pa">Pubblica Amministrazione</option>
+              <option value="edu">Università / Formazione</option>
+              <option value="notai">Notai / Mediatori</option>
+              <option value="pharma">Farmaceutico / CMO/CDMO</option>
+              <option value="manifattura">Manifatturiero / DPP</option>
+              <option value="batteria">Batterie / Energia</option>
+              <option value="tessile">Tessile / Moda / Calzature</option>
+              <option value="mobili">Mobili / Arredo</option>
+              <option value="banking">Banche / Finanza</option>
+              <option value="healthcare">Healthcare / Sanitario</option>
+              <option value="altro">Altro</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label for="f-volume">Volume stimato atti/mese</label>
+          <select id="f-volume">
+            <option value="">Seleziona...</option>
+            <option value="<100">Meno di 100</option>
+            <option value="100-1000">100 - 1.000</option>
+            <option value="1000-10000">1.000 - 10.000</option>
+            <option value="10000-100000">10.000 - 100.000</option>
+            <option value=">100000">Oltre 100.000</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-messaggio">Caso d'uso (opzionale)</label><textarea id="f-messaggio" maxlength="2000" placeholder="Descrivi il tuo caso d'uso e cosa vorresti certificare. Piu dettagli ci dai, piu precisa sara la demo."></textarea></div>
+
+        <button type="submit" class="btn" id="btn-submit">Richiedi demo</button>
+        <p style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 18px;">
+          Inviando il form accetti la <a href="privacy.html" style="color: var(--seal);">privacy policy</a>.
+          I tuoi dati sono ospitati su Supabase EU (Ireland) e non trasferiti extra-UE.
+        </p>
+      </form>
+      <div id="result-box"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Enterprise · veylon.app</span></div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    $("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box"); box.innerHTML = "";
+      const btn = $("btn-submit");
+      btn.disabled = true;
+      const original = btn.textContent; btn.textContent = "Invio...";
+
+      const payload = {
+        source: "enterprise",
+        nome: $("f-nome").value.trim(),
+        email: $("f-email").value.trim().toLowerCase(),
+        telefono: $("f-telefono").value.trim() || undefined,
+        azienda: $("f-azienda").value.trim() || undefined,
+        ruolo: $("f-ruolo").value.trim() || undefined,
+        segmento: $("f-segmento").value || undefined,
+        volume_stimato: $("f-volume").value || undefined,
+        messaggio: $("f-messaggio").value.trim() || undefined,
+        website: document.querySelector("[name=website]").value,  // honeypot
+      };
+
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/lead-capture`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "apikey": ANON },
+          body: JSON.stringify(payload),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error || "submit_failed");
+
+        try { if (window.plausible) window.plausible("lead_enterprise", { props: { segmento: payload.segmento, volume: payload.volume_stimato } }); } catch(_) {}
+
+        box.innerHTML = `<div class="ok-strip">
+          <strong>Grazie ${esc(payload.nome.split(' ')[0])}.</strong> Abbiamo ricevuto la tua richiesta (id: <code>${esc(j.lead_id)}</code>).
+          Ti contatteremo entro 24 ore lavorative. Per urgenze: <a href="mailto:enterprise@veylon.app" style="color: #1e6e3e;">enterprise@veylon.app</a>.
+        </div>`;
+        $("form").reset();
+      } catch (e) {
+        box.innerHTML = `<div class="err-strip">Errore: ${esc(e.message || String(e))}. Scrivici direttamente a <a href="mailto:enterprise@veylon.app" style="color: #b00020;">enterprise@veylon.app</a>.</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>
