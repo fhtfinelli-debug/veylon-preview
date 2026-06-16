@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Speed · Firma SPID dallo smartphone</title>
+  <meta name="description" content="Firma documenti con SPID direttamente dal tuo smartphone. Niente cloud, niente cassetti. Solo te e il documento."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .speed-hero { background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%); padding: 80px 24px 64px; text-align: center; }
+    .speed-eyebrow { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--seal); margin-bottom: 18px; padding: 4px 12px; border: 1px solid var(--seal); }
+    .speed-title { font-family: var(--serif); font-weight: normal; font-size: clamp(42px, 6vw, 78px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 24px; max-width: 880px; margin-left: auto; margin-right: auto; }
+    .speed-lede { max-width: 620px; margin: 0 auto 36px; font-family: var(--serif); font-size: 18px; line-height: 1.55; color: var(--ink-2); }
+    .speed-cta-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .store-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border-radius: 8px; }
+    .store-btn:hover { background: var(--seal); }
+    .speed-badges { display: flex; gap: 24px; justify-content: center; margin-top: 56px; align-items: center; flex-wrap: wrap; color: var(--ink-3); font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; }
+    .speed-badges span { padding: 6px 12px; border: 1px solid var(--rule); }
+
+    .speed-section { padding: 80px 24px; max-width: 1080px; margin: 0 auto; }
+    .speed-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 36px; max-width: 720px; }
+
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
+    .feat-card { padding: 32px 28px; border: 1px solid var(--rule); background: var(--paper); }
+    .feat-card .num { font-family: var(--mono); font-size: 12px; color: var(--seal); letter-spacing: 0.16em; }
+    .feat-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 16px 0 12px; }
+    .feat-card p { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+    @media (max-width: 700px) { .compare { grid-template-columns: 1fr; } }
+    .compare-card { padding: 32px; border: 1px solid var(--rule); }
+    .compare-card.web { background: var(--paper); }
+    .compare-card.speed { background: var(--paper-2); border-color: var(--seal); }
+    .compare-card h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 14px; }
+    .compare-card .compare-title { font-family: var(--serif); font-size: 24px; margin: 0 0 16px; }
+    .compare-card ul { list-style: none; padding: 0; margin: 0; }
+    .compare-card li { padding: 8px 0; font-family: var(--serif); font-size: 14px; line-height: 1.5; border-bottom: 1px solid var(--rule); }
+    .compare-card li:last-child { border-bottom: 0; }
+    .compare-card li::before { content: "→ "; color: var(--seal); margin-right: 4px; }
+
+    .speed-flow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 16px; margin: 40px 0; align-items: start; }
+    @media (max-width: 900px) { .speed-flow { grid-template-columns: 1fr; } }
+    .flow-step { text-align: center; padding: 16px 8px; }
+    .flow-step .step-num { display: inline-block; width: 36px; height: 36px; line-height: 36px; border-radius: 50%; background: var(--seal); color: var(--paper); font-family: var(--mono); font-size: 14px; }
+    .flow-step .step-name { display: block; margin-top: 12px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); }
+    .flow-arrow { font-size: 24px; color: var(--ink-3); text-align: center; line-height: 36px; }
+    @media (max-width: 900px) { .flow-arrow { display: none; } }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+    @media (max-width: 800px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .price-card { padding: 32px 28px; border: 1px solid var(--rule); background: var(--paper); }
+    .price-card.featured { border-color: var(--seal); border-width: 2px; background: var(--paper-2); }
+    .price-card h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 12px; }
+    .price-amount { font-family: var(--serif); font-size: 42px; line-height: 1; }
+    .price-amount .unit { font-size: 14px; color: var(--ink-3); margin-left: 4px; }
+    .price-card ul { list-style: none; padding: 0; margin: 20px 0 0; }
+    .price-card li { padding: 8px 0; font-family: var(--serif); font-size: 14px; }
+    .price-card li::before { content: "✓ "; color: var(--seal); font-weight: bold; }
+
+    .privacy-strip { background: var(--ink); color: var(--paper); padding: 56px 24px; text-align: center; }
+    .privacy-strip h3 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 3.5vw, 40px); margin: 0 0 16px; }
+    .privacy-strip p { font-family: var(--serif); font-size: 16px; max-width: 640px; margin: 0 auto; color: rgba(255,255,255,0.85); }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner" style="grid-template-columns: 1fr auto 1fr;">
+      <div class="masthead-meta"><span>Veylon Speed &mdash; firma on-device</span></div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="index.html">Suite Web</a>
+        <a href="pricing.html">Prezzi</a>
+        <a href="login.html">Accesso</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="speed-hero">
+      <div class="speed-eyebrow">Veylon Speed</div>
+      <h1 class="speed-title">
+        Firma con SPID. <em class="serif-italic" style="color: var(--seal);">Dal telefono.</em>
+      </h1>
+      <p class="speed-lede">
+        Una firma elettronica avanzata in pochi click, direttamente sul tuo smartphone.
+        I documenti non lasciano mai il tuo dispositivo. Nessun cloud, nessun cassetto, nessun upload.
+      </p>
+      <div class="speed-cta-row">
+        <a href="#" class="store-btn" data-store="apple">⌘ App Store</a>
+        <a href="#" class="store-btn" data-store="google">▶ Google Play</a>
+      </div>
+      <div class="speed-badges">
+        <span>SPID</span>
+        <span>AgID</span>
+        <span>PAdES &middot; CAdES</span>
+        <span>On-device</span>
+      </div>
+    </section>
+
+    <!-- FLOW -->
+    <section class="speed-section">
+      <h2>In sette tap, hai firmato.</h2>
+      <div class="speed-flow">
+        <div class="flow-step"><span class="step-num">1</span><span class="step-name">Apri app</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="step-num">2</span><span class="step-name">SPID login</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="step-num">3</span><span class="step-name">Scegli file</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="step-num">4</span><span class="step-name">Firma!</span></div>
+      </div>
+      <p style="font-family: var(--serif); font-size: 15px; color: var(--ink-2); max-width: 720px;">
+        Veylon Speed riceve la certificazione FEA (Firma Elettronica Avanzata) on-the-fly
+        dalla tua identita SPID e la applica al documento. L originale e la firma restano
+        nel dispositivo. Puoi condividere il PDF firmato via WhatsApp, email o messaggio,
+        come fai con qualunque altro file.
+      </p>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="speed-section">
+      <h2>Quattro motivi per usarla.</h2>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <span class="num">01</span>
+          <h3>Solo il tuo telefono.</h3>
+          <p>Nessun documento e mai caricato su server. Tutto resta sul tuo dispositivo, protetto dalle credenziali biometriche di sistema.</p>
+        </div>
+        <div class="feat-card">
+          <span class="num">02</span>
+          <h3>SPID = identita certa.</h3>
+          <p>La firma e legata alla tua identita digitale verificata dal tuo Identity Provider SPID. Vale come FEA per molti casi previsti dal CAD.</p>
+        </div>
+        <div class="feat-card">
+          <span class="num">03</span>
+          <h3>PAdES e CAdES standard.</h3>
+          <p>Produciamo PDF firmati in formato PAdES (ETSI EN 319 142) e .p7m in CAdES (319 122). Riconosciuti da chiunque verifichi una firma digitale italiana.</p>
+        </div>
+        <div class="feat-card">
+          <span class="num">04</span>
+          <h3>Condividi come vuoi.</h3>
+          <p>WhatsApp, email, AirDrop, Messenger, Telegram, link breve generato in app. Il file firmato e tuo, vai dove vuoi.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARE WEB VS SPEED -->
+    <section class="speed-section">
+      <h2>Speed e Web: due strumenti, una suite.</h2>
+      <p style="font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 720px;">
+        Veylon Speed copre i casi rapidi mobile-first. Veylon Web (la cassaforte cloud) gestisce
+        i flussi enterprise con archivio, ancoraggio multi-blockchain, registro attivita e SLA.
+        Stessi standard, due esperienze diverse.
+      </p>
+      <div class="compare">
+        <div class="compare-card speed">
+          <h4>Veylon Speed</h4>
+          <div class="compare-title">Firma al volo.</div>
+          <ul>
+            <li>Solo mobile (Android + iOS)</li>
+            <li>SPID -> FEA on-the-fly</li>
+            <li>PAdES PDF + CAdES .p7m</li>
+            <li>Tutto on-device, zero cloud</li>
+            <li>Condivisione WhatsApp/email</li>
+            <li>Free 5 firme/mese</li>
+          </ul>
+        </div>
+        <div class="compare-card web">
+          <h4>Veylon Web</h4>
+          <div class="compare-title">La cassaforte.</div>
+          <ul>
+            <li>9 atti (Sigillo, Mail, Send, ...)</li>
+            <li>Bitcoin OTS + Polygon ancoring</li>
+            <li>Combined hash explorer pubblico</li>
+            <li>Cassaforte cloud + condivisione</li>
+            <li>Registro attivita esteso</li>
+            <li>Pricing Pro/Business/Enterprise</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="speed-section">
+      <h2>Pricing.</h2>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h4>Free</h4>
+          <div class="price-amount">&euro;0<span class="unit">/mese</span></div>
+          <ul>
+            <li>5 firme SPID/mese</li>
+            <li>PAdES PDF</li>
+            <li>CAdES .p7m</li>
+            <li>Condivisione via app</li>
+          </ul>
+        </div>
+        <div class="price-card featured">
+          <h4>Pro</h4>
+          <div class="price-amount">&euro;4,99<span class="unit">/mese</span></div>
+          <ul>
+            <li>Firme illimitate</li>
+            <li>Cronologia ultimi 90 giorni</li>
+            <li>Annual &euro;49/anno</li>
+            <li>Supporto email</li>
+          </ul>
+        </div>
+        <div class="price-card">
+          <h4>Business</h4>
+          <div class="price-amount">su misura</div>
+          <ul>
+            <li>Onboarding SPID self-service</li>
+            <li>SLA dedicato</li>
+            <li>Cross-sell Veylon Web</li>
+            <li>Integrazione marchio</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY STRIP -->
+    <section class="privacy-strip">
+      <h3>I tuoi documenti non lasciano mai il tuo dispositivo.</h3>
+      <p>
+        Zero archivio, zero metadata, zero telemetria identificativa. Quello che firmi
+        resta tuo: Veylon Speed non lo ha mai visto e non potra vederlo. Ti diamo la
+        certificazione, niente di piu, niente di meno.
+      </p>
+    </section>
+
+    <!-- CTA FINALE -->
+    <section class="speed-section" style="text-align: center;">
+      <h2 style="margin: 0 auto 24px; max-width: none;">Pronto a firmare?</h2>
+      <div class="speed-cta-row">
+        <a href="#" class="store-btn" data-store="apple">⌘ Scarica per iOS</a>
+        <a href="#" class="store-btn" data-store="google">▶ Scarica per Android</a>
+      </div>
+      <p style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 24px; letter-spacing: 0.12em; text-transform: uppercase;">
+        Beta privata in corso. Iscriviti per essere tra i primi.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Veylon Speed &middot; mobile-first</span>
+    </div>
+  </footer>
+</body>
+</html>
