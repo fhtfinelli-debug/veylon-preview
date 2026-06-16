@@ -320,9 +320,39 @@
       const benef = [c.beneficiario_nome, c.beneficiario_email_masked].filter(Boolean).join(' &middot; ');
       document.getElementById('rBenef').innerHTML = benef || '—';
 
-      document.getElementById('rIstNome').textContent = ist.ragione_sociale || '—';
-      const verifLabel = ist.verified ? 'verificata' : 'dichiarata';
-      document.getElementById('rIstKyc').textContent = (ist.p_iva ? 'P.IVA ' + ist.p_iva + ' · ' : '') + 'KYC ' + (ist.livello_kyc || 'light') + ' · ' + verifLabel;
+      // NC.2 — Badge accreditamento istituzione (sezione 4.5 docx: "livello di
+      // accreditamento Veylon mostrato a chi verifica"). Colori per livello KYC.
+      const istNomeEl = document.getElementById('rIstNome');
+      istNomeEl.innerHTML = '';
+      const nomeSpan = document.createElement('span');
+      nomeSpan.textContent = ist.ragione_sociale || '—';
+      istNomeEl.appendChild(nomeSpan);
+
+      const kycLivello = (ist.livello_kyc || 'light').toLowerCase();
+      const kycColors = {
+        light:    { bg: '#fdf7eb', fg: '#c4781f', border: '#c4781f', label: 'KYC LIGHT' },
+        standard: { bg: '#e8f1f7', fg: '#1e5a7e', border: '#1e5a7e', label: 'KYC STANDARD' },
+        strong:   { bg: '#e8f5e9', fg: '#1e6e3e', border: '#1e6e3e', label: 'KYC STRONG' },
+      };
+      const kycStyle = kycColors[kycLivello] || kycColors.light;
+      const badgeKyc = document.createElement('span');
+      badgeKyc.textContent = kycStyle.label;
+      badgeKyc.style.cssText = `display:inline-block; margin-left:10px; padding:2px 8px; font-family:var(--mono,monospace); font-size:10px; letter-spacing:0.12em; background:${kycStyle.bg}; color:${kycStyle.fg}; border:1px solid ${kycStyle.border};`;
+      istNomeEl.appendChild(badgeKyc);
+
+      if (ist.verified) {
+        const badgeVer = document.createElement('span');
+        badgeVer.textContent = '✓ VERIFICATA';
+        badgeVer.style.cssText = 'display:inline-block; margin-left:6px; padding:2px 8px; font-family:var(--mono,monospace); font-size:10px; letter-spacing:0.12em; background:#e8f5e9; color:#1e6e3e; border:1px solid #1e6e3e;';
+        istNomeEl.appendChild(badgeVer);
+      } else {
+        const badgeDich = document.createElement('span');
+        badgeDich.textContent = 'DICHIARATA';
+        badgeDich.style.cssText = 'display:inline-block; margin-left:6px; padding:2px 8px; font-family:var(--mono,monospace); font-size:10px; letter-spacing:0.12em; background:#f0eef0; color:#65555c; border:1px solid #65555c;';
+        istNomeEl.appendChild(badgeDich);
+      }
+
+      document.getElementById('rIstKyc').textContent = ist.p_iva ? 'P.IVA ' + ist.p_iva : '—';
       document.getElementById('rIstSettore').textContent = (ist.settore || '—') + (ist.tipo ? ' · ' + ist.tipo : '');
       document.getElementById('rIstNorm').textContent = Array.isArray(ist.normative_applicabili) && ist.normative_applicabili.length
         ? ist.normative_applicabili.join(' · ')

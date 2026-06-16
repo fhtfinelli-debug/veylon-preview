@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <meta name="theme-color" content="#0f0f0e"/>
   <title>VEYLON · Verifica certificato</title>
+  <meta name="description" content="Certificato istituzionale verificato e ancorato su Bitcoin via Veylon. Verifica indipendente per sempre."/>
+  <!-- NC.4 OpenGraph base (titolo/descrizione vengono aggiornati dinamicamente da JS dopo il fetch) -->
+  <meta property="og:type" content="article"/>
+  <meta property="og:site_name" content="Veylon"/>
+  <meta property="og:title" id="ogTitle" content="Certificato Veylon"/>
+  <meta property="og:description" id="ogDesc" content="Certificato istituzionale ancorato a Bitcoin. Verifica indipendente per sempre."/>
+  <meta property="og:image" id="ogImage" content="https://veylon.app/og-cert.png"/>
+  <meta property="og:url" id="ogUrl" content="https://veylon.app/"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" id="twTitle" content="Certificato Veylon"/>
+  <meta name="twitter:description" id="twDesc" content="Certificato istituzionale ancorato a Bitcoin."/>
+  <meta name="twitter:image" id="twImage" content="https://veylon.app/og-cert.png"/>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
@@ -290,6 +302,27 @@
           return;
         }
         esito.innerHTML = bannerHtml(data) + dettagliHtml(data);
+        // NC.4 — aggiorna meta OG/Twitter dinamici per condivisione LinkedIn/CV/social
+        try {
+          const c = data.certificato || {};
+          const ist = data.istituzione || {};
+          const tpl = data.template || {};
+          const titolo = (c.dati_certificato && (c.dati_certificato.titolo || c.dati_certificato.corso || c.dati_certificato.nome)) || (tpl.nome) || 'Certificato istituzionale';
+          const benef = c.beneficiario_nome || '';
+          const istNome = ist.ragione_sociale || '';
+          const ogTitle = benef ? `${titolo} — ${benef}` : titolo;
+          const ogDesc = istNome
+            ? `Certificato emesso da ${istNome}, ancorato a Bitcoin. Verifica indipendente per sempre. Codice ${c.codice_pubblico || ''}.`
+            : `Certificato Veylon ${c.codice_pubblico || ''}. Ancorato a Bitcoin. Verifica indipendente per sempre.`;
+          document.title = ogTitle + ' · Veylon';
+          const ogUrl = location.href;
+          const setM = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
+          setM('ogTitle', 'content', ogTitle);
+          setM('ogDesc', 'content', ogDesc);
+          setM('ogUrl', 'content', ogUrl);
+          setM('twTitle', 'content', ogTitle);
+          setM('twDesc', 'content', ogDesc);
+        } catch (e) { console.warn('og_update_failed', e); }
       } catch (e) {
         document.getElementById('loading').style.display = 'none';
         const esito = document.getElementById('esito');
