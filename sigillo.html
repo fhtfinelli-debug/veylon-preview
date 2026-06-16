@@ -43,6 +43,27 @@
 
     .formula-strip { background: var(--paper-2); padding: 14px 18px; border-left: 4px solid var(--seal); font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin: 24px 0 0; }
     .formula-strip strong { color: var(--ink); }
+
+    /* N.11 Triplo Sigillo banner */
+    .ts-banner { background: linear-gradient(135deg, var(--paper-2) 0%, var(--paper) 100%); border: 1px solid var(--rule); padding: 28px 32px; margin-bottom: 24px; position: relative; }
+    .ts-banner::before { content: ""; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #f7931a 0%, #8247e5 50%, #9945ff 100%); }
+    .ts-badge-row { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; margin-bottom: 18px; }
+    .ts-badge { flex: 1; min-width: 140px; padding: 14px 16px; background: var(--paper); border: 1px solid var(--rule); display: flex; flex-direction: column; gap: 4px; }
+    .ts-badge[data-chain="bitcoin"] { border-top: 3px solid #f7931a; }
+    .ts-badge[data-chain="polygon"] { border-top: 3px solid #8247e5; }
+    .ts-badge[data-chain="solana"]  { border-top: 3px solid #9945ff; }
+    .ts-badge-future { opacity: 0.6; background: repeating-linear-gradient(45deg, var(--paper) 0px, var(--paper) 6px, var(--paper-2) 6px, var(--paper-2) 12px); }
+    .ts-chain-name { font-family: var(--serif); font-size: 18px; line-height: 1; }
+    .ts-chain-sub  { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
+    .ts-chain-status { font-family: var(--mono); font-size: 11px; padding: 3px 6px; margin-top: 6px; align-self: flex-start; }
+    .ts-chain-status.confirmed { background: #e8f5e9; color: #1e6e3e; border: 1px solid #1e6e3e; }
+    .ts-chain-status.pending   { background: #fff3e0; color: #ef6c00; border: 1px solid #ef6c00; }
+    .ts-chain-status.failed    { background: #fde7e4; color: #b00020; border: 1px solid #b00020; }
+    .ts-chain-status.unknown   { background: var(--paper-2); color: var(--ink-3); border: 1px solid var(--rule); }
+    .ts-plus { display: flex; align-items: center; font-family: var(--serif); font-size: 22px; color: var(--ink-3); padding: 0 4px; }
+    @media (max-width: 640px) { .ts-plus { display: none; } .ts-badge { min-width: 100%; } }
+    .ts-claim { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--ink); }
+    .ts-claim strong { color: var(--seal); }
   </style>
 </head>
 <body>
@@ -95,8 +116,36 @@
         </div>
       </section>
 
+      <!-- N.11 Banner Triplo Sigillo (replica + sorpasso Notarify) -->
+      <section class="ts-banner" aria-label="Triplo Sigillo Veylon">
+        <div class="ts-badge-row">
+          <div class="ts-badge" data-chain="bitcoin">
+            <span class="ts-chain-name">Bitcoin</span>
+            <span class="ts-chain-sub">OpenTimestamps</span>
+            <span class="ts-chain-status" id="ts-bitcoin-status">verifica...</span>
+          </div>
+          <div class="ts-plus">+</div>
+          <div class="ts-badge" data-chain="polygon">
+            <span class="ts-chain-name">Polygon</span>
+            <span class="ts-chain-sub">VeylonAnchor</span>
+            <span class="ts-chain-status" id="ts-polygon-status">verifica...</span>
+          </div>
+          <div class="ts-plus">+</div>
+          <div class="ts-badge ts-badge-future" data-chain="solana" title="In attivazione (richiede wallet Solana)">
+            <span class="ts-chain-name">Solana</span>
+            <span class="ts-chain-sub">Memo Program</span>
+            <span class="ts-chain-status" id="ts-solana-status">in attivazione</span>
+          </div>
+        </div>
+        <div class="ts-claim">
+          <strong>Triplo Sigillo Eternio.</strong> Il sigillo Veylon vive su <em>tre</em> blockchain pubbliche in parallelo:
+          Bitcoin per la massima autorita probatoria, Polygon per la ridondanza smart contract, Solana per la
+          conferma sub-secondo. Anche se una rete sparisse domani, le altre due garantiscono la verifica indipendente.
+        </div>
+      </section>
+
       <section class="panel-card">
-        <h2>Sigillo blockchain (Triplo Sigillo Veylon)</h2>
+        <h2>Sigillo blockchain (dettaglio tecnico)</h2>
         <div class="kv-row">
           <div class="k">Activities hash</div>
           <div class="v mono" id="kv-ahash">—</div>
@@ -233,6 +282,35 @@
         $("kv-chash").textContent = j.combined_hash || "—";
 
         const anchors = j.anchors || [];
+
+        // N.11 — Aggiorna i 3 badge banner Triplo Sigillo con lo status reale
+        const statusByChain = {};
+        anchors.forEach(a => { statusByChain[a.blockchain] = a.status; });
+        function setBadgeStatus(chain, status, fallbackLabel) {
+          const el = document.getElementById('ts-' + chain + '-status');
+          if (!el) return;
+          el.classList.remove('confirmed','pending','failed','unknown');
+          if (!status) {
+            el.textContent = fallbackLabel || 'non ancora ancorato';
+            el.classList.add('unknown');
+          } else if (status === 'confirmed') {
+            el.textContent = 'confermato';
+            el.classList.add('confirmed');
+          } else if (status === 'pending') {
+            el.textContent = 'in attesa';
+            el.classList.add('pending');
+          } else if (status === 'failed') {
+            el.textContent = 'fallito';
+            el.classList.add('failed');
+          } else {
+            el.textContent = status;
+            el.classList.add('unknown');
+          }
+        }
+        setBadgeStatus('bitcoin', statusByChain.bitcoin);
+        setBadgeStatus('polygon', statusByChain.polygon, 'in attivazione');
+        setBadgeStatus('solana',  statusByChain.solana,  'in attivazione');
+
         const labels = { bitcoin: "Bitcoin (OTS)", polygon: "Polygon", solana: "Solana" };
         const explorers = {
           bitcoin: (tx) => tx ? `https://mempool.space/tx/${tx}` : null,
