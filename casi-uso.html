@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon · Casi d'uso — Studi legali, PA, Università, Notai</title>
+  <meta name="description" content="Veylon per studi legali, pubbliche amministrazioni, università, notai. 4 segmenti verticali, ogni atto Veylon che risolve i pain point specifici."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/casi-uso.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon · Casi d'uso reali per studi legali, PA, università, notai"/>
+  <meta property="og:description" content="Quattro segmenti verticali con applicazioni concrete e pain point risolti."/>
+  <meta property="og:url" content="https://veylon.app/casi-uso.html"/>
+  <meta property="og:locale" content="it_IT"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .cu-hero { padding: 64px 32px 32px; max-width: 980px; margin: 0 auto; text-align: center; border-bottom: 1px solid var(--rule); }
+    .cu-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(40px, 6vw, 64px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 18px; }
+    .cu-hero p { font-family: var(--serif); font-size: 18px; line-height: 1.5; color: var(--ink-2); max-width: 620px; margin: 0 auto 24px; }
+    .cu-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); margin-bottom: 18px; display: inline-block; }
+
+    .cu-grid { max-width: 980px; margin: 0 auto; padding: 56px 32px 32px; display: grid; grid-template-columns: 1fr; gap: 32px; }
+
+    .cu-card { background: var(--paper); border: 1px solid var(--rule); padding: 36px 36px 40px; position: relative; }
+    .cu-card h2 { font-family: var(--serif); font-weight: normal; font-size: 30px; line-height: 1.15; margin: 0 0 8px; }
+    .cu-card .label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--seal); margin-bottom: 4px; display: block; }
+    .cu-card .lede { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-2); margin: 0 0 24px; }
+    .cu-card .pain { background: #fde7e4; border-left: 3px solid #b00020; padding: 12px 16px; font-family: var(--serif); font-size: 14px; color: #5a0a0a; margin-bottom: 18px; }
+    .cu-card .pain strong { color: #4a0a14; }
+    .cu-card .pain b { color: #4a0a14; }
+    .cu-atti { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0 18px; }
+    @media (max-width: 720px) { .cu-atti { grid-template-columns: 1fr; } }
+    .cu-atto-pill { background: var(--paper-2); padding: 14px 16px; border: 1px solid var(--rule); }
+    .cu-atto-pill .num { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--seal); }
+    .cu-atto-pill .name { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); display: block; margin: 4px 0; }
+    .cu-atto-pill .desc { font-family: var(--serif); font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+    .cu-card .esempio { background: #e8f5e9; border-left: 3px solid #1e6e3e; padding: 14px 18px; font-family: var(--serif); font-style: italic; font-size: 14px; color: #16482a; margin: 18px 0; }
+    .cu-card .esempio strong { color: #0b2a17; font-style: normal; }
+    .cu-card .ctas { margin-top: 18px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .cu-card .ctas a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--seal); padding-bottom: 2px; }
+    .cu-card .ctas a:hover { color: var(--seal); }
+
+    .cu-base { max-width: 980px; margin: 64px auto 0; padding: 56px 32px; border-top: 1px solid var(--rule); text-align: center; }
+    .cu-base h3 { font-family: var(--serif); font-size: 30px; margin: 0 0 16px; }
+    .cu-base p { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-2); max-width: 620px; margin: 0 auto 28px; }
+    .cu-cta-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .cu-nav { max-width: 980px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .cu-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .cu-nav .brand em { color: var(--seal); }
+    .cu-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .cu-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .cu-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 540px) { .cu-nav-links { display: none; } }
+  </style>
+</head>
+<body>
+  <nav class="cu-nav">
+    <a href="index.html" class="brand"><em>Veylon</em></a>
+    <div class="cu-nav-links">
+      <a href="come-funziona.html">Come funziona</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="cu-hero">
+    <span class="kicker">Casi d'uso verticali · Quattro segmenti</span>
+    <h1>Per chi <em class="serif-italic" style="color: var(--seal);">tutela</em>, <em class="serif-italic" style="color: var(--seal);">delibera</em>, <em class="serif-italic" style="color: var(--seal);">forma</em>, <em class="serif-italic" style="color: var(--seal);">attesta</em>.</h1>
+    <p>Studi legali, pubbliche amministrazioni, universita, notai. Pain point reali, atti Veylon che risolvono, esempi concreti.</p>
+    <a href="signup.html" class="btn-primary">Inizia gratis</a>
+  </header>
+
+  <main class="cu-grid">
+
+    <article class="cu-card">
+      <span class="label">Segmento 1</span>
+      <h2>Studi legali</h2>
+      <p class="lede">Avvocati, studi associati, fiduciari. La PEC e' italiana, lenta, costosa. Veylon e' cross-EU, immediato, opponibile.</p>
+      <div class="pain"><strong>Pain point:</strong> dimostrare quando un documento e' stato inviato a un cliente, quando un contratto e' stato firmato, quando una memoria difensiva e' stata depositata. La PEC vale solo in Italia, costa 40-100&euro;/anno, non scala su volumi.</div>
+      <div class="cu-atti">
+        <div class="cu-atto-pill"><span class="num">i</span><span class="name">Sigillo</span><span class="desc">Notarizza memorie, contratti, allegati. SHA-256 ancorato a Bitcoin.</span></div>
+        <div class="cu-atto-pill"><span class="num">iii</span><span class="name">Mail</span><span class="desc">Email certificate cross-EU. Ricevute con timestamp Bitcoin.</span></div>
+        <div class="cu-atto-pill"><span class="num">viii</span><span class="name">Firma</span><span class="desc">Multi-firma NDA + contratti B2B. PAdES X.509 con certificato studio.</span></div>
+      </div>
+      <div class="esempio"><strong>Esempio:</strong> Studio Legale Finelli &amp; Partners invia memoria difensiva al cliente Acme. Veylon sigilla la mail in uscita: data, ora, contenuto sono opponibili a terzi in tutta l'UE ai sensi dell'eIDAS art. 41. Il cliente verifica indipendentemente su veylon.app/verifica.</div>
+      <div class="ctas">
+        <a href="signup.html?segmento=legal">Crea studio Veylon &rarr;</a>
+        <a href="pricing.html#pro">Vedi piano Pro &rarr;</a>
+      </div>
+    </article>
+
+    <article class="cu-card">
+      <span class="label">Segmento 2</span>
+      <h2>Pubbliche amministrazioni</h2>
+      <p class="lede">Comuni, Regioni, Aziende sanitarie. Conformita amministrativa con traccia immutabile.</p>
+      <div class="pain"><strong>Pain point:</strong> ogni delibera, ogni concessione, ogni contratto pubblico richiede prova della data certa di pubblicazione e del contenuto. I sistemi attuali si basano su PEC + protocollo, ma non hanno timestamp blockchain pubblicamente verificabile dal cittadino.</div>
+      <div class="cu-atti">
+        <div class="cu-atto-pill"><span class="num">i</span><span class="name">Sigillo</span><span class="desc">Delibere, ordinanze, atti amministrativi.</span></div>
+        <div class="cu-atto-pill"><span class="num">v</span><span class="name">Registro</span><span class="desc">Log immutabile attivita ufficio. Audit GDPR.</span></div>
+        <div class="cu-atto-pill"><span class="num">vii</span><span class="name">Cert</span><span class="desc">Certificati amministrativi (residenza, stato civile, attestati).</span></div>
+      </div>
+      <div class="esempio"><strong>Esempio:</strong> Comune di Padova pubblica delibera di Giunta. Veylon sigilla il PDF firmato dal sindaco. Cittadini e media possono verificare data e contenuto anni dopo, in autonomia, senza fidarsi di intermediari, anche se il sito del Comune fosse compromesso.</div>
+      <div class="ctas">
+        <a href="signup.html?segmento=pa">Crea ente Veylon &rarr;</a>
+        <a href="pricing.html#business">Vedi piano Business &rarr;</a>
+      </div>
+    </article>
+
+    <article class="cu-card">
+      <span class="label">Segmento 3</span>
+      <h2>Universita e scuole</h2>
+      <p class="lede">Atenei, ITS, istituti professionali. Diplomi verificabili globalmente.</p>
+      <div class="pain"><strong>Pain point:</strong> verificare diplomi e attestati prende settimane. I datori di lavoro accettano scansioni che possono essere alterate. Esistono piattaforme di verifica accreditate ma chiuse, costose e non interoperabili.</div>
+      <div class="cu-atti">
+        <div class="cu-atto-pill"><span class="num">vii</span><span class="name">Cert</span><span class="desc">Diplomi, attestati, certificati esami. PDF + foto.</span></div>
+        <div class="cu-atto-pill"><span class="num">i</span><span class="name">Sigillo</span><span class="desc">Tesi di laurea, progetti, pubblicazioni.</span></div>
+        <div class="cu-atto-pill"><span class="num">ix</span><span class="name">Onboarding</span><span class="desc">KYC studenti per esami online sicuri.</span></div>
+      </div>
+      <div class="esempio"><strong>Esempio:</strong> Universita di Padova rilascia 5.000 diplomi/anno. Veylon emette in batch con QR univoco per ogni laureato. Un datore di lavoro in Germania scansiona il QR: in 2 secondi vede titolare, titolo, data, blockchain confirmation. Zero dipendenza da Italia.</div>
+      <div class="ctas">
+        <a href="cert-emetti-batch.html">Cert batch &rarr;</a>
+        <a href="signup.html?segmento=edu">Crea ateneo Veylon &rarr;</a>
+      </div>
+    </article>
+
+    <article class="cu-card">
+      <span class="label">Segmento 4</span>
+      <h2>Notai e mediatori</h2>
+      <p class="lede">Studi notarili, ADR/mediatori, fiduciari. Atti pubblici con backup digitale indistruttibile.</p>
+      <div class="pain"><strong>Pain point:</strong> ogni atto notarile produce documenti analogici + digitali, custoditi in repertori. Disastri (incendi, hack) possono compromettere repertori. Serve backup blockchain pubblico per integrita di lungo termine. I sistemi RUI (Registro Ufficiale) non sono pubblicamente verificabili senza accesso.</div>
+      <div class="cu-atti">
+        <div class="cu-atto-pill"><span class="num">i</span><span class="name">Sigillo</span><span class="desc">Atti pubblici, procure, donazioni. Ancoraggio Bitcoin permanente.</span></div>
+        <div class="cu-atto-pill"><span class="num">viii</span><span class="name">Firma</span><span class="desc">Firma autografa drawn canvas + PAdES X.509 notaio.</span></div>
+        <div class="cu-atto-pill"><span class="num">v</span><span class="name">Registro</span><span class="desc">Repertorio digitale ufficio con audit trail.</span></div>
+      </div>
+      <div class="esempio"><strong>Esempio:</strong> Notaio cuneese stipula atto di vendita immobile da 350k&euro;. Veylon sigilla il PDF dell'atto firmato. 30 anni dopo, in caso di contenzioso, l'erede del compratore puo verificare in autonomia l'atto su Bitcoin, anche se il notaio non esiste piu, anche se Veylon non esiste piu.</div>
+      <div class="ctas">
+        <a href="signup.html?segmento=notai">Crea studio notarile &rarr;</a>
+        <a href="firma-pades.html">Firma PAdES &rarr;</a>
+      </div>
+    </article>
+
+  </main>
+
+  <section class="cu-base">
+    <h3>Non vedi il tuo settore?</h3>
+    <p>
+      Veylon e' una piattaforma generale di certificazione legale. Banche, exchange, e-commerce, healthcare, audit, real estate.
+      Ovunque serva una prova legale opponibile, ancorata a un registro pubblico permanente.
+    </p>
+    <div class="cu-cta-row">
+      <a href="signup.html" class="btn-primary">Inizia gratis</a>
+      <a href="come-funziona.html" class="btn-ghost">Vedi i 9 atti</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>9 atti, 1 sigillo Bitcoin.</span></div>
+  </footer>
+</body>
+</html>

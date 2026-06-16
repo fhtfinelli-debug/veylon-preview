@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Storico multi-firma (K-S.2)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .ms-layout { max-width: 980px; margin: 24px auto 96px; padding: 0 24px; }
+    .ms-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .ms-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
+    .ms-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+    .ms-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .ms-btn { padding: 10px 20px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; text-decoration: none; }
+    .ms-btn.ghost { background: transparent; color: var(--ink); }
+    .ms-card { background: var(--paper); border: 1px solid var(--rule); padding: 22px; margin-bottom: 14px; }
+    .ms-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap; margin-bottom: 12px; }
+    .ms-card h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 4px; }
+    .ms-card .meta { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; }
+    .ms-pill { font-family: var(--mono); font-size: 10px; padding: 4px 10px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; display: inline-block; }
+    .ms-pill.ok { color: #1e6e3e; border-color: #1e6e3e; background: #e8f5e9; }
+    .ms-pill.warn { color: #ef6c00; border-color: #ef6c00; background: #fff3e0; }
+    .ms-pill.muted { color: var(--ink-3); border-color: var(--rule); }
+    .ms-firmatari { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
+    .ms-firmatari th, .ms-firmatari td { padding: 8px 10px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .ms-firmatari th { font-family: var(--mono); font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em; }
+    .ms-firmatari td.mono { font-family: var(--mono); font-size: 11px; }
+    .progress-bar { background: var(--rule-2); height: 6px; border-radius: 3px; overflow: hidden; margin-top: 8px; max-width: 200px; }
+    .progress-bar > div { height: 100%; background: var(--seal); transition: width 250ms ease; }
+    .state-msg { padding: 36px 0; text-align: center; color: var(--ink-3); font-family: var(--serif); font-style: italic; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("firma"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="ms-layout">
+    <header class="ms-head">
+      <span class="sub">Atto viii · Firma · K-S.2 Multi-firmatario · Storico</span>
+      <h1>I tuoi gruppi <em class="serif-italic" style="color: var(--seal);">multi-firma</em>.</h1>
+      <p class="sub">Stato firme aggregato, firmatari, OTP inviati. Aggiornamento live ogni 30 secondi.</p>
+    </header>
+
+    <div class="ms-actions">
+      <a href="firma-multi-applica.html" class="ms-btn">+ Crea nuova richiesta multi-firma</a>
+      <a href="firma.html" class="ms-btn ghost">Hub Firma</a>
+      <button type="button" id="btn-refresh" class="ms-btn ghost">Aggiorna</button>
+    </div>
+
+    <div id="list">
+      <div class="state-msg">Caricamento gruppi&hellip;</div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const fmt = (d) => d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "—";
+
+    const STATO_LABELS = { pending: "Attesa", in_progress: "In corso", completata: "Completata", scaduta: "Scaduta", annullata: "Annullata" };
+    const FIRMA_STATO_LABELS = { in_attesa: "in attesa", firmato: "firmata", scaduto: "scaduta", annullato: "annullata" };
+
+    async function load() {
+      const list = $("list");
+      list.innerHTML = '<div class="state-msg">Caricamento gruppi&hellip;</div>';
+      try {
+        const { data: gruppi, error } = await supabase
+          .from("firme_gruppi")
+          .select("id, doc_name, doc_sha256, ordine_tipo, stato, motivo, scadenza_at, created_at, completed_at")
+          .order("created_at", { ascending: false })
+          .limit(50);
+        if (error) throw error;
+        if (!gruppi || gruppi.length === 0) {
+          list.innerHTML = '<div class="state-msg">Non hai ancora creato richieste multi-firma. <a href="firma-multi-applica.html" style="color: var(--seal);">Creane una &rarr;</a></div>';
+          return;
+        }
+
+        const ids = gruppi.map(g => g.id);
+        const { data: firme, error: fErr } = await supabase
+          .from("firme")
+          .select("id, gruppo_id, firmatario_email, firmatario_nome, ordine_index, stato, codice, signed_at, otp_expires_at, bloccato_da")
+          .in("gruppo_id", ids)
+          .order("ordine_index", { ascending: true });
+        if (fErr) throw fErr;
+
+        const byGruppo = {};
+        for (const f of firme || []) {
+          if (!byGruppo[f.gruppo_id]) byGruppo[f.gruppo_id] = [];
+          byGruppo[f.gruppo_id].push(f);
+        }
+
+        list.innerHTML = gruppi.map(g => {
+          const fs = byGruppo[g.id] || [];
+          const firmate = fs.filter(f => f.stato === "firmato").length;
+          const tot = fs.length;
+          const pct = tot > 0 ? Math.round((firmate / tot) * 100) : 0;
+          const statoCls = g.stato === "completata" ? "ok" : (g.stato === "in_progress" ? "warn" : "muted");
+          const rows = fs.map(f => {
+            const isBlocked = f.bloccato_da && f.stato === "in_attesa" && g.ordine_tipo === "sequenziale";
+            const stato = isBlocked ? "in attesa sblocco" : (FIRMA_STATO_LABELS[f.stato] ?? f.stato);
+            const statoFCls = f.stato === "firmato" ? "ok" : (isBlocked ? "muted" : "warn");
+            return `<tr>
+              <td>${f.ordine_index + 1}</td>
+              <td>${esc(f.firmatario_nome ?? "—")}<br/><span class="mono" style="font-size:11px;color:var(--ink-3)">${esc(f.firmatario_email)}</span></td>
+              <td class="mono">${esc(f.codice || "—")}</td>
+              <td><span class="ms-pill ${statoFCls}">${stato}</span></td>
+              <td>${f.signed_at ? fmt(f.signed_at) : "—"}</td>
+            </tr>`;
+          }).join("");
+          return `<div class="ms-card">
+            <div class="ms-card-head">
+              <div>
+                <h3>${esc(g.doc_name)}</h3>
+                <div class="meta">Gruppo ${esc(g.id.substring(0, 8))} &middot; ${esc(g.ordine_tipo)} &middot; creato ${fmt(g.created_at)}</div>
+                ${g.motivo ? `<div style="font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-2); margin-top: 6px;">${esc(g.motivo)}</div>` : ""}
+              </div>
+              <div style="text-align: right;">
+                <span class="ms-pill ${statoCls}">${esc(STATO_LABELS[g.stato] ?? g.stato)}</span>
+                <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-top: 6px;">${firmate} / ${tot} firmate</div>
+                <div class="progress-bar"><div style="width: ${pct}%"></div></div>
+                <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-top: 4px;">scade ${fmt(g.scadenza_at)}</div>
+              </div>
+            </div>
+            <table class="ms-firmatari">
+              <thead><tr><th>#</th><th>Firmatario</th><th>Codice</th><th>Stato</th><th>Firmato</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>`;
+        }).join("");
+      } catch (e) {
+        list.innerHTML = `<div class="state-msg" style="color: var(--seal);">Errore: ${esc(e.message || String(e))}</div>`;
+      }
+    }
+
+    $("btn-refresh").addEventListener("click", load);
+    load();
+    // Auto-refresh ogni 30 secondi
+    setInterval(load, 30_000);
+  </script>
+</body>
+</html>

@@ -35,6 +35,16 @@
 
   <main class="panel">
     <h1 style="font-family: var(--serif); font-weight: normal;">Stato del sistema</h1>
+
+    <section id="aggregate-strip" style="background:var(--paper);border:1px solid var(--rule);padding:18px 22px;margin:24px 0;display:none">
+      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+        <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3)">Stato infrastruttura</span>
+        <span class="badge" id="agg-badge" style="font-size:13px;padding:5px 14px;">&hellip;</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--ink-3)" id="agg-when">&mdash;</span>
+      </div>
+      <div id="agg-components" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px"></div>
+    </section>
+
     <p>Verifica live dei <span id="total-count">—</span> endpoint backend di Veylon. Una function attiva risponde con <code>4xx</code> a una richiesta vuota; un <code>5xx</code> indica che il servizio esterno (Mailgun, Twilio, &hellip;) non &eacute; ancora configurato.</p>
 
     <div class="summary">
@@ -115,6 +125,36 @@
 
     document.getElementById("total-count").textContent = checks.length;
     const cards = document.getElementById("cards");
+
+    async function loadAggregate() {
+      const strip = document.getElementById("aggregate-strip");
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/health-check`, { method: "POST", headers: { "apikey": SUPABASE_ANON } });
+        const j = await r.json();
+        if (!j.success) throw new Error(j.error || "unknown");
+        strip.style.display = "block";
+        const badge = document.getElementById("agg-badge");
+        const stateClass = j.aggregate === "operational" ? "ok" : (j.aggregate === "degraded" ? "warn" : "err");
+        badge.className = "badge " + stateClass;
+        badge.textContent = j.aggregate;
+        document.getElementById("agg-when").textContent = "controllato " + new Date(j.checked_at).toLocaleString("it-IT");
+        const grid = document.getElementById("agg-components");
+        grid.innerHTML = (j.components || []).map(c => {
+          const cls = c.stato === "ok" ? "ok" : (c.stato === "down" ? "err" : (c.stato === "unknown" ? "idle" : "warn"));
+          const lat = c.latency_ms ? ` &middot; ${c.latency_ms}ms` : "";
+          return `<div style="border:1px solid var(--rule);padding:10px 12px;background:var(--paper-2)">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-3)">${c.component}</div>
+            <div style="margin-top:4px"><span class="badge ${cls}">${c.stato}</span><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:8px">${lat}</span></div>
+          </div>`;
+        }).join("");
+      } catch (e) {
+        strip.style.display = "block";
+        document.getElementById("agg-badge").className = "badge err";
+        document.getElementById("agg-badge").textContent = "errore probe";
+        document.getElementById("agg-when").textContent = String(e?.message || e);
+      }
+    }
+    loadAggregate();
 
     function statusBadge(code) {
       if (code >= 200 && code < 300) return ["ok", "ok"];

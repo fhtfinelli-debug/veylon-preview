@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Anteprima email templates</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .ep-layout { max-width: 1080px; margin: 24px auto 96px; padding: 0 24px; }
+    .ep-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .ep-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin: 8px 0 6px; }
+    .ep-head .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+    .ep-grid { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+    @media (max-width: 800px) { .ep-grid { grid-template-columns: 1fr; } }
+    .ep-list { background: var(--paper); border: 1px solid var(--rule); padding: 14px; }
+    .ep-list h2 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 12px; }
+    .ep-item { padding: 10px 12px; cursor: pointer; font-family: var(--serif); font-size: 14px; border-bottom: 1px solid var(--rule-2); }
+    .ep-item:hover { background: var(--paper-2); }
+    .ep-item.active { background: var(--seal); color: var(--paper); }
+    .ep-item .desc { display: block; font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+    .ep-item.active .desc { color: rgba(255,255,255,0.7); }
+    .ep-preview { background: var(--paper); border: 1px solid var(--rule); padding: 16px; }
+    .ep-preview-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; text-transform: uppercase; }
+    .ep-iframe { width: 100%; height: 760px; border: 1px solid var(--rule-2); background: white; }
+    .ep-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-2); margin-bottom: 10px; padding: 8px 12px; background: var(--paper-2); border-left: 3px solid var(--seal); }
+    .ep-meta strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("admin"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="ep-layout">
+    <header class="ep-head">
+      <span class="sub">Admin · Email templates preview</span>
+      <h1>Anteprima <em class="serif-italic" style="color: var(--seal);">email templates</em>.</h1>
+      <p class="sub">Verifica visuale di tutti i template HTML transazionali Veylon prima della messa in produzione Mailgun.</p>
+    </header>
+
+    <div class="ep-grid">
+      <aside class="ep-list">
+        <h2>Templates</h2>
+        <div id="list"></div>
+      </aside>
+      <section class="ep-preview">
+        <div class="ep-preview-head">
+          <span>Subject: <strong id="subj">&mdash;</strong></span>
+          <span id="size">&mdash;</span>
+        </div>
+        <div class="ep-meta" id="meta">Seleziona un template a sinistra</div>
+        <iframe class="ep-iframe" id="iframe" srcdoc="<p style='font-family:sans-serif;color:#999;text-align:center;padding-top:200px'>Seleziona un template</p>"></iframe>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Mock invocations (browser-side replica dei template server-side)
+    // Per la versione production le edge function chiameranno emailTemplates.ts e
+    // gli output saranno identici.
+    const BASE = "https://veylon.app";
+    const BRAND_INK = "#1a1a1a", BRAND_SEAL = "#6a4a1a", BRAND_PAPER = "#fbf9f4";
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    function wrap(inner, footerNote){
+      return `<!doctype html><html><body style="margin:0;background:${BRAND_PAPER};font-family:Georgia,'Times New Roman',serif;color:${BRAND_INK}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${BRAND_PAPER}">
+  <tr><td align="center" style="padding:40px 16px">
+    <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="background:#fff;border:1px solid #e6dfd1;max-width:560px;width:100%">
+      <tr><td style="padding:28px 32px 0;border-bottom:1px solid #e6dfd1">
+        <span style="font-family:Georgia,serif;font-size:24px;color:${BRAND_INK}">Veylon</span>
+        <span style="font-family:Georgia,serif;font-style:italic;color:${BRAND_SEAL};font-size:14px;margin-left:6px">la suite di certificazione</span>
+      </td></tr>
+      <tr><td style="padding:28px 32px 28px;font-size:15px;line-height:1.6;color:${BRAND_INK}">${inner}</td></tr>
+      <tr><td style="padding:18px 32px;border-top:1px solid #e6dfd1;font-size:12px;color:#666">${footerNote ?? "Sigillo Bitcoin via OpenTimestamps &middot; eIDAS art. 41 &middot; L. 12/2019 art. 8-ter &middot; GDPR"}</td></tr>
+      <tr><td style="padding:14px 32px;background:#f5f3ee;font-size:11px;color:#999">Hai ricevuto questa email perche utilizzi Veylon. Se non riconosci questa attivita scrivi a <a href="mailto:abuse@veylon.app" style="color:${BRAND_SEAL}">abuse@veylon.app</a>.</td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`;
+    }
+
+    const tpls = [
+      {
+        id: "signup-conferma", name: "1 · Signup conferma", desc: "Email conferma registrazione",
+        build: () => {
+          const conferma_url = `${BASE}/confirm-email.html?token=demo123abc456`;
+          return { subject: "Conferma email Veylon", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Benvenuto in <em style="color:${BRAND_SEAL}">Veylon</em>, Manuel.</p>
+            <p>Conferma la tua email per attivare l'account e iniziare a creare prove legali ancorate a Bitcoin.</p>
+            <p style="margin:24px 0"><a href="${conferma_url}" style="background:${BRAND_INK};color:#fff;padding:14px 28px;text-decoration:none;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px">Conferma email</a></p>
+            <p style="font-size:13px;color:#666">Se il bottone non funziona, copia questo link nel browser:<br/><span style="font-family:'Courier New',monospace;font-size:12px;word-break:break-all">${esc(conferma_url)}</span></p>
+            <p style="font-size:13px;color:#666">Il link scade tra 24 ore.</p>`) };
+        },
+      },
+      {
+        id: "password-reset", name: "2 · Password reset", desc: "Email reset password",
+        build: () => {
+          const reset_url = `${BASE}/reset-password.html?token=reset456def789`;
+          return { subject: "Reset password Veylon", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Reset password Veylon</p>
+            <p>Hai richiesto di reimpostare la password del tuo account Veylon.</p>
+            <p style="margin:24px 0"><a href="${reset_url}" style="background:${BRAND_INK};color:#fff;padding:14px 28px;text-decoration:none;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px">Imposta nuova password</a></p>
+            <p style="font-size:13px;color:#666">Il link scade tra 1 ora. Se non hai richiesto tu il reset, ignora questa email.</p>`) };
+        },
+      },
+      {
+        id: "atto-creato", name: "3 · Atto creato (sigillo pending)", desc: "Atto Veylon registrato, OTS pending",
+        build: () => {
+          const sha = "a3f5b8c7d9e1f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2d4e6f8a0b2c4d6e8f0a2";
+          const verifica_url = `${BASE}/verifica.html?h=${sha}`;
+          return { subject: "Atto Veylon · i Sigillo · Contratto Acme - NDA", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Il tuo atto Veylon e' <em style="color:${BRAND_SEAL}">in fase di sigillo</em>.</p>
+            <p>Atto: <strong>i Sigillo</strong> &mdash; Contratto Acme - NDA</p>
+            <p>Impronta SHA-256:</p>
+            <p style="font-family:'Courier New',monospace;font-size:11px;background:#f5f3ee;padding:12px;border:1px solid #e6dfd1;word-break:break-all">${sha}</p>
+            <p>Il sigillo Bitcoin via OpenTimestamps richiede solitamente da 1 a 3 ore per la prima conferma sulla blockchain.</p>
+            <p style="margin:24px 0"><a href="${verifica_url}" style="background:${BRAND_INK};color:#fff;padding:14px 28px;text-decoration:none;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px">Verifica pubblica</a></p>`) };
+        },
+      },
+      {
+        id: "sigillo-confermato", name: "4 · Sigillo Bitcoin confermato", desc: "OTS confirmed, block height OK",
+        build: () => {
+          const sha = "a3f5b8c7d9e1f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2d4e6f8a0b2c4d6e8f0a2";
+          const verifica_url = `${BASE}/verifica.html?h=${sha}`;
+          return { subject: "Sigillo confermato · Contratto Acme - NDA", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Sigillo Bitcoin <em style="color:${BRAND_SEAL}">confermato</em>.</p>
+            <p>Atto: <strong>i Sigillo</strong> &mdash; Contratto Acme - NDA</p>
+            <p>Block height Bitcoin: <strong>892341</strong></p>
+            <p>Transazione Bitcoin: <span style="font-family:'Courier New',monospace;font-size:11px">7f3e5a9c1d4b8f2e6a0c3d7b1f5e9a4c2d8b6f0e3a7c1d5b9f2e6a0c4d8b1f5e</span></p>
+            <p>Impronta SHA-256:</p>
+            <p style="font-family:'Courier New',monospace;font-size:11px;background:#f5f3ee;padding:12px;border:1px solid #e6dfd1;word-break:break-all">${sha}</p>
+            <p>Da questo momento la prova legale e' opponibile a terzi in tutta l'Unione Europea ai sensi dell'eIDAS art. 41 e della Legge 12/2019 art. 8-ter.</p>
+            <p style="margin:24px 0"><a href="${verifica_url}" style="background:${BRAND_SEAL};color:#fff;padding:14px 28px;text-decoration:none;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px">Apri il sigillo</a></p>`) };
+        },
+      },
+      {
+        id: "firma-otp", name: "5 · Firma OTP", desc: "Codice firma electronica avanzata",
+        build: () => {
+          const sign_url = `${BASE}/firma-applica.html?c=ABC23XYZ`;
+          return { subject: "Firma documento Veylon: NDA Veylon - Cliente Acme", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Richiesta firma documento</p>
+            <p>Ti e' stata richiesta la firma elettronica avanzata del documento:</p>
+            <p style="background:#f5f3ee;padding:12px;font-family:'Courier New',monospace;border:1px solid #e6dfd1">NDA Veylon - Cliente Acme</p>
+            <p style="font-style:italic;color:#666">Motivo: Approvazione accordo riservatezza</p>
+            <p>Apri <a href="${sign_url}" style="color:${BRAND_SEAL}">la pagina di firma</a> e inserisci questo codice OTP:</p>
+            <p style="font-size:32px;font-weight:bold;letter-spacing:8px;text-align:center;background:#fff8e1;padding:24px;font-family:'Courier New',monospace;border:1px solid ${BRAND_SEAL}">482910</p>
+            <p style="font-size:13px;color:#666">Il codice scade tra 30 minuti.</p>`) };
+        },
+      },
+      {
+        id: "invito-org", name: "6 · Invito organizzazione", desc: "Invito a unirsi a org Veylon",
+        build: () => {
+          const accept_url = `${BASE}/login.html?invite=abc123`;
+          return { subject: "Invito a Studio Legale Finelli & Partners su Veylon", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Invito a unirti a <em style="color:${BRAND_SEAL}">Studio Legale Finelli &amp; Partners</em> su Veylon</p>
+            <p><strong>Manuel Finelli</strong> ti ha invitato a unirti all'organizzazione <strong>Studio Legale Finelli &amp; Partners</strong> su Veylon.</p>
+            <p>Ruolo proposto: <strong>Avvocato senior</strong></p>
+            <p>Veylon e' la suite di certificazione legale che permette di notarizzare documenti, email, file, prodotti e identita su blockchain Bitcoin.
+               Gli atti creati nell'organizzazione sono visibili a tutti i membri.</p>
+            <p style="margin:24px 0"><a href="${accept_url}" style="background:${BRAND_INK};color:#fff;padding:14px 28px;text-decoration:none;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px">Accetta invito</a></p>`) };
+        },
+      },
+      {
+        id: "multi-firma-completata", name: "7 · Multi-firma completata", desc: "Tutti i firmatari hanno firmato",
+        build: () => {
+          const verifica_url = `${BASE}/verifica.html?h=abc123`;
+          return { subject: "Multi-firma completata: NDA Veylon - Acme", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Documento <em style="color:${BRAND_SEAL}">multi-firmato</em>.</p>
+            <p>Tutti i firmatari hanno completato la firma del documento:</p>
+            <p style="background:#f5f3ee;padding:12px;font-family:'Courier New',monospace;border:1px solid #e6dfd1">NDA Veylon - Acme</p>
+            <p>Firmatari:</p>
+            <ul style="padding-left:20px"><li style="font-family:'Courier New',monospace;font-size:12px">avvocato1@studio.it</li><li style="font-family:'Courier New',monospace;font-size:12px">cliente.acme@example.com</li><li style="font-family:'Courier New',monospace;font-size:12px">manuel@veylon.app</li></ul>
+            <p style="margin:24px 0"><a href="${verifica_url}" style="background:${BRAND_SEAL};color:#fff;padding:14px 28px;text-decoration:none;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px">Verifica pubblica</a></p>`) };
+        },
+      },
+      {
+        id: "cert-rilasciato", name: "8 · Cert rilasciato (atto vii)", desc: "Certificato istituzionale a tuo nome",
+        build: () => {
+          const verifica_url = `${BASE}/cert-verifica.html?c=CERT123`;
+          return { subject: "Certificato Veylon: Diploma di Laurea Magistrale", html: wrap(`
+            <p style="font-size:22px;font-family:Georgia,serif;margin:0 0 14px">Hai ricevuto un certificato</p>
+            <p><strong>Universita di Padova</strong> ha rilasciato a tuo nome il certificato:</p>
+            <p style="background:#f5f3ee;padding:14px;font-family:Georgia,serif;font-size:17px;border:1px solid #e6dfd1">Diploma di Laurea Magistrale</p>
+            <p>Titolare: <strong>Manuel Finelli</strong></p>
+            <p>Il certificato e' verificabile pubblicamente e ancorato a Bitcoin via OpenTimestamps.</p>
+            <p style="margin:24px 0"><a href="${verifica_url}" style="background:${BRAND_INK};color:#fff;padding:14px 28px;text-decoration:none;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px">Apri il certificato</a></p>`) };
+        },
+      },
+    ];
+
+    const listEl = document.getElementById("list");
+    tpls.forEach((t, i) => {
+      const d = document.createElement("div");
+      d.className = "ep-item" + (i === 0 ? " active" : "");
+      d.innerHTML = `${t.name}<span class="desc">${t.desc}</span>`;
+      d.addEventListener("click", () => {
+        document.querySelectorAll(".ep-item").forEach(x => x.classList.remove("active"));
+        d.classList.add("active");
+        show(t);
+      });
+      listEl.appendChild(d);
+    });
+
+    function show(t) {
+      const out = t.build();
+      document.getElementById("subj").textContent = out.subject;
+      const size = new Blob([out.html]).size;
+      document.getElementById("size").textContent = size + " byte HTML";
+      document.getElementById("meta").innerHTML = `<strong>ID:</strong> ${t.id} &middot; <strong>Subject:</strong> ${out.subject}`;
+      document.getElementById("iframe").srcdoc = out.html;
+    }
+    show(tpls[0]);
+  </script>
+</body>
+</html>
