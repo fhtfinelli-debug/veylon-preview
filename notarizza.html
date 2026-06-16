@@ -118,7 +118,10 @@
       const j = await res.json();
       if (!res.ok || !j.success) throw new Error(j?.error || "errore");
       document.getElementById("result-codice").textContent = j.sha256 || j.id;
-      document.getElementById("result-msg").textContent = "L'ancoraggio Bitcoin verrà confermato entro 1-6 ore.";
+      const attoId = j.id || j.atto_id;
+      const msg = document.getElementById("result-msg");
+      msg.innerHTML = "L'ancoraggio Bitcoin verrà confermato entro 1-6 ore." +
+        (attoId ? ` <a href="sigillo.html?id=${encodeURIComponent(attoId)}" class="link-seal" style="margin-left: 8px;">Vai al sigillo →</a>` : "");
       document.getElementById("result").hidden = false;
       document.getElementById("form").reset();
       loadList();

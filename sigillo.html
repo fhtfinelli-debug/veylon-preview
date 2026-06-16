@@ -168,10 +168,17 @@
 
       // 1. Recupera atto
       let q = supabase.from("veylon_atti")
-        .select("id, doc_name, sha256, ots_status, ots_proof, btc_block_height, btc_block_time, created_at, confirmed_at, polygon_tx_hash, block_number");
+        .select("id, doc_name, sha256, ots_status, ots_proof, btc_block_height, btc_block_time, created_at, confirmed_at, polygon_tx_hash, polygon_block_number");
       if (id) q = q.eq("id", id); else q = q.eq("sha256", sha);
       const { data: atto, error: attoErr } = await q.maybeSingle();
-      if (attoErr || !atto) {
+      if (attoErr) {
+        $("state-loading").hidden = true;
+        $("state-error").querySelector("span").textContent = "Errore caricamento atto: " + attoErr.message;
+        $("state-error").hidden = false;
+        console.error("atto_load_failed", attoErr);
+        return;
+      }
+      if (!atto) {
         $("state-loading").hidden = true;
         $("state-error").querySelector("span").textContent = "Atto non trovato. Probabilmente non e' tuo o non esiste (id: " + (id || sha) + ").";
         $("state-error").hidden = false;
