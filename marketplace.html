@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Marketplace istituzioni accreditate</title>
+  <meta name="description" content="Le istituzioni che emettono certificati su Veylon: universita, enti formazione, ospedali, ASL, ricerca, farmaceutico. Accreditate Veylon, ancorate a Bitcoin."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Veylon"/>
+  <meta property="og:title" content="Marketplace istituzioni accreditate · Veylon"/>
+  <meta property="og:description" content="Le istituzioni che emettono certificati su Veylon, ancorati a Bitcoin."/>
+  <meta property="og:url" content="https://veylon.app/marketplace.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .mp-hero { padding: 56px 24px 32px; max-width: 1080px; margin: 0 auto; }
+    .mp-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--seal); margin-bottom: 14px; }
+    .mp-title { font-family: var(--serif); font-weight: normal; font-size: clamp(36px, 4.8vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 18px; max-width: 800px; }
+    .mp-lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 0 28px; }
+    .mp-cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .mp-cta { display: inline-flex; align-items: center; padding: 10px 22px; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; }
+    .mp-cta:hover { background: var(--seal); }
+    .mp-cta.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+    .mp-cta.ghost:hover { background: var(--ink); color: var(--paper); }
+
+    .mp-filter-bar { max-width: 1080px; margin: 24px auto; padding: 0 24px; }
+    .mp-filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch; padding: 18px 22px; border: 1px solid var(--rule); background: var(--paper); }
+    .mp-filter-group { display: flex; flex-direction: column; gap: 4px; }
+    .mp-filter-group label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+    .mp-filter-group select, .mp-filter-group input {
+      padding: 8px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); min-width: 180px;
+    }
+    .mp-filter-spacer { flex: 1; }
+    .mp-total { font-family: var(--mono); font-size: 11px; color: var(--ink-3); align-self: end; padding-bottom: 6px; letter-spacing: 0.06em; }
+
+    .mp-grid { max-width: 1080px; margin: 24px auto; padding: 0 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+    .mp-card { border: 1px solid var(--rule); background: var(--paper); padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 12px; position: relative; transition: border-color .15s; }
+    .mp-card:hover { border-color: var(--ink); }
+    .mp-card-head { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+    .mp-card-name { font-family: var(--serif); font-size: 19px; line-height: 1.25; margin: 0; flex: 1 1 auto; min-width: 0; }
+    .mp-badge { display: inline-block; padding: 2px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid; flex-shrink: 0; }
+    .mp-badge-kyc-light    { background: #fdf7eb; color: #c4781f; border-color: #c4781f; }
+    .mp-badge-kyc-standard { background: #e8f1f7; color: #1e5a7e; border-color: #1e5a7e; }
+    .mp-badge-kyc-strong   { background: #e8f5e9; color: #1e6e3e; border-color: #1e6e3e; }
+    .mp-badge-verified     { background: #e8f5e9; color: #1e6e3e; border-color: #1e6e3e; }
+    .mp-card-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-3); text-transform: uppercase; }
+    .mp-card-meta strong { color: var(--ink); font-weight: normal; }
+    .mp-norms { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+    .mp-norm { display: inline-block; padding: 2px 7px; background: var(--paper-2); border: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; color: var(--ink-2); }
+    .mp-card-stats { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; border-top: 1px solid var(--rule-2, #e5e5e5); margin-top: auto; }
+    .mp-stat-big { font-family: var(--serif); font-size: 30px; line-height: 1; color: var(--seal); }
+    .mp-stat-lbl { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
+    .mp-card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .mp-card-link { font-family: var(--mono); font-size: 11px; padding: 6px 12px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; }
+    .mp-card-link:hover { background: var(--ink); color: var(--paper); }
+    .mp-card-link.ext { background: transparent; }
+
+    .mp-state { max-width: 720px; margin: 48px auto; padding: 24px; font-family: var(--serif); font-style: italic; color: var(--ink-2); text-align: center; }
+    .mp-state-err { color: var(--seal); }
+    .mp-loadmore { max-width: 1080px; margin: 24px auto 64px; padding: 0 24px; text-align: center; }
+    .mp-loadmore button { padding: 12px 32px; background: transparent; color: var(--ink); border: 1px solid var(--ink); font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+    .mp-loadmore button:hover { background: var(--ink); color: var(--paper); }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner" style="grid-template-columns: 1fr auto 1fr;">
+      <div class="masthead-meta"><span>Marketplace istituzioni accreditate</span></div>
+      <a href="index.html" class="wordmark">VEYLON</a>
+      <nav class="masthead-nav">
+        <a href="index.html">Indice</a>
+        <a href="speed.html">Speed</a>
+        <a href="pricing.html">Listino</a>
+        <a href="verifica.html">Verifica</a>
+        <a href="login.html">Accedi</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="mp-hero">
+      <div class="mp-eyebrow">Atto vii · Cert</div>
+      <h1 class="mp-title">Le istituzioni che <em class="serif-italic" style="color: var(--seal);">emettono</em> certificati su Veylon.</h1>
+      <p class="mp-lede">
+        Universita, enti di formazione, ospedali, ASL, laboratori, case farmaceutiche, centri di ricerca.
+        Ogni istituzione qui elencata e' stata <strong>verificata da Veylon</strong> e ha emesso almeno un certificato istituzionale
+        ancorato a Bitcoin. Chiunque puo' controllarne l'autenticita' senza dipendere da Veylon: la prova vive su una blockchain pubblica.
+      </p>
+      <div class="mp-cta-row">
+        <a class="mp-cta" href="verifica.html">Verifica un certificato &rarr;</a>
+        <a class="mp-cta ghost" href="signup.html">Diventa istituzione &rarr;</a>
+      </div>
+    </section>
+
+    <section class="mp-filter-bar">
+      <div class="mp-filters">
+        <div class="mp-filter-group">
+          <label for="f-settore">Settore</label>
+          <select id="f-settore">
+            <option value="">Tutti i settori</option>
+            <option value="formazione">Formazione / accademia</option>
+            <option value="pharma">Farmaceutico</option>
+            <option value="sanitario">Sanitario</option>
+            <option value="ricerca">Ricerca scientifica</option>
+          </select>
+        </div>
+        <div class="mp-filter-group">
+          <label for="f-tipo">Tipo</label>
+          <select id="f-tipo">
+            <option value="">Tutti i tipi</option>
+            <option value="universita">Universita</option>
+            <option value="scuola">Scuola</option>
+            <option value="azienda_pharma">Azienda farmaceutica</option>
+            <option value="ospedale">Ospedale</option>
+            <option value="asl">ASL</option>
+            <option value="ente_ricerca">Ente ricerca</option>
+            <option value="ordine_professionale">Ordine professionale</option>
+            <option value="consorzio">Consorzio</option>
+            <option value="ente_formazione">Ente formazione</option>
+            <option value="altro">Altro</option>
+          </select>
+        </div>
+        <div class="mp-filter-group" style="flex: 1; min-width: 220px;">
+          <label for="f-search">Cerca</label>
+          <input id="f-search" type="text" placeholder="Nome istituzione" autocomplete="off"/>
+        </div>
+        <div class="mp-filter-spacer"></div>
+        <div class="mp-total" id="m-total">&mdash;</div>
+      </div>
+    </section>
+
+    <section class="mp-grid" id="m-grid" aria-live="polite"></section>
+
+    <div class="mp-state" id="m-loading">Caricamento istituzioni accreditate&hellip;</div>
+    <div class="mp-state" id="m-empty" hidden>
+      Nessuna istituzione accreditata trovata. Affina i filtri o <a href="signup.html">candida la tua istituzione</a>.
+    </div>
+    <div class="mp-state mp-state-err" id="m-error" hidden>
+      <span id="m-error-text"></span>
+    </div>
+
+    <div class="mp-loadmore" id="m-loadmore" hidden>
+      <button type="button" id="btn-loadmore">Carica altre</button>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Marketplace istituzioni accreditate</span>
+    </div>
+  </footer>
+
+  <script type="module">
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+    const FN_URL = `${SUPABASE_URL}/functions/v1/cert-marketplace-list`;
+
+    const $ = (id) => document.getElementById(id);
+    const grid = $("m-grid");
+    const settoreSel = $("f-settore");
+    const tipoSel = $("f-tipo");
+    const searchInp = $("f-search");
+    const total = $("m-total");
+    const loading = $("m-loading");
+    const empty = $("m-empty");
+    const errBox = $("m-error");
+    const errText = $("m-error-text");
+    const loadmoreBox = $("m-loadmore");
+    const loadmoreBtn = $("btn-loadmore");
+
+    const PAGE_SIZE = 24;
+    let offset = 0;
+    let lastTotal = 0;
+
+    function escapeHtml(s) {
+      return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    }
+
+    function settoreLabel(s) {
+      const map = { formazione: "Formazione", pharma: "Farmaceutico", sanitario: "Sanitario", ricerca: "Ricerca scientifica" };
+      return map[s] || s;
+    }
+    function tipoLabel(t) {
+      const map = {
+        universita: "Universita", scuola: "Scuola",
+        azienda_pharma: "Azienda farmaceutica",
+        ospedale: "Ospedale", asl: "ASL",
+        ente_ricerca: "Ente ricerca",
+        ordine_professionale: "Ordine professionale",
+        consorzio: "Consorzio",
+        ente_formazione: "Ente formazione",
+        altro: "Altro",
+      };
+      return map[t] || t;
+    }
+    function kycBadgeClass(k) {
+      return "mp-badge mp-badge-kyc-" + (k || "light").toLowerCase();
+    }
+
+    function renderCard(it) {
+      const norms = Array.isArray(it.normative_applicabili) ? it.normative_applicabili : [];
+      const normHtml = norms.slice(0, 5).map(n =>
+        `<span class="mp-norm">${escapeHtml(n)}</span>`
+      ).join("");
+      const moreNorm = norms.length > 5 ? `<span class="mp-norm">+${norms.length - 5}</span>` : "";
+      const sito = it.sito_web && /^https?:\/\//.test(it.sito_web)
+        ? `<a class="mp-card-link ext" href="${escapeHtml(it.sito_web)}" target="_blank" rel="noopener">Sito web &rarr;</a>`
+        : "";
+      const dataAccr = it.created_at
+        ? new Date(it.created_at).toLocaleDateString("it-IT", { month: "short", year: "numeric" })
+        : "—";
+
+      const card = document.createElement("article");
+      card.className = "mp-card";
+      card.innerHTML = `
+        <div class="mp-card-head">
+          <h3 class="mp-card-name">${escapeHtml(it.ragione_sociale)}</h3>
+          <span class="${kycBadgeClass(it.livello_kyc)}">KYC ${escapeHtml((it.livello_kyc || "light").toUpperCase())}</span>
+          <span class="mp-badge mp-badge-verified">&check; Verificata</span>
+        </div>
+        <div class="mp-card-meta">
+          <strong>${escapeHtml(tipoLabel(it.tipo))}</strong> &middot; ${escapeHtml(settoreLabel(it.settore))}
+        </div>
+        ${normHtml ? `<div class="mp-norms">${normHtml}${moreNorm}</div>` : ""}
+        <div class="mp-card-stats">
+          <span class="mp-stat-big">${it.n_certificati_emessi}</span>
+          <span class="mp-stat-lbl">certificati emessi<br/>Accreditata ${escapeHtml(dataAccr)}</span>
+        </div>
+        <div class="mp-card-actions">
+          <a class="mp-card-link" href="verifica.html?istituzione=${encodeURIComponent(it.id)}">Verifica un certificato</a>
+          ${sito}
+        </div>
+      `;
+      return card;
+    }
+
+    function showError(msg) {
+      errBox.hidden = false;
+      errText.textContent = msg;
+    }
+    function clearError() {
+      errBox.hidden = true;
+      errText.textContent = "";
+    }
+
+    async function loadPage(reset) {
+      clearError();
+      if (reset) {
+        offset = 0;
+        grid.innerHTML = "";
+        empty.hidden = true;
+      }
+      loading.hidden = false;
+      loadmoreBox.hidden = true;
+
+      const qs = new URLSearchParams();
+      if (settoreSel.value) qs.set("settore", settoreSel.value);
+      if (tipoSel.value) qs.set("tipo", tipoSel.value);
+      if (searchInp.value.trim()) qs.set("q", searchInp.value.trim());
+      qs.set("limit", String(PAGE_SIZE));
+      qs.set("offset", String(offset));
+
+      try {
+        const r = await fetch(`${FN_URL}?${qs.toString()}`, {
+          headers: { "apikey": SUPABASE_ANON, "Authorization": "Bearer " + SUPABASE_ANON },
+        });
+        const j = await r.json();
+        loading.hidden = true;
+        if (!r.ok || !j.success) {
+          showError("Errore caricamento: " + (j?.error || ("HTTP " + r.status)));
+          return;
+        }
+        lastTotal = j.total ?? 0;
+        total.textContent = lastTotal === 0
+          ? "Nessun risultato"
+          : (lastTotal === 1 ? "1 istituzione" : `${lastTotal} istituzioni`);
+
+        if ((j.items ?? []).length === 0 && offset === 0) {
+          empty.hidden = false;
+          return;
+        }
+        for (const it of (j.items ?? [])) grid.appendChild(renderCard(it));
+        offset += (j.items ?? []).length;
+        loadmoreBox.hidden = offset >= lastTotal;
+      } catch (e) {
+        loading.hidden = true;
+        showError("Errore di rete: " + (e?.message || e));
+      }
+    }
+
+    let searchTimer = null;
+    settoreSel.addEventListener("change", () => loadPage(true));
+    tipoSel.addEventListener("change", () => loadPage(true));
+    searchInp.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => loadPage(true), 280);
+    });
+    loadmoreBtn.addEventListener("click", () => loadPage(false));
+
+    // Pre-popola filtri da URL (es. /marketplace.html?settore=formazione)
+    (function initFromUrl() {
+      const u = new URL(location.href);
+      if (u.searchParams.has("settore")) settoreSel.value = u.searchParams.get("settore") || "";
+      if (u.searchParams.has("tipo")) tipoSel.value = u.searchParams.get("tipo") || "";
+      if (u.searchParams.has("q")) searchInp.value = u.searchParams.get("q") || "";
+    })();
+
+    loadPage(true);
+  </script>
+</body>
+</html>
