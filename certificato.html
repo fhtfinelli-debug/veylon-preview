@@ -37,6 +37,63 @@
         <a id="cert-verifica" class="btn ghost" href="#">Pagina di verifica pubblica</a>
       </div>
     </article>
+
+    <!-- Tabs Versioni / Attivita / Blockchain -->
+    <div id="tab-strip" class="tab-strip" hidden style="margin-top: 40px;">
+      <button class="tab-btn active" data-tab="versioni">Versioni (<span id="tab-cnt-v">0</span>)</button>
+      <button class="tab-btn" data-tab="attivita">Attivita (<span id="tab-cnt-a">0</span>)</button>
+      <button class="tab-btn" data-tab="blockchain">Sigillo blockchain</button>
+    </div>
+
+    <section id="tab-versioni" class="tab-pane" hidden style="margin-top: 20px;">
+      <article class="panel-card">
+        <h3 class="serif" style="font-weight: normal; font-size: 18px; margin: 0 0 16px;">Storia versioni</h3>
+        <div id="versioni-empty" class="state-msg" style="text-align: left; padding: 0;" hidden>
+          Solo una versione registrata per questo certificato.
+        </div>
+        <table class="t" id="versioni-tbl" hidden style="width: 100%;">
+          <thead><tr><th>#</th><th>Hash (SHA-256)</th><th>Caricata</th><th>Da</th></tr></thead>
+          <tbody id="versioni-rows"></tbody>
+        </table>
+      </article>
+    </section>
+
+    <section id="tab-attivita" class="tab-pane" hidden style="margin-top: 20px;">
+      <article class="panel-card">
+        <h3 class="serif" style="font-weight: normal; font-size: 18px; margin: 0 0 16px;">Registro attivita</h3>
+        <div class="counters" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+          <div class="counter-card"><div class="counter-num" id="cnt-views">0</div><div class="counter-lbl">Visualizzazioni</div></div>
+          <div class="counter-card"><div class="counter-num" id="cnt-downloads">0</div><div class="counter-lbl">Download</div></div>
+          <div class="counter-card"><div class="counter-num" id="cnt-firme">0</div><div class="counter-lbl">Firme</div></div>
+        </div>
+        <div id="attivita-empty" class="state-msg" style="text-align: left; padding: 0;" hidden>
+          Nessuna attivita registrata.
+        </div>
+        <ol class="feed" id="attivita-list" hidden style="list-style: none; padding: 0; margin: 0;"></ol>
+      </article>
+    </section>
+
+    <section id="tab-blockchain" class="tab-pane" hidden style="margin-top: 20px;">
+      <article class="panel-card">
+        <h3 class="serif" style="font-weight: normal; font-size: 18px; margin: 0 0 16px;">Sigillo blockchain (Triplo Sigillo Veylon)</h3>
+        <div id="bc-loading" class="state-msg" style="text-align: left; padding: 0;">Caricamento...</div>
+        <div id="bc-content" hidden>
+          <div class="bc-row" style="display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule);">
+            <span class="bc-key">File hash</span>
+            <span class="bc-val mono" id="bc-fhash" style="font-size: 11px; word-break: break-all;">—</span>
+          </div>
+          <div class="bc-row" style="display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule);">
+            <span class="bc-key">Activities hash</span>
+            <span class="bc-val mono" id="bc-ahash" style="font-size: 11px; word-break: break-all;">—</span>
+          </div>
+          <div class="bc-row" style="display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); background: var(--paper-2);">
+            <span class="bc-key">Combined hash</span>
+            <span class="bc-val mono" id="bc-chash" style="font-size: 11px; font-weight: bold; word-break: break-all;">—</span>
+          </div>
+          <div id="bc-anchors" style="margin-top: 16px;"></div>
+        </div>
+      </article>
+    </section>
   </main>
 
   <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Certificato</span></div></footer>
@@ -45,6 +102,16 @@
   .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 32px; }
   .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; text-align: center; }
   .state-msg.state-err { color: var(--seal); }
+  .tab-strip { display: flex; gap: 0; border-bottom: 1px solid var(--rule); }
+  .tab-btn { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 12px 18px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; color: var(--ink-2); }
+  .tab-btn.active { color: var(--ink); border-bottom-color: var(--seal); }
+  .counter-card { padding: 16px 18px; border: 1px solid var(--rule); background: var(--paper-2); text-align: center; }
+  .counter-num { font-family: var(--serif); font-size: 32px; line-height: 1; color: var(--seal); }
+  .counter-lbl { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-top: 6px; }
+  .feed li { padding: 12px 0; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); font-size: 14px; }
+  .feed li:last-child { border-bottom: 0; }
+  .feed .ev-tipo { display: inline-block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 6px; background: var(--paper-2); border: 1px solid var(--rule); margin-right: 8px; }
+  .feed .ev-time { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-left: 8px; }
   .cert-head { display: grid; grid-template-columns: 56px 1fr; gap: 18px; align-items: center; }
   .seal-mark { width: 56px; height: 56px; }
   .seal-mark .glyph { font-size: 22px; }
@@ -84,7 +151,7 @@
     try {
       const { data, error } = await supabase
         .from("cert_certificati")
-        .select("id, codice_pubblico, beneficiario_nome, dati_certificato, stato, data_emissione, data_scadenza, cert_istituzioni:istituzione_id(ragione_sociale)")
+        .select("id, codice_pubblico, beneficiario_nome, dati_certificato, stato, data_emissione, data_scadenza, veylon_atto_id, cert_istituzioni:istituzione_id(ragione_sociale)")
         .eq("codice_pubblico", codice)
         .maybeSingle();
 
@@ -114,6 +181,9 @@
       stEl.classList.add(ok ? "ok" : "warn");
       document.getElementById("cert-verifica").href = "cert-verifica.html?codice=" + encodeURIComponent(data.codice_pubblico || "");
       document.getElementById("cert-card").hidden = false;
+      document.getElementById("tab-strip").hidden = false;
+      document.getElementById("tab-versioni").hidden = false;
+      await Promise.all([loadVersioni(data), loadAttivita(data), loadBlockchain(data)]);
     } catch (e) {
       document.getElementById("state-loading").hidden = true;
       const err = document.getElementById("state-error");
@@ -121,6 +191,117 @@
       err.hidden = false;
     }
   }
+  // Tabs
+  document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    document.querySelectorAll(".tab-pane").forEach(p => p.hidden = true);
+    document.getElementById("tab-" + b.dataset.tab).hidden = false;
+  }));
+
+  async function loadVersioni(cert) {
+    const veylonAttoId = cert.veylon_atto_id || cert.atto_id;
+    if (!veylonAttoId) {
+      document.getElementById("versioni-empty").hidden = false;
+      return;
+    }
+    const { data, error } = await supabase
+      .from("veylon_atti_versioni")
+      .select("version_num, sha256, doc_name, created_at, uploaded_by")
+      .eq("atto_id", veylonAttoId)
+      .order("version_num", { ascending: false });
+    if (error || !data || !data.length) {
+      document.getElementById("versioni-empty").hidden = false;
+      return;
+    }
+    document.getElementById("tab-cnt-v").textContent = data.length;
+    document.getElementById("versioni-tbl").hidden = false;
+    document.getElementById("versioni-rows").innerHTML = data.map(v =>
+      `<tr>
+        <td>v${v.version_num}</td>
+        <td class="mono" style="font-size: 11px;">${escapeHtml(v.sha256.slice(0, 12) + "..." + v.sha256.slice(-8))}</td>
+        <td>${escapeHtml(fmt(v.created_at))}</td>
+        <td class="mono" style="font-size: 11px;">${escapeHtml((v.uploaded_by || "").slice(0, 8))}</td>
+      </tr>`
+    ).join("");
+  }
+
+  async function loadAttivita(cert) {
+    const veylonAttoId = cert.veylon_atto_id || cert.atto_id;
+    if (!veylonAttoId) { document.getElementById("attivita-empty").hidden = false; return; }
+    const { data, error } = await supabase
+      .from("veylon_eventi")
+      .select("evento_tipo, attore_email, created_at, dettaglio")
+      .eq("atto_id", veylonAttoId)
+      .order("created_at", { ascending: false })
+      .limit(100);
+    if (error || !data) { document.getElementById("attivita-empty").hidden = false; return; }
+
+    const cnt = { views: 0, downloads: 0, firme: 0 };
+    data.forEach(e => {
+      if (e.evento_tipo === "visualizzato") cnt.views++;
+      else if (e.evento_tipo === "scaricato") cnt.downloads++;
+      else if (e.evento_tipo === "firma_applicata") cnt.firme++;
+    });
+    document.getElementById("cnt-views").textContent = cnt.views;
+    document.getElementById("cnt-downloads").textContent = cnt.downloads;
+    document.getElementById("cnt-firme").textContent = cnt.firme;
+    document.getElementById("tab-cnt-a").textContent = data.length;
+
+    if (!data.length) { document.getElementById("attivita-empty").hidden = false; return; }
+    document.getElementById("attivita-list").hidden = false;
+    document.getElementById("attivita-list").innerHTML = data.map(e =>
+      `<li>
+        <span class="ev-tipo">${escapeHtml(e.evento_tipo)}</span>
+        ${escapeHtml(e.attore_email || "sistema")}
+        <span class="ev-time">${escapeHtml(fmt(e.created_at))}</span>
+      </li>`
+    ).join("");
+  }
+
+  async function loadBlockchain(cert) {
+    const veylonAttoId = cert.veylon_atto_id || cert.atto_id;
+    if (!veylonAttoId) { document.getElementById("bc-loading").textContent = "—"; return; }
+    try {
+      const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+      const { data: { session } } = await supabase.auth.getSession();
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/combined-verify?atto_id=${encodeURIComponent(veylonAttoId)}`, {
+        headers: {
+          "apikey": session?.access_token ? "" : "",
+          "Authorization": "Bearer " + (session?.access_token || ""),
+        },
+      });
+      const j = await r.json();
+      document.getElementById("bc-loading").hidden = true;
+      document.getElementById("bc-content").hidden = false;
+      document.getElementById("bc-fhash").textContent = j.file?.file_hash || "—";
+      document.getElementById("bc-ahash").textContent = j.activities_hash || "—";
+      document.getElementById("bc-chash").textContent = j.combined_hash || "—";
+
+      const anchors = j.anchors || [];
+      const colors = { bitcoin: "#f7931a", polygon: "#8247e5", solana: "#9945ff" };
+      const labels = { bitcoin: "Bitcoin (OTS)", polygon: "Polygon", solana: "Solana" };
+      const explorers = {
+        bitcoin: (tx) => tx ? `https://mempool.space/tx/${tx}` : null,
+        polygon: (tx) => tx ? `https://polygonscan.com/tx/${tx}` : null,
+        solana:  (tx) => tx ? `https://explorer.solana.com/tx/${tx}` : null,
+      };
+      document.getElementById("bc-anchors").innerHTML = anchors.length
+        ? anchors.map(a => {
+            const link = explorers[a.blockchain] ? explorers[a.blockchain](a.tx_ref) : null;
+            const txTxt = a.tx_ref ? (link ? `<a href="${link}" target="_blank" rel="noopener">${a.tx_ref.slice(0, 14)}...</a>` : a.tx_ref.slice(0, 14)) : "—";
+            return `<div style="padding: 10px 0; border-bottom: 1px solid var(--rule);">
+              <strong style="color: ${colors[a.blockchain] || '#666'}; font-family: var(--mono); font-size: 12px;">${labels[a.blockchain] || a.blockchain}</strong>
+              <span style="margin-left: 12px; font-family: var(--mono); font-size: 11px;">${txTxt}</span>
+              <span style="margin-left: 12px; font-family: var(--mono); font-size: 11px; color: ${a.status === 'confirmed' ? '#2e7d32' : '#ef6c00'}; text-transform: uppercase;">${a.status}</span>
+            </div>`;
+          }).join("")
+        : '<div class="state-msg" style="text-align: left; padding: 0;">Nessun ancoraggio blockchain registrato.</div>';
+    } catch (e) {
+      document.getElementById("bc-loading").textContent = "Errore caricamento sigillo: " + (e.message || e);
+    }
+  }
+
   load();
   </script>
 </body>
