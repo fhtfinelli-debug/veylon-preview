@@ -47,8 +47,24 @@
           </select>
         </div>
         <div style="margin-top: 18px;">
-          <label class="field-label" for="settore">Settore DPP (opzionale)</label>
-          <input class="field-input" type="text" id="settore" placeholder="Es. moda, food, design…"/>
+          <label class="field-label" for="settore">Categoria DPP / Digital Product Passport UE (opzionale)</label>
+          <select class="field-input" id="settore">
+            <option value="">Nessuna / non applicabile</option>
+            <option value="batterie">Batterie industriali (Reg. UE 2023/1542)</option>
+            <option value="tessili">Tessili (Textiles Strategy UE)</option>
+            <option value="edili">Materiali edili (Construction Products Regulation)</option>
+            <option value="filiera">Filiera sostenibile (EUDR 2023/1115 - legno/cacao/caffe/soia/gomma/manzo/olio palma)</option>
+            <option value="elettronica">Elettronica</option>
+            <option value="moda_lusso">Moda / Lusso</option>
+            <option value="food_beverage">Food &amp; Beverage</option>
+            <option value="arte_collezionismo">Arte / Collezionismo</option>
+            <option value="altro">Altro (ESPR Reg. UE 2024/1781 generico)</option>
+          </select>
+          <p class="small" style="margin-top: 6px; color: var(--ink-3); line-height: 1.4;">
+            Allinea il tuo prodotto al <strong>Digital Product Passport UE</strong> (rollout 2026-2030). Selezionando la
+            categoria, ogni certificato Tag emesso riportera la normativa di riferimento e sara verificabile in
+            tutta l'Unione.
+          </p>
         </div>
         <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
           <span class="btn-label">Salva profilo</span>
@@ -118,7 +134,7 @@
       p_iva: document.getElementById("piva").value.trim(),
       contatti: sede ? { sede } : {},
       segmento: document.getElementById("segmento").value || null,
-      settore_dpp: document.getElementById("settore").value.trim() || null,
+      settore_dpp: document.getElementById("settore").value || null,
     };
     if (!payload.ragione_sociale) { alert("Ragione sociale obbligatoria."); return; }
     if (!payload.p_iva) { alert("P. IVA obbligatoria."); return; }
