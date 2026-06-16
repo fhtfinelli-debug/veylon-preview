@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon · API REST per sviluppatori — Sigilla, verifica, webhook</title>
+  <meta name="description" content="API REST Veylon per piano Business: POST /v1/sigillo, GET /v1/verifica, webhook delivery. Esempi curl/JS/Python. Quota dedicata + SLA."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/developers.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon · API REST per sviluppatori"/>
+  <meta property="og:description" content="Integra Veylon nel tuo backend. POST hash, ricevi sigillo Bitcoin con OpenTimestamps."/>
+  <meta property="og:url" content="https://veylon.app/developers.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .dv-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .dv-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .dv-nav .brand em { color: var(--seal); }
+    .dv-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .dv-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .dv-nav-links a:hover { color: var(--seal); }
+
+    .dv-hero { padding: 56px 32px 32px; max-width: 980px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
+    .dv-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(36px, 5vw, 56px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 18px; }
+    .dv-hero p { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 720px; }
+    .dv-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); margin-bottom: 14px; display: inline-block; }
+
+    .dv-layout { max-width: 1080px; margin: 0 auto; padding: 48px 32px 96px; display: grid; grid-template-columns: 260px 1fr; gap: 48px; }
+    @media (max-width: 880px) { .dv-layout { grid-template-columns: 1fr; gap: 24px; } }
+
+    .dv-toc { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; position: sticky; top: 24px; align-self: start; }
+    .dv-toc h3 { font-size: 10px; color: var(--ink-3); margin: 0 0 10px; }
+    .dv-toc a { display: block; padding: 6px 0; color: var(--ink-2); text-decoration: none; border-left: 2px solid transparent; padding-left: 10px; }
+    .dv-toc a:hover { color: var(--seal); border-left-color: var(--seal); }
+
+    .dv-content section { padding-bottom: 36px; border-bottom: 1px solid var(--rule); margin-bottom: 36px; }
+    .dv-content h2 { font-family: var(--serif); font-weight: normal; font-size: 26px; margin: 0 0 14px; }
+    .dv-content h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 24px 0 10px; }
+    .dv-content p { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--ink-2); margin: 0 0 10px; }
+    .dv-content code, .dv-content pre { font-family: var(--mono); font-size: 12.5px; }
+    .dv-content pre { background: var(--paper-2); padding: 16px 18px; border: 1px solid var(--rule); overflow-x: auto; margin: 12px 0; }
+    .dv-content pre code { color: var(--ink); background: transparent; padding: 0; }
+    .dv-content code { background: var(--paper-2); padding: 2px 6px; color: var(--seal); border-radius: 2px; }
+    .endpoint { background: var(--paper); border: 1px solid var(--rule); padding: 18px; margin: 14px 0; }
+    .endpoint .method { display: inline-block; padding: 3px 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-right: 8px; }
+    .endpoint .method.POST { background: #16482a; color: white; }
+    .endpoint .method.GET { background: #1a4d80; color: white; }
+    .endpoint .method.DELETE { background: #b00020; color: white; }
+    .endpoint .url { font-family: var(--mono); font-size: 13px; color: var(--ink); }
+    .endpoint .desc { font-family: var(--serif); font-size: 13.5px; color: var(--ink-2); margin: 8px 0 0; }
+
+    .info-strip { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 14px 18px; margin: 18px 0; font-family: var(--serif); font-size: 14px; color: #6b3a00; }
+    .ok-strip { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 14px 18px; margin: 18px 0; font-family: var(--serif); font-size: 14px; color: #16482a; }
+
+    .tabs { display: flex; gap: 0; margin: 12px 0; border-bottom: 1px solid var(--rule); }
+    .tabs button { padding: 10px 18px; background: transparent; border: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-3); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .tabs button.active { color: var(--ink); border-bottom-color: var(--seal); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+  <nav class="dv-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Developers</a>
+    <div class="dv-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="dv-hero">
+    <span class="kicker">Developer API · v1</span>
+    <h1>Sigillo, verifica, webhook. <em class="serif-italic" style="color: var(--seal);">Integra Veylon</em> nel tuo backend.</h1>
+    <p>API REST minimale per il piano Business. Manda un hash SHA-256, ricevi un sigillo Bitcoin via OpenTimestamps. Quota dedicata. SLA. Webhook delivery in tempo reale.</p>
+  </header>
+
+  <main class="dv-layout">
+    <aside class="dv-toc">
+      <h3>Indice</h3>
+      <a href="#auth">Autenticazione</a>
+      <a href="#sigillo">POST /v1/sigillo</a>
+      <a href="#verifica">GET /v1/verifica/{sha}</a>
+      <a href="#multi-firma">POST /v1/multi-firma</a>
+      <a href="#webhook">Webhook outbound</a>
+      <a href="#errors">Errori</a>
+      <a href="#rate-limit">Rate limit</a>
+      <a href="#sla">SLA</a>
+    </aside>
+
+    <div class="dv-content">
+
+      <section id="auth">
+        <h2>Autenticazione</h2>
+        <p>Tutte le API REST richiedono un'API key generata dal pannello <code>admin.html</code> &rarr; tab <strong>API keys</strong>.
+        Inviare la chiave nell'header <code>Authorization: Bearer veylon_xxx</code>.</p>
+        <div class="info-strip">
+          <strong>Piano Business richiesto.</strong> Gli utenti Free e Pro hanno accesso alle stesse funzionalita via dashboard ma non via API.
+          Le API key sono attive solo su piano Business (50.000 chiamate/mese inclusi).
+        </div>
+        <pre><code>curl -H "Authorization: Bearer veylon_live_a1b2c3..." \
+     https://api.veylon.app/v1/me</code></pre>
+      </section>
+
+      <section id="sigillo">
+        <h2>Sigillo</h2>
+        <div class="endpoint">
+          <span class="method POST">POST</span><span class="url">/v1/sigillo</span>
+          <p class="desc">Crea un sigillo Veylon per un documento. Trasmesso solo l'hash SHA-256 (il documento non lascia il vostro perimetro).</p>
+        </div>
+
+        <h3>Request body</h3>
+        <pre><code>{
+  "sha256": "a3f5b8c7d9e1f2a4...",  // 64 char hex, obbligatorio
+  "doc_name": "Contratto Acme 2026", // string max 200
+  "anchor_method": "opentimestamps", // opzionale, default opentimestamps
+  "metadata": { "modulo": "contratto" } // opzionale, jsonb
+}</code></pre>
+
+        <h3>Response 200</h3>
+        <pre><code>{
+  "success": true,
+  "atto_id": "uuid",
+  "sha256": "a3f5b8c7d9e1f2a4...",
+  "ots_status": "pending",
+  "verifica_url": "https://veylon.app/verifica.html?h=a3f5b8c7...",
+  "created_at": "2026-06-16T20:45:00Z"
+}</code></pre>
+
+        <h3>Esempi</h3>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="curl">curl</button>
+          <button class="tab-btn" data-tab="js">Node.js</button>
+          <button class="tab-btn" data-tab="py">Python</button>
+        </div>
+        <div class="tab-content active" data-tab="curl">
+          <pre><code>curl -X POST https://api.veylon.app/v1/sigillo \
+  -H "Authorization: Bearer veylon_live_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{"sha256":"a3f5b8c7d9e1f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2d4e6f8a0b2c4d6e8f0a2","doc_name":"Contratto Acme"}'</code></pre>
+        </div>
+        <div class="tab-content" data-tab="js">
+          <pre><code>import crypto from "node:crypto";
+const buf = await fs.readFile("contratto.pdf");
+const sha = crypto.createHash("sha256").update(buf).digest("hex");
+const r = await fetch("https://api.veylon.app/v1/sigillo", {
+  method: "POST",
+  headers: { "Authorization": `Bearer ${process.env.VEYLON_KEY}`, "Content-Type": "application/json" },
+  body: JSON.stringify({ sha256: sha, doc_name: "Contratto Acme" }),
+});
+const atto = await r.json();
+console.log(atto.verifica_url);</code></pre>
+        </div>
+        <div class="tab-content" data-tab="py">
+          <pre><code>import hashlib, requests, os
+sha = hashlib.sha256(open("contratto.pdf", "rb").read()).hexdigest()
+r = requests.post("https://api.veylon.app/v1/sigillo",
+  headers={"Authorization": f"Bearer {os.environ['VEYLON_KEY']}"},
+  json={"sha256": sha, "doc_name": "Contratto Acme"})
+print(r.json()["verifica_url"])</code></pre>
+        </div>
+      </section>
+
+      <section id="verifica">
+        <h2>Verifica</h2>
+        <div class="endpoint">
+          <span class="method GET">GET</span><span class="url">/v1/verifica/{sha256}</span>
+          <p class="desc">Recupera lo stato di un sigillo dato il suo SHA-256. Endpoint pubblico (no auth) per integrazioni di verifica indipendenti.</p>
+        </div>
+        <h3>Response 200</h3>
+        <pre><code>{
+  "found": true,
+  "sha256": "a3f5b8c7...",
+  "doc_name": "Contratto Acme 2026",
+  "ots_status": "confirmed",
+  "btc_block": 892341,
+  "btc_tx": "7f3e5a9c1d4b8f2e...",
+  "created_at": "2026-06-14T15:30:00Z",
+  "confirmed_at": "2026-06-14T17:42:00Z"
+}</code></pre>
+      </section>
+
+      <section id="multi-firma">
+        <h2>Multi-firma (K-S.2)</h2>
+        <div class="endpoint">
+          <span class="method POST">POST</span><span class="url">/v1/multi-firma</span>
+          <p class="desc">Crea richiesta firma multi-parte. Veylon invia OTP via email a ogni firmatario, traccia firme, notifica owner al completamento.</p>
+        </div>
+        <pre><code>{
+  "doc_name": "NDA Acme",
+  "doc_sha256": "a3f5...",
+  "ordine_tipo": "parallelo",  // o "sequenziale"
+  "scadenza_hours": 168,
+  "firmatari": [
+    { "email": "ceo@acme.com", "nome": "Mario Rossi" },
+    { "email": "cto@veylon.app", "nome": "Manuel Finelli" }
+  ]
+}</code></pre>
+      </section>
+
+      <section id="webhook">
+        <h2>Webhook outbound</h2>
+        <p>Veylon notifica via HTTPS POST gli eventi importanti al vostro endpoint registrato. Configurare in <code>admin.html</code> &rarr; tab <strong>Webhook</strong>.</p>
+        <h3>Eventi disponibili</h3>
+        <pre><code>atto.creato            // appena ricevuto POST /v1/sigillo
+atto.confermato        // OTS Bitcoin block confirmation
+firma.completata       // singola firma OTP
+multi_firma.completata // tutti firmatari hanno firmato
+cert.emesso            // certificato istituzionale rilasciato
+tag.trasferito         // proprieta tag prodotto cambiata</code></pre>
+
+        <h3>Payload</h3>
+        <pre><code>{
+  "event": "atto.confermato",
+  "timestamp": "2026-06-16T21:00:00Z",
+  "data": {
+    "atto_id": "uuid",
+    "sha256": "a3f5...",
+    "btc_block": 892341,
+    "btc_tx": "7f3e..."
+  },
+  "signature": "sha256=hmac..."  // HMAC con webhook_secret
+}</code></pre>
+
+        <div class="ok-strip"><strong>HMAC mandatorio.</strong> Tutti i payload webhook sono firmati con HMAC-SHA256. Validare la firma con il webhook_secret generato in admin prima di processare.</div>
+      </section>
+
+      <section id="errors">
+        <h2>Errori</h2>
+        <p>Tutti gli errori usano status HTTP standard + body JSON con <code>error</code> e opzionalmente <code>detail</code>.</p>
+        <pre><code>400 Bad Request       // input malformato
+401 Unauthorized      // API key mancante o invalida
+402 Payment Required  // quota esaurita
+403 Forbidden         // piano non Business
+404 Not Found         // risorsa inesistente
+422 Unprocessable     // validazione semantica
+429 Too Many Requests // rate limit (vedi sotto)
+500 Internal          // errore Veylon (riprova + apri ticket)
+502 Bad Gateway       // OTS calendari irraggiungibili
+503 Service Unavailable // manutenzione pianificata
+</code></pre>
+      </section>
+
+      <section id="rate-limit">
+        <h2>Rate limit</h2>
+        <p>Per piano Business: <strong>50.000 sigilli/mese inclusi</strong>, oltre quota a 0.01&euro;/sigillo. Burst: 30 req/secondo, ritorno <code>429</code> con header <code>Retry-After</code>.</p>
+        <pre><code>X-RateLimit-Limit: 30
+X-RateLimit-Remaining: 27
+X-RateLimit-Reset: 1718568000</code></pre>
+      </section>
+
+      <section id="sla">
+        <h2>SLA</h2>
+        <p>Piano Business include SLA:</p>
+        <ul style="font-family: var(--serif); font-size: 14px; line-height: 1.6; color: var(--ink-2);">
+          <li>Uptime mensile <strong>99.9%</strong> (monitorato su <a href="system-status.html">system-status.html</a>)</li>
+          <li>Latenza P95 endpoint sigillo: <strong>&lt; 800ms</strong></li>
+          <li>OTS conferma media: <strong>1-3 ore</strong> (dipende blockchain Bitcoin)</li>
+          <li>Risposta supporto: <strong>&lt; 4 ore</strong> business day</li>
+          <li>Bug critici: <strong>&lt; 24 ore</strong></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>API v1 · Developer docs</span></div>
+  </footer>
+
+  <script>
+    document.querySelectorAll(".tab-btn").forEach(b => {
+      b.addEventListener("click", () => {
+        const tab = b.dataset.tab;
+        document.querySelectorAll(".tab-btn").forEach(x => x.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(x => x.classList.remove("active"));
+        b.classList.add("active");
+        document.querySelector(`.tab-content[data-tab="${tab}"]`).classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
