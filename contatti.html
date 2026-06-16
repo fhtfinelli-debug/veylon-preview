@@ -96,6 +96,12 @@
         <div class="field"><label for="f-email">Email *</label><input type="email" id="f-email" required maxlength="254"/></div>
         <div class="field"><label for="f-azienda">Azienda / Ente</label><input type="text" id="f-azienda" maxlength="200"/></div>
         <div class="field"><label for="f-messaggio">Messaggio *</label><textarea id="f-messaggio" required maxlength="2000" placeholder="Come possiamo aiutarti?"></textarea></div>
+        <div class="field" style="margin-top: 16px;">
+          <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-family:var(--serif);font-size:12.5px;color:var(--ink-2);text-transform:none;letter-spacing:normal;">
+            <input type="checkbox" id="f-consent" required style="margin-top: 3px; width: auto;"/>
+            <span>Acconsento al trattamento dei dati per la risposta (<a href="privacy.html" style="color: var(--seal);">privacy</a>). GDPR Art. 6.1.a.</span>
+          </label>
+        </div>
         <button type="submit" class="btn" id="btn-submit">Invia messaggio</button>
       </form>
       <div id="result-box"></div>
@@ -125,6 +131,7 @@
         email: $("f-email").value.trim().toLowerCase(),
         azienda: $("f-azienda").value.trim() || undefined,
         messaggio: $("f-messaggio").value.trim() || undefined,
+        consent: $("f-consent").checked,
         website: document.querySelector("[name=website]").value,
       };
 

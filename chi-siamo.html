@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon &middot; Chi siamo</title>
+  <meta name="description" content="Veylon e' la suite di certificazione legale fondata nel 2026 a Padova. Missione: rendere la prova legale accessibile a tutti, ancorata a Bitcoin, conforme UE."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/chi-siamo.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon &middot; Chi siamo"/>
+  <meta property="og:description" content="Una piattaforma italiana per la prova legale. Bitcoin sotto, standard UE sopra."/>
+  <meta property="og:url" content="https://veylon.app/chi-siamo.html"/>
+  <meta property="og:locale" content="it_IT"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .cs-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .cs-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .cs-nav .brand em { color: var(--seal); }
+    .cs-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .cs-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .cs-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 540px) { .cs-nav-links { display: none; } }
+
+    .cs-hero { padding: 72px 32px 40px; max-width: 880px; margin: 0 auto; text-align: center; border-bottom: 1px solid var(--rule); }
+    .cs-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); margin-bottom: 18px; display: inline-block; }
+    .cs-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 22px; }
+    .cs-hero h1 em { color: var(--seal); }
+    .cs-hero p { font-family: var(--serif); font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto; }
+
+    .cs-section { max-width: 880px; margin: 0 auto; padding: 56px 32px; border-bottom: 1px solid var(--rule); }
+    .cs-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 42px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 22px; }
+    .cs-section h2 em { color: var(--seal); }
+    .cs-section p { font-family: var(--serif); font-size: 16px; line-height: 1.65; color: var(--ink-2); margin: 0 0 16px; }
+    .cs-section p strong { color: var(--ink); }
+    .cs-section .label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--seal); margin-bottom: 8px; display: block; }
+
+    .cs-values { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 12px; }
+    @media (max-width: 720px) { .cs-values { grid-template-columns: 1fr; } }
+    .cs-value { padding: 22px 24px; background: var(--paper-2); border-left: 3px solid var(--seal); }
+    .cs-value h3 { font-family: var(--serif); font-weight: normal; font-size: 20px; margin: 0 0 8px; }
+    .cs-value p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+
+    .cs-segments { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 12px; }
+    @media (max-width: 720px) { .cs-segments { grid-template-columns: 1fr; } }
+    .cs-seg { padding: 24px; border: 1px solid var(--rule); background: var(--paper); }
+    .cs-seg h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 8px; }
+    .cs-seg h3 em { color: var(--seal); }
+    .cs-seg p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+
+    .cs-standards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 18px; }
+    @media (max-width: 720px) { .cs-standards { grid-template-columns: 1fr; } }
+    .cs-std { padding: 16px 18px; background: var(--paper-2); border: 1px solid var(--rule); font-family: var(--serif); font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+    .cs-std .name { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); display: block; margin-bottom: 4px; }
+    .cs-std a { color: var(--ink); border-bottom: 1px solid var(--seal); text-decoration: none; padding-bottom: 1px; }
+    .cs-std a:hover { color: var(--seal); }
+
+    .cs-contatti-cta { background: var(--ink); color: var(--paper); padding: 40px 32px; text-align: center; }
+    .cs-contatti-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 38px); margin: 0 0 14px; color: var(--paper); }
+    .cs-contatti-cta p { font-family: var(--serif); font-size: 16px; color: var(--paper-2); max-width: 560px; margin: 0 auto 24px; }
+    .cs-contatti-cta a { background: var(--paper); color: var(--ink); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .cs-contatti-cta a:hover { background: var(--seal); color: var(--paper); }
+
+    .cs-hq { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 720px) { .cs-hq { grid-template-columns: 1fr; gap: 18px; } }
+    .cs-hq .pull { font-family: var(--serif); font-style: italic; font-size: 20px; line-height: 1.45; color: var(--ink); border-left: 3px solid var(--seal); padding: 8px 0 8px 22px; }
+  </style>
+</head>
+<body>
+  <nav class="cs-nav">
+    <a href="index.html" class="brand"><em>Veylon</em></a>
+    <div class="cs-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="contatti.html">Contatti</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="cs-hero">
+    <span class="kicker">Chi siamo &middot; Padova, Italia &middot; dal 2026</span>
+    <h1>Una prova legale <em class="serif-italic">accessibile</em> a tutti.</h1>
+    <p>Veylon e' nata a Padova nel 2026 con un'idea semplice: dimostrare quando una cosa e' successa, e che cosa diceva, dovrebbe essere alla portata di chiunque. Non solo di chi puo permettersi una marca da bollo, una PEC o un notaio.</p>
+  </header>
+
+  <section class="cs-section">
+    <span class="label">La nostra missione</span>
+    <h2>Rendere la <em class="serif-italic">certificazione legale</em> accessibile, grazie a Bitcoin.</h2>
+    <p>Per secoli, dare data certa a un documento ha richiesto un intermediario: un notaio, un timbro postale, un'autorita riconosciuta. Funziona, ma e' caro, lento e legato a un territorio. Una marca temporale italiana vale poco fuori dai confini italiani.</p>
+    <p>Bitcoin ha cambiato le regole. E' un registro pubblico mondiale, sempre acceso, che chiunque puo consultare. Se ci ancori l'impronta digitale di un documento, ottieni una prova che vale ovunque, che non scade, e che non dipende ne da noi ne da nessun altro. Veylon usa questa tecnologia, ma la nasconde dietro un'interfaccia semplice: tu trascini il documento, noi facciamo il resto.</p>
+    <p>La nostra missione e' una: <strong>nessuno dovrebbe perdere una causa, un contratto o un diritto perche' non aveva i mezzi per provare quando aveva ragione</strong>.</p>
+  </section>
+
+  <section class="cs-section">
+    <span class="label">I nostri valori</span>
+    <h2>Quattro principi <em class="serif-italic">non negoziabili</em>.</h2>
+    <div class="cs-values">
+      <div class="cs-value">
+        <h3>Apertura</h3>
+        <p>Gli standard che usiamo (Bitcoin, OpenTimestamps, GS1, EN 18221) sono pubblici e aperti. Niente formati proprietari, niente trappole. Se domani vuoi cambiare fornitore, le tue prove restano leggibili e verificabili da chiunque.</p>
+      </div>
+      <div class="cs-value">
+        <h3>Durata</h3>
+        <p>Una prova legale non deve scadere. I sigilli Veylon sono ancorati al registro Bitcoin: anche se Veylon dovesse chiudere, la prova resta valida per sempre, verificabile in autonomia con qualunque programma compatibile.</p>
+      </div>
+      <div class="cs-value">
+        <h3>Indipendenza</h3>
+        <p>Non siamo un ente pubblico, non rispondiamo a un'autorita di settore, non vendiamo i tuoi dati. Siamo una S.r.l. italiana finanziata dai propri clienti. Le decisioni sul prodotto le prendiamo noi, in base a cosa serve a chi usa Veylon ogni giorno.</p>
+      </div>
+      <div class="cs-value">
+        <h3>Conformita UE</h3>
+        <p>Tutto cio che facciamo deve essere compatibile con le regole europee: eIDAS per le firme, GDPR per i dati personali, le normative di settore per i prodotti. Niente scorciatoie che renderebbero le prove deboli in tribunale.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section">
+    <span class="label">Tecnologia</span>
+    <h2>Sotto al cofano: <em class="serif-italic">solo cose aperte</em>.</h2>
+    <p>Veylon e' costruita su mattoni che esistono da prima di noi e continueranno a esistere dopo. Bitcoin per l'ancoraggio temporale, tramite il protocollo aperto OpenTimestamps. Database europeo (Supabase, regione UE) per i nostri dati e per quelli dei nostri clienti, mai trasferiti fuori Europa.</p>
+    <p>Per i prodotti usiamo gli standard GS1 (gli stessi dei codici a barre nei supermercati), per le etichette intelligenti la norma EN 18221, per le firme digitali ETSI EN 319 142. Per le email seguiamo le regole dell'eIDAS sui servizi di recapito elettronico qualificato.</p>
+    <p>Non abbiamo inventato nessuno di questi standard. Li abbiamo solo messi insieme in un'unica piattaforma, accessibile via browser, senza che tu debba sapere cosa c'e' sotto.</p>
+  </section>
+
+  <section class="cs-section">
+    <span class="label">Per chi e' Veylon</span>
+    <h2>Quattro <em class="serif-italic">famiglie</em> di utenti.</h2>
+    <p>Abbiamo costruito Veylon pensando a quattro tipi di lavoro, ma chiunque abbia bisogno di una prova legale puo usarla.</p>
+    <div class="cs-segments">
+      <div class="cs-seg">
+        <h3>Studi <em class="serif-italic">legali</em></h3>
+        <p>Avvocati, studi associati, fiduciari. Per dimostrare quando hai mandato un atto, quando hai ricevuto una memoria, quando hai firmato un contratto. Senza PEC italiana, valido in tutta Europa.</p>
+      </div>
+      <div class="cs-seg">
+        <h3>Pubbliche <em class="serif-italic">amministrazioni</em></h3>
+        <p>Comuni, regioni, aziende sanitarie. Per certificare delibere, ordinanze, atti pubblici con una prova che il cittadino puo verificare da solo, in autonomia, anche fra trent'anni.</p>
+      </div>
+      <div class="cs-seg">
+        <h3>Universita e <em class="serif-italic">scuole</em></h3>
+        <p>Atenei, ITS, istituti professionali. Per emettere diplomi e attestati che un datore di lavoro all'estero puo verificare in due secondi scansionando un codice QR, senza dover chiamare la segreteria.</p>
+      </div>
+      <div class="cs-seg">
+        <h3>Notai e settore <em class="serif-italic">pharma</em></h3>
+        <p>Notai e mediatori, per il backup digitale degli atti. Aziende farmaceutiche, per la tracciabilita dei lotti secondo le buone pratiche di fabbricazione e la regola dei quattro occhi sul rilascio.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section">
+    <span class="label">Standard supportati</span>
+    <h2>Le <em class="serif-italic">otto normative</em> UE che rispettiamo.</h2>
+    <p>Veylon e' progettata per essere conforme alle normative europee pertinenti per ogni atto. Ecco gli otto riferimenti principali, con i link ufficiali a Eur-Lex per chi vuole leggere il testo.</p>
+    <div class="cs-standards">
+      <div class="cs-std">
+        <span class="name">eIDAS 2.0 - Reg. UE 910/2014 e 2024/1183</span>
+        Marca temporale qualificata e servizi di recapito elettronico riconosciuti in tutta Europa.<br/>
+        <a href="https://eur-lex.europa.eu/eli/reg/2014/910/oj" target="_blank" rel="noopener">eur-lex.europa.eu/eli/reg/2014/910</a>
+      </div>
+      <div class="cs-std">
+        <span class="name">GDPR - Reg. UE 2016/679</span>
+        Trattamento dei dati personali, diritti dell'interessato, sicurezza by design.<br/>
+        <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj" target="_blank" rel="noopener">eur-lex.europa.eu/eli/reg/2016/679</a>
+      </div>
+      <div class="cs-std">
+        <span class="name">ESPR - Reg. UE 2024/1781</span>
+        Passaporto digitale di prodotto per i settori coperti dal regolamento ecodesign.<br/>
+        <a href="https://eur-lex.europa.eu/eli/reg/2024/1781/oj" target="_blank" rel="noopener">eur-lex.europa.eu/eli/reg/2024/1781</a>
+      </div>
+      <div class="cs-std">
+        <span class="name">Battery Regulation - Reg. UE 2023/1542</span>
+        Passaporto della batteria, tracciabilita materiali critici, riciclo.<br/>
+        <a href="https://eur-lex.europa.eu/eli/reg/2023/1542/oj" target="_blank" rel="noopener">eur-lex.europa.eu/eli/reg/2023/1542</a>
+      </div>
+      <div class="cs-std">
+        <span class="name">EUDR - Reg. UE 2023/1115</span>
+        Catene di approvvigionamento prive di deforestazione, geo-localizzazione.<br/>
+        <a href="https://eur-lex.europa.eu/eli/reg/2023/1115/oj" target="_blank" rel="noopener">eur-lex.europa.eu/eli/reg/2023/1115</a>
+      </div>
+      <div class="cs-std">
+        <span class="name">Falsified Medicines Directive - Reg. UE 2016/161</span>
+        Identificativo univoco e dispositivo anti-manomissione sui farmaci.<br/>
+        <a href="https://eur-lex.europa.eu/eli/reg_del/2016/161/oj" target="_blank" rel="noopener">eur-lex.europa.eu/eli/reg_del/2016/161</a>
+      </div>
+      <div class="cs-std">
+        <span class="name">L. 12/2019 art. 8-ter</span>
+        Riconoscimento giuridico italiano di registri distribuiti e marche temporali blockchain.<br/>
+        <a href="https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019;12" target="_blank" rel="noopener">normattiva.it - L. 12/2019</a>
+      </div>
+      <div class="cs-std">
+        <span class="name">ETSI EN 319 142 - PAdES</span>
+        Firma elettronica avanzata su documenti PDF, conforme eIDAS.<br/>
+        <a href="https://www.etsi.org/deliver/etsi_en/319100_319199/31914201/" target="_blank" rel="noopener">etsi.org - EN 319 142</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section">
+    <span class="label">Dove siamo</span>
+    <h2>Padova, <em class="serif-italic">Italia</em>.</h2>
+    <div class="cs-hq">
+      <div>
+        <p>Veylon S.r.l. ha sede a Padova. Da qui scriviamo il codice, parliamo con i clienti, prendiamo le decisioni di prodotto. I server sono in Unione Europea (Francoforte), come richiesto dal GDPR per il trattamento dei dati personali dei nostri clienti.</p>
+        <p>Siamo una squadra piccola e indipendente. Non abbiamo investitori esterni e per ora non ne cerchiamo: vogliamo che la roadmap dipenda da chi usa il prodotto, non da chi ci ha messo i soldi.</p>
+      </div>
+      <div class="pull">
+        &laquo;La data certa non dovrebbe essere un privilegio. Dovrebbe essere un diritto, semplice come mandare una mail.&raquo;
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-contatti-cta">
+    <h2>Vuoi parlarci?</h2>
+    <p>Domande commerciali, supporto, partnership, sicurezza, stampa. Abbiamo un canale dedicato per ognuna di queste cose, e ti rispondiamo entro pochi giorni lavorativi.</p>
+    <a href="contatti.html">Vai ai contatti</a>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base"><span>&copy; MMXXVI &middot; Veylon S.r.l.</span><span>Padova, Italia &middot; Suite di certificazione legale</span></div>
+  </footer>
+</body>
+</html>

@@ -125,11 +125,13 @@
         </div>
         <div class="field"><label for="f-messaggio">Caso d'uso (opzionale)</label><textarea id="f-messaggio" maxlength="2000" placeholder="Descrivi il tuo caso d'uso e cosa vorresti certificare. Piu dettagli ci dai, piu precisa sara la demo."></textarea></div>
 
+        <div class="field" style="margin-top: 20px;">
+          <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-family:var(--serif);font-size:13px;color:var(--ink-2);text-transform:none;letter-spacing:normal;">
+            <input type="checkbox" id="f-consent" required style="margin-top: 4px; width: auto;"/>
+            <span>Acconsento al trattamento dei miei dati personali come da <a href="privacy.html" style="color: var(--seal);">privacy policy</a> per essere ricontattato. Dati ospitati su Supabase EU (Ireland), no trasferimento extra-UE. (Art. 6.1.a GDPR)</span>
+          </label>
+        </div>
         <button type="submit" class="btn" id="btn-submit">Richiedi demo</button>
-        <p style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 18px;">
-          Inviando il form accetti la <a href="privacy.html" style="color: var(--seal);">privacy policy</a>.
-          I tuoi dati sono ospitati su Supabase EU (Ireland) e non trasferiti extra-UE.
-        </p>
       </form>
       <div id="result-box"></div>
     </div>
@@ -162,6 +164,7 @@
         segmento: $("f-segmento").value || undefined,
         volume_stimato: $("f-volume").value || undefined,
         messaggio: $("f-messaggio").value.trim() || undefined,
+        consent: $("f-consent").checked,
         website: document.querySelector("[name=website]").value,  // honeypot
       };
 

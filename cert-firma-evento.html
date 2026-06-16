@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Cert · Firma evento (21 CFR Part 11)</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .fe-layout { max-width: 720px; margin: 24px auto 96px; padding: 0 24px; }
+    .fe-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .fe-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spacing: -0.02em; margin: 8px 0 6px; }
+    .fe-head h1 em { color: var(--seal); }
+    .fe-head .sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .fe-head .lede { font-family: var(--serif); font-size: 15px; line-height: 1.5; color: var(--ink-2); margin: 10px 0 0; }
+
+    .fe-info { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 14px 18px; margin-bottom: 22px; font-family: var(--serif); font-size: 14px; line-height: 1.55; color: #6b3a00; }
+    .fe-info strong { color: #4a2600; }
+    .fe-info code { font-family: var(--mono); font-size: 12px; background: #ffe6c5; padding: 1px 5px; }
+
+    .fe-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; margin-bottom: 18px; }
+    .fe-card h2 { font-family: var(--serif); font-weight: normal; font-size: 20px; margin: 0 0 14px; }
+    .fe-card .meta { font-family: var(--mono); font-size: 11.5px; line-height: 1.6; color: var(--ink-2); word-break: break-all; }
+    .fe-card .meta .lbl { color: var(--ink-3); display: inline-block; min-width: 110px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select {
+      width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+
+    .fe-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .fe-btn { padding: 12px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .fe-btn:hover { background: var(--seal); border-color: var(--seal); }
+    .fe-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .fe-btn.ghost { background: transparent; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; }
+
+    .fe-ok { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 16px 18px; color: #16482a; font-family: var(--serif); font-size: 14px; margin-top: 14px; }
+    .fe-err { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("cert"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="fe-layout">
+    <header class="fe-head">
+      <span class="sub">Atto vii Cert &middot; Firma elettronica 21 CFR Part 11</span>
+      <h1>Firma <em class="serif-italic">l'evento</em>.</h1>
+      <p class="lede">Apponi una firma elettronica a un certificato con ri-verifica della password. La firma viene registrata nel ledger del certificato con marca temporale e significato esplicito.</p>
+    </header>
+
+    <div class="fe-info">
+      <strong>Come funziona.</strong> La password che inserisci viene usata <strong>solo</strong> per ri-verificarla via <code>signInWithPassword</code> e dimostrare che sei effettivamente tu, come richiesto dal 21 CFR Part 11 &sect;11.200 sulle firme elettroniche. La password <strong>non viene salvata</strong> in alcuna forma, ne in chiaro ne come hash separato. Viene memorizzato solo un evento firma con il significato dichiarato (review, approve, release, verify) e l'ora.
+    </div>
+
+    <section id="cert-info-section" class="fe-card">
+      <h2>Certificato da firmare</h2>
+      <div id="cert-info" class="meta">Caricamento informazioni certificato...</div>
+    </section>
+
+    <section class="fe-card">
+      <h2>Apponi firma</h2>
+      <form id="form-firma">
+        <div class="field">
+          <label for="f-meaning">Significato della firma (CFR &sect;11.50)</label>
+          <select id="f-meaning" required>
+            <option value="review">Review (revisione)</option>
+            <option value="approve">Approve (approvazione)</option>
+            <option value="release">Release (rilascio definitivo)</option>
+            <option value="verify">Verify (verifica)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-password">Password account (ri-verifica)</label>
+          <input type="password" id="f-password" required autocomplete="current-password" placeholder="La tua password Veylon"/>
+        </div>
+
+        <div class="fe-actions">
+          <button type="submit" class="fe-btn" id="btn-firma">Firma con password reverification</button>
+          <a href="cert-mio.html" class="fe-btn ghost">Annulla</a>
+        </div>
+      </form>
+      <div id="result-box"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base"><span>&copy; MMXXVI &middot; Veylon S.r.l.</span><span>Cert &middot; e-signature 21 CFR Part 11</span></div>
+  </footer>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    const params = new URLSearchParams(window.location.search);
+    const cert_id = params.get("cert_id");
+
+    function showCertError(msg) {
+      $("cert-info").innerHTML = `<div class="fe-err" style="margin: 0;">${escapeHtml(msg)}</div>`;
+      $("btn-firma").disabled = true;
+    }
+
+    async function loadCert() {
+      if (!cert_id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(cert_id)) {
+        showCertError("Parametro cert_id mancante o non valido nell'URL. Atteso ?cert_id=UUID.");
+        return;
+      }
+      try {
+        const { data, error } = await supabase
+          .from("cert_certificati")
+          .select("id, codice_pubblico, dati_certificato, stato, data_emissione, signature_events, cert_istituzioni:istituzione_id(ragione_sociale)")
+          .eq("id", cert_id)
+          .single();
+        if (error) throw error;
+        if (!data) { showCertError("Certificato non trovato o non hai i permessi per visualizzarlo."); return; }
+
+        const titolo = (data.dati_certificato && (data.dati_certificato.titolo || data.dati_certificato.corso || data.dati_certificato.nome)) || "&mdash;";
+        const ist = (data.cert_istituzioni && data.cert_istituzioni.ragione_sociale) || "&mdash;";
+        const events = Array.isArray(data.signature_events) ? data.signature_events : [];
+
+        let eventsHtml = "";
+        if (events.length > 0) {
+          eventsHtml = '<div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule);"><span class="lbl">Firme apposte</span><br/>';
+          events.forEach((e, i) => {
+            const when = e.signed_at ? new Date(e.signed_at).toLocaleString("it-IT") : "&mdash;";
+            const meaning = escapeHtml(e.meaning || "&mdash;");
+            const reverif = e.password_reverified ? "<strong style='color: #1e6e3e;'>password ri-verificata</strong>" : "<span style='color: #b00020;'>non ri-verificata</span>";
+            eventsHtml += `<div style="margin-top: 6px;">${i + 1}. <strong>${meaning}</strong> &middot; ${when} &middot; ${reverif}</div>`;
+          });
+          eventsHtml += '</div>';
+        }
+
+        $("cert-info").innerHTML = `
+          <div><span class="lbl">Codice</span> ${escapeHtml(data.codice_pubblico || "&mdash;")}</div>
+          <div><span class="lbl">Titolo</span> ${escapeHtml(titolo)}</div>
+          <div><span class="lbl">Istituzione</span> ${escapeHtml(ist)}</div>
+          <div><span class="lbl">Stato</span> ${escapeHtml(data.stato || "&mdash;")}</div>
+          <div><span class="lbl">Emesso il</span> ${data.data_emissione ? new Date(data.data_emissione).toLocaleDateString("it-IT") : "&mdash;"}</div>
+          ${eventsHtml}
+        `;
+      } catch (e) {
+        showCertError("Errore caricamento certificato: " + (e.message || String(e)));
+      }
+    }
+
+    $("form-firma").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box");
+      box.innerHTML = "";
+
+      const meaning = $("f-meaning").value;
+      const password = $("f-password").value;
+
+      if (!password) { box.innerHTML = '<div class="fe-err">Inserisci la tua password per la ri-verifica.</div>'; return; }
+      if (!["review", "approve", "release", "verify"].includes(meaning)) { box.innerHTML = '<div class="fe-err">Significato firma non valido.</div>'; return; }
+
+      const btn = $("btn-firma");
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = "Firma in corso...";
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/cert-firma-evento`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify({ cert_id, meaning, password }),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error + (j?.detail ? " - " + j.detail : ""));
+
+        try { if (window.plausible) window.plausible("cert_firma_evento", { props: { meaning } }); } catch(_) {}
+
+        box.innerHTML = `
+          <div class="fe-ok">
+            <strong>Firma registrata.</strong><br/>
+            Significato: <em>${escapeHtml(meaning)}</em><br/>
+            Password ri-verificata: <strong>si</strong><br/>
+            La firma e' stata aggiunta al ledger del certificato con marca temporale.
+          </div>
+        `;
+        $("f-password").value = "";
+        await loadCert();
+      } catch (e) {
+        box.innerHTML = `<div class="fe-err">Errore firma: ${escapeHtml(e.message || String(e))}</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    });
+
+    loadCert();
+  </script>
+</body>
+</html>

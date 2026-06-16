@@ -29,6 +29,34 @@
     <priority>0.85</priority>
   </url>
 
+  <!-- Chi siamo -->
+  <url>
+    <loc>https://veylon.app/chi-siamo.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Enterprise -->
+  <url>
+    <loc>https://veylon.app/enterprise.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Contatti -->
+  <url>
+    <loc>https://veylon.app/contatti.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Developers API docs -->
+  <url>
+    <loc>https://veylon.app/developers.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Sicurezza & conformita -->
   <url>
     <loc>https://veylon.app/security.html</loc>

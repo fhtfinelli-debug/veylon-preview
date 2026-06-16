@@ -1,0 +1,28 @@
+# Veylon security.txt
+# RFC 9116 - https://www.rfc-editor.org/rfc/rfc9116
+# For responsible disclosure of security vulnerabilities affecting veylon.app
+# and the Veylon suite of certification acts.
+
+Contact: mailto:security@veylon.app
+Expires: 2027-06-17T00:00:00.000Z
+Preferred-Languages: it, en
+Canonical: https://veylon.app/.well-known/security.txt
+Policy: https://veylon.app/security.html
+
+# Please include in your report:
+#  - URL or component affected
+#  - Steps to reproduce
+#  - Expected vs actual behaviour
+#  - Your preferred contact channel for follow-up
+#
+# We acknowledge incoming reports within 5 working days and aim to
+# provide an initial assessment within 10 working days.
+#
+# Out of scope (do not report):
+#  - Bitcoin network or OpenTimestamps protocol issues
+#  - Issues in third-party services unrelated to Veylon (Supabase,
+#    Plausible, esm.sh) - please report those to the respective vendors
+#  - Social engineering of Veylon staff or customers
+#
+# A PGP key for encrypted disclosure will be published here in a future
+# revision of this file.

@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Cert Pharma · Lotti GMP</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .pl-layout { max-width: 1080px; margin: 24px auto 96px; padding: 0 24px; }
+    .pl-head { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .pl-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 8px 0 8px; }
+    .pl-head h1 em { color: var(--seal); }
+    .pl-head .sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .pl-head .lede { font-family: var(--serif); font-size: 16px; line-height: 1.5; color: var(--ink-2); margin: 10px 0 0; max-width: 720px; }
+
+    .pl-info { background: #fff3e0; border-left: 4px solid #ef6c00; padding: 14px 18px; margin-bottom: 22px; font-family: var(--serif); font-size: 14px; line-height: 1.5; color: #6b3a00; }
+    .pl-info strong { color: #4a2600; }
+
+    .pl-section { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; margin-bottom: 22px; }
+    .pl-section h2 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 18px; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+    .field input.mono { font-family: var(--mono); font-size: 13px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 720px) { .row, .row-3 { grid-template-columns: 1fr; } }
+
+    .pl-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .pl-btn { padding: 12px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .pl-btn:hover { background: var(--seal); border-color: var(--seal); }
+    .pl-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pl-btn.ghost { background: transparent; color: var(--ink); }
+    .pl-btn.sm { padding: 7px 14px; font-size: 10.5px; letter-spacing: 0.12em; border-radius: 999px; }
+
+    .pl-ok { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 14px 18px; color: #16482a; font-family: var(--serif); font-size: 14px; margin-top: 14px; }
+    .pl-err { background: #fde7e4; border-left: 4px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px; margin-top: 14px; }
+
+    .pl-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .pl-tbl th { text-align: left; padding: 10px 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+    .pl-tbl td { padding: 12px 10px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); vertical-align: top; }
+    .pl-tbl td.mono { font-family: var(--mono); font-size: 11.5px; }
+
+    .stato-pill { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; padding: 4px 9px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; border-radius: 999px; }
+    .stato-pill.in_produzione { color: #6b3a00; border-color: #ef6c00; background: #fff3e0; }
+    .stato-pill.quality_control { color: #054a73; border-color: #0c75b8; background: #e1f0fa; }
+    .stato-pill.released { color: #16482a; border-color: #1e6e3e; background: #e8f5e9; }
+    .stato-pill.recalled { color: #5a0a0a; border-color: #b00020; background: #fde7e4; }
+    .stato-pill.expired { color: #4a4a4a; border-color: #888; background: #efefef; }
+    .stato-pill.destroyed { color: #333; border-color: #000; background: #e0e0e0; }
+
+    .firma-cell { font-family: var(--mono); font-size: 10px; line-height: 1.4; color: var(--ink-2); }
+    .firma-cell .ok-sign { color: #1e6e3e; font-weight: bold; }
+    .firma-cell .pending-sign { color: var(--ink-3); }
+
+    .empty-msg { padding: 28px 8px; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); text-align: center; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("cert"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="pl-layout">
+    <header class="pl-head">
+      <span class="sub">Atto vii Cert Pharma · Lotti GMP + FMD 2D</span>
+      <h1>Lotti <em class="serif-italic">pharma</em>.</h1>
+      <p class="lede">Gestione dei lotti di farmaci con regola dei quattro occhi al rilascio: due firme distinte (produzione + qualita) per ogni lotto liberato. Ancoraggio Bitcoin all'evento di release.</p>
+    </header>
+
+    <div class="pl-info">
+      <strong>Regola dei quattro occhi (4-eyes):</strong> per portare un lotto allo stato <em>released</em> servono due utenti diversi: chi ha prodotto (firma con ruolo <em>producer</em>) e chi ha approvato il controllo qualita (firma con ruolo <em>qa</em>). Il sistema rifiuta la doppia firma dello stesso utente. Al completamento di entrambe le firme viene generato un sigillo Bitcoin del lotto.
+    </div>
+
+    <section class="pl-section">
+      <h2>Nuovo lotto</h2>
+      <form id="form-lotto">
+        <div class="field">
+          <label for="f-cert">Certificato pharma di riferimento</label>
+          <select id="f-cert" required>
+            <option value="">Caricamento certificati...</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-batch">Batch number</label>
+            <input type="text" id="f-batch" required placeholder="Es. PH-2026-001"/>
+          </div>
+          <div class="field">
+            <label for="f-gtin">GTIN (14 cifre, GS1 AI 01)</label>
+            <input type="text" id="f-gtin" class="mono" maxlength="14" minlength="14" required placeholder="08712345678901"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-sn-start">Serial range start (AI 21)</label>
+            <input type="text" id="f-sn-start" class="mono" placeholder="000000000001"/>
+          </div>
+          <div class="field">
+            <label for="f-sn-end">Serial range end</label>
+            <input type="text" id="f-sn-end" class="mono" placeholder="000000010000"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-manuf">Data di produzione</label>
+            <input type="date" id="f-manuf"/>
+          </div>
+          <div class="field">
+            <label for="f-exp">Data di scadenza (AI 17)</label>
+            <input type="date" id="f-exp" required/>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-mah">Marketing Authorization Holder (MAH) - ragione sociale</label>
+          <input type="text" id="f-mah" placeholder="Es. Acme Pharma S.p.A."/>
+        </div>
+        <div class="field">
+          <label for="f-mah-addr">Indirizzo MAH</label>
+          <input type="text" id="f-mah-addr" placeholder="Via, citta, CAP, paese"/>
+        </div>
+        <div class="field">
+          <label for="f-site">Sito di produzione (manufacturing site)</label>
+          <input type="text" id="f-site" placeholder="Es. Stabilimento Milano, EU/1/12/345/001"/>
+        </div>
+
+        <div class="pl-actions">
+          <button type="submit" class="pl-btn" id="btn-crea">Crea lotto</button>
+          <button type="reset" class="pl-btn ghost">Annulla</button>
+        </div>
+      </form>
+      <div id="crea-result"></div>
+    </section>
+
+    <section class="pl-section">
+      <h2>I tuoi lotti</h2>
+      <div id="lista-result"></div>
+      <div id="state-loading" class="empty-msg">Caricamento lotti...</div>
+      <div id="state-empty" class="empty-msg" hidden>Nessun lotto pharma al momento. Crea il tuo primo lotto qui sopra.</div>
+      <div id="state-error" class="pl-err" hidden><span></span></div>
+      <div id="tbl-wrap" hidden style="overflow-x: auto;">
+        <table class="pl-tbl">
+          <thead>
+            <tr>
+              <th>Batch</th>
+              <th>GTIN</th>
+              <th>MAH</th>
+              <th>Stato</th>
+              <th>Scadenza</th>
+              <th>Producer</th>
+              <th>QA</th>
+              <th>Azione</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base"><span>&copy; MMXXVI &middot; Veylon S.r.l.</span><span>Cert Pharma &middot; 4-eyes rule</span></div>
+  </footer>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const fmtDate = (d) => d ? new Date(d).toLocaleDateString("it-IT") : "&mdash;";
+
+    let currentUserId = null;
+
+    async function loadCertificati() {
+      const sel = $("f-cert");
+      try {
+        const { data, error } = await supabase
+          .from("cert_certificati")
+          .select("id, codice_pubblico, dati_certificato, cert_istituzioni:istituzione_id(ragione_sociale)")
+          .order("data_emissione", { ascending: false })
+          .limit(200);
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          sel.innerHTML = '<option value="">Nessun certificato disponibile - emetti prima un certificato pharma</option>';
+          return;
+        }
+        sel.innerHTML = '<option value="">Seleziona certificato di riferimento...</option>';
+        data.forEach(c => {
+          const titolo = (c.dati_certificato && (c.dati_certificato.titolo || c.dati_certificato.nome)) || "Certificato";
+          const ist = (c.cert_istituzioni && c.cert_istituzioni.ragione_sociale) || "&mdash;";
+          const opt = document.createElement("option");
+          opt.value = c.id;
+          opt.textContent = `${titolo} - ${ist} (${c.codice_pubblico})`;
+          sel.appendChild(opt);
+        });
+      } catch (e) {
+        sel.innerHTML = '<option value="">Errore caricamento certificati</option>';
+      }
+    }
+
+    async function loadLotti() {
+      const tblBody = $("tbl-body");
+      tblBody.innerHTML = "";
+      $("state-loading").hidden = false;
+      $("state-empty").hidden = true;
+      $("state-error").hidden = true;
+      $("tbl-wrap").hidden = true;
+
+      try {
+        const { data, error } = await supabase
+          .from("cert_pharma_lotti")
+          .select("id, batch_number, gtin, mah_name, stato, expiry_date, manufacturing_date, released_at, released_by_user_id, released_qa_user_id")
+          .order("created_at", { ascending: false })
+          .limit(200);
+
+        $("state-loading").hidden = true;
+        if (error) {
+          $("state-error").querySelector("span").textContent = "Errore caricamento lotti: " + error.message;
+          $("state-error").hidden = false;
+          return;
+        }
+        if (!data || data.length === 0) {
+          $("state-empty").hidden = false;
+          return;
+        }
+
+        data.forEach(l => {
+          const tr = document.createElement("tr");
+          const stato = l.stato || "in_produzione";
+          const producerSigned = !!l.released_by_user_id;
+          const qaSigned = !!l.released_qa_user_id;
+          const meIsProducer = currentUserId && l.released_by_user_id === currentUserId;
+          const meIsQa = currentUserId && l.released_qa_user_id === currentUserId;
+
+          let actionHtml = "";
+          if (["in_produzione", "quality_control"].includes(stato)) {
+            const canSignProducer = !producerSigned && !meIsQa;
+            const canSignQa = !qaSigned && !meIsProducer;
+            const parts = [];
+            if (canSignProducer) parts.push(`<button class="pl-btn sm" data-action="release" data-lotto="${escapeHtml(l.id)}" data-role="producer">Firma producer</button>`);
+            if (canSignQa) parts.push(`<button class="pl-btn sm ghost" data-action="release" data-lotto="${escapeHtml(l.id)}" data-role="qa">Firma QA</button>`);
+            actionHtml = parts.join('<br/>');
+            if (!parts.length) actionHtml = '<span class="firma-cell">In attesa altro firmatario</span>';
+          } else if (stato === "released") {
+            actionHtml = '<span class="firma-cell ok-sign">Released</span>';
+          } else {
+            actionHtml = `<span class="firma-cell">${escapeHtml(stato)}</span>`;
+          }
+
+          tr.innerHTML = `
+            <td class="mono">${escapeHtml(l.batch_number)}</td>
+            <td class="mono">${escapeHtml(l.gtin)}</td>
+            <td>${escapeHtml(l.mah_name || "&mdash;")}</td>
+            <td><span class="stato-pill ${escapeHtml(stato)}">${escapeHtml(stato.replace(/_/g, ' '))}</span></td>
+            <td>${fmtDate(l.expiry_date)}</td>
+            <td class="firma-cell">${producerSigned ? '<span class="ok-sign">firmato</span>' : '<span class="pending-sign">in attesa</span>'}</td>
+            <td class="firma-cell">${qaSigned ? '<span class="ok-sign">firmato</span>' : '<span class="pending-sign">in attesa</span>'}</td>
+            <td>${actionHtml}</td>
+          `;
+          tblBody.appendChild(tr);
+        });
+
+        $("tbl-wrap").hidden = false;
+      } catch (e) {
+        $("state-loading").hidden = true;
+        $("state-error").querySelector("span").textContent = "Errore: " + (e.message || String(e));
+        $("state-error").hidden = false;
+      }
+    }
+
+    $("form-lotto").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("crea-result");
+      box.innerHTML = "";
+
+      const certificato_id = $("f-cert").value;
+      const batch_number = $("f-batch").value.trim();
+      const gtin = $("f-gtin").value.trim();
+      const serial_range_start = $("f-sn-start").value.trim();
+      const serial_range_end = $("f-sn-end").value.trim();
+      const manufacturing_date = $("f-manuf").value;
+      const expiry_date = $("f-exp").value;
+      const mah_name = $("f-mah").value.trim();
+      const mah_address = $("f-mah-addr").value.trim();
+      const manufacturing_site = $("f-site").value.trim();
+
+      if (!certificato_id) { box.innerHTML = '<div class="pl-err">Seleziona un certificato di riferimento.</div>'; return; }
+      if (!/^[0-9]{14}$/.test(gtin)) { box.innerHTML = '<div class="pl-err">GTIN deve essere esattamente 14 cifre numeriche (standard GS1).</div>'; return; }
+      if (!expiry_date) { box.innerHTML = '<div class="pl-err">Data di scadenza obbligatoria (AI 17 GS1).</div>'; return; }
+
+      const btn = $("btn-crea");
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = "Creazione...";
+
+      try {
+        const payload = {
+          certificato_id,
+          batch_number,
+          gtin,
+          expiry_date,
+        };
+        if (serial_range_start) payload.serial_range_start = serial_range_start;
+        if (serial_range_end) payload.serial_range_end = serial_range_end;
+        if (manufacturing_date) payload.manufacturing_date = manufacturing_date;
+        if (mah_name) payload.mah_name = mah_name;
+        if (mah_address) payload.mah_address = mah_address;
+        if (manufacturing_site) payload.manufacturing_site = manufacturing_site;
+
+        const { data, error } = await supabase
+          .from("cert_pharma_lotti")
+          .insert(payload)
+          .select("id, batch_number, gtin, stato")
+          .single();
+
+        if (error) throw error;
+
+        box.innerHTML = `<div class="pl-ok"><strong>Lotto creato.</strong> Batch <span class="mono">${escapeHtml(data.batch_number)}</span> in stato <em>${escapeHtml(data.stato)}</em>. Ora servono due firme distinte per il rilascio.</div>`;
+        $("form-lotto").reset();
+        await loadLotti();
+      } catch (e) {
+        box.innerHTML = `<div class="pl-err">Errore creazione lotto: ${escapeHtml(e.message || String(e))}</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    });
+
+    document.addEventListener("click", async (ev) => {
+      const btn = ev.target.closest('button[data-action="release"]');
+      if (!btn) return;
+      const lotto_id = btn.dataset.lotto;
+      const role = btn.dataset.role;
+      if (!lotto_id || !role) return;
+
+      if (!confirm(`Confermi la firma con ruolo "${role}" su questo lotto? La firma e' definitiva e tracciata.`)) return;
+
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = "Firma in corso...";
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/cert-lot-release`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify({ lotto_id, role }),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error((j?.error || "release_failed") + (j?.hint ? " - " + j.hint : ""));
+
+        try { if (window.plausible) window.plausible("cert_lot_release", { props: { role, stato: j.stato } }); } catch(_) {}
+
+        alert(j.nota || "Firma registrata.");
+        await loadLotti();
+      } catch (e) {
+        alert("Errore firma: " + (e.message || String(e)));
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    });
+
+    async function boot() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        currentUserId = user?.id || null;
+      } catch (_) { currentUserId = null; }
+      await loadCertificati();
+      await loadLotti();
+    }
+    boot();
+  </script>
+</body>
+</html>
