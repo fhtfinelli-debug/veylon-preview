@@ -138,7 +138,7 @@
           <td>${escapeHtml(a.doc_name || "Atto senza titolo")}</td>
           <td class="mono">${escapeHtml(shaShort)}</td>
           <td><span class="pill ${pillCls}">${escapeHtml(stato)}</span></td>
-          <td style="text-align:right;"><a class="link-seal small" href="verifica.html?sha256=${encodeURIComponent(a.sha256 || "")}">Apri →</a></td>
+          <td style="text-align:right;"><a class="link-seal small" href="sigillo.html?id=${encodeURIComponent(a.id || "")}">Vedi sigillo →</a></td>
         `;
         tbody.appendChild(tr);
       });

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Sigillo</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .sig-layout { max-width: 980px; margin: 24px auto 96px; padding: 0 24px; }
+    .sig-head { padding-bottom: 24px; border-bottom: 1px solid var(--rule); margin-bottom: 28px; }
+    .sig-head .seal-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--seal); text-transform: uppercase; }
+    .sig-head h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -0.01em; margin: 10px 0 8px; }
+    .sig-head .sub { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+
+    .actions-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 28px 0; }
+    .btn-primary { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--ink); border-color: var(--ink); }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+    .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; margin-bottom: 16px; }
+    .panel-card h2 { font-family: var(--serif); font-weight: normal; font-size: 20px; margin: 0 0 16px; }
+
+    .kv-row { display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+    .kv-row:last-child { border-bottom: 0; }
+    .kv-row .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); padding-top: 3px; }
+    .kv-row .v { font-family: var(--serif); }
+    .kv-row .v.mono { font-family: var(--mono); font-size: 11px; word-break: break-all; }
+    .kv-row .v.combined { background: var(--paper-2); padding: 6px 10px; border: 1px solid var(--rule); }
+
+    .anchor-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+    .anchor-table th { text-align: left; padding: 10px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink); }
+    .anchor-table td { padding: 12px 8px; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; vertical-align: top; }
+    .anchor-table .chain-bitcoin { color: #f7931a; font-weight: bold; }
+    .anchor-table .chain-polygon { color: #8247e5; font-weight: bold; }
+    .anchor-table .chain-solana { color: #9945ff; font-weight: bold; }
+    .status-pill { display: inline-block; padding: 2px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .status-pill.confirmed { color: #2e7d32; border: 1px solid #2e7d32; }
+    .status-pill.pending { color: #ef6c00; border: 1px solid #ef6c00; }
+    .status-pill.failed { color: #c62828; border: 1px solid #c62828; }
+
+    .formula-strip { background: var(--paper-2); padding: 14px 18px; border-left: 4px solid var(--seal); font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin: 24px 0 0; }
+    .formula-strip strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("archivio"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <main class="sig-layout">
+
+    <div id="state-loading" style="font-family: var(--serif); color: var(--ink-2); font-style: italic; padding: 24px 0;">Caricamento sigillo...</div>
+    <div id="state-error" hidden style="font-family: var(--serif); color: var(--seal); padding: 24px 0;"><span></span></div>
+
+    <article id="sig-body" hidden>
+      <header class="sig-head">
+        <div class="seal-num">Atto i Sigillo · sigillo blockchain</div>
+        <h1><em class="serif-italic" style="color: var(--seal);">Sigillo</em> di <span id="sig-doc-name">—</span></h1>
+        <div class="sub">Atto Veylon ID: <span id="sig-atto-id" class="mono">—</span></div>
+      </header>
+
+      <div class="actions-row">
+        <a id="btn-download" class="btn-primary" href="#" download>
+          ⬇ Scarica documento con sigillo (PDF)
+        </a>
+        <a id="btn-verifica-pubblica" class="btn-ghost" href="#" target="_blank" rel="noopener">
+          Pagina di verifica pubblica
+        </a>
+      </div>
+
+      <section class="panel-card">
+        <h2>Informazioni del documento</h2>
+        <div class="kv-row">
+          <div class="k">Nome documento</div>
+          <div class="v" id="kv-name">—</div>
+        </div>
+        <div class="kv-row">
+          <div class="k">File hash (SHA-256)</div>
+          <div class="v mono" id="kv-fhash">—</div>
+        </div>
+        <div class="kv-row">
+          <div class="k">Data caricamento</div>
+          <div class="v mono" id="kv-created">—</div>
+        </div>
+        <div class="kv-row">
+          <div class="k">Versione corrente</div>
+          <div class="v mono" id="kv-version">v1</div>
+        </div>
+      </section>
+
+      <section class="panel-card">
+        <h2>Sigillo blockchain (Triplo Sigillo Veylon)</h2>
+        <div class="kv-row">
+          <div class="k">Activities hash</div>
+          <div class="v mono" id="kv-ahash">—</div>
+        </div>
+        <div class="kv-row">
+          <div class="k">Combined hash</div>
+          <div class="v mono combined" id="kv-chash">—</div>
+        </div>
+
+        <table class="anchor-table">
+          <thead>
+            <tr>
+              <th>Blockchain</th>
+              <th>Transaction</th>
+              <th>Blocco</th>
+              <th>Stato</th>
+              <th>Datetime</th>
+            </tr>
+          </thead>
+          <tbody id="anchor-tbody">
+            <tr><td colspan="5" style="font-family: var(--serif); font-style: italic; color: var(--ink-2);">Caricamento ancoraggi...</td></tr>
+          </tbody>
+        </table>
+
+        <div class="formula-strip">
+          <strong>Formula:</strong> combined_hash = SHA256( file_hash &Vert; activities_hash )<br/>
+          <strong>Verifica:</strong> chiunque pu&ograve; ricalcolare il hash del documento e confrontarlo con quello on-chain, in qualunque momento futuro, senza dipendere dai server Veylon.
+        </div>
+      </section>
+
+      <section class="panel-card" id="versioni-card" hidden>
+        <h2>Storia versioni</h2>
+        <table class="anchor-table">
+          <thead>
+            <tr><th>Versione</th><th>Hash</th><th>Caricata</th></tr>
+          </thead>
+          <tbody id="versioni-tbody"></tbody>
+        </table>
+      </section>
+
+      <section class="panel-card" id="eventi-card" hidden>
+        <h2>Registro attivit&agrave;</h2>
+        <div id="eventi-list"></div>
+      </section>
+    </article>
+
+  </main>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+    function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "—"; }
+
+    async function load() {
+      const params = new URLSearchParams(location.search);
+      const id = (params.get("id") || params.get("atto_id") || "").trim();
+      const sha = (params.get("h") || params.get("sha256") || "").trim().toLowerCase();
+      if (!id && !sha) {
+        $("state-loading").hidden = true;
+        $("state-error").querySelector("span").textContent = "Parametro mancante (id o h).";
+        $("state-error").hidden = false;
+        return;
+      }
+
+      // 1. Recupera atto
+      let q = supabase.from("veylon_atti")
+        .select("id, doc_name, sha256, ots_status, ots_proof, btc_block_height, btc_block_time, created_at, confirmed_at, polygon_tx_hash, block_number");
+      if (id) q = q.eq("id", id); else q = q.eq("sha256", sha);
+      const { data: atto, error: attoErr } = await q.maybeSingle();
+      if (attoErr || !atto) {
+        $("state-loading").hidden = true;
+        $("state-error").querySelector("span").textContent = "Atto non trovato. Probabilmente non e' tuo o non esiste (id: " + (id || sha) + ").";
+        $("state-error").hidden = false;
+        return;
+      }
+
+      // Header
+      $("sig-doc-name").textContent = atto.doc_name || "(senza nome)";
+      $("sig-atto-id").textContent = atto.id;
+      $("kv-name").textContent = atto.doc_name || "(senza nome)";
+      $("kv-fhash").textContent = atto.sha256;
+      $("kv-created").textContent = fmt(atto.created_at);
+
+      // Download URL: chiama veylon-certificato che genera PDF on-the-fly
+      const downloadUrl = `${SUPABASE_URL}/functions/v1/veylon-certificato?id=${encodeURIComponent(atto.id)}`;
+      $("btn-download").href = downloadUrl;
+      // veylon-certificato non e' published-public via CORS standard, serve usare fetch+blob per allegare l'apikey nel header
+      $("btn-download").addEventListener("click", async (e) => {
+        e.preventDefault();
+        $("btn-download").textContent = "⏳ Generazione PDF...";
+        try {
+          const r = await fetch(downloadUrl, { headers: { "apikey": SUPABASE_ANON, "Authorization": "Bearer " + SUPABASE_ANON } });
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          const blob = await r.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = blobUrl;
+          link.download = "veylon-certificato-" + atto.id + ".pdf";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+        } catch (err) {
+          alert("Errore download: " + (err.message || err));
+        } finally {
+          $("btn-download").textContent = "⬇ Scarica documento con sigillo (PDF)";
+        }
+      });
+
+      $("btn-verifica-pubblica").href = "verifica.html?h=" + encodeURIComponent(atto.sha256);
+
+      $("state-loading").hidden = true;
+      $("sig-body").hidden = false;
+
+      // 2. Combined verify (non blocca render se fallisce)
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/combined-verify?atto_id=${encodeURIComponent(atto.id)}`, {
+          headers: { "apikey": SUPABASE_ANON, "Authorization": "Bearer " + SUPABASE_ANON },
+        });
+        const j = await r.json();
+        $("kv-ahash").textContent = j.activities_hash || "—";
+        $("kv-chash").textContent = j.combined_hash || "—";
+
+        const anchors = j.anchors || [];
+        const labels = { bitcoin: "Bitcoin (OTS)", polygon: "Polygon", solana: "Solana" };
+        const explorers = {
+          bitcoin: (tx) => tx ? `https://mempool.space/tx/${tx}` : null,
+          polygon: (tx) => tx ? `https://polygonscan.com/tx/${tx}` : null,
+          solana:  (tx) => tx ? `https://explorer.solana.com/tx/${tx}` : null,
+        };
+        const tbody = $("anchor-tbody");
+        if (!anchors.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="font-family: var(--serif); font-style: italic; color: var(--ink-2);">Nessun ancoraggio blockchain registrato per questo atto.</td></tr>`;
+        } else {
+          tbody.innerHTML = anchors.map(a => {
+            const link = explorers[a.blockchain] ? explorers[a.blockchain](a.tx_ref) : null;
+            const txTxt = a.tx_ref
+              ? (link ? `<a href="${link}" target="_blank" rel="noopener" style="color: var(--seal); text-decoration: underline;">${escapeHtml(a.tx_ref.length > 20 ? a.tx_ref.slice(0, 14) + "..." + a.tx_ref.slice(-4) : a.tx_ref)}</a>` : escapeHtml(a.tx_ref))
+              : "—";
+            return `<tr>
+              <td class="chain-${a.blockchain}">${escapeHtml(labels[a.blockchain] || a.blockchain)}</td>
+              <td>${txTxt}</td>
+              <td>${a.block_number ?? "—"}</td>
+              <td><span class="status-pill ${escapeHtml(a.status)}">${escapeHtml(a.status)}</span></td>
+              <td>${escapeHtml(fmt(a.datetime_anchor))}</td>
+            </tr>`;
+          }).join("");
+        }
+      } catch (e) {
+        $("anchor-tbody").innerHTML = `<tr><td colspan="5" style="color: var(--seal);">Errore verifica blockchain: ${escapeHtml(e.message || e)}</td></tr>`;
+      }
+
+      // 3. Versioni
+      try {
+        const { data: vers } = await supabase.from("veylon_atti_versioni")
+          .select("version_num, sha256, doc_name, created_at")
+          .eq("atto_id", atto.id)
+          .order("version_num", { ascending: false });
+        if (vers && vers.length > 1) {
+          $("versioni-card").hidden = false;
+          $("kv-version").textContent = "v" + Math.max(...vers.map(v => v.version_num));
+          $("versioni-tbody").innerHTML = vers.map(v =>
+            `<tr><td>v${v.version_num}</td><td>${escapeHtml(v.sha256.slice(0, 16))}…</td><td>${escapeHtml(fmt(v.created_at))}</td></tr>`
+          ).join("");
+        }
+      } catch (e) { console.warn("versioni fail", e); }
+
+      // 4. Eventi
+      try {
+        const { data: ev } = await supabase.from("veylon_eventi")
+          .select("evento_tipo, attore_email, created_at")
+          .eq("atto_id", atto.id)
+          .order("created_at", { ascending: false })
+          .limit(50);
+        if (ev && ev.length) {
+          $("eventi-card").hidden = false;
+          $("eventi-list").innerHTML = ev.map(e =>
+            `<div style="padding: 10px 0; border-bottom: 1px solid var(--rule); font-family: var(--serif); font-size: 14px;">
+              <span style="display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 2px 6px; background: var(--paper-2); border: 1px solid var(--rule); margin-right: 8px;">${escapeHtml(e.evento_tipo)}</span>
+              <span>${escapeHtml(e.attore_email || "sistema")}</span>
+              <span style="margin-left: 12px; font-family: var(--mono); font-size: 11px; color: var(--ink-3);">${escapeHtml(fmt(e.created_at))}</span>
+            </div>`
+          ).join("");
+        }
+      } catch (e) { console.warn("eventi fail", e); }
+    }
+
+    load();
+  </script>
+</body>
+</html>
