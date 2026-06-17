@@ -64,6 +64,41 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- Firma · 4 modalita firma elettronica (Atto viii, landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/firma-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Registro · Audit trail immutabile ALCOA+ (Atto v, landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/registro-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Speed · PWA mobile + SPID (layer accelerato sopra i 9 atti, landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/speed-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Garanzie · Garanzia commerciale certificata (Atto iv, landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/garanzie-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- KYC · Onboarding identita (Atto ix, landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/kyc-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
   <!-- Chi siamo -->
   <url>
     <loc>https://veylon.app/chi-siamo.html</loc>
