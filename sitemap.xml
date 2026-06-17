@@ -29,6 +29,13 @@
     <priority>0.85</priority>
   </url>
 
+  <!-- Send · WeTransfer certificato (landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/send-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Chi siamo -->
   <url>
     <loc>https://veylon.app/chi-siamo.html</loc>
