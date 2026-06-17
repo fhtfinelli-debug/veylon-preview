@@ -455,6 +455,35 @@
     await new Promise(r => setTimeout(r, 250));
   }
 
+  // ---- Helpers cifratura "from_atto" (AES-GCM-256 con chiave nel fragment) ----
+  function b64urlToBytes(s) {
+    if (!s) return null;
+    const p = s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4);
+    const bin = atob(p);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  function readKeyFromFragment() {
+    const h = location.hash.startsWith("#") ? location.hash.substring(1) : location.hash;
+    const params = new URLSearchParams(h);
+    return { k: b64urlToBytes(params.get("k")), n: b64urlToBytes(params.get("n")) };
+  }
+  async function decryptFromAtto(blobUrl, keyBytes, ivBytes, expectedSha) {
+    const r = await fetch(blobUrl);
+    if (!r.ok) throw new Error("download_blob_fallito_" + r.status);
+    const ct = new Uint8Array(await r.arrayBuffer());
+    // Verifica sha del cifrato (opzionale, se ce l aspettato)
+    if (expectedSha) {
+      const h = await crypto.subtle.digest("SHA-256", ct);
+      const hex = [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, "0")).join("");
+      if (hex !== expectedSha) throw new Error("sha_cifrato_mismatch");
+    }
+    const key = await crypto.subtle.importKey("raw", keyBytes, { name: "AES-GCM" }, false, ["decrypt"]);
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: ivBytes }, key, ct);
+    return new Uint8Array(plain);
+  }
+
   // ---- Main flow ---------------------------------------------------------
   (async function main() {
     const params = new URLSearchParams(location.search);
@@ -464,6 +493,9 @@
       $auth.innerHTML = '<h1 class="serif" style="font-size:36px;">Link non valido</h1><p class="lede">Manca il token di accesso. Verificare il link ricevuto via email.</p>';
       return;
     }
+    // RILEVA flusso "from_atto" via fragment URL: se presente #k= la chiave AES e li
+    const fragKey = readKeyFromFragment();
+    const isFromAtto = !!(fragKey.k && fragKey.n);
 
     // 1) Recupera metadati + signed URL download
     let info;
@@ -511,13 +543,60 @@
         + '<div class="ao-letter">A</div>'
         + '<div class="ao-body">'
         + '<div class="ao-title">Decifra ora</div>'
-        + '<div class="ao-desc">La decifratura avviene sul vostro dispositivo. La chiave privata non viene mai inviata.</div>'
+        + '<div class="ao-desc">' + (isFromAtto ? 'La chiave AES-256 e nel fragment URL del magic link &mdash; non e mai passata per il server Veylon. Decifratura locale nel browser.' : 'La decifratura avviene sul vostro dispositivo. La chiave privata non viene mai inviata.') + '</div>'
         + '</div>'
         + '<div class="ao-arrow">&rarr;</div>'
         + '</button>';
-      document.getElementById('decryptNowBtn').addEventListener('click', () => startFlow(t, info.blob_download_url, token));
+      document.getElementById('decryptNowBtn').addEventListener('click', () => {
+        if (isFromAtto) {
+          startFlowFromAtto(t, info.blob_download_url, fragKey);
+        } else {
+          startFlow(t, info.blob_download_url, token);
+        }
+      });
     }
   })();
+
+  async function startFlowFromAtto(t, blobUrl, fragKey) {
+    showDecrypt();
+    try {
+      await markStep(0, 'Lettura chiave AES dal fragment URL...');
+      if (!fragKey.k || fragKey.k.length !== 32) throw new Error("chiave AES mancante o invalida nel fragment URL");
+      if (!fragKey.n || fragKey.n.length !== 12) throw new Error("nonce mancante o invalido nel fragment URL");
+
+      await markStep(1, 'Download del plico cifrato dal server...');
+      await markStep(2, 'Decifratura AES-GCM-256 in memoria...');
+      const plainBytes = await decryptFromAtto(blobUrl, fragKey.k, fragKey.n, t.sha256_cifrato || null);
+
+      await markStep(3, 'Verifica integrita SHA-256...');
+      await markStep(4, 'Apposizione della ricevuta di apertura su Bitcoin...');
+
+      // Confirm apertura (best-effort)
+      try {
+        await callFn('send-receive-confirm', { token: (new URLSearchParams(location.search)).get('token') }, { method: 'POST' });
+      } catch (e) { console.warn('confirm_failed', e); }
+
+      // Mostra documento aperto
+      showOpen();
+      document.getElementById('oNome').textContent = t.nome_file_originale || 'documento.pdf';
+      const ext = (t.nome_file_originale || '').split('.').pop()?.toUpperCase() || 'PDF';
+      document.getElementById('oExt').textContent = ext.slice(0, 4);
+      document.getElementById('oMeta').textContent = `${plainBytes.length.toLocaleString('it-IT')} byte · SHA-256 timbrato: ${(t.sha256_originale || '').substring(0,16)}...`;
+      document.getElementById('oMittente').textContent = t.mittente_email || '-';
+      document.getElementById('oInviato').textContent = t.created_at ? new Date(t.created_at).toLocaleString('it-IT') : '-';
+      document.getElementById('openedAt').textContent = new Date().toLocaleString('it-IT');
+
+      // Blob URL per download
+      const blob = new Blob([plainBytes], { type: t.mime_originale || 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const dlBtn = document.getElementById('dlBtn');
+      dlBtn.href = url;
+      dlBtn.download = t.nome_file_originale || 'documento.pdf';
+    } catch (err) {
+      showAuth();
+      $auth.innerHTML = '<h1 class="serif" style="font-size:36px;">Decifratura fallita</h1><p class="lede">Errore: ' + escapeHtml(err?.message ?? 'sconosciuto') + '</p>';
+    }
+  }
 
   function escapeHtml(s) {
     return String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

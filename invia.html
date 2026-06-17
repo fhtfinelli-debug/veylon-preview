@@ -158,8 +158,11 @@
       const previewLink = j.timbrato_url_preview ? `<br/><a href="${j.timbrato_url_preview}" target="_blank" rel="noopener" style="color: var(--seal); font-family: var(--mono); font-size: 12px;">&rarr; Anteprima documento timbrato (15 min)</a>` : "";
       const verifyLink = j.verifica_url ? `<br/><a href="${j.verifica_url}" target="_blank" rel="noopener" style="color: var(--seal); font-family: var(--mono); font-size: 12px;">&rarr; Pagina verifica pubblica</a>` : "";
       const otsBadge = j.timbrato_ots_status === "pending" ? '<span class="pill warn" style="margin-left:6px;">OTS pending</span>' : (j.timbrato_ots_status === "confirmed" ? '<span class="pill ok" style="margin-left:6px;">Bitcoin confermato</span>' : '');
-      document.getElementById("result-codice").innerHTML = `${escapeHtml(j.codice || j.trasmissione_id)} ${otsBadge}`;
-      document.getElementById("result-msg").innerHTML = `${j.timbrato_applicato ? "<strong>PDF timbrato con QR Veylon</strong> e inviato al destinatario." : "PDF inviato (timbro non applicato: " + escapeHtml(j.nota || "") + ")"} ${previewLink} ${verifyLink}`;
+      const cifBadge = j.cifratura?.algoritmo === "AES-GCM-256" ? '<span class="pill" style="margin-left:6px; background:#1e6e3e; color:white; border-color:#1e6e3e;">AES-GCM-256</span>' : '';
+      const magicUrl = j.magic_url || "";
+      const copyBtn = magicUrl ? `<button type="button" onclick="navigator.clipboard.writeText('${magicUrl.replace(/'/g, "\\'")}').then(()=>{this.textContent='Copiato!';setTimeout(()=>{this.textContent='Copia magic link cifrato (con chiave)';},2000);})" style="margin-top:10px; padding:8px 16px; font-family: var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; border:1px solid #1e6e3e; background:transparent; color:#1e6e3e; cursor:pointer; border-radius:999px;">Copia magic link cifrato (con chiave)</button>` : "";
+      document.getElementById("result-codice").innerHTML = `${escapeHtml(j.codice || j.trasmissione_id)} ${otsBadge} ${cifBadge}`;
+      document.getElementById("result-msg").innerHTML = `${j.timbrato_applicato ? "<strong>PDF timbrato (QR Veylon ultima pagina) + cifrato AES-GCM-256.</strong>" : "PDF inviato (timbro non applicato: " + escapeHtml(j.nota || "") + ")"} La chiave di decifratura e SOLO nel fragment URL del magic link &mdash; non passa mai per il server Veylon. ${previewLink} ${verifyLink} ${copyBtn}`;
       document.getElementById("result").hidden = false;
       document.getElementById("form").reset();
       loadList();
