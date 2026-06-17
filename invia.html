@@ -12,11 +12,11 @@
   <main class="col" style="padding: 40px 32px 96px;">
     <section class="head-row">
       <div>
-        <span class="section-num">Veylon Send</span>
+        <span class="section-num">Veylon Send · WeTransfer certificato</span>
         <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
-          Invia un <em class="serif-italic" style="color: var(--seal);">plico cifrato.</em>
+          Invia un <em class="serif-italic" style="color: var(--seal);">plico timbrato.</em>
         </h1>
-        <p class="lede">Trasmissione end-to-end con ricevuta di consegna. Validità link massima: <strong>3 giorni</strong>.</p>
+        <p class="lede">WeTransfer veloce, certificato come una raccomandata. Ogni file viene <strong>marcato con QR Veylon</strong> + sigillato su Bitcoin prima di partire. Validita link massima: <strong>3 giorni</strong>.</p>
       </div>
     </section>
 
@@ -50,11 +50,14 @@
             </div>
             <p class="small" style="margin-top: 6px; color: var(--ink-3);">Limite massimo: 3 giorni.</p>
           </div>
-          <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
-            <span class="btn-label">Invia plico</span>
+          <div style="margin-top: 14px; padding: 12px 14px; background: #e8f5e9; border-left: 3px solid #1e6e3e; font-family: var(--serif); font-size: 13px; color: #16482a; line-height: 1.5;">
+            <strong>Documento timbrato:</strong> prima di partire il PDF viene marcato con QR Veylon (verifica autenticita + impronta SHA-256 + ID trasmissione) sull&apos;ultima pagina. Il destinatario riceve il documento gia certificato.
+          </div>
+          <button type="submit" class="btn seal lg" id="submit" style="margin-top: 18px;">
+            <span class="btn-label">Invia plico timbrato</span>
           </button>
-          <div id="result" hidden style="margin-top: 20px; padding: 14px; border: 1px solid var(--rule); background: var(--paper-2);">
-            <div class="eyebrow seal-c" style="margin-bottom: 6px;">Trasmissione inviata</div>
+          <div id="result" hidden style="margin-top: 20px; padding: 18px; border: 1px solid #1e6e3e; background: #e8f5e9;">
+            <div class="eyebrow seal-c" style="margin-bottom: 6px; color: #1e6e3e;">Trasmissione inviata &amp; timbrata</div>
             <div class="mono" style="font-size: 12px;" id="result-codice"></div>
             <p class="small" style="margin-top: 6px;" id="result-msg"></p>
           </div>
@@ -144,15 +147,19 @@
     const original = btn.querySelector(".btn-label").textContent;
     btn.querySelector(".btn-label").textContent = "Invio…";
     try {
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/send-create`, {
+      // Endpoint dedicato al flusso "documento dall'archivio" con timbratura QR Veylon
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/send-create-from-atto`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
         body: JSON.stringify({ atto_id, destinatario_email: dest, livello_identita_richiesto: liv, expires_in_days: dur }),
       });
       const j = await res.json();
-      if (!res.ok || !j.success) throw new Error(j?.error || "errore_invio");
-      document.getElementById("result-codice").textContent = j.codice_verifica || j.id || "Inviato";
-      document.getElementById("result-msg").textContent = "Il destinatario ha ricevuto il link.";
+      if (!res.ok || !j.ok) throw new Error(j?.error || "errore_invio");
+      const previewLink = j.timbrato_url_preview ? `<br/><a href="${j.timbrato_url_preview}" target="_blank" rel="noopener" style="color: var(--seal); font-family: var(--mono); font-size: 12px;">&rarr; Anteprima documento timbrato (15 min)</a>` : "";
+      const verifyLink = j.verifica_url ? `<br/><a href="${j.verifica_url}" target="_blank" rel="noopener" style="color: var(--seal); font-family: var(--mono); font-size: 12px;">&rarr; Pagina verifica pubblica</a>` : "";
+      const otsBadge = j.timbrato_ots_status === "pending" ? '<span class="pill warn" style="margin-left:6px;">OTS pending</span>' : (j.timbrato_ots_status === "confirmed" ? '<span class="pill ok" style="margin-left:6px;">Bitcoin confermato</span>' : '');
+      document.getElementById("result-codice").innerHTML = `${escapeHtml(j.codice || j.trasmissione_id)} ${otsBadge}`;
+      document.getElementById("result-msg").innerHTML = `${j.timbrato_applicato ? "<strong>PDF timbrato con QR Veylon</strong> e inviato al destinatario." : "PDF inviato (timbro non applicato: " + escapeHtml(j.nota || "") + ")"} ${previewLink} ${verifyLink}`;
       document.getElementById("result").hidden = false;
       document.getElementById("form").reset();
       loadList();
