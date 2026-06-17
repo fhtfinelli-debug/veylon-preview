@@ -36,6 +36,34 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- Mail · PEC cross-EU (landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/mail-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Sigillo · Notarizzazione documenti su Bitcoin (landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/notarizza-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tag · Digital Product Passport UE (landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/tag-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Cert · Certificati istituzionali (Atto vii, landing prodotto dedicata) -->
+  <url>
+    <loc>https://veylon.app/cert-prodotto.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Chi siamo -->
   <url>
     <loc>https://veylon.app/chi-siamo.html</loc>

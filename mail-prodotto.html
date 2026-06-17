@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Mail · La PEC che vale in tutta UE, senza casella nuova</title>
+  <meta name="description" content="Email certificate cross-EU alternativa alla PEC. Usi la mail che gia hai (Gmail, Outlook, dominio). Veylon la sigilla su Bitcoin: invio, consegna, contenuto certificato. eIDAS art. 41, senza canone, senza limiti allegati."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/mail-prodotto.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Mail · La PEC che vale in tutta UE, senza casella nuova"/>
+  <meta property="og:description" content="Usi la tua mail Gmail/Outlook/dominio. Veylon la certifica: ricevuta di invio, consegna, contenuto. Vale come PEC ma in tutta UE (eIDAS art. 41). Senza canone, senza limiti allegati."/>
+  <meta property="og:url" content="https://veylon.app/mail-prodotto.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto 36px; }
+    .sp-hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .sp-trust { padding: 28px 32px; max-width: 980px; margin: 0 auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sp-trust span { display: flex; align-items: center; gap: 8px; }
+    .sp-trust .dot { width: 6px; height: 6px; background: var(--seal); border-radius: 50%; }
+
+    .sp-section { max-width: 980px; margin: 0 auto; padding: 72px 32px; }
+    .sp-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 14px; }
+    .sp-section h2 em { color: var(--seal); }
+    .sp-section .lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 0 40px; }
+
+    /* 3 modalita / 3 step */
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .step-list { grid-template-columns: 1fr; } }
+    .step-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .step-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 64px; line-height: 1; position: absolute; top: 18px; right: 22px; opacity: 0.25; }
+    .step-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .step-card p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .step-card .what { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; display: block; }
+
+    /* Per chi — 4 esempi */
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 800px) { .use-cases { grid-template-columns: 1fr; } }
+    .use-case { background: var(--paper); border-left: 3px solid var(--seal); padding: 24px 26px; }
+    .use-case .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 10px; }
+    .use-case h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 10px; }
+    .use-case p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+    .use-case .quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    /* Confronto tabella */
+    .compare-table { width: 100%; border-collapse: collapse; font-family: var(--serif); font-size: 14px; margin-top: 18px; }
+    .compare-table th, .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); }
+    .compare-table td.feat { font-family: var(--serif); font-weight: normal; color: var(--ink); }
+    .compare-table td.veylon { background: rgba(106, 74, 26, 0.05); border-left: 3px solid var(--seal); }
+    .compare-table .yes { color: #1e6e3e; font-weight: bold; }
+    .compare-table .no { color: #b00020; }
+    .compare-table .partial { color: #ef6c00; }
+
+    /* 4 ricevute */
+    .receipts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    @media (max-width: 800px) { .receipts { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .receipts { grid-template-columns: 1fr; } }
+    .receipt { background: var(--paper); border: 1px solid var(--rule); padding: 22px 18px; text-align: center; }
+    .receipt .roman { font-family: var(--serif); font-style: italic; font-size: 28px; color: var(--seal); }
+    .receipt h4 { font-family: var(--serif); font-weight: normal; font-size: 17px; margin: 8px 0 8px; }
+    .receipt p { font-family: var(--serif); font-size: 13px; line-height: 1.45; color: var(--ink-2); margin: 0; }
+
+    .sp-faq { max-width: 720px; margin: 0 auto; padding: 56px 32px 32px; }
+    .sp-faq h2 { font-family: var(--serif); font-weight: normal; font-size: 32px; margin: 0 0 24px; }
+    .sp-faq details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    .sp-faq summary { font-family: var(--serif); font-size: 17px; cursor: pointer; padding: 4px 0; color: var(--ink); }
+    .sp-faq details[open] summary { color: var(--seal); }
+    .sp-faq details p { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 12px 0 4px; padding-left: 18px; border-left: 2px solid var(--rule); }
+
+    .sp-bottom-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; }
+    .sp-bottom-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); margin: 0 0 14px; }
+    .sp-bottom-cta h2 em { color: var(--seal); }
+    .sp-bottom-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+
+    .ribbon { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #1e6e3e; padding: 14px 32px; }
+    .ribbon-inner { max-width: 980px; margin: 0 auto; font-family: var(--serif); font-size: 14px; color: #16482a; text-align: center; }
+    .ribbon-inner strong { font-weight: bold; }
+
+    /* 3 modalita: tab cards */
+    .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .modes { grid-template-columns: 1fr; } }
+    .mode { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .mode .badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); border: 1px solid var(--seal); padding: 4px 9px; display: inline-block; margin-bottom: 14px; }
+    .mode h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .mode .tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+    .mode p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0 0 12px; }
+    .mode .for { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Mail</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <div class="ribbon">
+    <div class="ribbon-inner"><strong>Cos&apos;e Veylon Mail?</strong> &mdash; un servizio per certificare le tue email come la PEC, ma in tutta l&apos;UE e usando la casella che gi&agrave; hai (Gmail, Outlook, dominio aziendale). Niente nuova casella, niente canone, niente limiti allegati.</div>
+  </div>
+
+  <header class="sp-hero">
+    <span class="kicker">Veylon &middot; Atto iii Mail</span>
+    <h1>La PEC che <em>vale in tutta UE</em>.<br/>Senza casella nuova.</h1>
+    <p class="lede">
+      Usi la mail che gi&agrave; hai. Veylon la sigilla su Bitcoin: ricevuta di invio, consegna, contenuto certificato.
+      Vale come PEC ma in tutta UE (eIDAS art. 41). Senza canone, senza casella nuova, senza limiti allegati.
+    </p>
+    <div class="cta-row">
+      <a href="signup.html?fonte=mail" class="btn-primary">Prova gratis (20 mail/mese)</a>
+      <a href="#come-funziona" class="btn-ghost">Vedi come funziona</a>
+    </div>
+  </header>
+
+  <div class="sp-trust">
+    <span><span class="dot"></span>eIDAS art. 41</span>
+    <span><span class="dot"></span>UE 27 paesi</span>
+    <span><span class="dot"></span>GDPR by design</span>
+    <span><span class="dot"></span>Bitcoin OpenTimestamps</span>
+    <span><span class="dot"></span>Server EU (Ireland)</span>
+  </div>
+
+  <section class="sp-section">
+    <h2>Il problema che <em>risolve</em>.</h2>
+    <p class="lede">Hai bisogno di prova legale per le tue email di lavoro. Le opzioni di oggi sono italiane, costose, datate, e si fermano al confine.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Servizio</th>
+          <th>Email normale</th>
+          <th>PEC italiana</th>
+          <th>Registered email (EU)</th>
+          <th class="veylon" style="border-left: 3px solid var(--seal);">Veylon Mail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feat">Validit&agrave; legale</td>
+          <td class="no">&times;</td>
+          <td class="partial">solo Italia</td>
+          <td class="partial">limitata</td>
+          <td class="veylon yes">&check; eIDAS art. 41 (27 paesi UE)</td>
+        </tr>
+        <tr>
+          <td class="feat">Usa la mail che hai gi&agrave;</td>
+          <td class="yes">&check;</td>
+          <td class="no">&times; (casella dedicata)</td>
+          <td class="no">&times; (provider dedicato)</td>
+          <td class="veylon yes">&check; Gmail, Outlook, dominio</td>
+        </tr>
+        <tr>
+          <td class="feat">Canone annuale</td>
+          <td>0&euro;</td>
+          <td class="partial">40-100&euro;/anno</td>
+          <td class="partial">60-150&euro;/anno</td>
+          <td class="veylon yes">0&euro; (20 free/mese)</td>
+        </tr>
+        <tr>
+          <td class="feat">Limite allegati</td>
+          <td class="partial">25MB tipico</td>
+          <td class="no">50MB max</td>
+          <td class="partial">variabile</td>
+          <td class="veylon yes">&check; nessun limite</td>
+        </tr>
+        <tr>
+          <td class="feat">Ricevuta invio timestamped</td>
+          <td class="no">&times;</td>
+          <td class="yes">&check; (italiana)</td>
+          <td class="partial">parziale</td>
+          <td class="veylon yes">&check; Bitcoin</td>
+        </tr>
+        <tr>
+          <td class="feat">Ricevuta consegna timestamped</td>
+          <td class="no">&times;</td>
+          <td class="yes">&check; (italiana)</td>
+          <td class="partial">parziale</td>
+          <td class="veylon yes">&check; Bitcoin</td>
+        </tr>
+        <tr>
+          <td class="feat">Hash contenuto sigillato</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; SHA-256</td>
+        </tr>
+        <tr>
+          <td class="feat">Il destinatario serve una casella speciale</td>
+          <td class="yes">no</td>
+          <td class="no">s&igrave;, deve avere PEC</td>
+          <td class="no">s&igrave;</td>
+          <td class="veylon yes">no, riceve email normale</td>
+        </tr>
+        <tr>
+          <td class="feat">Standard aperti, no lock-in</td>
+          <td>&mdash;</td>
+          <td class="no">&times; (protocollo italiano)</td>
+          <td class="partial">parziale</td>
+          <td class="veylon yes">&check; SMTP + Bitcoin + OTS</td>
+        </tr>
+        <tr>
+          <td class="feat">Attivazione</td>
+          <td>&mdash;</td>
+          <td class="no">giorni (KYC)</td>
+          <td class="no">giorni</td>
+          <td class="veylon yes">&check; 60 secondi</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sp-section" id="come-funziona">
+    <h2>Tre <em>modalit&agrave;</em>, una sola certificazione.</h2>
+    <p class="lede">Scegli quella che si incastra meglio nel tuo modo di lavorare. Anche tutte e tre insieme.</p>
+
+    <div class="modes">
+      <div class="mode">
+        <span class="badge">Modalit&agrave; A</span>
+        <p class="tag">BCC stamp</p>
+        <h3>Metti Veylon in copia nascosta</h3>
+        <p>
+          Scrivi la tua email normale da Gmail o Outlook. Aggiungi <code>certifica@mg.veylon.app</code> in BCC.
+          Veylon intercetta una copia, calcola l&apos;impronta SHA-256, sigilla su Bitcoin e ti rimanda le ricevute.
+        </p>
+        <div class="for">Per chi: vuole zero modifiche al flusso. Manda due email all&apos;anno o duecento.</div>
+      </div>
+
+      <div class="mode">
+        <span class="badge">Modalit&agrave; B</span>
+        <p class="tag">Relay SMTP outbound</p>
+        <h3>Configura SMTP Veylon nel client</h3>
+        <p>
+          Cambi il server SMTP di Gmail/Outlook con <code>smtp.veylon.app</code>. Da quel momento <strong>ogni mail in uscita</strong>
+          passa da Veylon, viene firmata, sigillata, consegnata. Hai prova legale automatica su tutta la posta business.
+        </p>
+        <div class="for">Per chi: avvocato, commercialista, freelance che vuole ogni mail tracciata senza pensarci.</div>
+      </div>
+
+      <div class="mode">
+        <span class="badge">Modalit&agrave; C</span>
+        <p class="tag">Vault inbound</p>
+        <h3>Ricevi a un alias certificato</h3>
+        <p>
+          Veylon ti d&agrave; un alias del tipo <code>tuoslug@mg.veylon.app</code>. Chiunque scrive l&igrave; viene certificato in ricezione:
+          Veylon calcola l&apos;impronta, ancora a Bitcoin, ti inoltra la mail con le ricevute. Perfetto per contratti firmati in arrivo.
+        </p>
+        <div class="for">Per chi: vuole archivio inbound certificato di tutto quello che riceve.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Le <em>4 ricevute legali</em> che ottieni.</h2>
+    <p class="lede">Per ogni email certificata, Veylon produce 4 certificati PDF opponibili in giudizio. Ognuno ancorato su Bitcoin separatamente.</p>
+
+    <div class="receipts">
+      <div class="receipt">
+        <div class="roman">i</div>
+        <h4>Invio</h4>
+        <p>"Ho mandato questa email alle 14:32 del 17 giugno 2026."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">ii</div>
+        <h4>Consegna</h4>
+        <p>"Il server mail del destinatario ha accettato il messaggio."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">iii</div>
+        <h4>Apertura</h4>
+        <p>"Il destinatario ha aperto la mail (se pixel attivo)."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">iv</div>
+        <h4>Contenuto</h4>
+        <p>"Il testo + allegati erano esattamente questi &mdash; impronta SHA-256 a prova di alterazione."</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Per chi <em>e davvero utile</em>.</h2>
+    <p class="lede">Quattro esempi concreti, scritti come ce li raccontano davvero gli utenti.</p>
+
+    <div class="use-cases">
+      <article class="use-case">
+        <div class="who">Studio legale</div>
+        <h3>Comunicazioni al cliente con tracciamento UE</h3>
+        <p>Mando solleciti, diffide, bozze contratti a clienti italiani e stranieri. Devo avere prova "quando" e "cosa", anche se il cliente &egrave; in Germania o Francia. La PEC non vale all&apos;estero, quindi sono costretto a duplicare gli invii.</p>
+        <div class="quote">"Con Veylon Mail metto certifica@mg.veylon.app in BCC e ho la stessa validit&agrave; eIDAS in 27 paesi. Il cliente non deve avere PEC. Costo: zero per il piano free, poi 9&euro;/mese."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Azienda B2B</div>
+        <h3>Fatture e ordini a distributori senza PEC</h3>
+        <p>Mando fatture e conferme d&apos;ordine ai distributori in Spagna, Polonia, Romania. Loro non hanno PEC italiana. Voglio comunque prova legale di "mandato", "consegnato", "contenuto".</p>
+        <div class="quote">"Ho configurato Veylon come relay SMTP outbound del nostro Office 365. Tutte le mail commerciali vengono certificate automaticamente. Zero formazione al team commerciale."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Comune / Ente pubblico</div>
+        <h3>Delibere e comunicazioni ai cittadini</h3>
+        <p>Devo comunicare delibere, esiti di concorso, risposte ad istanze ai cittadini. Spesso non hanno PEC. Voglio prova opponibile della comunicazione senza obbligarli ad aprire una casella PEC.</p>
+        <div class="quote">"Veylon mi d&agrave; la marca temporale Bitcoin, ricevuta di consegna e hash del contenuto. Anche tra 30 anni la prova vale, anche se Veylon non esistesse pi&ugrave;: lo standard &egrave; aperto."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Freelance / Consulente</div>
+        <h3>Ogni mail business tracciata per audit</h3>
+        <p>Lavoro da remoto con clienti in tutta Europa. Mi serve audit trail di ogni comunicazione: proposte, offerte, consegne, milestone. Senza dover ricordare di "certificare" ogni mail.</p>
+        <div class="quote">"Modalit&agrave; relay SMTP: ho cambiato il server in uscita di Gmail una volta. Da allora ogni email che mando &egrave; certificata. Mi dimentico di Veylon, lui lavora in background."</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-section" id="processo">
+    <h2>Come funziona in <em>3 step</em>.</h2>
+    <p class="lede">Scegli la modalit&agrave;, attivi, mandi. Il sigillo Bitcoin parte in automatico.</p>
+
+    <div class="step-list">
+      <div class="step-card">
+        <span class="step-num">i</span>
+        <span class="what">Tu</span>
+        <h3>Attivi la modalit&agrave;</h3>
+        <p>
+          Apri la pagina Mail nel tuo account Veylon. Scegli BCC, Relay o Vault. Per BCC non devi fare niente:
+          basta che metti l&apos;indirizzo Veylon in copia nascosta. Per Relay copi 3 righe di configurazione SMTP nel client.
+          Per Vault ricevi l&apos;alias <code>tuoslug@mg.veylon.app</code>.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">ii</span>
+        <span class="what">Veylon</span>
+        <h3>Intercetta, sigilla, ancora</h3>
+        <p>
+          Quando Veylon riceve o intercetta la mail, calcola l&apos;impronta SHA-256 di intestazioni + corpo + allegati,
+          la firma con la chiave del progetto, la ancora su Bitcoin via OpenTimestamps. Produce 4 ricevute PDF.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">iii</span>
+        <span class="what">Destinatario</span>
+        <h3>Riceve mail normale</h3>
+        <p>
+          Il destinatario riceve un&apos;email normale, nel suo client normale. <strong>Non deve registrarsi, non deve avere PEC.</strong>
+          La certificazione &egrave; lato tuo: tu hai le ricevute Bitcoin, lui ha solo la mail.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-faq">
+    <h2>Domande frequenti</h2>
+
+    <details>
+      <summary>Qual &egrave; la differenza con la PEC italiana?</summary>
+      <p>La PEC e&apos; lo standard italiano per la posta certificata. Vantaggi: validit&agrave; legale storica in Italia, riconoscimento universale dalle pubbliche amministrazioni italiane. Svantaggi: vale solo in Italia, costa 40-100&euro;/anno per casella, allegati max 50MB, devi avere una casella PEC dedicata, il destinatario deve avere PEC per ricevere. Veylon Mail copre lo stesso caso d&apos;uso ma in tutta l&apos;UE (eIDAS art. 41), usando la mail che hai gi&agrave; (Gmail, Outlook, dominio), senza limite allegati, e il destinatario non deve avere casella speciale.</p>
+    </details>
+
+    <details>
+      <summary>Cosa significa "BCC stamp"?</summary>
+      <p>Significa che quando vuoi certificare una mail, scrivi normalmente dal tuo Gmail / Outlook / dominio, e aggiungi <code>certifica@mg.veylon.app</code> nel campo <strong>BCC</strong> (copia conoscenza nascosta). Veylon riceve una copia identica del messaggio, calcola l&apos;impronta SHA-256, la ancora su Bitcoin, e ti rimanda le 4 ricevute via email. Il destinatario non vede Veylon: vede una mail normale da te. &Egrave; il modo pi&ugrave; semplice per iniziare: zero configurazione, niente da installare.</p>
+    </details>
+
+    <details>
+      <summary>La mia email Gmail / Outlook resta sicura?</summary>
+      <p>S&igrave;. Veylon non accede mai alla tua casella. Non chiede password, non chiede OAuth. In modalit&agrave; BCC riceve solo le copie delle mail che tu decidi di mandargli (aggiungendolo come destinatario). In modalit&agrave; Relay SMTP la mail transita dai server Veylon EU (Ireland) solo per il tempo necessario a calcolare l&apos;impronta e consegnare: nessun contenuto viene salvato in chiaro oltre 30 giorni audit. In modalit&agrave; Vault ricevi solo le mail spedite all&apos;alias Veylon, non le altre.</p>
+    </details>
+
+    <details>
+      <summary>Cosa succede se Veylon chiude domani?</summary>
+      <p>Le tue ricevute restano valide per sempre. Sono ancorate al registro pubblico Bitcoin via OpenTimestamps. Chiunque, con qualunque client OTS compatibile (open source), pu&ograve; verificarle in autonomia anche tra 50 anni. Veylon non &egrave; un intermediario di cui ti devi fidare: &egrave; un facilitatore di standard aperti (SMTP + SHA-256 + Bitcoin + OTS). Se chiudessimo, le ricevute gi&agrave; emesse continuerebbero a funzionare senza di noi.</p>
+    </details>
+
+    <details>
+      <summary>Quanto vale legalmente in giudizio?</summary>
+      <p>Veylon Mail produce <strong>validazione elettronica del timestamp</strong> conforme eIDAS art. 41 (regolamento UE 910/2014), valida in tutti i 27 paesi UE + L. 12/2019 art. 8-ter per la validit&agrave; nazionale italiana. In giudizio, le ricevute Veylon sono valutate dal giudice come prova del fatto (data di invio, identit&agrave; mittente, integrit&agrave; contenuto). Non &egrave; firma qualificata QES &mdash; per quella serve un certificato emesso da un TSP accreditato AgID/EU Trust List. Per la stragrande maggioranza dei casi business (comunicazioni, solleciti, fatture, ordini, audit interno), la validit&agrave; eIDAS art. 41 &egrave; sufficiente.</p>
+    </details>
+
+    <details>
+      <summary>Quanto costa?</summary>
+      <p>Piano Free: 20 mail certificate al mese. Pro: 9&euro;/mese (mail illimitate, una modalit&agrave; a scelta tra BCC/Relay/Vault). Business: 29&euro;/mese (tutte e 3 le modalit&agrave; insieme, dominio custom, fino a 5 utenti). Enterprise: su misura (API REST, SLA 99.9%, white-label, multi-team). Vedi <a href="pricing.html">listino completo</a>.</p>
+    </details>
+
+    <details>
+      <summary>Quanto tempo serve per attivare?</summary>
+      <p>Modalit&agrave; BCC: <strong>30 secondi</strong>. Crei l&apos;account Veylon, vai sulla pagina Mail, copi l&apos;indirizzo <code>certifica@mg.veylon.app</code>, lo metti in BCC alla prossima email. Fine. Modalit&agrave; Relay SMTP: <strong>3 minuti</strong>. Apri le impostazioni di Gmail / Outlook, sostituisci server SMTP, host, porta, credenziali (te le diamo noi). Modalit&agrave; Vault: <strong>60 secondi</strong>. Scegli lo slug del tuo alias, attivi, inizi a girare le mail a <code>tuoslug@mg.veylon.app</code>. Nessuna pratica da firmare, nessun KYC, nessuna attesa di giorni come per la PEC.</p>
+    </details>
+
+    <details>
+      <summary>Posso usare il mio dominio aziendale?</summary>
+      <p>S&igrave;, sul piano Business. Configuri un record DNS MX/CNAME (te lo guidiamo nel pannello), e il tuo alias di certificazione diventa <code>certifica@tuodominio.com</code> invece di <code>tuoslug@mg.veylon.app</code>. Lato cliente sembra che la certificazione sia un tuo servizio interno, non Veylon. Utile per studi legali, commercialisti, agenzie che vogliono branding pulito sul cliente finale.</p>
+    </details>
+
+    <details>
+      <summary>Differenza con DocuSign / Adobe Sign?</summary>
+      <p>DocuSign e Adobe Sign certificano <strong>la firma di un documento</strong>. Veylon Mail certifica <strong>la trasmissione di un messaggio email</strong> (invio, consegna, contenuto). Casi d&apos;uso diversi: per far firmare un contratto a un cliente, usi DocuSign. Per dimostrare di aver mandato il sollecito di pagamento il 17 giugno alle 14:32, usi Veylon Mail. Spesso si usano insieme: mandi il contratto via Veylon Mail, lui lo firma su DocuSign.</p>
+    </details>
+  </section>
+
+  <section class="sp-bottom-cta">
+    <h2>Provalo <em>adesso</em>.</h2>
+    <p>20 mail certificate gratis al mese, senza carta di credito. Apri l&apos;account in 30 secondi, certifica la prima email in 60.</p>
+    <div class="cta-row" style="justify-content: center;">
+      <a href="signup.html?fonte=mail" class="btn-primary">Inizia gratis</a>
+      <a href="mail.html" class="btn-ghost">Vai a Mail</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Veylon Mail · PEC cross-EU</span>
+    </div>
+  </footer>
+</body>
+</html>

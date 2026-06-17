@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Tag · Passaporto digitale prodotto (DPP UE) conforme ESPR, Battery Reg, EUDR</title>
+  <meta name="description" content="Un QR, un inciso, o un chip NFC NTAG 424 DNA sul tuo prodotto. Il consumatore scansiona e vede produttore, materiali, lotto, autenticita. Conforme by-design al Digital Product Passport UE. Differenziatore unico: ogni evento ciclo di vita ancorato Bitcoin."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/tag-prodotto.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Tag · Un QR sul prodotto, una verita per sempre"/>
+  <meta property="og:description" content="DPP UE compliant: ESPR + Battery Reg + EUDR. Etichetta, inciso o NFC. Ogni evento del ciclo di vita ancorato su Bitcoin. Nessun competitor lo offre."/>
+  <meta property="og:url" content="https://veylon.app/tag-prodotto.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 660px; margin: 0 auto 36px; }
+    .sp-hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .sp-trust { padding: 28px 32px; max-width: 1040px; margin: 0 auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; gap: 36px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sp-trust span { display: flex; align-items: center; gap: 8px; }
+    .sp-trust .dot { width: 6px; height: 6px; background: var(--seal); border-radius: 50%; }
+
+    .sp-section { max-width: 980px; margin: 0 auto; padding: 72px 32px; }
+    .sp-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 14px; }
+    .sp-section h2 em { color: var(--seal); }
+    .sp-section .lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 660px; margin: 0 0 40px; }
+
+    /* 3 modalita fisiche */
+    .mod-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .mod-list { grid-template-columns: 1fr; } }
+    .mod-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .mod-card .mod-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 14px; display: block; }
+    .mod-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .mod-card p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0 0 12px; }
+    .mod-card .price { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    /* 3 attori */
+    .actor-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .actor-list { grid-template-columns: 1fr; } }
+    .actor-card { background: var(--paper); border-left: 3px solid var(--seal); padding: 26px; }
+    .actor-card .roman { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 28px; line-height: 1; }
+    .actor-card h3 { font-family: var(--serif); font-weight: normal; font-size: 20px; margin: 10px 0 12px; }
+    .actor-card p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+
+    /* Use case */
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 800px) { .use-cases { grid-template-columns: 1fr; } }
+    .use-case { background: var(--paper); border-left: 3px solid var(--seal); padding: 24px 26px; }
+    .use-case .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 10px; }
+    .use-case h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 10px; }
+    .use-case p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+    .use-case .quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    /* Confronto */
+    .compare-table { width: 100%; border-collapse: collapse; font-family: var(--serif); font-size: 14px; margin-top: 18px; }
+    .compare-table th, .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); }
+    .compare-table td.feat { font-family: var(--serif); font-weight: normal; color: var(--ink); }
+    .compare-table td.veylon { background: rgba(106, 74, 26, 0.05); border-left: 3px solid var(--seal); }
+    .compare-table .yes { color: #1e6e3e; font-weight: bold; }
+    .compare-table .no { color: #b00020; }
+    .compare-table .partial { color: #ef6c00; }
+
+    /* Categorie DPP */
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
+    @media (max-width: 800px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .cat-grid { grid-template-columns: 1fr; } }
+    .cat-pill { background: var(--paper); border: 1px solid var(--rule); padding: 16px 18px; }
+    .cat-pill .reg { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 6px; }
+    .cat-pill h4 { font-family: var(--serif); font-weight: normal; font-size: 15px; margin: 0 0 4px; color: var(--ink); }
+    .cat-pill p { font-family: var(--serif); font-size: 12.5px; line-height: 1.45; color: var(--ink-2); margin: 0; }
+
+    /* Differenziatore Bitcoin */
+    .diff-box { background: var(--paper-2); border: 1px solid var(--seal); padding: 36px 32px; margin-top: 24px; }
+    .diff-box h3 { font-family: var(--serif); font-weight: normal; font-size: 26px; margin: 0 0 14px; color: var(--ink); }
+    .diff-box h3 em { color: var(--seal); font-style: italic; }
+    .diff-box p { font-family: var(--serif); font-size: 15.5px; line-height: 1.6; color: var(--ink-2); margin: 0 0 14px; }
+    .diff-box .epcis { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; padding-top: 14px; border-top: 1px dashed var(--rule); margin-top: 18px; }
+
+    .sp-faq { max-width: 720px; margin: 0 auto; padding: 56px 32px 32px; }
+    .sp-faq h2 { font-family: var(--serif); font-weight: normal; font-size: 32px; margin: 0 0 24px; }
+    .sp-faq details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    .sp-faq summary { font-family: var(--serif); font-size: 17px; cursor: pointer; padding: 4px 0; color: var(--ink); }
+    .sp-faq details[open] summary { color: var(--seal); }
+    .sp-faq details p { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 12px 0 4px; padding-left: 18px; border-left: 2px solid var(--rule); }
+
+    .sp-bottom-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; }
+    .sp-bottom-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); margin: 0 0 14px; }
+    .sp-bottom-cta h2 em { color: var(--seal); }
+    .sp-bottom-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 580px; margin: 0 auto 28px; }
+
+    .ribbon { background: linear-gradient(135deg, #eef4ec 0%, #d8e7d3 100%); border-bottom: 2px solid #2f5a2a; padding: 14px 32px; }
+    .ribbon-inner { max-width: 980px; margin: 0 auto; font-family: var(--serif); font-size: 14px; color: #1b3a18; text-align: center; }
+    .ribbon-inner strong { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Tag</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <div class="ribbon">
+    <div class="ribbon-inner"><strong>Cos&apos;e Veylon Tag?</strong> &mdash; un passaporto digitale per il tuo prodotto fisico. Conforme by-design al Digital Product Passport UE (ESPR, Battery Reg, EUDR). Il consumatore scansiona un QR (o tocca un chip NFC) e vede chi l&apos;ha fatto, di cosa e fatto, da dove viene, se e autentico.</div>
+  </div>
+
+  <header class="sp-hero">
+    <span class="kicker">Veylon · Atto vi Tag · DPP UE compliant</span>
+    <h1>Un QR sul prodotto.<br/>Una <em>verita</em> per sempre.</h1>
+    <p class="lede">
+      Etichetta, inciso, o chip NFC. Il consumatore scansiona &rarr; vede produttore, materiali, lotto, autenticita.
+      Conforme by-design al Digital Product Passport UE (ESPR + Battery Reg + EUDR).
+      <strong>Differenziatore unico:</strong> ogni evento del ciclo di vita ancorato su Bitcoin. Nessun competitor lo offre.
+    </p>
+    <div class="cta-row">
+      <a href="signup.html?fonte=tag" class="btn-primary">Inizia gratis</a>
+      <a href="#come-funziona" class="btn-ghost">Vedi come funziona</a>
+    </div>
+  </header>
+
+  <div class="sp-trust">
+    <span><span class="dot"></span>ESPR UE 2024/1781</span>
+    <span><span class="dot"></span>Battery Reg 2023/1542</span>
+    <span><span class="dot"></span>EUDR 2023/1115</span>
+    <span><span class="dot"></span>EN 18221 + GS1 Digital Link</span>
+    <span><span class="dot"></span>EPCIS 2.0 Bitcoin-anchored</span>
+    <span><span class="dot"></span>NTAG 424 DNA SUN</span>
+  </div>
+
+  <section class="sp-section">
+    <h2>Tre modalita <em>fisiche</em>.</h2>
+    <p class="lede">A seconda del prodotto e del budget, scegli come il "tag" vive sull&apos;oggetto. Tutte e tre puntano allo stesso passaporto digitale.</p>
+
+    <div class="mod-list">
+      <div class="mod-card">
+        <span class="mod-tag">i &middot; Etichetta QR</span>
+        <h3>Stampato sull&apos;etichetta</h3>
+        <p>QR code stampato direttamente sull&apos;etichetta (bottiglia, scatola, cartellino tessuto). Il consumatore lo scansiona col telefono: si apre il passaporto pubblico.</p>
+        <p>Adatto a vino, alimentari, tessile, cosmetica, mobili.</p>
+        <div class="price">Costo: zero per unita. Solo costo stampa etichetta.</div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-tag">ii &middot; Inciso / fisico</span>
+        <h3>Inciso sul prodotto</h3>
+        <p>QR o DataMatrix inciso a laser direttamente sul prodotto (acciaio, alluminio, vetro, legno). Permanente, non removibile.</p>
+        <p>Adatto a oggetti di valore: orologi, gioielli, attrezzature, pezzi unici, mobili artigianali.</p>
+        <div class="price">Costo: 0,10-0,50&euro;/unita (incisione laser).</div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-tag">iii &middot; Chip NFC NTAG 424 DNA</span>
+        <h3>Tap col telefono</h3>
+        <p>Chip NFC con autenticazione crittografica SUN (Secure Unique NFC). Ogni tap genera un codice diverso non clonabile. Il telefono lo legge in 1 secondo.</p>
+        <p>Adatto a anti-contraffazione di lusso, batterie, ricambi, farmaci.</p>
+        <div class="price">Costo: 0,15-0,80&euro;/chip a seconda volumi.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Tre attori, <em>una storia</em>.</h2>
+    <p class="lede">Il passaporto e progettato per servire tre persone diverse, ognuna con il livello di dettaglio che le serve.</p>
+
+    <div class="actor-list">
+      <article class="actor-card">
+        <div class="roman">i</div>
+        <h3>Il produttore</h3>
+        <p>Carica i dati di filiera, materiali, lotti, certificazioni. Veylon li sigilla. Dimostra agli ispettori UE che e in regola con ESPR, Battery, EUDR. Esporta su richiesta i DPP report.</p>
+      </article>
+      <article class="actor-card">
+        <div class="roman">ii</div>
+        <h3>Il consumatore</h3>
+        <p>Scansiona, in 2 secondi vede: e autentico? Chi l&apos;ha fatto? Di cosa e fatto? Da dove viene? E riparabile? Si decide all&apos;acquisto sapendo davvero cosa compra.</p>
+      </article>
+      <article class="actor-card">
+        <div class="roman">iii</div>
+        <h3>Il secondo acquirente</h3>
+        <p>Mercato dell&apos;usato (orologi, batterie EV, mobili). Scansiona prima di comprare: prova autenticita, vede storico riparazioni, residual capacity. Compra senza paura.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-section" id="come-funziona">
+    <h2>Il <em>differenziatore</em> unico.</h2>
+    <p class="lede">Circulor, EON, Aware ti danno un DPP. Veylon ti da un DPP <strong>ancorato a Bitcoin</strong>, evento per evento, irreversibile e verificabile da chiunque. Nessun altro lo fa.</p>
+
+    <div class="diff-box">
+      <h3>Ogni evento del ciclo di vita: <em>sigillato su Bitcoin</em>.</h3>
+      <p>
+        Quando emetti il certificato, lo sigilliamo. Quando il prodotto cambia proprietario, sigilliamo. Quando registri una riparazione,
+        sigilliamo. Quando lo dismetti per riciclo, sigilliamo. Ogni evento e un <em>EPCIS 2.0 event</em> con timestamp Bitcoin
+        via OpenTimestamps.
+      </p>
+      <p>
+        Risultato: fra 20 anni, anche se Veylon non esiste piu, chiunque puo verificare la storia completa del prodotto con
+        qualunque client OTS open-source. La filiera non sparisce con il fornitore.
+      </p>
+      <div class="epcis">EPCIS 2.0 &middot; CBV 2.0 &middot; ObjectEvent / TransformationEvent / AssociationEvent</div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Categorie <em>supportate</em>.</h2>
+    <p class="lede">Le categorie DPP gia mappate nello schema, con i campi giusti per le rispettive normative UE.</p>
+
+    <div class="cat-grid">
+      <div class="cat-pill">
+        <div class="reg">Battery Reg 2023/1542</div>
+        <h4>Batterie EV</h4>
+        <p>39 campi Annex XIII, chimica, capacita, durabilita, % materiali riciclati.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">Battery Reg 2023/1542</div>
+        <h4>Batterie industriali</h4>
+        <p>Storage residenziale &gt;2kWh, datacenter, UPS. Stesso schema 39 campi.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">Battery Reg 2023/1542</div>
+        <h4>Batterie LMT</h4>
+        <p>Light Means of Transport: e-bike, monopattini, scooter elettrici.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">EUDR 2023/1115</div>
+        <h4>Legno, cacao, caffe, soia</h4>
+        <p>Provenienza GeoJSON appezzamenti, DDS Due Diligence Statement, no-deforestazione.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">EUDR 2023/1115</div>
+        <h4>Gomma, manzo, palma</h4>
+        <p>Stessa filiera EUDR: tracciabilita appezzamenti, dichiarazione due diligence.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">ESPR 2024/1781</div>
+        <h4>Tessile e calzature</h4>
+        <p>Composizione fibre, carbon footprint, riparabilita, riciclabilita, made in Italy.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">ESPR 2024/1781</div>
+        <h4>Mobili e arredo</h4>
+        <p>Origine legno (link EUDR), durabilita, riparabilita, riciclabilita, COV emessi.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">ESPR 2024/1781</div>
+        <h4>Elettronica</h4>
+        <p>Composizione, materiali critici, smontabilita, indice riparabilita, durata software.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">ESPR 2024/1781</div>
+        <h4>Edilizia</h4>
+        <p>Materiali, impatto LCA, contenuto riciclato, riusabilita a fine vita.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">DPI categoria III</div>
+        <h4>Dispositivi protezione</h4>
+        <p>Caschi, imbragature, dispositivi anti-caduta. Certificazioni, manutenzioni, lotti.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">Direttiva 2009/48/CE</div>
+        <h4>Giocattoli</h4>
+        <p>Conformita CE, marcatura, materiali sicurezza bambini, eta target.</p>
+      </div>
+      <div class="cat-pill">
+        <div class="reg">Schema esteso</div>
+        <h4>Generico ESPR</h4>
+        <p>Schema flessibile per altre categorie via JSON visibility_jsonb personalizzato.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Confronto <em>oggettivo</em>.</h2>
+    <p class="lede">Veylon Tag, Circulor, EON, Aware. Cosa offre davvero ciascuno.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Funzione</th>
+          <th>Circulor</th>
+          <th>EON</th>
+          <th>Aware</th>
+          <th class="veylon" style="border-left: 3px solid var(--seal);">Veylon Tag</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feat">DPP UE compliant</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">Battery Passport 39 campi Annex XIII</td>
+          <td class="partial">parziale</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; completo</td>
+        </tr>
+        <tr>
+          <td class="feat">EUDR (GeoJSON + DDS)</td>
+          <td class="partial">solo materie prime</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">ESPR tessile / mobili</td>
+          <td class="no">&times;</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">NFC NTAG 424 DNA con SUN</td>
+          <td class="no">&times;</td>
+          <td class="partial">QR solo</td>
+          <td class="partial">QR solo</td>
+          <td class="veylon yes">&check; SUN reale</td>
+        </tr>
+        <tr>
+          <td class="feat">EN 18221 + GS1 Digital Link</td>
+          <td class="partial">in roadmap</td>
+          <td class="yes">&check;</td>
+          <td class="partial">in roadmap</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">EPCIS 2.0 lifecycle events</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">Eventi ancorati Bitcoin (persistenza)</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; <strong>unico</strong></td>
+        </tr>
+        <tr>
+          <td class="feat">Self-hostable / API aperte</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">Pricing trasparente / pubblico</td>
+          <td class="no">enterprise only</td>
+          <td class="no">enterprise only</td>
+          <td class="no">enterprise only</td>
+          <td class="veylon yes">&check; <a href="pricing.html">listino</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sp-section">
+    <h2>Quattro casi <em>concreti</em>.</h2>
+    <p class="lede">Quattro esempi reali, scritti come ce li raccontano davvero le aziende italiane che useranno Veylon Tag.</p>
+
+    <div class="use-cases">
+      <article class="use-case">
+        <div class="who">Cantina vinicola</div>
+        <h3>Brunello e Prosecco DOC</h3>
+        <p>QR sul retro etichetta. Il consumatore scansiona e vede: vigneto di provenienza, annata, vendemmia, processo, composizione varietale, certificazione DOC, lotto specifico. Anti-contraffazione su mercati estero, premiumness percepita +30%.</p>
+        <div class="quote">"Il cliente cinese che paga 80&euro; una bottiglia vuole sapere che e davvero quella. Il QR Veylon glielo certifica con Bitcoin: nessuno puo falsificarlo dopo."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Produttore batterie storage</div>
+        <h3>Batteria residenziale 5 kWh</h3>
+        <p>Battery Passport completo: chimica LFP, capacita nominale, cicli vita garantiti, % cobalto/litio/nickel riciclato, certificazioni sicurezza, residual SoH dopo 5 anni. Conforme Annex XIII obbligatorio dal feb 2027.</p>
+        <div class="quote">"Veylon ha gia tutti i 39 campi pronti. Gli altri vendor mi vogliono fare un&apos;integrazione custom da 80k&euro;. Con Veylon parto domani."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Tessile italiano (Prato, Carpi)</div>
+        <h3>Maglieria 100% made in Italy</h3>
+        <p>QR su cartellino. Composizione fibre (es. 70% lana merino + 30% cashmere), tintoria, filatura, confezione tutto tracciato a livello di lotto. Carbon footprint kg CO2eq. Riparabilita, riciclabilita. ESPR-ready 2027.</p>
+        <div class="quote">"Il consumatore vede chi ha tessuto, dove, con che fibre. Made in Italy verificato, non solo dichiarato. Vendo 25% in piu sul canale boutique."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Mobile artigianale</div>
+        <h3>Tavolo in legno massello</h3>
+        <p>QR inciso a laser sul bordo inferiore. Origine legno (noce italiano, link DDS EUDR appezzamento), finiture (oli naturali, COV emessi), istruzioni manutenzione, ricambi disponibili, indice riparabilita. Garanzia 10 anni collegata.</p>
+        <div class="quote">"Il cliente di alto profilo vuole sapere che il legno non viene da deforestazione. Veylon mi da EUDR + ESPR in una scansione. Vale come marketing e come compliance."</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-faq">
+    <h2>Domande frequenti</h2>
+
+    <details>
+      <summary>Cos&apos;e il Digital Product Passport UE?</summary>
+      <p>Il DPP e un set di dati digitali che accompagna ogni prodotto fisico immesso sul mercato UE, accessibile via un identificatore univoco (tipicamente QR o NFC). Contiene dati su composizione, origine, durabilita, riparabilita, riciclabilita, certificazioni. Sara <strong>obbligatorio</strong> per categoria dal 2027 (batterie), 2028-2030 (tessile, elettronica, mobili). Base normativa: ESPR Reg. UE 2024/1781.</p>
+    </details>
+
+    <details>
+      <summary>Quali sono le scadenze del Battery Regulation?</summary>
+      <p>Battery Reg. UE 2023/1542 e gia in vigore. Le scadenze chiave: <strong>feb 2027</strong> Battery Passport obbligatorio per batterie EV, batterie industriali &gt;2kWh, batterie LMT. <strong>Ago 2028</strong> requisiti carbon footprint. <strong>Ago 2031</strong> contenuto minimo materiali riciclati. Se metti batterie in commercio UE, il passaporto digitale a 39 campi Annex XIII e legge.</p>
+    </details>
+
+    <details>
+      <summary>I 39 campi Battery Passport Annex XIII cosa sono?</summary>
+      <p>Sono i campi obbligatori del Battery Passport. Si raggruppano in: identificazione (produttore, modello, lotto), chimica (LFP, NMC, LCO, manganese, ecc.), capacita (nominal, rated, residual), durabilita (cicli garantiti, SoH), safety (certificazioni IEC), materials (% cobalto, litio, nickel, manganese, riciclato), end-of-life (riusabilita, riciclabilita, smaltimento). Veylon ha tutti i 39 campi gia mappati nello schema <code>tag_battery_data</code> con form UI pronto.</p>
+    </details>
+
+    <details>
+      <summary>EUDR a cosa serve?</summary>
+      <p>EUDR Reg. UE 2023/1115 vieta l&apos;immissione in UE di sette materie prime (legno, cacao, caffe, soia, gomma, manzo, olio di palma) e loro derivati che provengano da terreni deforestati dopo dic 2020. Serve una <strong>DDS Due Diligence Statement</strong> che dichiara la geolocalizzazione GeoJSON degli appezzamenti di origine. Applicazione: dic 2025 grandi operatori, giu 2026 PMI. Veylon Tag gestisce GeoJSON e genera DDS in formato compatibile.</p>
+    </details>
+
+    <details>
+      <summary>NFC NTAG 424 DNA come funziona?</summary>
+      <p>E un chip NFC con autenticazione crittografica chiamata SUN (Secure Unique NFC) implementata da NXP. Ad ogni tap, il chip genera un MAC crittografico diverso usando una chiave AES interna mai esposta. Risultato: <strong>non puoi clonare il chip</strong>, perche ogni lettura produce un codice irripetibile che solo il server emittente puo validare. Veylon implementa SUN reale lato server in puro Deno (NIST SP 800-38B), no dipendenze proprietarie.</p>
+    </details>
+
+    <details>
+      <summary>Quanto costano i chip NFC?</summary>
+      <p>I chip NTAG 424 DNA partono da circa 0,15&euro;/cad in volumi alti (100k+ pezzi) e arrivano a 0,80&euro;/cad per piccole tirature. Sono sticker rotondi o quadrati che applichi sul prodotto o ti vengono inseriti durante il packaging. Per progetti enterprise possiamo mettervi in contatto con fornitori certificati. In alternativa, l&apos;<strong>etichetta QR e gratis</strong> (zero costo aggiuntivo sopra la stampa normale dell&apos;etichetta).</p>
+    </details>
+
+    <details>
+      <summary>Cosa succede se Veylon chiude domani?</summary>
+      <p>I tuoi DPP restano verificabili per sempre. Ogni evento del ciclo di vita e ancorato a Bitcoin via OpenTimestamps, in formato EPCIS 2.0 + JSON-LD standard. Chiunque puo, con qualunque client OTS open-source, validare le sigilature in autonomia. Le API Veylon sono aperte e documentate, l&apos;export DPP e disponibile in formato standard EU. Non ti leghi a un fornitore proprietario: ti leghi a Bitcoin e a standard EN/GS1.</p>
+    </details>
+
+    <details>
+      <summary>Veylon usa EN 18221 e GS1 Digital Link?</summary>
+      <p>Si. Lo schema URL dei QR Veylon e conforme al <strong>GS1 Digital Link</strong> (es. <code>id.gs1.org/01/{GTIN}/21/{serial}</code>) come richiesto dalla bozza EN 18221 (DPP data carrier standard). Il <code>GTIN</code> e il <code>serial</code> sono salvati nelle colonne <code>gtin</code> e <code>serial</code> della tabella <code>tag_certificati</code>. Risultato: un consumatore con qualunque scanner GS1 standard atterra sul tuo DPP, e gli ispettori UE riconoscono il formato.</p>
+    </details>
+  </section>
+
+  <section class="sp-bottom-cta">
+    <h2>Inizia col tuo <em>primo lotto</em>.</h2>
+    <p>Apri un account gratis, emetti il primo certificato, stampa il QR sull&apos;etichetta. In meno di un&apos;ora hai il tuo primo passaporto digitale prodotto live, verificabile pubblicamente.</p>
+    <div class="cta-row" style="justify-content: center;">
+      <a href="signup.html?fonte=tag" class="btn-primary">Inizia gratis</a>
+      <a href="tag.html" class="btn-ghost">Apri Veylon Tag</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Veylon Tag · Digital Product Passport UE</span>
+    </div>
+  </footer>
+</body>
+</html>

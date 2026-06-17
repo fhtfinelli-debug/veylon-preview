@@ -166,9 +166,11 @@ print(r.json()["verifica_url"])</code></pre>
       <section id="verifica">
         <h2>Verifica</h2>
         <div class="endpoint">
-          <span class="method GET">GET</span><span class="url">/v1/verifica/{sha256}</span>
-          <p class="desc">Recupera lo stato di un sigillo dato il suo SHA-256. Endpoint pubblico (no auth) per integrazioni di verifica indipendenti.</p>
+          <span class="method GET">GET</span><span class="url">/v1/verifica?sha256={64hex}</span>
+          <p class="desc">Recupera lo stato di un sigillo dato il suo SHA-256. <strong>Endpoint pubblico (no auth)</strong> per integrazioni di verifica indipendenti (dogana EU, distributori, audit pharma).</p>
         </div>
+        <h3>Esempio chiamata</h3>
+        <pre><code>curl https://api.veylon.app/v1/verifica?sha256=a3f5b8c7d9e1f2a4...</code></pre>
         <h3>Response 200</h3>
         <pre><code>{
   "found": true,

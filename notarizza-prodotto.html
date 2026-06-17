@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Sigillo · Notarizza documenti su Bitcoin in 60 secondi</title>
+  <meta name="description" content="Sigillo notarile digitale su Bitcoin per ogni documento. Carichi un PDF, Veylon ancora l'impronta SHA-256 via OpenTimestamps. Prova legale eIDAS in tutta UE, senza notaio, senza canone. 10 sigilli gratis al mese."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/notarizza-prodotto.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Sigillo · Notarizzazione documenti su Bitcoin"/>
+  <meta property="og:description" content="Una firma su Bitcoin per ogni documento. Ancoraggio SHA-256 via OpenTimestamps, valore legale eIDAS, costa 1000x meno del notaio. 10 sigilli gratis al mese."/>
+  <meta property="og:url" content="https://veylon.app/notarizza-prodotto.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto 36px; }
+    .sp-hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .sp-trust { padding: 28px 32px; max-width: 980px; margin: 0 auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sp-trust span { display: flex; align-items: center; gap: 8px; }
+    .sp-trust .dot { width: 6px; height: 6px; background: var(--seal); border-radius: 50%; }
+
+    .sp-section { max-width: 980px; margin: 0 auto; padding: 72px 32px; }
+    .sp-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 14px; }
+    .sp-section h2 em { color: var(--seal); }
+    .sp-section .lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 0 40px; }
+
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .step-list { grid-template-columns: 1fr; } }
+    .step-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .step-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 64px; line-height: 1; position: absolute; top: 18px; right: 22px; opacity: 0.25; }
+    .step-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .step-card p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .step-card .what { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; display: block; }
+
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 800px) { .use-cases { grid-template-columns: 1fr; } }
+    .use-case { background: var(--paper); border-left: 3px solid var(--seal); padding: 24px 26px; }
+    .use-case .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 10px; }
+    .use-case h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 10px; }
+    .use-case p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+    .use-case .quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    .compare-table { width: 100%; border-collapse: collapse; font-family: var(--serif); font-size: 14px; margin-top: 18px; }
+    .compare-table th, .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); }
+    .compare-table td.feat { font-family: var(--serif); font-weight: normal; color: var(--ink); }
+    .compare-table td.veylon { background: rgba(106, 74, 26, 0.05); border-left: 3px solid var(--seal); }
+    .compare-table .yes { color: #1e6e3e; font-weight: bold; }
+    .compare-table .no { color: #b00020; }
+    .compare-table .partial { color: #ef6c00; }
+
+    .receipts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    @media (max-width: 800px) { .receipts { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .receipts { grid-template-columns: 1fr; } }
+    .receipt { background: var(--paper); border: 1px solid var(--rule); padding: 22px 18px; text-align: center; }
+    .receipt .roman { font-family: var(--serif); font-style: italic; font-size: 28px; color: var(--seal); }
+    .receipt h4 { font-family: var(--serif); font-weight: normal; font-size: 17px; margin: 8px 0 8px; }
+    .receipt p { font-family: var(--serif); font-size: 13px; line-height: 1.45; color: var(--ink-2); margin: 0; }
+
+    .sp-faq { max-width: 720px; margin: 0 auto; padding: 56px 32px 32px; }
+    .sp-faq h2 { font-family: var(--serif); font-weight: normal; font-size: 32px; margin: 0 0 24px; }
+    .sp-faq details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    .sp-faq summary { font-family: var(--serif); font-size: 17px; cursor: pointer; padding: 4px 0; color: var(--ink); }
+    .sp-faq details[open] summary { color: var(--seal); }
+    .sp-faq details p { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 12px 0 4px; padding-left: 18px; border-left: 2px solid var(--rule); }
+
+    .sp-bottom-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; }
+    .sp-bottom-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); margin: 0 0 14px; }
+    .sp-bottom-cta h2 em { color: var(--seal); }
+    .sp-bottom-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+
+    .ribbon { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #1e6e3e; padding: 14px 32px; }
+    .ribbon-inner { max-width: 980px; margin: 0 auto; font-family: var(--serif); font-size: 14px; color: #16482a; text-align: center; }
+    .ribbon-inner strong { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Sigillo</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <div class="ribbon">
+    <div class="ribbon-inner"><strong>Cos&apos;e Veylon Sigillo?</strong> &mdash; il sigillo notarile digitale ancorato al registro pubblico Bitcoin. Vale come una marca temporale qualificata, in tutta UE. Senza notaio, senza canone annuo.</div>
+  </div>
+
+  <header class="sp-hero">
+    <span class="kicker">Veylon &middot; Atto i Sigillo</span>
+    <h1>Una firma su <em>Bitcoin</em>.<br/>Per ogni documento.</h1>
+    <p class="lede">
+      Carichi un PDF, Veylon ancora la sua impronta SHA-256 al registro pubblico Bitcoin via OpenTimestamps.
+      Conferma in 1-3 ore, prova legale per sempre. Vale in tutta UE (eIDAS art. 41). Senza notaio,
+      senza canone annuo. <strong>10 sigilli gratis al mese.</strong>
+    </p>
+    <div class="cta-row">
+      <a href="signup.html?fonte=sigillo" class="btn-primary">Prova gratis (10 sigilli/mese)</a>
+      <a href="#come-funziona" class="btn-ghost">Vedi come funziona</a>
+    </div>
+  </header>
+
+  <div class="sp-trust">
+    <span><span class="dot"></span>eIDAS art. 41</span>
+    <span><span class="dot"></span>L. 12/2019 art. 8-ter</span>
+    <span><span class="dot"></span>Bitcoin OpenTimestamps</span>
+    <span><span class="dot"></span>Flusso solo-hash</span>
+    <span><span class="dot"></span>Verifica indipendente</span>
+  </div>
+
+  <section class="sp-section">
+    <h2>Il problema che <em>risolve</em>.</h2>
+    <p class="lede">
+      Hai un documento che voglio dimostrare di aver avuto in una certa data, con un certo contenuto.
+      Manoscritto, bozza di contratto, whitepaper, opera d&apos;arte, pre-registration di studio. Le opzioni di oggi
+      sono care, lente, o legate a un singolo fornitore che potrebbe sparire domani.
+    </p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Servizio</th>
+          <th>Notaio</th>
+          <th>Marca temporale TSA</th>
+          <th>Blockchain privata</th>
+          <th class="veylon" style="border-left: 3px solid var(--seal);">Veylon Sigillo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feat">Valore legale eIDAS UE</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; art. 41</td>
+        </tr>
+        <tr>
+          <td class="feat">Costo per documento</td>
+          <td>80-300&euro;</td>
+          <td>0,30-2&euro;</td>
+          <td>variabile</td>
+          <td class="veylon">0&euro; (10 free/mese)</td>
+        </tr>
+        <tr>
+          <td class="feat">Tempo di emissione</td>
+          <td class="no">giorni</td>
+          <td class="yes">secondi</td>
+          <td class="partial">minuti</td>
+          <td class="veylon yes">60 secondi</td>
+        </tr>
+        <tr>
+          <td class="feat">Verificabile senza intermediario</td>
+          <td class="no">&times;</td>
+          <td class="no">&times; (serve TSA)</td>
+          <td class="no">&times; (serve fornitore)</td>
+          <td class="veylon yes">&check; client OTS open</td>
+        </tr>
+        <tr>
+          <td class="feat">Funziona se il fornitore chiude</td>
+          <td class="partial">eredita Archivio</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; Bitcoin pubblica</td>
+        </tr>
+        <tr>
+          <td class="feat">Il file viaggia sul server</td>
+          <td class="no">&times; (in studio)</td>
+          <td class="partial">spesso s&igrave;</td>
+          <td class="partial">spesso s&igrave;</td>
+          <td class="veylon yes">&check; solo SHA-256</td>
+        </tr>
+        <tr>
+          <td class="feat">Registro pubblico aperto</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="no">&times; (vendor lock-in)</td>
+          <td class="veylon yes">&check; Bitcoin</td>
+        </tr>
+        <tr>
+          <td class="feat">Validit&agrave; UE (non solo IT)</td>
+          <td class="partial">apostille</td>
+          <td class="yes">&check;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; eIDAS</td>
+        </tr>
+        <tr>
+          <td class="feat">URL pubblica di verifica</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="partial">a volte</td>
+          <td class="veylon yes">&check; /verifica/&lt;id&gt;</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sp-section" id="come-funziona">
+    <h2>Come funziona in <em>3 step</em>.</h2>
+    <p class="lede">Apri Veylon, carichi, scarichi il certificato. La parte crittografica e l&apos;ancoraggio Bitcoin ce li mettiamo noi sotto al cofano.</p>
+
+    <div class="step-list">
+      <div class="step-card">
+        <span class="step-num">i</span>
+        <span class="what">Tu</span>
+        <h3>Carichi il documento</h3>
+        <p>
+          Apri <code>notarizza.html</code>, scegli il file (PDF, DOCX, immagine, ZIP, qualunque cosa).
+          Decidi: solo impronta SHA-256 (consigliato, il file non lascia mai il tuo browser) oppure
+          archivio cifrato (file fino 1MB conservato 30 giorni).
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">ii</span>
+        <span class="what">Veylon</span>
+        <h3>Sigilla su Bitcoin</h3>
+        <p>
+          Veylon calcola l&apos;impronta SHA-256, la registra con un atto univoco e la invia ai server
+          OpenTimestamps. Riceve un attestato OTS. Entro 1-3 ore l&apos;attestato viene confermato
+          dentro un blocco Bitcoin: la prova diventa eterna.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">iii</span>
+        <span class="what">Tu</span>
+        <h3>Scarichi il certificato</h3>
+        <p>
+          Veylon genera un PDF di sigillo con QR di verifica + URL pubblica
+          <code>/verifica/&lt;id&gt;</code>. Lo mandi a chiunque: cliente, giudice, ufficio
+          brevetti. Chiunque verifica autonomamente con qualunque client OTS.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Le <em>4 ricevute legali</em> che ottieni.</h2>
+    <p class="lede">Per ogni sigillo, Veylon produce 4 evidenze ancorate separatamente. Ognuna sopravvive a Veylon stessa.</p>
+
+    <div class="receipts">
+      <div class="receipt">
+        <div class="roman">i</div>
+        <h4>Invio</h4>
+        <p>"Ho richiesto la notarizzazione alle 09:14 del 17 giugno 2026 &mdash; impronta SHA-256 registrata."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">ii</div>
+        <h4>Notarizzazione</h4>
+        <p>"L&apos;impronta &egrave; stata accettata dai server OpenTimestamps con attestato OTS valido."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">iii</div>
+        <h4>Conferma BTC</h4>
+        <p>"L&apos;attestato &egrave; stato incluso nel blocco Bitcoin #863.241 &mdash; data certa per sempre."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">iv</div>
+        <h4>Verifica pubblica</h4>
+        <p>"URL aperta <code>/verifica/&lt;id&gt;</code> consultabile da chiunque, senza account."</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Per chi <em>e davvero utile</em>.</h2>
+    <p class="lede">Quattro esempi concreti, scritti come ce li raccontano davvero gli utenti.</p>
+
+    <div class="use-cases">
+      <article class="use-case">
+        <div class="who">Studio legale</div>
+        <h3>Bozze di contratto datate</h3>
+        <p>"Ho ricevuto le bozze del contratto il 14 giugno alle 15:30." Domani, se la controparte sostiene che la versione finale &egrave; un&apos;altra, io ho la prova ancorata Bitcoin di cosa c&apos;era nelle mie mani in quel momento.</p>
+        <div class="quote">"Notarizzo ogni bozza in arrivo: 60 secondi, costo zero. Se finiamo in causa, ho l&apos;evidenza opponibile senza chiamare un perito."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Startup pre-revenue</div>
+        <h3>Segreto industriale e whitepaper</h3>
+        <p>Whitepaper tecnico, design di sistema, codice sorgente del prototipo. Voglio dimostrare che a una certa data quella conoscenza era mia, prima di mostrarla a investor o partner. Il brevetto costa 5.000&euro; e arriva in 18 mesi: troppo lento, troppo caro.</p>
+        <div class="quote">"Notarizzo lo ZIP del repo ogni venerd&igrave;. Se domani uno mi copia, ho data certa dell&apos;originale. E nessuno sa cosa c&apos;era dentro: ho mandato solo l&apos;hash."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Fotografo / artista</div>
+        <h3>Copyright certificato delle opere</h3>
+        <p>Ogni shooting, ogni quadro, ogni traccia audio. Voglio prova che l&apos;opera era mia a una certa data, per difendermi se qualcuno la usa senza licenza o se mi accusa di plagio.</p>
+        <div class="quote">"Trascino i RAW nel browser, click. Sigillo emesso. Quando carico sui social ho gi&agrave; il certificato Veylon di pari data: nessuno me lo pu&ograve; togliere."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Universit&agrave; / ricercatore</div>
+        <h3>Pre-registration di studio</h3>
+        <p>Pre-registro ipotesi, protocollo, e disegno statistico prima di raccogliere i dati. Garantisce riproducibilit&agrave; e blocca l&apos;HARKing (hypothesizing after results are known). I journal lo richiedono sempre pi&ugrave; spesso.</p>
+        <div class="quote">"Notarizzo il protocollo PDF prima di iniziare. Cos&igrave; quando submitto al journal ho la prova esterna che le mie ipotesi erano fissate ex-ante, non riscritte dopo i risultati."</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-faq">
+    <h2>Domande frequenti</h2>
+
+    <details>
+      <summary>Come funziona OpenTimestamps?</summary>
+      <p>OpenTimestamps &egrave; un protocollo open source nato nel 2016. Aggrega migliaia di impronte SHA-256 in un singolo albero di Merkle, e ne ancora la radice in una transazione Bitcoin. Il risultato: ogni impronta eredita la data certa del blocco Bitcoin che la contiene, a costo trascurabile per documento. La verifica &egrave; matematica, non richiede di fidarsi di Veylon o di OpenTimestamps.org: chiunque, con qualunque client OTS, pu&ograve; ricostruire la catena di hash fino al blocco Bitcoin e validare la data.</p>
+    </details>
+
+    <details>
+      <summary>Veylon vs notaio tradizionale?</summary>
+      <p>Il notaio garantisce data certa via timbro fisico, registro cartaceo e (per atti pubblici) iscrizione in Archivio Notarile. Costa 80-300&euro; per atto, richiede giorni, vale principalmente in Italia (per l&apos;UE serve apostille). Veylon Sigillo produce data certa equivalente sotto eIDAS art. 41 (validation timestamp), in 60 secondi, gratis fino a 10 sigilli/mese, opponibile in tutta UE. <strong>Non sostituisce</strong> il notaio per atti che richiedono atto pubblico (compravendita immobiliare, costituzione SRL, testamento). <strong>Sostituisce</strong> il notaio quando serve solo data certa e integrit&agrave; del contenuto.</p>
+    </details>
+
+    <details>
+      <summary>Cosa succede se Veylon chiude?</summary>
+      <p>Le tue prove restano valide per sempre. Veylon non &egrave; un intermediario di cui ti devi fidare: noi pubblichiamo l&apos;impronta nel registro pubblico Bitcoin via OpenTimestamps, e da quel momento la prova vive nella catena Bitcoin. Chiunque, con qualunque client OTS compatibile (ot-cli, OpenTimestamps.org, librerie Python/JS open source), pu&ograve; verificarla in autonomia. Le tue ricevute PDF contengono tutto il materiale crittografico necessario: impronta, attestato OTS, blocco Bitcoin, transazione.</p>
+    </details>
+
+    <details>
+      <summary>Quanto vale in giudizio?</summary>
+      <p>Veylon Sigillo produce <strong>validazione elettronica del timestamp</strong> conforme eIDAS art. 41 + L. 12/2019 art. 8-ter. In giudizio, il certificato Veylon &egrave; valutato dal giudice come prova del fatto (data, integrit&agrave; del contenuto). La giurisprudenza italiana ed europea ha gi&agrave; riconosciuto pi&ugrave; volte la validit&agrave; di marche temporali ancorate Bitcoin. Per atti che richiedono firma elettronica qualificata (QES) serve un certificato emesso da un TSP accreditato: Veylon Sigillo non sostituisce la QES, sostituisce la marca temporale qualificata e l&apos;atto notarile di data certa.</p>
+    </details>
+
+    <details>
+      <summary>Il file viaggia sul server?</summary>
+      <p>Dipende dal flusso che scegli. <strong>Flusso solo-hash (consigliato, default):</strong> il browser calcola la SHA-256 in locale e manda a Veylon solo l&apos;impronta (32 byte). Il file non lascia mai il tuo computer. Massima riservatezza. <strong>Flusso archivio (opzionale):</strong> file fino 1MB, viene cifrato e conservato per 30 giorni cos&igrave; puoi recuperarlo se lo perdi. Per file riservati (segreti industriali, dati personali, atti coperti da segreto professionale) usa sempre il flusso solo-hash.</p>
+    </details>
+
+    <details>
+      <summary>Quanto tempo per la conferma Bitcoin?</summary>
+      <p>Il sigillo OTS viene emesso in 1-2 secondi. La conferma dentro un blocco Bitcoin arriva in 1-3 ore (mediana 2 ore). Prima della conferma, il certificato Veylon vale comunque come marca temporale interna (atto i &lsquo;Notarizzato&apos;); dopo la conferma diventa atto i &lsquo;Confermato BTC&apos; con data eterna. Il cron <code>veylon-upgrade</code> aggiorna automaticamente lo stato senza che tu debba fare nulla.</p>
+    </details>
+
+    <details>
+      <summary>Posso verificare senza Veylon?</summary>
+      <p>S&igrave;, ed &egrave; il punto. Scarichi il file <code>.ots</code> dal certificato Veylon, lo apri con <code>ot-cli verify</code> (terminale) oppure caricalo su <code>opentimestamps.org</code>. Il client ricostruisce la catena di hash fino al blocco Bitcoin e ti dice se la data &egrave; valida. Non serve fidarsi di noi, non serve essere online sul nostro server, non serve essere registrati. <strong>Questa &egrave; la differenza con le blockchain private:</strong> con OpenTimestamps sul registro pubblico Bitcoin, la verifica &egrave; indipendente e per sempre.</p>
+    </details>
+
+    <details>
+      <summary>Differenza con marca temporale qualificata TSA?</summary>
+      <p>La marca temporale qualificata (TSA, Time Stamping Authority) &egrave; emessa da un fornitore qualificato AgID/UE che mette il suo certificato sulla data. Vantaggi: status legale rafforzato (eIDAS art. 42), accettata sempre senza discussioni. Svantaggi: vale finch&eacute; la TSA esiste e il certificato non &egrave; revocato; spesso il file viaggia sul server della TSA; costa 0,30-2&euro; per marca + canone annuo. Veylon Sigillo &egrave; <strong>validation timestamp</strong> (eIDAS art. 41): valido in UE, ma non emesso da TSA qualificata. In compenso vive su Bitcoin (registro pubblico, non vendor lock-in), il file resta sul tuo computer (solo-hash), e costa zero. Per uso quotidiano, Veylon &egrave; pi&ugrave; che sufficiente. Per uso ad altissimo rischio legale, integriamo entrambi.</p>
+    </details>
+
+    <details>
+      <summary>Quanto costa?</summary>
+      <p>Piano Free: 10 sigilli al mese. Pro: 9&euro;/mese (sigilli illimitati, archivio cifrato esteso, certificati white-label). Business: 99&euro;/mese (API REST, 50.000 sigilli/mese inclusi, SLA 99.9%, batch upload). Vedi <a href="pricing.html">listino completo</a>.</p>
+    </details>
+  </section>
+
+  <section class="sp-bottom-cta">
+    <h2>Sigilla il tuo primo documento <em>adesso</em>.</h2>
+    <p>10 sigilli gratis al mese, senza carta di credito. Apri l&apos;account in 30 secondi, ricevi il primo certificato Bitcoin in 60.</p>
+    <div class="cta-row" style="justify-content: center;">
+      <a href="signup.html?fonte=sigillo" class="btn-primary">Inizia gratis</a>
+      <a href="notarizza.html" class="btn-ghost">Vai a Notarizza</a>
+      <a href="verifica.html" class="btn-ghost">Verifica un certificato</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Veylon Sigillo · Notarizzazione su Bitcoin</span>
+    </div>
+  </footer>
+</body>
+</html>
