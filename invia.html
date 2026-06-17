@@ -57,11 +57,24 @@
       <article class="panel-card">
         <h2 class="serif" style="font-size: 22px; margin: 0 0 18px;">Nuova trasmissione</h2>
         <form id="form" novalidate>
-          <div>
+          <!-- Tab fonte: archivio vs upload -->
+          <div class="radio-row" role="radiogroup" aria-label="Fonte documento" style="margin-bottom: 14px;">
+            <label class="radio-pill"><input type="radio" name="fonte" value="archivio" checked/> Dal tuo archivio Veylon</label>
+            <label class="radio-pill"><input type="radio" name="fonte" value="upload"/> Carica nuovo file</label>
+          </div>
+
+          <div id="row-archivio">
             <label class="field-label" for="documento">Documento dal tuo archivio</label>
-            <select id="documento" class="field-input" required>
+            <select id="documento" class="field-input">
               <option value="">Caricamento documenti…</option>
             </select>
+            <p class="small" style="margin-top: 4px; color: var(--ink-3);">Il PDF e gia notarizzato. Veylon aggiungera un QR Send senza sovrapporsi a timbri di altre suite.</p>
+          </div>
+
+          <div id="row-upload" hidden>
+            <label class="field-label" for="file-upload">Carica nuovo file (max 10 MB)</label>
+            <input type="file" id="file-upload" class="field-input" accept="application/pdf,image/*"/>
+            <p class="small" style="margin-top: 4px; color: var(--ink-3);">Il file verra notarizzato (sigillo Bitcoin), timbrato (QR Veylon Send) e cifrato in un solo passaggio. Nessun atto pre-esistente richiesto.</p>
           </div>
           <div style="margin-top: 18px;">
             <label class="field-label" for="dest">Email destinatario</label>
@@ -167,25 +180,66 @@
       }).join("");
   }
 
+  // Toggle visibilita riga archivio/upload
+  document.querySelectorAll('input[name="fonte"]').forEach(r => r.addEventListener("change", (e) => {
+    const v = e.target.value;
+    document.getElementById("row-archivio").hidden = v !== "archivio";
+    document.getElementById("row-upload").hidden = v !== "upload";
+  }));
+
+  async function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result).replace(/^data:[^;]+;base64,/, ""));
+      r.onerror = () => reject(new Error("file_read_failed"));
+      r.readAsDataURL(file);
+    });
+  }
+
   document.getElementById("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
-    const atto_id = document.getElementById("documento").value;
+    const fonte = document.querySelector('input[name="fonte"]:checked').value;
     const dest = document.getElementById("dest").value.trim();
     const liv = document.querySelector('input[name="liv"]:checked').value;
     const dur = parseInt(document.querySelector('input[name="dur"]:checked').value, 10);
-    if (!atto_id || !dest) { alert("Compila tutti i campi."); return; }
+    if (!dest) { alert("Inserisci l'email del destinatario."); return; }
     if (![1,2,3].includes(dur)) { alert("Durata non valida."); return; }
+
     const btn = document.getElementById("submit");
     btn.disabled = true;
     const original = btn.querySelector(".btn-label").textContent;
     btn.querySelector(".btn-label").textContent = "Invio…";
+
     try {
-      // Endpoint dedicato al flusso "documento dall'archivio" con timbratura QR Veylon
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/send-create-from-atto`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
-        body: JSON.stringify({ atto_id, destinatario_email: dest, livello_identita_richiesto: liv, expires_in_days: dur }),
-      });
+      let res;
+      if (fonte === "archivio") {
+        const atto_id = document.getElementById("documento").value;
+        if (!atto_id) { alert("Seleziona un documento dall'archivio."); btn.disabled = false; btn.querySelector(".btn-label").textContent = original; return; }
+        res = await fetch(`${SUPABASE_URL}/functions/v1/send-create-from-atto`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify({ atto_id, destinatario_email: dest, livello_identita_richiesto: liv, expires_in_days: dur }),
+        });
+      } else {
+        // Upload nuovo file
+        const file = document.getElementById("file-upload").files[0];
+        if (!file) { alert("Seleziona un file."); btn.disabled = false; btn.querySelector(".btn-label").textContent = original; return; }
+        if (file.size > 10 * 1024 * 1024) { alert("File troppo grande (max 10 MB)."); btn.disabled = false; btn.querySelector(".btn-label").textContent = original; return; }
+        btn.querySelector(".btn-label").textContent = "Notarizza + timbra + cifra...";
+        const file_base64 = await fileToBase64(file);
+        res = await fetch(`${SUPABASE_URL}/functions/v1/send-create-from-upload`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+          body: JSON.stringify({
+            file_base64,
+            doc_name: file.name,
+            mime_type: file.type || "application/pdf",
+            destinatario_email: dest,
+            livello_identita_richiesto: liv,
+            expires_in_days: dur,
+          }),
+        });
+      }
       const j = await res.json();
       if (!res.ok || !j.ok) throw new Error(j?.error || "errore_invio");
       const previewLink = j.timbrato_url_preview ? `<br/><a href="${j.timbrato_url_preview}" target="_blank" rel="noopener" style="color: var(--seal); font-family: var(--mono); font-size: 12px;">&rarr; Anteprima documento timbrato (15 min)</a>` : "";
@@ -198,6 +252,12 @@
       document.getElementById("result-msg").innerHTML = `${j.timbrato_applicato ? "<strong>PDF timbrato (QR Veylon ultima pagina) + cifrato AES-GCM-256.</strong>" : "PDF inviato (timbro non applicato: " + escapeHtml(j.nota || "") + ")"} La chiave di decifratura e SOLO nel fragment URL del magic link &mdash; non passa mai per il server Veylon. ${previewLink} ${verifyLink} ${copyBtn}`;
       document.getElementById("result").hidden = false;
       document.getElementById("form").reset();
+      // Re-imposta default checkbox/radio dopo reset
+      document.querySelector('input[name="fonte"][value="archivio"]').checked = true;
+      document.querySelector('input[name="dur"][value="3"]').checked = true;
+      document.querySelector('input[name="liv"][value="email"]').checked = true;
+      document.getElementById("row-archivio").hidden = false;
+      document.getElementById("row-upload").hidden = true;
       loadList();
     } catch (e) {
       alert("Errore: " + (e.message || e));
