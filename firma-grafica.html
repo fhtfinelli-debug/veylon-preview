@@ -218,9 +218,17 @@
         const sha = await sha256OfBlob(blob);
         const path = `${user.id}/${sha}.png`;
 
-        // Upload nel bucket
-        const { error: upErr } = await supabase.storage.from("veylon-firme-png").upload(path, blob, { contentType: "image/png", upsert: true });
-        if (upErr) throw upErr;
+        // Upload nel bucket. upsert: false per evitare "permission denied for table users"
+        // dovuto al RETURNING * di storage.objects upsert che tocca FK auth.users.
+        // Se la firma esiste gia (stesso SHA), ignoriamo l'errore "already exists" / "Duplicate".
+        const { error: upErr } = await supabase.storage.from("veylon-firme-png").upload(path, blob, { contentType: "image/png", upsert: false });
+        if (upErr) {
+          const msg = upErr.message || "";
+          const code = upErr.statusCode || upErr.status || 0;
+          const isAlreadyExists = msg.toLowerCase().includes("already exists") || msg.toLowerCase().includes("duplicate") || code === 409 || code === "409";
+          if (!isAlreadyExists) throw upErr;
+          // Path gia presente: riutilizziamo il file esistente, e' deterministico (SHA-256 del PNG)
+        }
 
         // Se default, sresetta gli altri
         if (setDefault) {
