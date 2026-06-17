@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Veylon Speed · Firma al volo da mobile con SPID</title>
+  <meta name="description" content="PWA mobile-first per firma rapida da smartphone con SPID/CIE/CNS (identita statale forte). Da 0 a firma in 60 secondi. Sopra ai 9 atti Veylon."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/speed-prodotto.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Speed · Firma al volo da mobile con SPID"/>
+  <meta property="og:description" content="PWA mobile-first. SPID/CIE/CNS. Sopra ai 9 atti Veylon. Per avvocati, manager, notai, cittadini in mobilita."/>
+  <meta property="og:url" content="https://veylon.app/speed-prodotto.html"/>
+  <meta name="theme-color" content="#1a1a1a"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } .sp-nav { padding: 14px 20px; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    @media (max-width: 640px) { .sp-hero { padding: 48px 20px 32px; } }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(40px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto 36px; }
+    .sp-hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+    @media (max-width: 480px) { .btn-primary, .btn-ghost { width: 100%; text-align: center; padding: 18px 24px; } .sp-hero .cta-row { flex-direction: column; } }
+
+    .sp-trust { padding: 28px 32px; max-width: 980px; margin: 0 auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sp-trust span { display: flex; align-items: center; gap: 8px; }
+    .sp-trust .dot { width: 6px; height: 6px; background: var(--seal); border-radius: 50%; }
+    @media (max-width: 640px) { .sp-trust { gap: 18px; padding: 22px 20px; } }
+
+    .sp-section { max-width: 980px; margin: 0 auto; padding: 72px 32px; }
+    @media (max-width: 640px) { .sp-section { padding: 48px 20px; } }
+    .sp-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(30px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 14px; }
+    .sp-section h2 em { color: var(--seal); }
+    .sp-section .lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 0 40px; }
+
+    /* Come funziona — 3 step verticali */
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .step-list { grid-template-columns: 1fr; } }
+    .step-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .step-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 64px; line-height: 1; position: absolute; top: 18px; right: 22px; opacity: 0.25; }
+    .step-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .step-card p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .step-card .what { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; display: block; }
+
+    /* Per chi — 4 esempi */
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 800px) { .use-cases { grid-template-columns: 1fr; } }
+    .use-case { background: var(--paper); border-left: 3px solid var(--seal); padding: 24px 26px; }
+    .use-case .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 10px; }
+    .use-case h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 10px; }
+    .use-case p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+    .use-case .quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    /* Confronto tabella */
+    .compare-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .compare-table { width: 100%; min-width: 640px; border-collapse: collapse; font-family: var(--serif); font-size: 14px; margin-top: 18px; }
+    .compare-table th, .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); }
+    .compare-table td.feat { font-family: var(--serif); font-weight: normal; color: var(--ink); }
+    .compare-table td.veylon { background: rgba(106, 74, 26, 0.05); border-left: 3px solid var(--seal); }
+    .compare-table .yes { color: #1e6e3e; font-weight: bold; }
+    .compare-table .no { color: #b00020; }
+    .compare-table .partial { color: #ef6c00; }
+
+    /* Aggregatori SPID in valutazione */
+    .agg-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px; }
+    @media (max-width: 800px) { .agg-list { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .agg-list { grid-template-columns: 1fr; } }
+    .agg-card { background: var(--paper); border: 1px solid var(--rule); padding: 18px 14px; text-align: center; }
+    .agg-card h4 { font-family: var(--serif); font-weight: normal; font-size: 16px; margin: 0 0 6px; }
+    .agg-card p { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
+
+    /* Roadmap NS */
+    .ns-roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+    @media (max-width: 800px) { .ns-roadmap { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .ns-roadmap { grid-template-columns: 1fr; } }
+    .ns-item { background: var(--paper); border: 1px solid var(--rule); padding: 16px 14px; }
+    .ns-item .ns-code { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--seal); display: block; margin-bottom: 6px; }
+    .ns-item h4 { font-family: var(--serif); font-weight: normal; font-size: 15px; margin: 0 0 4px; line-height: 1.25; }
+    .ns-item p { font-family: var(--serif); font-size: 12.5px; color: var(--ink-3); margin: 0; line-height: 1.45; }
+
+    .sp-faq { max-width: 720px; margin: 0 auto; padding: 56px 32px 32px; }
+    @media (max-width: 640px) { .sp-faq { padding: 40px 20px 24px; } }
+    .sp-faq h2 { font-family: var(--serif); font-weight: normal; font-size: 32px; margin: 0 0 24px; }
+    .sp-faq details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    .sp-faq summary { font-family: var(--serif); font-size: 17px; cursor: pointer; padding: 4px 0; color: var(--ink); }
+    .sp-faq details[open] summary { color: var(--seal); }
+    .sp-faq details p { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 12px 0 4px; padding-left: 18px; border-left: 2px solid var(--rule); }
+
+    .sp-bottom-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; }
+    @media (max-width: 640px) { .sp-bottom-cta { padding: 48px 20px; } }
+    .sp-bottom-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(30px, 4vw, 48px); margin: 0 0 14px; }
+    .sp-bottom-cta h2 em { color: var(--seal); }
+    .sp-bottom-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+
+    .ribbon { background: linear-gradient(135deg, #e8f0fe 0%, #c8d6f0 100%); border-bottom: 2px solid #1e3a8a; padding: 14px 32px; }
+    .ribbon-inner { max-width: 980px; margin: 0 auto; font-family: var(--serif); font-size: 14px; color: #1e3a5f; text-align: center; }
+    .ribbon-inner strong { font-weight: bold; }
+    @media (max-width: 640px) { .ribbon { padding: 12px 20px; } .ribbon-inner { font-size: 13px; } }
+
+    /* Layer "Speed sopra ai 9 atti" — visual diagram */
+    .layer-stack { background: var(--paper); border: 1px solid var(--rule); padding: 32px 28px; margin-top: 28px; }
+    .layer-stack .layer { padding: 14px 18px; border-radius: 6px; margin-bottom: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .layer-stack .layer-top { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); }
+    .layer-stack .layer-mid { background: var(--paper-2); color: var(--ink-2); border: 1px dashed var(--rule); text-align: center; font-family: var(--serif); font-size: 13px; letter-spacing: 0.02em; text-transform: none; font-style: italic; }
+    .layer-stack .layer-base { background: var(--paper-2); color: var(--ink); border: 1px solid var(--rule); }
+    .layer-stack .layer-base small { display: block; font-family: var(--serif); font-size: 12px; color: var(--ink-3); margin-top: 6px; font-style: italic; text-transform: none; letter-spacing: 0; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Speed</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <div class="ribbon">
+    <div class="ribbon-inner"><strong>Cos&apos;e Veylon Speed?</strong> &mdash; una PWA mobile-first per firmare velocemente da smartphone con SPID/CIE/CNS. E un layer di accesso accelerato sopra ai 9 atti Veylon. Per chi vive in mobilita: avvocati, manager, notai, cittadini.</div>
+  </div>
+
+  <header class="sp-hero">
+    <span class="kicker">Veylon · Speed (mobile + SPID)</span>
+    <h1>Firma <em>al volo</em>.<br/>Con SPID.</h1>
+    <p class="lede">
+      PWA mobile-first per firma rapida da smartphone con SPID/CIE/CNS (identita statale forte).
+      <strong>Da 0 a firma in 60 secondi.</strong> Sopra ai 9 atti Veylon. Per chi vive in mobilita:
+      avvocati, manager, notai, cittadini.
+    </p>
+    <div class="cta-row">
+      <a href="signup.html?fonte=speed" class="btn-primary">Apri Speed gratis</a>
+      <a href="#come-funziona" class="btn-ghost">Vedi come funziona</a>
+    </div>
+  </header>
+
+  <div class="sp-trust">
+    <span><span class="dot"></span>SPID L2 / L3</span>
+    <span><span class="dot"></span>CIE 3.0</span>
+    <span><span class="dot"></span>CNS</span>
+    <span><span class="dot"></span>eIDAS art. 25-26</span>
+    <span><span class="dot"></span>PWA · zero install</span>
+    <span><span class="dot"></span>Server EU (Ireland)</span>
+  </div>
+
+  <section class="sp-section">
+    <h2>Il problema che <em>risolve</em>.</h2>
+    <p class="lede">Sei in tribunale, in aeroporto, dal cliente. Devi firmare adesso con valore legale forte. Le opzioni di oggi sono pensate per il desktop.</p>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Servizio</th>
+            <th>FirmoSubito</th>
+            <th>firmoconspid.it</th>
+            <th>SPID app desktop</th>
+            <th>PEC mobile</th>
+            <th class="veylon" style="border-left: 3px solid var(--seal);">Veylon Speed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feat">Mobile-first (PWA)</td>
+            <td class="partial">parziale</td>
+            <td class="no">&times;</td>
+            <td class="no">&times; (desktop)</td>
+            <td class="partial">app native</td>
+            <td class="veylon yes">&check; PWA dedicata</td>
+          </tr>
+          <tr>
+            <td class="feat">Zero install (no app store)</td>
+            <td class="no">&times;</td>
+            <td class="yes">&check;</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="veylon yes">&check;</td>
+          </tr>
+          <tr>
+            <td class="feat">Identita statale forte (SPID/CIE/CNS)</td>
+            <td class="yes">&check; SPID</td>
+            <td class="yes">&check; SPID</td>
+            <td class="yes">&check;</td>
+            <td class="no">&times;</td>
+            <td class="veylon yes">&check; tutti e tre</td>
+          </tr>
+          <tr>
+            <td class="feat">Da 0 a firma</td>
+            <td>~3 min</td>
+            <td>~2 min</td>
+            <td>~5 min</td>
+            <td>~2 min</td>
+            <td class="veylon yes">~60 sec</td>
+          </tr>
+          <tr>
+            <td class="feat">Funziona in 4G/5G traballante</td>
+            <td class="partial">a volte</td>
+            <td class="partial">a volte</td>
+            <td class="no">&times;</td>
+            <td class="partial">a volte</td>
+            <td class="veylon yes">&check; service worker offline-first</td>
+          </tr>
+          <tr>
+            <td class="feat">Sopra i 9 atti (Send, Mail, Sigillo&hellip;)</td>
+            <td class="no">&times; (solo firma)</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="veylon yes">&check; layer trasversale</td>
+          </tr>
+          <tr>
+            <td class="feat">Ancorato Bitcoin (prova senza intermediari)</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="veylon yes">&check; OpenTimestamps</td>
+          </tr>
+          <tr>
+            <td class="feat">Aggiunge schermata home (app-like)</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td class="yes">&check;</td>
+            <td class="veylon yes">&check; PWA</td>
+          </tr>
+          <tr>
+            <td class="feat">Multi-aggregatore SPID (no single-vendor)</td>
+            <td class="no">&times;</td>
+            <td class="no">&times;</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td class="veylon yes">&check; 5 in valutazione</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sp-section" id="come-funziona">
+    <h2>Come funziona in <em>3 step</em>.</h2>
+    <p class="lede">Apri Speed dallo smartphone (PWA, niente app store), autentica con SPID, firma. La parte legale ce la mettiamo noi sotto al cofano.</p>
+
+    <div class="step-list">
+      <div class="step-card">
+        <span class="step-num">i</span>
+        <span class="what">Tu</span>
+        <h3>Apri Speed dal telefono</h3>
+        <p>
+          Vai su <code>veylon.app/speed</code> dal browser mobile. Al primo tap aggiungi alla schermata home come PWA.
+          Niente Play Store, niente App Store, niente download da 200MB. Solo un&apos;icona, come un&apos;app vera.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">ii</span>
+        <span class="what">SPID/CIE/CNS</span>
+        <h3>Autentichi in 1 tap</h3>
+        <p>
+          Scegli il tuo aggregatore SPID (es. Lepida, Namirial, InfoCert). Veylon redirige al flusso ufficiale L2.
+          Confermi su app del tuo IdP. Torni a Speed gia loggato come <strong>identita statale forte</strong>.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">iii</span>
+        <span class="what">Veylon</span>
+        <h3>Firma e archivia</h3>
+        <p>
+          Carichi il PDF (anche dalla galleria), tap "Firma". Veylon timbra, calcola SHA-256, sigilla su Bitcoin,
+          archivia. <strong>Ricevuta legale gia pronta da inoltrare</strong> via Send o Mail. Tutto in 60 secondi.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Speed e un <em>layer di accesso</em>, non un atto separato.</h2>
+    <p class="lede">Sotto Speed ci sono i 9 atti Veylon. Non riscrive il prodotto: lo rende firmabile dal telefono in 60 secondi.</p>
+
+    <div class="layer-stack" aria-label="Stack architetturale Veylon Speed">
+      <div class="layer layer-top">Veylon Speed &mdash; PWA mobile + SPID/CIE/CNS</div>
+      <div class="layer layer-mid">accesso accelerato &darr;</div>
+      <div class="layer layer-base">
+        I 9 atti Veylon
+        <small>Notarizza · Invia (Send) · Mail (PEC cross-EU) · Garanzie · Tag (DPP) · Cert · Firma · Verifica · Identita</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Per chi <em>e davvero utile</em>.</h2>
+    <p class="lede">Quattro esempi concreti di vita reale, dove "firma adesso da telefono con valore legale forte" e l&apos;unica opzione che funziona.</p>
+
+    <div class="use-cases">
+      <article class="use-case">
+        <div class="who">Avvocato in tribunale</div>
+        <h3>Memoria difensiva in udienza</h3>
+        <p>Sono in aula, il giudice chiede una memoria integrativa per la prossima udienza. Devo firmarla con valore legale e depositarla entro fine giornata. Niente desktop, niente lettore smart card.</p>
+        <div class="quote">"Con Speed firmo dallo smartphone con SPID L2 in 60 secondi, allego al fascicolo via Send. Identita statale forte, ricevuta Bitcoin: il giudice non ha nulla da contestare."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Manager in trasferta</div>
+        <h3>Contratto urgente dall&apos;aeroporto</h3>
+        <p>Il CFO mi manda il contratto fornitore da firmare prima dell&apos;imbarco. Wi-Fi traballante, 8 minuti al gate, niente PC. Serve identita forte: e&apos;un atto vincolante a sei zeri.</p>
+        <div class="quote">"Speed e PWA: zero download. SPID L2 dall&apos;app del mio IdP, firma, hash su Bitcoin. Imbarcato firmato. Il fornitore riceve il PDF timbrato via Send."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Cittadino · pratica PA</div>
+        <h3>Richiesta residenza dal telefono</h3>
+        <p>Devo mandare al comune la richiesta di cambio residenza con autocertificazione firmata. Il comune accetta solo SPID. Non ho voglia di accendere il PC, fare scansioni, riavviare il lettore CIE.</p>
+        <div class="quote">"Speed sul telefono, login SPID L2, compilo il modulo, firma, invio al comune via Mail (PEC cross-EU). Tutto in 4 minuti dal divano."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Notaio in studio cliente</div>
+        <h3>Atti firmati sul tablet del cliente</h3>
+        <p>Vado a casa del cliente per stipula. Voglio fargli firmare il preliminare direttamente sul tablet, senza dovergli stampare 40 pagine. Serve identita statale: e&apos;un atto pubblico.</p>
+        <div class="quote">"Apro Speed sul tablet del cliente, lui autentica con SPID, firma. Io archivio il PDF timbrato Bitcoin nel mio Veylon, lui ne ha copia via Send. Risparmio mezza giornata di stampa."</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Aggregatori SPID <em>in valutazione</em>.</h2>
+    <p class="lede">Speed nasce multi-aggregatore di principio: niente single-vendor lock-in. Se uno va giu, gli altri restano disponibili. Stiamo confrontando cinque opzioni di mercato.</p>
+
+    <div class="agg-list">
+      <div class="agg-card">
+        <h4>SPIDsa</h4>
+        <p>intermediario certificato</p>
+      </div>
+      <div class="agg-card">
+        <h4>Time4Mind</h4>
+        <p>broker SPID</p>
+      </div>
+      <div class="agg-card">
+        <h4>Lepida</h4>
+        <p>IdP pubblico</p>
+      </div>
+      <div class="agg-card">
+        <h4>Namirial</h4>
+        <p>TSP accreditato AgID</p>
+      </div>
+      <div class="agg-card">
+        <h4>InfoCert</h4>
+        <p>TSP accreditato AgID</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Roadmap <em>NS</em> (Speed).</h2>
+    <p class="lede">Speed segue una roadmap dedicata <strong>NS.1-8</strong> ispirata al modello FirmoSubito di Cyberneid: PWA mobile-first, autenticazione statale forte, integrazione completa nei 9 atti Veylon.</p>
+
+    <div class="ns-roadmap">
+      <div class="ns-item">
+        <span class="ns-code">NS.1</span>
+        <h4>PWA scaffold</h4>
+        <p>Manifest + service worker + install prompt iOS/Android.</p>
+      </div>
+      <div class="ns-item">
+        <span class="ns-code">NS.2</span>
+        <h4>SPID L2 SSO</h4>
+        <p>Flusso SAML2 conforme AgID via aggregatore scelto.</p>
+      </div>
+      <div class="ns-item">
+        <span class="ns-code">NS.3</span>
+        <h4>CIE 3.0 NFC</h4>
+        <p>Tap-to-auth via WebAuthn + chip NFC carta identita.</p>
+      </div>
+      <div class="ns-item">
+        <span class="ns-code">NS.4</span>
+        <h4>CNS smart card</h4>
+        <p>Fallback CNS per professionisti gia dotati di tessera.</p>
+      </div>
+      <div class="ns-item">
+        <span class="ns-code">NS.5</span>
+        <h4>Mobile UX layer</h4>
+        <p>Selezione PDF da galleria, anteprima full-screen, swipe-to-sign.</p>
+      </div>
+      <div class="ns-item">
+        <span class="ns-code">NS.6</span>
+        <h4>Bridge 9 atti</h4>
+        <p>Da Speed apri Send/Mail/Sigillo/Cert con sessione SPID gia attiva.</p>
+      </div>
+      <div class="ns-item">
+        <span class="ns-code">NS.7</span>
+        <h4>Offline-first queue</h4>
+        <p>Firma in 4G traballante, sincronizza appena torna rete stabile.</p>
+      </div>
+      <div class="ns-item">
+        <span class="ns-code">NS.8</span>
+        <h4>Multi-aggregatore live</h4>
+        <p>Failover automatico tra 5 IdP in caso di downtime di uno.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-faq">
+    <h2>Domande frequenti</h2>
+
+    <details>
+      <summary>Cos&apos;e SPID e perche mi serve per Speed?</summary>
+      <p>SPID (Sistema Pubblico di Identita Digitale) e l&apos;identita digitale ufficiale italiana riconosciuta dallo Stato e in tutta l&apos;UE via eIDAS. Speed la usa come <strong>identita statale forte</strong> per dare valore legale alle firme da mobile: chi firma e indubitabilmente chi dice di essere, perche autenticato dallo Stato. Cosa diversa da una password o da un&apos;email: e identita certificata.</p>
+    </details>
+
+    <details>
+      <summary>Differenza con SPID Personale di Aruba Pec?</summary>
+      <p>SPID Personale (Aruba) e un&apos;identita SPID che ti rilascia un IdP. <strong>Speed non ti rilascia SPID</strong>: Speed lo usa. Se hai gia SPID con Aruba, Poste, Lepida, InfoCert, Namirial o altri, lo riusi su Speed senza crearne uno nuovo. Veylon e un Service Provider SPID, non un Identity Provider.</p>
+    </details>
+
+    <details>
+      <summary>Veylon Speed e disponibile su App Store / Play Store?</summary>
+      <p>No, e una <strong>PWA</strong> (Progressive Web App). Niente download da 100MB, niente attese di review, niente account dev da 99$/anno. Apri <code>veylon.app/speed</code> dal browser mobile, scegli "Aggiungi a schermata home", e diventa un&apos;icona come un&apos;app nativa. Stesso comportamento, zero attrito.</p>
+    </details>
+
+    <details>
+      <summary>Cos&apos;e una PWA?</summary>
+      <p>Progressive Web App: un sito web che il browser tratta come app. Vantaggi: nessun download dallo store, sempre aggiornata automaticamente, funziona anche offline grazie al service worker, occupa pochi MB invece di centinaia. Le banche e gli e-commerce le usano da anni (Twitter, Starbucks, Spotify Lite, banche italiane). Per Speed e la scelta giusta: niente attrito di installazione quando hai 60 secondi per firmare.</p>
+    </details>
+
+    <details>
+      <summary>Quale livello SPID serve?</summary>
+      <p>Speed supporta SPID L2 (default per firme) e SPID L3 (per atti ad alta criticita). <strong>L2 e equivalente eIDAS "sostanziale"</strong> e basta per la stragrande maggioranza dei contratti, pratiche PA, memorie legali. L3 (eIDAS "elevato") viene proposto solo per atti notarili, contratti immobiliari, deleghe di valore alto. Speed sceglie il livello giusto in base al tipo di atto.</p>
+    </details>
+
+    <details>
+      <summary>Cosa succede se l&apos;aggregatore SPID va giu?</summary>
+      <p>Speed nasce <strong>multi-aggregatore</strong>. Stiamo valutando 5 opzioni (SPIDsa, Time4Mind, Lepida, Namirial, InfoCert) proprio per garantire failover. Se Lepida e in manutenzione, Speed prova Namirial. Se va giu un IdP specifico (es. Poste), puoi autenticarti con un altro IdP qualsiasi. Nessun single point of failure. NS.8 della roadmap rende il failover automatico.</p>
+    </details>
+
+    <details>
+      <summary>Quanto e veloce davvero "60 secondi"?</summary>
+      <p>Misurato: dal tap sull&apos;icona Speed sulla home, autenticazione SPID via app IdP gia installata sul telefono (tipicamente 15-20 sec), caricamento PDF dalla galleria (10 sec), conferma firma (5 sec), generazione ricevuta + ancoraggio Bitcoin (10-15 sec). <strong>Totale 50-65 secondi reali</strong> su 4G/5G normale. Confronto: FirmoSubito ~3 min, SPID app desktop ~5 min con lettore smart card. La differenza la fa l&apos;assenza di app store, lettori USB, riavvii.</p>
+    </details>
+  </section>
+
+  <section class="sp-bottom-cta">
+    <h2>Provalo <em>adesso dal telefono</em>.</h2>
+    <p>Apri Speed dal browser mobile, aggiungi alla schermata home, autenticati con SPID. La prima firma legale dal telefono in 60 secondi, gratis.</p>
+    <div class="cta-row" style="justify-content: center; display: flex; gap: 14px; flex-wrap: wrap;">
+      <a href="signup.html?fonte=speed" class="btn-primary">Apri Speed gratis</a>
+      <a href="speed.html" class="btn-ghost">Vai alla PWA</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Veylon Speed · Firma mobile con SPID</span>
+    </div>
+  </footer>
+</body>
+</html>

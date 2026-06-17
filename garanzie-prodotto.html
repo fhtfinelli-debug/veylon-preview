@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Garanzie · Una garanzia commerciale che vale per sempre, anche se chiudi</title>
+  <meta name="description" content="Emetti garanzie commerciali con codice univoco, QR di verifica e ancoraggio Bitcoin. Il cliente verifica autenticita in 5 secondi. Anche se chiudi domani, la garanzia resta valida."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/garanzie-prodotto.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Garanzie · Atto iv · Garanzia commerciale certificata"/>
+  <meta property="og:description" content="Codice univoco, QR di verifica, scadenza, condizioni opponibili. Ancorata Bitcoin per data certa. Anche se chiudi, il cliente verifica in 5 secondi."/>
+  <meta property="og:url" content="https://veylon.app/garanzie-prodotto.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto 36px; }
+    .sp-hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .sp-trust { padding: 28px 32px; max-width: 980px; margin: 0 auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sp-trust span { display: flex; align-items: center; gap: 8px; }
+    .sp-trust .dot { width: 6px; height: 6px; background: var(--seal); border-radius: 50%; }
+
+    .sp-section { max-width: 980px; margin: 0 auto; padding: 72px 32px; }
+    .sp-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 14px; }
+    .sp-section h2 em { color: var(--seal); }
+    .sp-section .lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 0 40px; }
+
+    /* Come funziona — 3 step verticali */
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .step-list { grid-template-columns: 1fr; } }
+    .step-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .step-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 64px; line-height: 1; position: absolute; top: 18px; right: 22px; opacity: 0.25; }
+    .step-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .step-card p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .step-card .what { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; display: block; }
+
+    /* Per chi — 4 esempi */
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 800px) { .use-cases { grid-template-columns: 1fr; } }
+    .use-case { background: var(--paper); border-left: 3px solid var(--seal); padding: 24px 26px; }
+    .use-case .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 10px; }
+    .use-case h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 10px; }
+    .use-case p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+    .use-case .quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    /* Confronto tabella */
+    .compare-table { width: 100%; border-collapse: collapse; font-family: var(--serif); font-size: 14px; margin-top: 18px; }
+    .compare-table th, .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); }
+    .compare-table td.feat { font-family: var(--serif); font-weight: normal; color: var(--ink); }
+    .compare-table td.veylon { background: rgba(106, 74, 26, 0.05); border-left: 3px solid var(--seal); }
+    .compare-table .yes { color: #1e6e3e; font-weight: bold; }
+    .compare-table .no { color: #b00020; }
+    .compare-table .partial { color: #ef6c00; }
+    .compare-table-wrap { overflow-x: auto; }
+
+    /* 4 ricevute / anatomia garanzia */
+    .receipts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    @media (max-width: 800px) { .receipts { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .receipts { grid-template-columns: 1fr; } }
+    .receipt { background: var(--paper); border: 1px solid var(--rule); padding: 22px 18px; text-align: center; }
+    .receipt .roman { font-family: var(--serif); font-style: italic; font-size: 28px; color: var(--seal); }
+    .receipt h4 { font-family: var(--serif); font-weight: normal; font-size: 17px; margin: 8px 0 8px; }
+    .receipt p { font-family: var(--serif); font-size: 13px; line-height: 1.45; color: var(--ink-2); margin: 0; }
+
+    .sp-faq { max-width: 720px; margin: 0 auto; padding: 56px 32px 32px; }
+    .sp-faq h2 { font-family: var(--serif); font-weight: normal; font-size: 32px; margin: 0 0 24px; }
+    .sp-faq details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    .sp-faq summary { font-family: var(--serif); font-size: 17px; cursor: pointer; padding: 4px 0; color: var(--ink); }
+    .sp-faq details[open] summary { color: var(--seal); }
+    .sp-faq details p { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 12px 0 4px; padding-left: 18px; border-left: 2px solid var(--rule); }
+
+    .sp-bottom-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; }
+    .sp-bottom-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); margin: 0 0 14px; }
+    .sp-bottom-cta h2 em { color: var(--seal); }
+    .sp-bottom-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+
+    .ribbon { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #1e6e3e; padding: 14px 32px; }
+    .ribbon-inner { max-width: 980px; margin: 0 auto; font-family: var(--serif); font-size: 14px; color: #16482a; text-align: center; }
+    .ribbon-inner strong { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Garanzie</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <div class="ribbon">
+    <div class="ribbon-inner"><strong>Cos&apos;e Veylon Garanzie?</strong> &mdash; un servizio per emettere garanzie commerciali con codice univoco, QR di verifica e ancoraggio Bitcoin. Il cliente verifica autenticit&agrave; e scadenza in 5 secondi, anche dopo che chiudi.</div>
+  </div>
+
+  <header class="sp-hero">
+    <span class="kicker">Veylon · Atto iv Garanzie</span>
+    <h1>Una garanzia<br/>che <em>vale per sempre</em>.<br/>Anche se chiudi.</h1>
+    <p class="lede">
+      Emetti garanzie commerciali con codice univoco + QR di verifica + ancoraggio Bitcoin. Il cliente verifica autenticit&agrave;
+      in 5 secondi. Anche se chiudi domani, la garanzia resta verificabile. Sostituisce certificati cartacei che si perdono
+      + sistemi proprietari come Trust Pilot Garanzia.
+    </p>
+    <div class="cta-row">
+      <a href="signup.html?fonte=garanzie" class="btn-primary">Prova gratis (10 garanzie/mese)</a>
+      <a href="#come-funziona" class="btn-ghost">Vedi come funziona</a>
+    </div>
+  </header>
+
+  <div class="sp-trust">
+    <span><span class="dot"></span>Codice Consumo art. 133</span>
+    <span><span class="dot"></span>eIDAS art. 41</span>
+    <span><span class="dot"></span>Bitcoin OpenTimestamps</span>
+    <span><span class="dot"></span>Verifica pubblica QR</span>
+    <span><span class="dot"></span>Server EU (Ireland)</span>
+  </div>
+
+  <section class="sp-section">
+    <h2>Il problema che <em>risolve</em>.</h2>
+    <p class="lede">Vendi un prodotto con garanzia commerciale, ma fra 3 anni il cliente avr&agrave; perso il certificato cartaceo e tu avrai cambiato gestionale. Le opzioni di oggi sono tutte fragili.</p>
+
+    <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Servizio</th>
+          <th>Certificato cartaceo</th>
+          <th>CRM proprietario</th>
+          <th>Nessuna prova</th>
+          <th>Trust Pilot Garanzia</th>
+          <th class="veylon" style="border-left: 3px solid var(--seal);">Veylon Garanzie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feat">Codice univoco verificabile</td>
+          <td class="partial">solo carta</td>
+          <td class="yes">&check;</td>
+          <td class="no">&times;</td>
+          <td class="yes">&check;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">QR di verifica pubblica</td>
+          <td class="no">&times;</td>
+          <td class="partial">solo se app cliente</td>
+          <td class="no">&times;</td>
+          <td class="yes">&check;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">Data certa opponibile</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; Bitcoin OTS</td>
+        </tr>
+        <tr>
+          <td class="feat">Resta valida se chiudi</td>
+          <td class="partial">se cliente la conserva</td>
+          <td class="no">&times; (server spento)</td>
+          <td class="no">&times;</td>
+          <td class="no">&times; (servizio terzo)</td>
+          <td class="veylon yes">&check; standard aperto</td>
+        </tr>
+        <tr>
+          <td class="feat">Condizioni esplicite e firmate</td>
+          <td class="partial">leggibile, modificabile</td>
+          <td class="partial">modificabile lato server</td>
+          <td class="no">&times;</td>
+          <td class="partial">modificabile lato server</td>
+          <td class="veylon yes">&check; hash immutabile</td>
+        </tr>
+        <tr>
+          <td class="feat">Emissione batch (1000+)</td>
+          <td class="no">&times;</td>
+          <td class="partial">dipende dal CRM</td>
+          <td class="no">&times;</td>
+          <td class="partial">su piano enterprise</td>
+          <td class="veylon yes">&check; API REST</td>
+        </tr>
+        <tr>
+          <td class="feat">Cliente non deve installare app</td>
+          <td class="yes">&check;</td>
+          <td class="no">&times;</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="veylon yes">&check; web pubblico</td>
+        </tr>
+        <tr>
+          <td class="feat">Costo per garanzia emessa</td>
+          <td>0,20-2&euro; stampa</td>
+          <td>incluso CRM</td>
+          <td>0&euro;</td>
+          <td>1-5&euro; cad.</td>
+          <td class="veylon">0&euro; (10 free/mese)</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section class="sp-section" id="come-funziona">
+    <h2>Come funziona in <em>3 step</em>.</h2>
+    <p class="lede">Tu compili, Veylon genera, il cliente verifica. La parte legale ce la mettiamo noi sotto al cofano.</p>
+
+    <div class="step-list">
+      <div class="step-card">
+        <span class="step-num">i</span>
+        <span class="what">Venditore</span>
+        <h3>Emetti la garanzia</h3>
+        <p>
+          Apri <code>garanzie.html</code>, scegli prodotto + cliente + scadenza + condizioni (es. "10 anni su tavolo modello
+          Quercia, copre rotture strutturali, esclude usura"). Click "Emetti garanzia". Veylon assegna un codice univoco
+          tipo <code>GAR-2026-A7F3-9X2K</code>.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">ii</span>
+        <span class="what">Veylon</span>
+        <h3>Genera codice + QR + sigillo</h3>
+        <p>
+          Veylon stampa un PDF garanzia con codice univoco, QR che linka a <code>verifica-garanzia.html?codice=...</code>,
+          impronta SHA-256 di tutte le condizioni. Poi ancora l&apos;impronta su Bitcoin via OpenTimestamps per data certa
+          + integrita opponibile.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">iii</span>
+        <span class="what">Cliente</span>
+        <h3>Verifica in 5 secondi</h3>
+        <p>
+          Il cliente inquadra il QR sul certificato (o digita il codice su <code>verifica-garanzia.html</code>). Vede:
+          prodotto, data emissione, scadenza, condizioni esatte. <strong>Niente account, niente app.</strong> Anche fra
+          10 anni, anche se tu hai chiuso.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Cosa contiene <em>ogni garanzia</em>.</h2>
+    <p class="lede">Ogni garanzia Veylon &egrave; un atto con 4 elementi che insieme la rendono opponibile e auto-verificabile.</p>
+
+    <div class="receipts">
+      <div class="receipt">
+        <div class="roman">i</div>
+        <h4>Codice univoco</h4>
+        <p>"Identificatore globale tipo GAR-2026-A7F3-9X2K, non riassegnabile."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">ii</div>
+        <h4>Riferimenti</h4>
+        <p>"Prodotto + cliente + venditore con P.IVA, data emissione, scadenza."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">iii</div>
+        <h4>Condizioni</h4>
+        <p>"Cosa copre, cosa esclude, procedura attivazione, foro competente."</p>
+      </div>
+      <div class="receipt">
+        <div class="roman">iv</div>
+        <h4>Sigillo Bitcoin</h4>
+        <p>"Impronta SHA-256 ancorata su blockchain pubblica per data + integrita."</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Per chi <em>e davvero utile</em>.</h2>
+    <p class="lede">Quattro esempi concreti, scritti come ce li raccontano davvero gli utenti.</p>
+
+    <div class="use-cases">
+      <article class="use-case">
+        <div class="who">Artigiano mobili</div>
+        <h3>Garanzia 10 anni su pezzi unici</h3>
+        <p>Faccio tavoli su misura in noce e quercia. Garanzia commerciale 10 anni su difetti strutturali del legno e delle giunzioni. Il certificato di carta che davo si perdeva dopo 6 mesi. Ora gli appiccico il QR sotto il tavolo.</p>
+        <div class="quote">"Il cliente lo inquadra col telefono, vede tutto: 'Tavolo Quercia n.142, fatto il 18 giugno 2026, copre rotture strutturali fino al 2036.' Anche se chiudo la bottega, la garanzia c&apos;e."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">E-commerce elettronica</div>
+        <h3>Garanzia 2 anni + estensione 3</h3>
+        <p>Vendo elettrodomestici online. Garanzia legale 2 anni inclusa + estensione commerciale 3 anni a pagamento (29&euro;). Devo dimostrare al cliente e al consumer authority che le condizioni dell&apos;estensione sono quelle vendute, non modificate dopo.</p>
+        <div class="quote">"Le condizioni hanno hash ancorato Bitcoin il giorno della vendita. Se domani un cliente contesta, mostro il sigillo: 'queste sono le condizioni del giorno X, non le ho cambiate'. Audit di consumer protection passato."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Concessionario auto usate</div>
+        <h3>Garanzia 12 mesi con condizioni esplicite</h3>
+        <p>Vendo auto usate con garanzia commerciale 12 mesi. Le condizioni sono delicate: limite km, componenti coperti (motore, cambio, frizione), franchigie. Devo evitare che cliente o avvocato contestino "non era scritto cosi&apos;".</p>
+        <div class="quote">"Sul PDF garanzia stampo le condizioni esatte, le ancoro su Bitcoin, le mando al cliente. Quando torna dopo 8 mesi col cambio rotto, apriamo il QR insieme: c&apos;e tutto nero su bianco, data certa."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Studio dentistico</div>
+        <h3>Garanzia 5 anni su protesi</h3>
+        <p>Faccio lavori protesici (corone, impianti, faccette). Garanzia 5 anni su rotture del manufatto, esclusa usura e mancata igiene. Voglio una prova opponibile al paziente in caso di controversia: cosa ho garantito esattamente, quando, su quale lavoro.</p>
+        <div class="quote">"Allego il certificato Veylon alla cartella clinica. Codice univoco legato all&apos;impianto n.X del paziente Y. Se fra 4 anni mi denuncia, ho data certa Bitcoin di cosa ho garantito quel giorno."</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-faq">
+    <h2>Domande frequenti</h2>
+
+    <details>
+      <summary>Che differenza c&apos;e con la garanzia legale di 2 anni del Codice del Consumo?</summary>
+      <p>La <strong>garanzia legale</strong> (art. 128-135 Codice del Consumo) e&apos; obbligatoria, dura 2 anni, copre la conformita del bene, e&apos; dovuta dal venditore al consumatore: esiste comunque, anche senza certificato. La <strong>garanzia commerciale</strong> (art. 133) e&apos; volontaria, in aggiunta a quella legale, con condizioni che decidi tu (durata maggiore, copertura specifica, ecc.). Veylon Garanzie serve per emettere e tracciare in modo opponibile la garanzia commerciale &mdash; non sostituisce gli obblighi di legge sulla garanzia legale.</p>
+    </details>
+
+    <details>
+      <summary>Cosa succede se chiudo l&apos;attivit&agrave;?</summary>
+      <p>La garanzia rimane <strong>verificabile per sempre</strong>. Il codice univoco resta nel database Veylon (anche se chiudessi Veylon, le ricevute Bitcoin sono ancorate al registro pubblico via OpenTimestamps). Il cliente pu&ograve; sempre dimostrare a un giudice: codice, data emissione, scadenza, condizioni. Resta aperto il tema di <em>chi onora</em> la garanzia commerciale se l&apos;attivit&agrave; e&apos; cessata (questione separata, governata dal diritto civile e dal subentro/successione di azienda), ma la <em>prova</em> della garanzia non si perde.</p>
+    </details>
+
+    <details>
+      <summary>Il cliente come verifica? Deve installare un&apos;app?</summary>
+      <p>No. Il cliente inquadra il QR sul certificato con la fotocamera del telefono e si apre la pagina pubblica <code>verifica-garanzia.html?codice=GAR-...</code>. In alternativa, digita il codice manualmente sulla stessa pagina dal browser. Vede subito: prodotto, venditore, data emissione, scadenza, condizioni, stato (valida/scaduta/contestata), conferma Bitcoin. Niente account, niente download.</p>
+    </details>
+
+    <details>
+      <summary>La scadenza e&apos; personalizzabile per ogni garanzia?</summary>
+      <p>S&igrave;. Quando emetti scegli la durata: 6 mesi, 1 anno, 2 anni, 5 anni, 10 anni, custom (data esplicita). Puoi anche emettere garanzie senza scadenza (es. garanzia a vita su pezzi unici), che restano valide finch&eacute; il bene esiste. La scadenza fa parte delle condizioni firmate digitalmente, quindi non puoi modificarla dopo l&apos;emissione: per cambiarla devi emettere una nuova garanzia che supersede la precedente, con audit log esplicito.</p>
+    </details>
+
+    <details>
+      <summary>Posso emettere 1000 garanzie in batch?</summary>
+      <p>S&igrave;. Dal piano Business hai accesso all&apos;API REST <code>POST /garanzia-crea</code> che accetta CSV o JSON array. Esempio: importi i 1.000 numeri di serie del lotto produttivo, mandi una sola chiamata, ricevi 1.000 codici univoci + 1.000 PDF certificati pronti da stampare/spedire/incollare al prodotto. L&apos;ancoraggio Bitcoin viene fatto in batch tramite un Merkle tree (un&apos;unica transazione copre fino a milioni di garanzie).</p>
+    </details>
+
+    <details>
+      <summary>Le condizioni della garanzia si possono modificare dopo?</summary>
+      <p>No. Le condizioni hanno hash SHA-256 ancorato Bitcoin nel momento dell&apos;emissione: questa e&apos; la garanzia di non-ripudio. Se devi correggere un errore (es. data sbagliata, condizione mal formulata), <strong>revochi</strong> la garanzia originale (la marca come "sostituita") ed emetti una nuova garanzia che supersede. La verifica pubblica mostra sempre la storia: "questa garanzia ha sostituito GAR-XXXX in data Y, motivo: correzione errore materiale". Niente modifiche silenti possibili, nemmeno da parte tua.</p>
+    </details>
+
+    <details>
+      <summary>Funziona per B2C e B2B?</summary>
+      <p>Entrambi. Nel <strong>B2C</strong> (vendita a consumatore) Veylon Garanzie copre la garanzia commerciale opzionale aggiuntiva alla legale 2 anni: utile per estensioni, lavori artigianali, beni di valore. Nel <strong>B2B</strong> (vendita tra aziende) la garanzia legale del Codice Consumo non si applica, quindi la garanzia commerciale Veylon e&apos; lo strumento principale per dare al cliente business prova certa di copertura, durata, condizioni opponibili. Per il B2B integrabile via API nei processi acquisto: ogni ordine emette garanzia automaticamente.</p>
+    </details>
+
+    <details>
+      <summary>Quanto costa?</summary>
+      <p>Piano Free: 10 garanzie al mese. Pro: 9&euro;/mese (garanzie illimitate, branding personalizzato sul PDF). Business: 99&euro;/mese (API REST, batch emission, 50.000 sigilli/mese inclusi, SLA 99.9%, white-label). Vedi <a href="pricing.html">listino completo</a>.</p>
+    </details>
+  </section>
+
+  <section class="sp-bottom-cta">
+    <h2>Provalo <em>adesso</em>.</h2>
+    <p>10 garanzie gratis al mese, senza carta di credito. Apri l&apos;account in 30 secondi, emetti la prima garanzia certificata in 60.</p>
+    <div class="cta-row" style="justify-content: center;">
+      <a href="signup.html?fonte=garanzie" class="btn-primary">Inizia gratis</a>
+      <a href="verifica-garanzia.html" class="btn-ghost">Verifica una garanzia</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Veylon Garanzie · Atto iv</span>
+    </div>
+  </footer>
+</body>
+</html>

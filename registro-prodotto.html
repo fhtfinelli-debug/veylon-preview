@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Registro · Il log immutabile che vale come un audit trail certificato</title>
+  <meta name="description" content="Log append-only time-stamped di ogni attivita: chi ha fatto cosa, quando. ALCOA+, GDPR Art. 30, ISO 17025, antiriciclaggio. Esportabile come PDF sigillato su Bitcoin."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/registro-prodotto.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Registro · Audit trail immutabile per GDPR, ISO 17025, antiriciclaggio"/>
+  <meta property="og:description" content="Ogni azione, impressa. Per sempre. Log ALCOA+ append-only ancorato su Bitcoin, esportabile come PDF certificato per audit GDPR Art. 30, ISO 17025, L. 231/2007."/>
+  <meta property="og:url" content="https://veylon.app/registro-prodotto.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto 36px; }
+    .sp-hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .sp-trust { padding: 28px 32px; max-width: 980px; margin: 0 auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sp-trust span { display: flex; align-items: center; gap: 8px; }
+    .sp-trust .dot { width: 6px; height: 6px; background: var(--seal); border-radius: 50%; }
+
+    .sp-section { max-width: 980px; margin: 0 auto; padding: 72px 32px; }
+    .sp-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 14px; }
+    .sp-section h2 em { color: var(--seal); }
+    .sp-section .lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 0 40px; }
+
+    /* Come funziona — 3 step verticali */
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .step-list { grid-template-columns: 1fr; } }
+    .step-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .step-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 64px; line-height: 1; position: absolute; top: 18px; right: 22px; opacity: 0.25; }
+    .step-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .step-card p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .step-card .what { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; display: block; }
+
+    /* Per chi — 4 esempi */
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 800px) { .use-cases { grid-template-columns: 1fr; } }
+    .use-case { background: var(--paper); border-left: 3px solid var(--seal); padding: 24px 26px; }
+    .use-case .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 10px; }
+    .use-case h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 10px; }
+    .use-case p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+    .use-case .quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    /* Confronto tabella */
+    .compare-table { width: 100%; border-collapse: collapse; font-family: var(--serif); font-size: 14px; margin-top: 18px; }
+    .compare-table th, .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); }
+    .compare-table td.feat { font-family: var(--serif); font-weight: normal; color: var(--ink); }
+    .compare-table td.veylon { background: rgba(106, 74, 26, 0.05); border-left: 3px solid var(--seal); }
+    .compare-table .yes { color: #1e6e3e; font-weight: bold; }
+    .compare-table .no { color: #b00020; }
+    .compare-table .partial { color: #ef6c00; }
+
+    /* ALCOA+ pillars (5 colonne) */
+    .pillars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 24px; }
+    @media (max-width: 800px) { .pillars { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .pillars { grid-template-columns: 1fr; } }
+    .pillar { background: var(--paper); border: 1px solid var(--rule); padding: 22px 16px; text-align: center; }
+    .pillar .roman { font-family: var(--serif); font-style: italic; font-size: 28px; color: var(--seal); }
+    .pillar h4 { font-family: var(--serif); font-weight: normal; font-size: 16px; margin: 8px 0 8px; }
+    .pillar p { font-family: var(--serif); font-size: 12.5px; line-height: 1.45; color: var(--ink-2); margin: 0; }
+
+    /* Eventi tracciati — lista */
+    .events-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+    @media (max-width: 800px) { .events-grid { grid-template-columns: 1fr; } }
+    .event-item { background: var(--paper); border-left: 2px solid var(--seal); padding: 14px 18px; font-family: var(--serif); font-size: 14px; }
+    .event-item code { font-family: var(--mono); font-size: 11px; color: var(--ink-3); display: block; margin-top: 4px; }
+
+    .sp-faq { max-width: 720px; margin: 0 auto; padding: 56px 32px 32px; }
+    .sp-faq h2 { font-family: var(--serif); font-weight: normal; font-size: 32px; margin: 0 0 24px; }
+    .sp-faq details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    .sp-faq summary { font-family: var(--serif); font-size: 17px; cursor: pointer; padding: 4px 0; color: var(--ink); }
+    .sp-faq details[open] summary { color: var(--seal); }
+    .sp-faq details p { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 12px 0 4px; padding-left: 18px; border-left: 2px solid var(--rule); }
+
+    .sp-bottom-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; }
+    .sp-bottom-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); margin: 0 0 14px; }
+    .sp-bottom-cta h2 em { color: var(--seal); }
+    .sp-bottom-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+
+    .ribbon { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #1e6e3e; padding: 14px 32px; }
+    .ribbon-inner { max-width: 980px; margin: 0 auto; font-family: var(--serif); font-size: 14px; color: #16482a; text-align: center; }
+    .ribbon-inner strong { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Registro</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <div class="ribbon">
+    <div class="ribbon-inner"><strong>Cos&apos;e Veylon Registro?</strong> &mdash; un log immutabile time-stamped di tutte le attivita: chi ha fatto cosa, quando. Come un audit trail ALCOA+, ma con marcatura temporale Bitcoin ed esportabile come PDF certificato.</div>
+  </div>
+
+  <header class="sp-hero">
+    <span class="kicker">Veylon · Atto v Registro</span>
+    <h1>Ogni azione, <em>impressa</em>.<br/>Per sempre.</h1>
+    <p class="lede">
+      Log immutabile time-stamped di tutte le attivita Veylon: chi ha fatto cosa, quando.
+      <strong>Append-only ALCOA+</strong>. Esportabile come PDF certificato. Per audit GDPR Art. 30,
+      compliance ISO, antiriciclaggio L. 231/2007. Sostituisce log Excel/Sharepoint che si possono modificare.
+    </p>
+    <div class="cta-row">
+      <a href="signup.html?fonte=registro" class="btn-primary">Prova gratis</a>
+      <a href="#come-funziona" class="btn-ghost">Vedi come funziona</a>
+    </div>
+  </header>
+
+  <div class="sp-trust">
+    <span><span class="dot"></span>ALCOA+ FDA 21 CFR Part 11</span>
+    <span><span class="dot"></span>GDPR Art. 30</span>
+    <span><span class="dot"></span>ISO 17025 audit trail</span>
+    <span><span class="dot"></span>Bitcoin OpenTimestamps</span>
+    <span><span class="dot"></span>Server EU (Ireland)</span>
+  </div>
+
+  <section class="sp-section">
+    <h2>Il problema che <em>risolve</em>.</h2>
+    <p class="lede">Devi dimostrare a un auditor chi ha toccato cosa, quando, e che nessuno l&apos;ha modificato a posteriori. Le opzioni di oggi sono tutte rotte.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Servizio</th>
+          <th>Log Excel/Sharepoint</th>
+          <th>CRM con audit log</th>
+          <th>ELN LabArchives</th>
+          <th class="veylon" style="border-left: 3px solid var(--seal);">Veylon Registro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feat">Append-only (nessuna modifica)</td>
+          <td class="no">&times; (chiunque edita)</td>
+          <td class="partial">solo admin</td>
+          <td class="yes">&check;</td>
+          <td class="veylon yes">&check; SQL constraint</td>
+        </tr>
+        <tr>
+          <td class="feat">Timestamp affidabile (no clock fraud)</td>
+          <td class="no">&times;</td>
+          <td class="partial">server interno</td>
+          <td class="partial">server vendor</td>
+          <td class="veylon yes">&check; Bitcoin</td>
+        </tr>
+        <tr>
+          <td class="feat">Marcatura temporale opponibile</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="partial">solo interna</td>
+          <td class="veylon yes">&check; eIDAS art. 41</td>
+        </tr>
+        <tr>
+          <td class="feat">Audit trail ALCOA+ completo</td>
+          <td class="no">&times;</td>
+          <td class="partial">parziale</td>
+          <td class="yes">&check;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">Esportazione PDF certificata</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="partial">PDF firmato vendor</td>
+          <td class="veylon yes">&check; sigillo Bitcoin</td>
+        </tr>
+        <tr>
+          <td class="feat">GDPR Art. 30 ready</td>
+          <td class="no">&times;</td>
+          <td class="partial">manuale</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">Sopravvive alla chiusura del vendor</td>
+          <td class="partial">se hai backup</td>
+          <td class="no">&times;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; ancorato Bitcoin</td>
+        </tr>
+        <tr>
+          <td class="feat">Retention multi-anno (10+)</td>
+          <td class="partial">backup manuale</td>
+          <td class="partial">a pagamento</td>
+          <td class="yes">&check; ma vendor lock-in</td>
+          <td class="veylon yes">&check; standard aperto</td>
+        </tr>
+        <tr>
+          <td class="feat">Costo annuo per utente</td>
+          <td>0&euro;</td>
+          <td>200-800&euro;</td>
+          <td>500-2.000&euro;</td>
+          <td class="veylon">incluso nel piano</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sp-section" id="come-funziona">
+    <h2>Come funziona in <em>3 step</em>.</h2>
+    <p class="lede">Tu lavori normalmente. Veylon registra ogni azione in background, append-only, con timestamp ancorato Bitcoin.</p>
+
+    <div class="step-list">
+      <div class="step-card">
+        <span class="step-num">i</span>
+        <span class="what">Tu</span>
+        <h3>Usi Veylon normalmente</h3>
+        <p>
+          Crei un atto, lo condividi, modifichi un tag, scarichi un certificato, accedi a una cartella riservata.
+          Non devi fare nulla di speciale: vivi la tua giornata di lavoro normale.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">ii</span>
+        <span class="what">Veylon</span>
+        <h3>Registra in append-only</h3>
+        <p>
+          Ogni azione genera un evento in <code>cert_eventi</code>, <code>trasmissione_eventi</code>, <code>tag_eventi</code>,
+          <code>firma_eventi</code>, <code>veylon_eventi</code> con timestamp UTC, utente, IP, hash payload.
+          <strong>Tre trigger SQL impediscono UPDATE/DELETE</strong>: il record una volta scritto e immutabile.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">iii</span>
+        <span class="what">Auditor</span>
+        <h3>Esporta PDF certificato</h3>
+        <p>
+          Quando l&apos;auditor arriva, apri Registro, scegli intervallo date e ambito (utente, atto, team),
+          click "Esporta PDF certificato". Veylon produce un PDF cronologico con sigillo Bitcoin del set di eventi.
+          <strong>Verificabile da terzi anche tra 30 anni.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>I <em>5 pilastri ALCOA+</em> garantiti.</h2>
+    <p class="lede">FDA 21 CFR Part 11 + EU GMP Annex 11 definiscono i requisiti per audit trail. Veylon Registro li copre tutti.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="roman">i</div>
+        <h4>Attributable</h4>
+        <p>Ogni evento ha utente, ruolo, IP, sessione. Niente azioni anonime.</p>
+      </div>
+      <div class="pillar">
+        <div class="roman">ii</div>
+        <h4>Legible</h4>
+        <p>Eventi leggibili in chiaro, esportabili CSV/PDF. No formati proprietari opachi.</p>
+      </div>
+      <div class="pillar">
+        <div class="roman">iii</div>
+        <h4>Contemporaneous</h4>
+        <p>Timestamp generato dal DB al momento dell&apos;evento. Trigger automatico, no input utente.</p>
+      </div>
+      <div class="pillar">
+        <div class="roman">iv</div>
+        <h4>Original</h4>
+        <p>Record primario in tabelle <code>*_eventi</code>. Le copie audit-pack derivano da li.</p>
+      </div>
+      <div class="pillar">
+        <div class="roman">v</div>
+        <h4>Accurate + (Complete, Consistent, Enduring, Available)</h4>
+        <p>Append-only via SQL constraint, sigillo periodico su Bitcoin, retention 10+ anni.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>I <em>22 tipi di evento</em> tracciati.</h2>
+    <p class="lede">Veylon registra automaticamente queste classi di azione. Niente da configurare: gli eventi partono dal momento in cui crei l&apos;account.</p>
+
+    <div class="events-grid">
+      <div class="event-item">Creazione atto (Cert, Send, Tag, Firma, Mail)<code>cert_eventi · type=created</code></div>
+      <div class="event-item">Conferma sigillo Bitcoin (OpenTimestamps upgrade)<code>type=btc_confirmed</code></div>
+      <div class="event-item">Cambio stato atto (draft &rarr; emitted &rarr; revoked)<code>type=state_change</code></div>
+      <div class="event-item">Condivisione magic link (apertura, scadenza)<code>trasmissione_eventi</code></div>
+      <div class="event-item">Accesso del destinatario al link<code>type=recipient_opened</code></div>
+      <div class="event-item">Download del file cifrato<code>type=file_downloaded</code></div>
+      <div class="event-item">Modifica metadata atto (titolo, descrizione)<code>type=metadata_updated</code></div>
+      <div class="event-item">Revoca atto (con motivazione)<code>type=revoked</code></div>
+      <div class="event-item">Accesso utente al sistema (login/logout)<code>veylon_eventi · type=session</code></div>
+      <div class="event-item">Cambio password / 2FA<code>type=auth_change</code></div>
+      <div class="event-item">Invito membro team / assegnazione ruolo<code>type=team_change</code></div>
+      <div class="event-item">Esportazione dati / audit pack<code>type=audit_export</code></div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Per chi <em>e davvero utile</em>.</h2>
+    <p class="lede">Quattro esempi concreti, scritti come ce li raccontano davvero gli utenti.</p>
+
+    <div class="use-cases">
+      <article class="use-case">
+        <div class="who">Studio medico</div>
+        <h3>Cronologia cartelle cliniche per audit GDPR</h3>
+        <p>Devo dimostrare al DPO chi ha aperto la cartella di un paziente, quando, e che nessuno ha modificato a posteriori la diagnosi del 12 marzo. Excel/Sharepoint non bastano: si possono editare. Serve valore legale eIDAS.</p>
+        <div class="quote">"Con Veylon Registro esporto in 10 secondi il PDF cronologico per il periodo richiesto. Il DPO firma e archivia. Audit privacy GDPR Art. 30 chiuso in mezza giornata."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Ufficio HR</div>
+        <h3>Tracciamento accessi dati dipendenti</h3>
+        <p>Per il Registro dei trattamenti GDPR Art. 30 devo elencare chi ha consultato dati personali (buste paga, valutazioni, malattie) e quando. I log SQL del CRM aziendale li puo modificare l&apos;IT. Non e prova.</p>
+        <div class="quote">"Veylon mi da il log append-only con sigillo Bitcoin. Quando il Garante Privacy chiede &lsquo;chi e perche&apos;, ho il PDF certificato pronto. Zero panico."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Laboratorio ISO 17025</div>
+        <h3>Log strumenti calibrazione + analisi</h3>
+        <p>Per l&apos;audit ENAS/Accredia devo dimostrare chi ha calibrato lo strumento il 4 aprile, su che valori, e che il certificato di analisi del campione 728 e basato proprio su quella calibrazione. ALCOA+ richiesto.</p>
+        <div class="quote">"Veylon mi copre tutti i 5 pilastri ALCOA+ senza che io faccia nulla. L&apos;ispettore Accredia ha visto il PDF e ha detto &lsquo;perfetto, prossimo punto&apos;."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Studio fiduciario</div>
+        <h3>Registro pratiche clienti antiriciclaggio</h3>
+        <p>L. 231/2007 mi obbliga a tenere un registro dei controlli adeguata verifica clientela. Quando la UIF chiede chi ha verificato l&apos;identita del cliente X il 17 maggio 2024, devo poterlo dimostrare in modo opponibile.</p>
+        <div class="quote">"Veylon Registro mi mostra: utente, timestamp, hash del documento d&apos;identita visionato. Sigillato Bitcoin. Per l&apos;ispezione UIF stampo il PDF e dormo sereno."</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-faq">
+    <h2>Domande frequenti</h2>
+
+    <details>
+      <summary>Cosa significa ALCOA+?</summary>
+      <p>ALCOA+ e l&apos;acronimo dei requisiti FDA 21 CFR Part 11 + EU GMP Annex 11 per audit trail in ambienti regolati (farmaceutico, laboratori, dispositivi medici): <strong>A</strong>ttributable (chi), <strong>L</strong>egible (leggibile), <strong>C</strong>ontemporaneous (in tempo reale), <strong>O</strong>riginal (record primario), <strong>A</strong>ccurate (esatto). Il "+" aggiunge <strong>C</strong>omplete, <strong>C</strong>onsistent, <strong>E</strong>nduring, <strong>A</strong>vailable. E lo standard de facto per i log di compliance regolata.</p>
+    </details>
+
+    <details>
+      <summary>Che differenza c&apos;e con un audit log normale di un CRM?</summary>
+      <p>Un audit log "normale" e una tabella DB che traccia le azioni. Tre limiti: 1) l&apos;admin del DB puo modificarla (DELETE/UPDATE), 2) il timestamp viene dal server stesso (chi controlla il clock controlla la storia), 3) non e esportabile in formato opponibile a terzi. Veylon Registro risolve tutti e tre: append-only via SQL constraint che blocca UPDATE/DELETE, timestamp ancorato a Bitcoin (clock globale che nessuno controlla), esportazione PDF con sigillo eIDAS verificabile in autonomia.</p>
+    </details>
+
+    <details>
+      <summary>Mi aiuta con la conformita GDPR Art. 30?</summary>
+      <p>Si. Il Registro dei trattamenti GDPR Art. 30 richiede di documentare "le categorie di interessati, le categorie di dati personali, i destinatari, i termini di cancellazione". Veylon Registro fornisce automaticamente la cronologia di chi ha acceduto a quali dati e quando, in formato immutabile. Per ogni accesso vedi: utente, ruolo, IP, timestamp UTC, hash del payload. L&apos;esportazione PDF e direttamente allegabile al Registro dei trattamenti come prova della tracciabilita.</p>
+    </details>
+
+    <details>
+      <summary>Come funziona l&apos;esportazione per audit?</summary>
+      <p>Apri la pagina Registro, scegli intervallo date (es: 1 gennaio - 31 marzo) e ambito (utente specifico, atto specifico, intero team). Click "Esporta PDF certificato". Veylon: 1) seleziona gli eventi dal DB append-only, 2) calcola SHA-256 del set, 3) genera PDF cronologico, 4) sigilla il PDF su Bitcoin via OpenTimestamps. In 30-60 secondi hai un PDF con QR di verifica + sigillo Bitcoin che l&apos;auditor puo verificare in autonomia anche tra 20 anni.</p>
+    </details>
+
+    <details>
+      <summary>Quanti anni conservate i log?</summary>
+      <p>Piano Free e Pro: <strong>3 anni</strong> di retention attiva (eventi visibili in dashboard ed esportabili). Piano Business: <strong>10 anni</strong>. Piano Enterprise: <strong>retention illimitata + cold storage S3 Glacier</strong> con SLA di recupero 24h. In tutti i piani, le ricevute Bitcoin restano per sempre (sono on-chain, non dipendono da noi). Anche se cancelli un evento dal DB attivo, il sigillo Bitcoin del set originale resta verificabile.</p>
+    </details>
+
+    <details>
+      <summary>Posso usare Veylon Registro come log accessi GDPR?</summary>
+      <p>Si, e uno degli use case piu comuni. Ogni accesso a un atto contenente dati personali viene registrato come evento <code>access</code> con utente, IP, ruolo, timestamp. Per il Registro accessi GDPR esporti il PDF filtrato per "tipo evento = access" + intervallo date. Il Garante Privacy accetta PDF con marca temporale qualificata come prova; il sigillo Bitcoin Veylon ha lo stesso valore probatorio (eIDAS art. 41 timestamp validation).</p>
+    </details>
+
+    <details>
+      <summary>Differenza con un ELN proprietario tipo LabArchives?</summary>
+      <p>LabArchives, Benchling e simili ELN (Electronic Lab Notebook) coprono audit trail ALCOA+ ma con tre problemi: 1) <strong>vendor lock-in</strong>: se cambi fornitore perdi accessibilita immediata ai log storici, 2) <strong>costo</strong>: 500-2.000&euro;/utente/anno, 3) <strong>fiducia centralizzata</strong>: il timestamp e firmato dal vendor, se il vendor chiude o viene compromesso la prova vacilla. Veylon Registro usa standard aperti (OpenTimestamps su Bitcoin) e formato PDF/A verificabile da chiunque, anche senza Veylon. Costa una frazione e non hai lock-in.</p>
+    </details>
+  </section>
+
+  <section class="sp-bottom-cta">
+    <h2>Inizia a registrare <em>adesso</em>.</h2>
+    <p>Apri l&apos;account e ogni azione viene registrata da subito. Nessuna configurazione, nessun cron, nessun setup compliance. Il PDF audit-ready e a un click.</p>
+    <div class="cta-row" style="justify-content: center;">
+      <a href="signup.html?fonte=registro" class="btn-primary">Inizia gratis</a>
+      <a href="come-funziona.html" class="btn-ghost">Tutti i 9 atti</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Veylon Registro · Audit trail immutabile ALCOA+</span>
+    </div>
+  </footer>
+</body>
+</html>

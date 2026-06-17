@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon KYC · Onboarding identita in 60 secondi · AMLD5 + GDPR</title>
+  <meta name="description" content="Riconosci il tuo cliente in 60 secondi: documento + selfie + liveness. Certificato KYC livello standard/enhanced ancorato Bitcoin. AMLD5 compliance, GDPR Art. 9 by design. Sostituisce Onfido/IDnow."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/kyc-prodotto.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon KYC · Onboarding identita in 60 secondi · AMLD5 compliant"/>
+  <meta property="og:description" content="Documento + selfie + liveness check + match biometrico. Certificato KYC ancorato Bitcoin. GDPR Art. 9 by design, costi 5x inferiori a Onfido/IDnow/Sumsub."/>
+  <meta property="og:url" content="https://veylon.app/kyc-prodotto.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto 36px; }
+    .sp-hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 16px 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .sp-trust { padding: 28px 32px; max-width: 980px; margin: 0 auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sp-trust span { display: flex; align-items: center; gap: 8px; }
+    .sp-trust .dot { width: 6px; height: 6px; background: var(--seal); border-radius: 50%; }
+
+    .sp-section { max-width: 980px; margin: 0 auto; padding: 72px 32px; }
+    .sp-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 14px; }
+    .sp-section h2 em { color: var(--seal); }
+    .sp-section .lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 0 40px; }
+
+    /* Come funziona — 3 step verticali */
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    @media (max-width: 800px) { .step-list { grid-template-columns: 1fr; } }
+    .step-card { background: var(--paper); border: 1px solid var(--rule); padding: 28px; position: relative; }
+    .step-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 64px; line-height: 1; position: absolute; top: 18px; right: 22px; opacity: 0.25; }
+    .step-card h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 12px; }
+    .step-card p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .step-card .what { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; display: block; }
+
+    /* Per chi — 4 esempi */
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 800px) { .use-cases { grid-template-columns: 1fr; } }
+    .use-case { background: var(--paper); border-left: 3px solid var(--seal); padding: 24px 26px; }
+    .use-case .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 10px; }
+    .use-case h3 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 0 0 10px; }
+    .use-case p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+    .use-case .quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+
+    /* Confronto tabella */
+    .compare-table { width: 100%; border-collapse: collapse; font-family: var(--serif); font-size: 14px; margin-top: 18px; }
+    .compare-table th, .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--rule-2); text-align: left; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); }
+    .compare-table td.feat { font-family: var(--serif); font-weight: normal; color: var(--ink); }
+    .compare-table td.veylon { background: rgba(106, 74, 26, 0.05); border-left: 3px solid var(--seal); }
+    .compare-table .yes { color: #1e6e3e; font-weight: bold; }
+    .compare-table .no { color: #b00020; }
+    .compare-table .partial { color: #ef6c00; }
+
+    /* Livelli KYC */
+    .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+    @media (max-width: 800px) { .levels { grid-template-columns: 1fr; } }
+    .level { background: var(--paper); border: 1px solid var(--rule); padding: 24px 22px; text-align: center; }
+    .level.enhanced { border-color: var(--seal); border-width: 2px; }
+    .level .roman { font-family: var(--serif); font-style: italic; font-size: 32px; color: var(--seal); }
+    .level h4 { font-family: var(--serif); font-weight: normal; font-size: 19px; margin: 8px 0 12px; }
+    .level p { font-family: var(--serif); font-size: 13.5px; line-height: 1.5; color: var(--ink-2); margin: 0 0 12px; }
+    .level .what-includes { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); border-top: 1px dashed var(--rule); padding-top: 10px; }
+
+    .sp-faq { max-width: 720px; margin: 0 auto; padding: 56px 32px 32px; }
+    .sp-faq h2 { font-family: var(--serif); font-weight: normal; font-size: 32px; margin: 0 0 24px; }
+    .sp-faq details { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+    .sp-faq summary { font-family: var(--serif); font-size: 17px; cursor: pointer; padding: 4px 0; color: var(--ink); }
+    .sp-faq details[open] summary { color: var(--seal); }
+    .sp-faq details p { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 12px 0 4px; padding-left: 18px; border-left: 2px solid var(--rule); }
+
+    .sp-bottom-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; }
+    .sp-bottom-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(32px, 4vw, 48px); margin: 0 0 14px; }
+    .sp-bottom-cta h2 em { color: var(--seal); }
+    .sp-bottom-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+
+    .ribbon { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #1e6e3e; padding: 14px 32px; }
+    .ribbon-inner { max-width: 980px; margin: 0 auto; font-family: var(--serif); font-size: 14px; color: #16482a; text-align: center; }
+    .ribbon-inner strong { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · KYC</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <div class="ribbon">
+    <div class="ribbon-inner"><strong>Cos&apos;e Veylon KYC?</strong> &mdash; il servizio per riconoscere l&apos;identita di un cliente in 60 secondi (documento + selfie + liveness), con certificato AMLD5 compliant ancorato Bitcoin. Sostituisce Onfido, IDnow, Sumsub a costi 5x inferiori.</div>
+  </div>
+
+  <header class="sp-hero">
+    <span class="kicker">Veylon &middot; Atto ix Onboarding KYC</span>
+    <h1>Riconosci il tuo cliente.<br/>In <em>60 secondi</em>.</h1>
+    <p class="lede">
+      Documento identita + selfie + liveness check. Output: <strong>certificato KYC livello standard/enhanced ancorato Bitcoin</strong>.
+      AMLD5 compliance, GDPR Art. 9 by design. Sostituisce Onfido/IDnow con costi 5x inferiori e privacy migliore.
+    </p>
+    <div class="cta-row">
+      <a href="signup.html?fonte=kyc" class="btn-primary">Attiva KYC (3 free/mese)</a>
+      <a href="#come-funziona" class="btn-ghost">Vedi come funziona</a>
+    </div>
+  </header>
+
+  <div class="sp-trust">
+    <span><span class="dot"></span>AMLD5 compliance</span>
+    <span><span class="dot"></span>GDPR Art. 9 by design</span>
+    <span><span class="dot"></span>D. Lgs. 231/2007</span>
+    <span><span class="dot"></span>Bitcoin OpenTimestamps</span>
+    <span><span class="dot"></span>Server EU (Ireland)</span>
+  </div>
+
+  <section class="sp-section">
+    <h2>Il problema che <em>risolve</em>.</h2>
+    <p class="lede">Devi onboardare un cliente nuovo &mdash; un trader crypto, un correntista, un assicurato. Le opzioni di oggi sono care, lente, o non compliance.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Servizio</th>
+          <th>Onfido</th>
+          <th>IDnow</th>
+          <th>Sumsub</th>
+          <th>KYC manuale</th>
+          <th class="veylon" style="border-left: 3px solid var(--seal);">Veylon KYC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feat">Tempo onboarding</td>
+          <td>2-4 min</td>
+          <td>3-6 min (video call)</td>
+          <td>2-5 min</td>
+          <td class="no">2-5 giorni</td>
+          <td class="veylon yes">60 secondi</td>
+        </tr>
+        <tr>
+          <td class="feat">Costo per KYC standard</td>
+          <td>1,50 - 3 &euro;</td>
+          <td>2 - 5 &euro;</td>
+          <td>1,20 - 2,80 &euro;</td>
+          <td class="no">8 - 25 &euro;</td>
+          <td class="veylon yes">0,30 - 0,60 &euro;</td>
+        </tr>
+        <tr>
+          <td class="feat">Liveness check</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; ISO 30107-3</td>
+        </tr>
+        <tr>
+          <td class="feat">Match biometrico (volto)</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="yes">&check;</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check;</td>
+        </tr>
+        <tr>
+          <td class="feat">Certificato KYC verificabile</td>
+          <td class="partial">PDF report</td>
+          <td class="partial">PDF report</td>
+          <td class="partial">PDF report</td>
+          <td class="partial">PDF cartaceo</td>
+          <td class="veylon yes">&check; Bitcoin OTS</td>
+        </tr>
+        <tr>
+          <td class="feat">GDPR Art. 9 (biometria)</td>
+          <td class="partial">policy esterna</td>
+          <td class="partial">policy esterna</td>
+          <td class="partial">policy esterna</td>
+          <td class="partial">gestita a mano</td>
+          <td class="veylon yes">&check; by design + DPIA inclusa</td>
+        </tr>
+        <tr>
+          <td class="feat">Dati cifrati at-rest</td>
+          <td class="partial">solo provider</td>
+          <td class="partial">solo provider</td>
+          <td class="partial">solo provider</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; pgcrypto AES-256</td>
+        </tr>
+        <tr>
+          <td class="feat">Retention biometria</td>
+          <td>controllo limitato</td>
+          <td>controllo limitato</td>
+          <td>controllo limitato</td>
+          <td class="no">indefinita</td>
+          <td class="veylon yes">configurabile, default 7 gg</td>
+        </tr>
+        <tr>
+          <td class="feat">Travel Rule (crypto)</td>
+          <td class="partial">addon a pagamento</td>
+          <td class="partial">addon a pagamento</td>
+          <td class="partial">addon a pagamento</td>
+          <td class="no">&times;</td>
+          <td class="veylon yes">&check; livello enhanced</td>
+        </tr>
+        <tr>
+          <td class="feat">Server EU</td>
+          <td class="partial">opzionale</td>
+          <td class="yes">&check; DE</td>
+          <td class="partial">opzionale</td>
+          <td>locale</td>
+          <td class="veylon yes">&check; Ireland</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sp-section" id="come-funziona">
+    <h2>Come funziona in <em>3 step</em>.</h2>
+    <p class="lede">Il cliente apre il link, scansiona il documento, fa un selfie. Veylon controlla, certifica, ancora su Bitcoin.</p>
+
+    <div class="step-list">
+      <div class="step-card">
+        <span class="step-num">i</span>
+        <span class="what">Cliente</span>
+        <h3>Documento + selfie</h3>
+        <p>
+          Il cliente apre <code>onboarding.html</code> (link che gli mandi via email/SMS). Scatta foto fronte/retro
+          del documento (carta identita, passaporto, patente), poi un selfie con liveness check (sbatti gli occhi,
+          gira la testa). Tutto da smartphone, niente app da scaricare.
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">ii</span>
+        <span class="what">Veylon</span>
+        <h3>Verifica + certifica</h3>
+        <p>
+          Veylon esegue OCR sul documento (MRZ + dati), controlla autenticita (hologrammi, MRZ checksum),
+          match biometrico volto documento vs selfie, liveness ISO 30107-3 anti-deepfake. Cifra PII con
+          <code>pgp_sym_encrypt</code> via pgcrypto. Genera <strong>certificato KYC con livello</strong> (basic/standard/enhanced).
+        </p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">iii</span>
+        <span class="what">Tu</span>
+        <h3>Ricevi certificato Bitcoin</h3>
+        <p>
+          Ricevi nel tuo dashboard il certificato KYC firmato + ancorato su Bitcoin via OpenTimestamps.
+          Verificabile in autonomia da chiunque, anche fra 30 anni. Va dritto nel tuo audit pack
+          AMLD5 / D. Lgs. 231/2007.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>I <em>3 livelli</em> di KYC.</h2>
+    <p class="lede">Scegli il livello in base al rischio del cliente e alla compliance richiesta dal tuo settore.</p>
+
+    <div class="levels">
+      <div class="level">
+        <div class="roman">i</div>
+        <h4>Basic</h4>
+        <p>OCR documento + estrazione dati anagrafici + check liste sanctions/PEP base. Per onboarding leggeri (newsletter premium, prove gratuite).</p>
+        <div class="what-includes">Documento &middot; OCR &middot; Sanctions check</div>
+      </div>
+      <div class="level enhanced">
+        <div class="roman">ii</div>
+        <h4>Standard</h4>
+        <p>Basic + selfie con liveness ISO 30107-3 + match biometrico volto. Per la maggior parte dei casi AMLD5: exchange crypto, intermediari, finanziamenti.</p>
+        <div class="what-includes">+ Selfie &middot; Liveness &middot; Match biometrico</div>
+      </div>
+      <div class="level">
+        <div class="roman">iii</div>
+        <h4>Enhanced</h4>
+        <p>Standard + proof of address + sanctions/PEP globale + Travel Rule (per crypto, IVASS-Bridge per assicurazioni). Per high-risk customer e clienti istituzionali.</p>
+        <div class="what-includes">+ Proof of address &middot; PEP/sanctions globale &middot; Travel Rule</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sp-section">
+    <h2>Per chi <em>e davvero utile</em>.</h2>
+    <p class="lede">Quattro esempi concreti, scritti come ce li raccontano davvero gli utenti.</p>
+
+    <div class="use-cases">
+      <article class="use-case">
+        <div class="who">Exchange crypto</div>
+        <h3>Onboarding utenti AMLD5 + Travel Rule</h3>
+        <p>Ogni nuovo trader deve passare KYC standard prima di operare. Sopra soglia 1.000&euro;/transazione cross-VASP serve anche Travel Rule. Onfido mi chiede 2&euro; per KYC, 25.000 utenti/mese = 50.000&euro;.</p>
+        <div class="quote">"Con Veylon KYC livello standard pago 0,40&euro;. Stesso onboarding, stesso AMLD5, certificato Bitcoin che vale anche come audit trail MiCA. 80% di taglio sui costi."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Intermediario finanziario</div>
+        <h3>Apertura conto corrente conforme L. 231/2007</h3>
+        <p>Per ogni nuovo correntista devo fare adeguata verifica (D. Lgs. 231/2007 art. 18-19). Sportello fisico = 2 giorni, KYC video con notaio = 8 ore lavoro / settimana, KYC remoto Sumsub = 1,80&euro; ciascuno + setup integrazione complesso.</p>
+        <div class="quote">"Veylon mi da KYC enhanced con sanctions + PEP + proof of address tutto incluso. Certificato Bitcoin opponibile a Banca d&apos;Italia. La pratica si chiude in 90 secondi invece di 2 giorni."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Concessionario auto</div>
+        <h3>KYC veloce per finanziamento auto</h3>
+        <p>Il cliente entra, sceglie l&apos;auto, vuole finanziamento. Devo identificarlo per la societa di leasing. Oggi mando una foto della CI per WhatsApp, ma c&apos;e rischio frode (documenti rubati, identita rubata). Tasso frodi 2,3% sul portafoglio.</p>
+        <div class="quote">"Veylon con liveness + match biometrico mi blocca i deepfake e le identita rubate. Il cliente lo fa dal mio tablet in showroom in 60 secondi. Frodi crollate dal 2,3% allo 0,1%."</div>
+      </article>
+
+      <article class="use-case">
+        <div class="who">Studio notarile</div>
+        <h3>Pre-KYC clienti remote prima dell&apos;incontro</h3>
+        <p>Atto notarile fissato fra 5 giorni. Devo identificare le parti per la legge antiriciclaggio (L. 231/2007). Se scoprono problemi in studio, salta l&apos;atto e perdo l&apos;appuntamento + 90 min.</p>
+        <div class="quote">"Mando il link Veylon KYC ai clienti il giorno prima. Ricevo il certificato standard nel mio dashboard. Se ci sono problemi (PEP, sanctions hit), li affronto prima. Niente atti saltati per problemi documentali."</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sp-faq">
+    <h2>Domande frequenti</h2>
+
+    <details>
+      <summary>Sostituisce davvero la compliance AMLD5?</summary>
+      <p>Si. Veylon KYC livello standard copre i requisiti di adeguata verifica AMLD5 art. 13 (recepito in Italia con D. Lgs. 231/2007 art. 18-19): identificazione del cliente, verifica del documento, riscontro biometrico. Per la <strong>verifica rafforzata</strong> (art. 24, alto rischio) usa il livello enhanced che include sanctions + PEP globali + Travel Rule. Il certificato Bitcoin va dritto nel tuo registro AML e nel fascicolo cliente.</p>
+    </details>
+
+    <details>
+      <summary>GDPR Art. 9 sui dati biometrici: come gestite?</summary>
+      <p>Il volto e il template biometrico (embedding 512-dim) sono dati di categoria speciale ex Art. 9 GDPR. Veylon: (1) raccoglie consenso esplicito separato dal cliente all&apos;inizio del flusso, (2) cifra tutto at-rest via pgcrypto + chiavi HSM-backed, (3) retention configurabile (default 7 giorni post-completamento), (4) <strong>DPIA pre-compilata inclusa</strong> nel piano Business per il tuo registro dei trattamenti. Server EU (Ireland), nessun trasferimento extra-UE.</p>
+    </details>
+
+    <details>
+      <summary>Differenza con Onfido / IDnow / Sumsub?</summary>
+      <p>Tre cose: (1) <strong>costo</strong>. Loro 1,20-5&euro; per KYC, noi 0,30-0,60&euro; (5x meno). (2) <strong>certificato ancorato Bitcoin</strong>. Loro ti danno un PDF report; noi un certificato verificabile in autonomia anche fra 30 anni, opponibile in giudizio. (3) <strong>privacy</strong>. Loro server misti (US/EU); noi solo EU + cifratura applicativa pgcrypto + retention configurabile da te. Pari su accuracy (98%+ liveness ISO 30107-3, 99%+ match biometrico).</p>
+    </details>
+
+    <details>
+      <summary>Quanto costa esattamente per KYC?</summary>
+      <p>Free: 3 KYC al mese (basic). Pro: 29&euro;/mese (50 KYC standard inclusi, poi 0,50&euro; cad). Business: 199&euro;/mese (500 KYC standard inclusi, KYC enhanced a 1,20&euro; cad, DPIA inclusa, API REST, white-label). Enterprise: volumi &gt;10.000/mese, prezzi a partire da 0,30&euro;/KYC. Vedi <a href="pricing.html">listino completo</a>.</p>
+    </details>
+
+    <details>
+      <summary>Cosa succede se il KYC viene rigettato?</summary>
+      <p>Tre esiti possibili: <strong>approvato</strong> (verifica passata), <strong>review</strong> (caso borderline, sottoposto a operatore umano), <strong>rigettato</strong> (frode, deepfake, documento alterato). In caso di rigetto, il cliente puo riprocessare gratuitamente entro 24h (es. foto sfocata, doc scaduto). I rigetti per sospetta frode generano un alert nel tuo dashboard + flag persistente sul template biometrico per blocco riprocessing. Trasparenza piena: ricevi il motivo del rigetto per documentare il rifiuto.</p>
+    </details>
+
+    <details>
+      <summary>Quanto tenete i dati biometrici?</summary>
+      <p>Default: <strong>7 giorni</strong> dopo il completamento KYC. Tu puoi configurare la retention nel dashboard (da 1 giorno fino a 10 anni, a seconda del tuo obbligo settoriale). Per esempio: 10 anni per banche e intermediari finanziari (D. Lgs. 231/2007 art. 31), 5 anni per VASP, 6 mesi per onboarding light. Il <strong>certificato KYC</strong> (senza biometria, solo metadati) resta per sempre. Il template biometrico viene cancellato a fine retention con audit log.</p>
+    </details>
+
+    <details>
+      <summary>Supportate Travel Rule per crypto?</summary>
+      <p>Si, nel livello enhanced. Per ogni transazione crypto cross-VASP sopra 1.000&euro; (soglia UE), il certificato KYC enhanced viene passato all&apos;altra VASP via TRP (Travel Rule Protocol) o IVMS-101. Conforme al Regolamento UE 2023/1113 (Transfer of Funds Regulation) e MiCA art. 14. Integrazione TRP/Sumsub Cobo/Notabene disponibile su richiesta nel piano Business.</p>
+    </details>
+  </section>
+
+  <section class="sp-bottom-cta">
+    <h2>Provalo <em>adesso</em>.</h2>
+    <p>3 KYC gratis al mese, senza carta di credito. Attivi l&apos;onboarding in 5 minuti, mandi il primo link al cliente in 10.</p>
+    <div class="cta-row" style="justify-content: center;">
+      <a href="signup.html?fonte=kyc" class="btn-primary">Inizia gratis</a>
+      <a href="onboarding.html" class="btn-ghost">Vai a Onboarding KYC</a>
+      <a href="pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Veylon KYC · Atto ix Onboarding identita</span>
+    </div>
+  </footer>
+</body>
+</html>
