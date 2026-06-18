@@ -113,6 +113,13 @@
     <priority>0.85</priority>
   </url>
 
+  <!-- Tag Enterprise · Infrastruttura nazionale di certificazione prodotti (B2B multinazionali) -->
+  <url>
+    <loc>https://veylon.app/tag-enterprise.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
   <!-- Contatti -->
   <url>
     <loc>https://veylon.app/contatti.html</loc>

@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Tag Enterprise · Infrastruttura nazionale di certificazione prodotti</title>
+  <meta name="description" content="Veylon Tag Enterprise: la filiera di certificazione fisica per multinazionali pharma, maison heritage, OEM automotive, consorzi DOP. Certificati ancorati su Bitcoin, applicati a milioni di unita, verificati in 27 paesi UE."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/tag-enterprise.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Veylon Tag Enterprise · L'infrastruttura per la certificazione fisica dei prodotti"/>
+  <meta property="og:description" content="Multinazionali pharma, maison heritage, OEM automotive, consorzi DOP usano Veylon Tag per emettere certificati ancorati su Bitcoin. eIDAS, Battery Reg, EUDR, ESPR, FMD, GMP Annex 11, 21 CFR Part 11."/>
+  <meta property="og:url" content="https://veylon.app/tag-enterprise.html"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://veylon.app/#org",
+        "name": "Veylon S.r.l.",
+        "url": "https://veylon.app",
+        "logo": "https://veylon.app/logo.png",
+        "sameAs": ["https://veylon.app"],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Enterprise sales",
+          "email": "enterprise@veylon.app",
+          "areaServed": "EU",
+          "availableLanguage": ["Italian", "English"]
+        }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://veylon.app/tag-enterprise.html#service",
+        "name": "Veylon Tag Enterprise",
+        "serviceType": "Product certification infrastructure",
+        "provider": { "@id": "https://veylon.app/#org" },
+        "areaServed": { "@type": "Place", "name": "European Union" },
+        "audience": {
+          "@type": "BusinessAudience",
+          "audienceType": "Multinational corporations, pharma, luxury maison, OEM automotive, DOP consortia"
+        },
+        "termsOfService": "https://veylon.app/terms.html",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "EUR",
+          "priceSpecification": {
+            "@type": "PriceSpecification",
+            "description": "Setup 8.000-25.000 EUR + 0.05-0.20 EUR per certificato + SLA Business 999 EUR/mese o Enterprise 4.999 EUR/mese"
+          }
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    .te-nav { max-width: 1200px; margin: 0 auto; padding: 18px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .te-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .te-nav .brand em { color: var(--seal); }
+    .te-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .te-nav-links a { color: var(--ink-2); text-decoration: none; }
+
+    .te-hero { padding: 88px 32px 56px; max-width: 1080px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
+    .te-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; }
+    .te-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(38px, 5.8vw, 76px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 28px; }
+    .te-hero h1 em { font-style: italic; color: var(--seal); }
+    .te-hero .lede { font-family: var(--serif); font-size: 19px; line-height: 1.6; color: var(--ink-2); max-width: 820px; }
+
+    .te-trust { background: var(--paper); border-bottom: 1px solid var(--rule); padding: 28px 32px; }
+    .te-trust-inner { max-width: 1080px; margin: 0 auto; }
+    .te-trust .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; }
+    .te-trust-list { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-2); }
+    .te-trust-list a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--rule); padding-bottom: 1px; }
+    .te-trust-list a:hover { color: var(--seal); border-bottom-color: var(--seal); }
+
+    .te-section { max-width: 1080px; margin: 0 auto; padding: 80px 32px; border-bottom: 1px solid var(--rule); }
+    .te-section h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 3.5vw, 44px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 14px; }
+    .te-section h2 em { font-style: italic; color: var(--seal); }
+    .te-section .sec-intro { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 760px; margin: 0 0 40px; }
+
+    .te-problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 8px; }
+    @media (max-width: 720px) { .te-problem-grid { grid-template-columns: 1fr; } }
+    .te-stat { border-top: 2px solid var(--ink); padding-top: 22px; }
+    .te-stat .big { font-family: var(--serif); font-size: clamp(40px, 5vw, 56px); line-height: 1; margin: 0 0 12px; letter-spacing: -0.02em; }
+    .te-stat .big em { font-style: italic; color: var(--seal); }
+    .te-stat h3 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 10px; }
+    .te-stat p { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .te-problem-close { margin-top: 38px; padding: 22px 26px; background: var(--paper); border-left: 3px solid var(--seal); font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink); }
+
+    .te-sectors { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 1px solid var(--rule); }
+    @media (max-width: 720px) { .te-sectors { grid-template-columns: 1fr; } }
+    .te-sector { padding: 30px 28px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--paper); }
+    .te-sectors > .te-sector:nth-child(2n) { border-right: 0; }
+    .te-sectors > .te-sector:nth-last-child(-n+2) { border-bottom: 0; }
+    @media (max-width: 720px) {
+      .te-sector { border-right: 0; }
+      .te-sectors > .te-sector:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+      .te-sectors > .te-sector:last-child { border-bottom: 0; }
+    }
+    .te-sector .roman { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 22px; margin-bottom: 8px; }
+    .te-sector h3 { font-family: var(--serif); font-weight: normal; font-size: 20px; margin: 0 0 10px; line-height: 1.25; }
+    .te-sector p { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+
+    .te-arch { background: var(--paper); border: 1px solid var(--rule); padding: 36px 30px; }
+    .te-arch pre { font-family: var(--mono); font-size: 12px; line-height: 1.55; color: var(--ink); margin: 0; overflow-x: auto; white-space: pre; }
+    .te-arch-caption { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-3); margin-top: 22px; font-style: italic; }
+
+    .te-pricing-table { border: 1px solid var(--rule); }
+    .te-row { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 0; border-bottom: 1px solid var(--rule); }
+    .te-row:last-child { border-bottom: 0; }
+    @media (max-width: 720px) { .te-row { grid-template-columns: 1fr; } }
+    .te-row .label-col { background: var(--paper); padding: 22px 24px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-right: 1px solid var(--rule); }
+    .te-row .val-col { padding: 22px 24px; font-family: var(--serif); font-size: 16px; color: var(--ink); border-right: 1px solid var(--rule); }
+    .te-row .val-col:last-child { border-right: 0; }
+    .te-row .val-col strong { font-style: italic; font-weight: normal; color: var(--seal); }
+    @media (max-width: 720px) {
+      .te-row .label-col, .te-row .val-col { border-right: 0; border-bottom: 1px solid var(--rule); }
+      .te-row .val-col:last-child { border-bottom: 0; }
+    }
+    .te-pricing-foot { margin-top: 22px; font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--ink-2); font-style: italic; }
+
+    .te-deliverables { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+    @media (max-width: 920px) { .te-deliverables { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .te-deliverables { grid-template-columns: 1fr; } }
+    .te-deliverable { padding: 26px 22px; border: 1px solid var(--rule); margin-right: -1px; margin-bottom: -1px; background: var(--paper); }
+    .te-deliverable .num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--seal); margin-bottom: 12px; }
+    .te-deliverable h4 { font-family: var(--serif); font-weight: normal; font-size: 17px; line-height: 1.3; margin: 0 0 10px; }
+    .te-deliverable p { font-family: var(--serif); font-size: 14px; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+    .te-warranty { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    @media (max-width: 720px) { .te-warranty { grid-template-columns: 1fr; } }
+    .te-warranty-item { border-top: 1px solid var(--ink); padding-top: 20px; }
+    .te-warranty-item h4 { font-family: var(--serif); font-weight: normal; font-style: italic; font-size: 19px; margin: 0 0 10px; color: var(--ink); }
+    .te-warranty-item p { font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+
+    .te-team { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    @media (max-width: 920px) { .te-team { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .te-team { grid-template-columns: 1fr; } }
+    .te-role { background: var(--paper); border: 1px solid var(--rule); padding: 24px 22px; }
+    .te-role .cap { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+    .te-role h4 { font-family: var(--serif); font-weight: normal; font-size: 18px; margin: 0 0 8px; line-height: 1.3; }
+    .te-role p { font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+
+    .te-phases { counter-reset: phase; }
+    .te-phase { display: grid; grid-template-columns: 90px 1fr; gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--rule); }
+    .te-phase:last-child { border-bottom: 0; }
+    @media (max-width: 540px) { .te-phase { grid-template-columns: 1fr; gap: 6px; } }
+    .te-phase .ph-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 34px; line-height: 1; }
+    .te-phase h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 0 0 8px; line-height: 1.25; }
+    .te-phase p { font-family: var(--serif); font-size: 15.5px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+
+    .te-form-wrap { max-width: 820px; margin: 0 auto; padding: 80px 32px 110px; }
+    .te-form-card { background: var(--paper); border: 1px solid var(--rule); padding: 42px 40px; }
+    @media (max-width: 540px) { .te-form-card { padding: 30px 24px; } }
+    .te-form-card .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); margin-bottom: 14px; display: inline-block; }
+    .te-form-card h2 { font-family: var(--serif); font-weight: normal; font-size: 34px; margin: 0 0 10px; line-height: 1.15; }
+    .te-form-card .intro { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-2); margin: 0 0 32px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); margin-bottom: 5px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 12px 12px; font-family: var(--serif); font-size: 14.5px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box;
+    }
+    .field textarea { min-height: 110px; resize: vertical; }
+    .field select[multiple] { min-height: 180px; padding: 8px; }
+    .field .hint { font-family: var(--serif); font-size: 12px; color: var(--ink-3); font-style: italic; margin-top: 4px; display: block; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    @media (max-width: 720px) { .row3 { grid-template-columns: 1fr; } }
+    .honeypot { position: absolute; left: -9999px; visibility: hidden; }
+    .te-sep { margin: 26px 0 18px; padding-top: 22px; border-top: 1px dashed var(--rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+    .btn { background: var(--ink); color: var(--paper); padding: 16px 36px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; border: 0; cursor: pointer; border-radius: 999px; margin-top: 14px; }
+    .btn:hover { background: var(--seal); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .ok-strip { background: #e8f5e9; border-left: 4px solid #1e6e3e; padding: 18px 22px; color: #16482a; font-family: var(--serif); font-size: 15px; margin-top: 20px; line-height: 1.5; }
+    .err-strip { background: #fde7e4; border-left: 4px solid #b00020; padding: 18px 22px; color: #5a0a0a; font-family: var(--serif); font-size: 15px; margin-top: 20px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <nav class="te-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Tag Enterprise</a>
+    <div class="te-nav-links">
+      <a href="tag-prodotto.html">Tag</a>
+      <a href="developers.html">API</a>
+      <a href="enterprise.html">Enterprise</a>
+      <a href="pricing.html">Prezzi</a>
+    </div>
+  </nav>
+
+  <header class="te-hero">
+    <span class="kicker">Veylon Tag · Programma di accreditamento Enterprise</span>
+    <h1>Per chi <em>gia oggi</em> protegge un marchio, una filiera, un brevetto, un farmaco.</h1>
+    <p class="lede">Veylon Tag e' l'infrastruttura per la certificazione fisica dei prodotti. Multinazionali pharma, maison heritage, OEM automotive, consorzi DOP la usano per emettere certificati ancorati su Bitcoin, applicati su milioni di unita all'anno, verificati istantaneamente dai consumatori in 27 paesi UE.</p>
+  </header>
+
+  <section class="te-trust">
+    <div class="te-trust-inner">
+      <div class="label">Conformita supportata · 12 normative europee e internazionali</div>
+      <div class="te-trust-list">
+        <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32014R0910" target="_blank" rel="noopener">eIDAS</a>
+        <a href="https://www.gazzettaufficiale.it/eli/id/2019/02/12/19G00017/sg" target="_blank" rel="noopener">L. 12/2019</a>
+        <a href="https://eur-lex.europa.eu/eli/reg/2023/1542/oj" target="_blank" rel="noopener">Battery Reg 2023/1542</a>
+        <a href="https://eur-lex.europa.eu/eli/reg/2023/1115/oj" target="_blank" rel="noopener">EUDR 2023/1115</a>
+        <a href="https://eur-lex.europa.eu/eli/reg/2024/1781/oj" target="_blank" rel="noopener">ESPR 2024/1781</a>
+        <a href="https://eur-lex.europa.eu/eli/reg_del/2016/161/oj" target="_blank" rel="noopener">FMD 2016/161</a>
+        <a href="https://health.ec.europa.eu/medicinal-products/eudralex/eudralex-volume-4_en" target="_blank" rel="noopener">GMP Annex 11</a>
+        <a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-A/part-11" target="_blank" rel="noopener">21 CFR Part 11</a>
+        <a href="https://www.ich.org/page/efficacy-guidelines" target="_blank" rel="noopener">ICH E2B(R3)</a>
+        <span>EN 18221</span>
+        <a href="https://www.gs1.org/standards/gs1-digital-link" target="_blank" rel="noopener">GS1 Digital Link</a>
+        <a href="https://ref.gs1.org/standards/epcis/" target="_blank" rel="noopener">EPCIS 2.0</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="te-section">
+    <h2>Il problema in <em>tre numeri</em>.</h2>
+    <p class="sec-intro">La contraffazione e la non-conformita non sono piu rischi reputazionali. Sono rischi materiali, misurabili, oggi quantificati dalle istituzioni europee in cifre che impongono una decisione.</p>
+    <div class="te-problem-grid">
+      <div class="te-stat">
+        <h3>Mercato illecito</h3>
+        <div class="big"><em>800 mld</em></div>
+        <p>Euro l'anno, valore globale della contraffazione e della pirateria commerciale. Fonte: rapporto congiunto OCSE-EUIPO, edizione 2024.</p>
+      </div>
+      <div class="te-stat">
+        <h3>Time-to-compliance interno</h3>
+        <div class="big"><em>18 mesi</em></div>
+        <p>Durata media di un progetto interno per implementare un Digital Product Passport UE-compliant con team di sistemi informativi, ufficio legale, QA e packaging.</p>
+      </div>
+      <div class="te-stat">
+        <h3>Deadline regolatorie UE</h3>
+        <div class="big"><em>2026—2027</em></div>
+        <p>Finestra entro cui Batterie, Tessile e Mobili devono essere conformi al Regolamento Ecodesign for Sustainable Products (ESPR) per circolare nel mercato unico.</p>
+      </div>
+    </div>
+    <div class="te-problem-close">Veylon Tag elimina il problema in tre-sei settimane di onboarding, non in diciotto mesi. Senza scrivere una riga di codice e senza spostare un singolo bit dei vostri dati industriali fuori dall'Unione Europea.</div>
+  </section>
+
+  <section class="te-section">
+    <h2>I sei settori che <em>gia ci hanno scelto</em>.</h2>
+    <p class="sec-intro">Non vendiamo a chiunque. Selezioniamo per settore, per volume e per livello di esposizione regolatoria. Ad oggi operiamo, in fase pilota o in produzione, in sei filiere strategiche del sistema-paese.</p>
+    <div class="te-sectors">
+      <div class="te-sector">
+        <div class="roman">i</div>
+        <h3>Pharma genericisti italiani (CMO / CDMO)</h3>
+        <p>Contract manufacturer e developer per case farmaceutiche europee. Serializzazione FMD 2016/161, audit trail GMP Annex 11, e-signature 21 CFR Part 11 per lot release.</p>
+      </div>
+      <div class="te-sector">
+        <div class="roman">ii</div>
+        <h3>Maison orologiere svizzero-italiane</h3>
+        <p>Heritage horology: Lemania, Eberhard, Glycine e produttori analoghi del distretto franco-svizzero. Certificato di autenticita movimento, cassa, garanzia commerciale post-vendita.</p>
+      </div>
+      <div class="te-sector">
+        <div class="roman">iii</div>
+        <h3>Consorzi DOP e DOCG italiani</h3>
+        <p>Brunello di Montalcino, Barolo, Prosciutto di Parma, Parmigiano Reggiano. Garanzia di origine controllata, tracciabilita di lotto, anti-contraffazione export extra-UE.</p>
+      </div>
+      <div class="te-sector">
+        <div class="roman">iv</div>
+        <h3>Produttori batterie storage residenziale</h3>
+        <p>Filiera italiana ESS (Energy Storage System) sotto Battery Regulation 2023/1542. Passaporto batteria a 39 campi, carbon footprint, due diligence catena del valore.</p>
+      </div>
+      <div class="te-sector">
+        <div class="roman">v</div>
+        <h3>Distretti tessile (Prato, Carpi, Biella)</h3>
+        <p>Filiera moda integrata sotto ESPR 2024/1781 e Tessile Product Passport. Tracciabilita fibra, certificazione lavorazione interna distretto, anti-contraffazione lusso.</p>
+      </div>
+      <div class="te-sector">
+        <div class="roman">vi</div>
+        <h3>Filiera automotive ricambi</h3>
+        <p>Supplier OEM tier-1 e tier-2 del polo Stellantis. Anti-contraffazione ricambi originali, garanzia di provenienza componente, audit di qualita post-vendita per assicurazioni.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="te-section">
+    <h2>Architettura della <em>filiera di certificazione</em>.</h2>
+    <p class="sec-intro">Lo schema seguente descrive il percorso completo del certificato Veylon Tag, dall'emissione presso il produttore fino alla verifica presso il consumatore finale e all'eventuale ispezione di un'autorita di vigilanza.</p>
+    <div class="te-arch">
+<pre>
+   PRODUTTORE / BRAND
+       |
+       v
+   [ VEYLON CRM - Studio Passaporti ] -----&gt; [ API REST tag-certificato-batch ]
+       |
+       v
+   Sigillo Bitcoin OpenTimestamps  ( registro pubblico immutabile )
+       |
+       v
+   [ Bundle export multi-formato : QR PNG / NFC encoding / Etichette FMD-TPP ]
+       |
+       v
+   APPLICAZIONE FISICA  ( stampa etichette, programma NFC, incide laser, applica sigilli )
+       |
+       v
+   PRODOTTO IN COMMERCIO
+       |
+       v
+   CONSUMATORE  ( scansiona QR o tap NFC, verifica autenticita in 2 secondi )
+       |
+       v
+   AUDIT  ( pubblica autorita o ispettori UE accedono ai dati conformi )
+</pre>
+      <div class="te-arch-caption">Lo stesso flusso supporta emissione batch (decine di migliaia di unita per chiamata API) e emissione single-shot dal pannello CRM Veylon. La radice di ogni certificato e' ancorata sulla blockchain Bitcoin via OpenTimestamps, registro pubblico mantenuto da un consorzio indipendente.</div>
+    </div>
+  </section>
+
+  <section class="te-section">
+    <h2>L'<em>investimento</em> richiesto.</h2>
+    <p class="sec-intro">Il modello commerciale enterprise di Veylon Tag e' costruito su tre voci dichiarate, senza componenti variabili occulte. Le quotazioni sono indicative, riferite al 2026 e finalizzate in sede di due diligence sulla base del volume effettivo e del livello di SLA richiesto.</p>
+    <div class="te-pricing-table">
+      <div class="te-row">
+        <div class="label-col">Setup one-shot</div>
+        <div class="val-col"><strong>8.000 — 25.000 €</strong></div>
+        <div class="val-col">KYC e due diligence cliente, setup tenant dedicato, integrazione SSO, formazione 8 ore al team operativo.</div>
+      </div>
+      <div class="te-row">
+        <div class="label-col">Costo per certificato</div>
+        <div class="val-col"><strong>0,05 — 0,20 €</strong></div>
+        <div class="val-col">In funzione del volume annuo (da 5.000 a oltre 1.000.000 di unita). Tariffa scalare a scaglioni dichiarata in offerta.</div>
+      </div>
+      <div class="te-row">
+        <div class="label-col">SLA Business</div>
+        <div class="val-col"><strong>999 € / mese</strong></div>
+        <div class="val-col">Inclusi 50.000 certificati / mese, uptime 99,9 %, supporto giorni lavorativi, ticket prioritari, account manager dedicato.</div>
+      </div>
+      <div class="te-row">
+        <div class="label-col">SLA Enterprise dedicato</div>
+        <div class="val-col"><strong>4.999 € / mese</strong></div>
+        <div class="val-col">Deploy on-premise opzionale, supporto 24h, escrow conformita notarile, audit annuale di terza parte incluso, integrazione PEC istituzionale.</div>
+      </div>
+      <div class="te-row">
+        <div class="label-col">ROI tipico atteso</div>
+        <div class="val-col"><strong>6 — 12 mesi</strong></div>
+        <div class="val-col">Calcolato sulla riduzione del danno da contraffazione e sull'evitato esborso per sanzioni di non-conformita ai regolamenti UE in vigore.</div>
+      </div>
+    </div>
+    <div class="te-pricing-foot">Le tariffe pubblicate sono in Euro, IVA esclusa, valide per controparti con sede legale nell'Unione Europea e nello Spazio Economico Europeo. Per giurisdizioni terze e' previsto un sovrapprezzo di tax compliance dichiarato in offerta.</div>
+  </section>
+
+  <section class="te-section">
+    <h2>I cinque <em>deliverable contrattuali</em>.</h2>
+    <p class="sec-intro">Ogni accordo enterprise prevede cinque deliverable formali, nominalmente identificati nel contratto quadro e oggetto di verifica al momento del go-live. Non promettiamo capacita: forniamo oggetti.</p>
+    <div class="te-deliverables">
+      <div class="te-deliverable">
+        <div class="num">Deliverable I</div>
+        <h4>Certificati ancorati Bitcoin</h4>
+        <p>Un certificato Veylon emesso per ogni unita prodotta, con sigillo OpenTimestamps su Bitcoin verificabile pubblicamente.</p>
+      </div>
+      <div class="te-deliverable">
+        <div class="num">Deliverable II</div>
+        <h4>Bundle file pronto stampa</h4>
+        <p>QR code PNG ad alta risoluzione, payload NFC encoding NTAG 424 DNA SUN, etichette in formato FMD e TPP conformi.</p>
+      </div>
+      <div class="te-deliverable">
+        <div class="num">Deliverable III</div>
+        <h4>API REST, Webhook, SDK</h4>
+        <p>Endpoint REST documentati, webhook outbound HMAC-firmati, SDK ufficiali in Node.js, Python e Java per integrazione ERP.</p>
+      </div>
+      <div class="te-deliverable">
+        <div class="num">Deliverable IV</div>
+        <h4>Pannello admin di filiera</h4>
+        <p>Audit log completo ALCOA+, supply chain visibility per lotto, dashboard di stato emissione, alert anti-frode in tempo reale.</p>
+      </div>
+      <div class="te-deliverable">
+        <div class="num">Deliverable V</div>
+        <h4>Audit report di conformita</h4>
+        <p>Report PDF firmato Veylon, opponibile a terzi, per ciascuna normativa applicata (eIDAS, Battery, ESPR, FMD, GMP).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="te-section">
+    <h2>Garanzie e <em>responsabilita</em>.</h2>
+    <p class="sec-intro">Operiamo come emittenti di certificati, non come garanti di prodotto. La distinzione e' giuridicamente rilevante e va dichiarata in modo trasparente prima della firma del contratto, perche definisce il perimetro delle nostre responsabilita verso il cliente, verso i suoi consumatori e verso le autorita di vigilanza europee.</p>
+    <div class="te-warranty">
+      <div class="te-warranty-item">
+        <h4>Veylon emette certificati. Non garantisce il prodotto fisico.</h4>
+        <p>L'autenticita del bene fisico e' attestata dal produttore che lo immette in commercio. Veylon certifica il vincolo crittografico tra l'unita fisica e la sua scheda dati, non la veridicita merceologica del bene stesso.</p>
+      </div>
+      <div class="te-warranty-item">
+        <h4>Veylon garantisce l'integrita matematica del sigillo.</h4>
+        <p>Il sigillo Bitcoin OpenTimestamps e' inattaccabile post-emissione. Nessuno, inclusa Veylon stessa, puo retrodatare o modificare un certificato emesso. La prova matematica e' verificabile da chiunque, in autonomia.</p>
+      </div>
+      <div class="te-warranty-item">
+        <h4>Opponibilita legale ai sensi eIDAS art. 41.</h4>
+        <p>Le ricevute Veylon, in caso di contenzioso civile o amministrativo, sono opponibili come prova ai sensi dell'art. 41 del Regolamento UE 910/2014 (eIDAS) sulla validita probatoria dei sigilli elettronici qualificati.</p>
+      </div>
+      <div class="te-warranty-item">
+        <h4>Persistenza Bitcoin superiore a cento anni.</h4>
+        <p>Lo standard OpenTimestamps poggia sulla rete Bitcoin, attiva dal 2009 senza interruzioni materiali. Non vi e' vendor lock-in: il certificato sopravvive a Veylon, perche la prova vive sul registro pubblico.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="te-section">
+    <h2>Il <em>team enterprise</em> Veylon.</h2>
+    <p class="sec-intro">Ogni cliente accreditato come Enterprise riceve un nucleo di quattro figure professionali dedicate per la durata del contratto. La responsabilita non e' delegata a un canale di ticketing: ha un nome, un cognome e un numero diretto.</p>
+    <div class="te-team">
+      <div class="te-role">
+        <div class="cap">Architettura</div>
+        <h4>Architetto di soluzioni dedicato</h4>
+        <p>Disegna l'integrazione con ERP, MES e WMS del cliente. Resta lo stesso interlocutore per tutta la durata del contratto.</p>
+      </div>
+      <div class="te-role">
+        <div class="cap">Qualita</div>
+        <h4>QA engineer per validazione pilot</h4>
+        <p>Valida il lotto pilota in coppia con il QA cliente. Firma il documento di accettazione tecnica prima del go-live.</p>
+      </div>
+      <div class="te-role">
+        <div class="cap">Conformita</div>
+        <h4>Compliance officer normativo</h4>
+        <p>Presidia gli audit normativi (eIDAS, ESPR, FMD, GMP). Predispone la documentazione di accompagnamento per autorita.</p>
+      </div>
+      <div class="te-role">
+        <div class="cap">Operativita</div>
+        <h4>Customer success manager</h4>
+        <p>Orchestra l'onboarding nei primi novanta giorni, sblocca i blocchi operativi, riferisce direttamente al CEO Veylon.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="te-section">
+    <h2>Le quattro <em>fasi del partnership</em>.</h2>
+    <p class="sec-intro">Il percorso di accreditamento Enterprise prevede quattro fasi formali, con deliverable e gate-review espliciti. Non procediamo alla fase successiva finche la precedente non e' chiusa con approvazione esplicita del cliente.</p>
+    <div class="te-phases">
+      <div class="te-phase">
+        <div class="ph-num">i</div>
+        <div>
+          <h3>Discovery e due diligence (settimana 1)</h3>
+          <p>Discovery call con sponsor interno e team tecnico. Due diligence KYC sul cliente (visura, antiriciclaggio, screening sanzioni UE), firma NDA reciproca, perimetrazione caso d'uso, stima preliminare volumi.</p>
+        </div>
+      </div>
+      <div class="te-phase">
+        <div class="ph-num">ii</div>
+        <div>
+          <h3>Pilota di filiera (settimane 2-3)</h3>
+          <p>Emissione di un lotto pilota tra mille e cinquemila unita. Setup tenant dedicato Veylon, integrazione con ERP o MES del cliente, applicazione fisica delle etichette su un lotto reale di produzione, verifica end-to-end.</p>
+        </div>
+      </div>
+      <div class="te-phase">
+        <div class="ph-num">iii</div>
+        <div>
+          <h3>Validazione e go-live (settimana 4)</h3>
+          <p>Audit del pilota da parte del QA cliente, redazione del documento di accettazione tecnica, firma del contratto quadro pluriennale, attivazione SLA Business o Enterprise, decisione formale di go-live in produzione.</p>
+        </div>
+      </div>
+      <div class="te-phase">
+        <div class="ph-num">iv</div>
+        <div>
+          <h3>Operativita e scaling (continua)</h3>
+          <p>Operativita continua sotto SLA, scaling progressivo del volume, business review trimestrale con il customer success manager, audit annuale di terza parte, evoluzione roadmap concordata in funzione di nuove normative UE.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="te-form-wrap">
+    <div class="te-form-card">
+      <span class="kicker">Richiesta accreditamento avanzato</span>
+      <h2>Domanda di ammissione al programma Enterprise.</h2>
+      <p class="intro">La compilazione di questo modulo costituisce richiesta formale di apertura del fascicolo di accreditamento. Riceverete riscontro entro tre giorni lavorativi da parte del nostro responsabile commerciale enterprise. Le informazioni qui inserite sono coperte da obbligo di riservatezza e ospitate in Unione Europea, su infrastruttura Supabase EU (Irlanda).</p>
+      <form id="form" autocomplete="on">
+        <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off"/>
+
+        <div class="te-sep">Anagrafica societaria</div>
+
+        <div class="field">
+          <label for="f-ragione">Ragione sociale completa *</label>
+          <input type="text" id="f-ragione" required maxlength="240" placeholder="Es. Acme Pharmaceuticals S.p.A."/>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-piva">Partita IVA *</label>
+            <input type="text" id="f-piva" required maxlength="20" placeholder="IT12345678901"/>
+          </div>
+          <div class="field">
+            <label for="f-eori">Codice EORI</label>
+            <input type="text" id="f-eori" maxlength="20" placeholder="ITxxxxxxxxxxxxx"/>
+            <span class="hint">Per operatori coinvolti in export extra-UE.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-paese">Paese sede legale *</label>
+            <select id="f-paese" required>
+              <option value="">Seleziona...</option>
+              <option value="IT">Italia</option>
+              <option value="CH">Svizzera</option>
+              <option value="FR">Francia</option>
+              <option value="DE">Germania</option>
+              <option value="ES">Spagna</option>
+              <option value="AT">Austria</option>
+              <option value="BE">Belgio</option>
+              <option value="NL">Paesi Bassi</option>
+              <option value="LU">Lussemburgo</option>
+              <option value="IE">Irlanda</option>
+              <option value="PT">Portogallo</option>
+              <option value="GR">Grecia</option>
+              <option value="SE">Svezia</option>
+              <option value="DK">Danimarca</option>
+              <option value="FI">Finlandia</option>
+              <option value="PL">Polonia</option>
+              <option value="CZ">Repubblica Ceca</option>
+              <option value="HU">Ungheria</option>
+              <option value="RO">Romania</option>
+              <option value="SI">Slovenia</option>
+              <option value="HR">Croazia</option>
+              <option value="SK">Slovacchia</option>
+              <option value="BG">Bulgaria</option>
+              <option value="EE">Estonia</option>
+              <option value="LV">Lettonia</option>
+              <option value="LT">Lituania</option>
+              <option value="MT">Malta</option>
+              <option value="CY">Cipro</option>
+              <option value="ALTRO">Altro paese (specificare in note)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-provincia">Provincia / Cantone sede</label>
+            <input type="text" id="f-provincia" maxlength="80" placeholder="Es. Milano, Vaud, Bayern"/>
+          </div>
+        </div>
+
+        <div class="te-sep">Profilo industriale e regolatorio</div>
+
+        <div class="field">
+          <label for="f-settore">Settore di appartenenza *</label>
+          <select id="f-settore" required>
+            <option value="">Seleziona...</option>
+            <option value="pharma_cmo_cdmo">Pharma genericisti italiani (CMO / CDMO)</option>
+            <option value="maison_orologi">Maison orologiere svizzero-italiane</option>
+            <option value="consorzi_dop_docg">Consorzi DOP / DOCG (alimentare e vino)</option>
+            <option value="batterie_storage">Produttori batterie storage residenziale</option>
+            <option value="tessile_distretti">Distretti tessile (Prato, Carpi, Biella)</option>
+            <option value="automotive_oem">Filiera automotive ricambi anti-contraffazione</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-volume">Volume annuo prodotti da certificare *</label>
+          <select id="f-volume" required>
+            <option value="">Seleziona...</option>
+            <option value="<100k">Meno di 100.000 unita / anno</option>
+            <option value="100k-1M">Da 100.000 a 1 milione di unita / anno</option>
+            <option value="1M-10M">Da 1 milione a 10 milioni di unita / anno</option>
+            <option value=">10M">Oltre 10 milioni di unita / anno</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-normative">Normative da rispettare (selezione multipla) *</label>
+          <select id="f-normative" multiple required>
+            <option value="eidas">eIDAS - Reg. UE 910/2014</option>
+            <option value="l_12_2019">L. 12/2019 (Italia, sigilli temporali blockchain)</option>
+            <option value="battery_reg">Battery Regulation 2023/1542</option>
+            <option value="eudr">EUDR 2023/1115 (deforestazione)</option>
+            <option value="espr">ESPR 2024/1781 (ecodesign)</option>
+            <option value="fmd">FMD 2016/161 (medicinali falsificati)</option>
+            <option value="gmp_annex_11">GMP Annex 11 (sistemi computerizzati pharma)</option>
+            <option value="cfr_part_11">21 CFR Part 11 (FDA, USA)</option>
+            <option value="ich_e2b_r3">ICH E2B(R3) (farmacovigilanza)</option>
+            <option value="en_18221">EN 18221</option>
+            <option value="gs1_digital_link">GS1 Digital Link</option>
+            <option value="epcis_2">EPCIS 2.0</option>
+          </select>
+          <span class="hint">Cmd/Ctrl + click per selezione multipla.</span>
+        </div>
+        <div class="field">
+          <label for="f-tempistiche">Tempistiche obiettivo *</label>
+          <select id="f-tempistiche" required>
+            <option value="">Seleziona...</option>
+            <option value="urgente">Urgente - inferiore a 3 mesi</option>
+            <option value="standard">Standard - da 3 a 6 mesi</option>
+            <option value="strategico">Strategico - oltre 6 mesi</option>
+          </select>
+        </div>
+
+        <div class="te-sep">Decision maker di riferimento</div>
+
+        <div class="row">
+          <div class="field">
+            <label for="f-dm-nome">Nome e cognome decision maker *</label>
+            <input type="text" id="f-dm-nome" required maxlength="200"/>
+          </div>
+          <div class="field">
+            <label for="f-dm-ruolo">Ruolo aziendale *</label>
+            <input type="text" id="f-dm-ruolo" required maxlength="120" placeholder="Es. CFO, CIO, Direttore Operations, QA Manager"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="f-dm-email">Email aziendale *</label>
+            <input type="email" id="f-dm-email" required maxlength="254"/>
+          </div>
+          <div class="field">
+            <label for="f-dm-tel">Telefono diretto *</label>
+            <input type="tel" id="f-dm-tel" required maxlength="40" placeholder="+39..."/>
+          </div>
+        </div>
+
+        <div class="te-sep">Note libere</div>
+
+        <div class="field">
+          <label for="f-note">Note di contesto (riservate)</label>
+          <textarea id="f-note" maxlength="2500" placeholder="Caso d'uso specifico, normative gia presidiate internamente, vincoli temporali regolatori, eventuali progetti gia in essere con consulenti. Piu dettagli ci dara, piu mirata sara la prima call."></textarea>
+        </div>
+
+        <div class="field" style="margin-top: 28px;">
+          <label style="display:flex;gap:12px;align-items:flex-start;cursor:pointer;font-family:var(--serif);font-size:14px;color:var(--ink-2);text-transform:none;letter-spacing:normal;line-height:1.55;">
+            <input type="checkbox" id="f-consent" required style="margin-top: 4px; width: auto;"/>
+            <span>In qualita di rappresentante legale o di soggetto autorizzato della societa indicata, dichiaro di prestare consenso esplicito al trattamento dei dati personali e societari forniti, ai sensi dell'art. 6.1.a del Regolamento UE 2016/679 (GDPR), per la finalita di valutazione della presente domanda di accreditamento. Dati ospitati su infrastruttura Supabase EU (Irlanda), nessun trasferimento extra-UE. Informativa completa: <a href="privacy.html" style="color: var(--seal);">privacy policy</a>.</span>
+          </label>
+        </div>
+        <button type="submit" class="btn" id="btn-submit">Invia domanda di accreditamento</button>
+      </form>
+      <div id="result-box"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Tag Enterprise · veylon.app</span></div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    function getMultiSelect(id) {
+      const el = document.getElementById(id);
+      if (!el) return [];
+      return Array.from(el.selectedOptions).map(o => o.value);
+    }
+
+    $("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const box = $("result-box"); box.innerHTML = "";
+      const btn = $("btn-submit");
+      btn.disabled = true;
+      const original = btn.textContent; btn.textContent = "Invio in corso...";
+
+      const ragione = $("f-ragione").value.trim();
+      const piva = $("f-piva").value.trim();
+      const eori = $("f-eori").value.trim();
+      const paese = $("f-paese").value;
+      const provincia = $("f-provincia").value.trim();
+      const settore = $("f-settore").value;
+      const volume = $("f-volume").value;
+      const normative = getMultiSelect("f-normative");
+      const tempistiche = $("f-tempistiche").value;
+      const dmNome = $("f-dm-nome").value.trim();
+      const dmRuolo = $("f-dm-ruolo").value.trim();
+      const dmEmail = $("f-dm-email").value.trim().toLowerCase();
+      const dmTel = $("f-dm-tel").value.trim();
+      const note = $("f-note").value.trim();
+
+      // Costruzione note strutturate per la edge function lead-capture esistente
+      const noteStrutturate = [
+        `[ACCREDITAMENTO TAG ENTERPRISE]`,
+        `Ragione sociale: ${ragione}`,
+        `P.IVA: ${piva}`,
+        eori ? `EORI: ${eori}` : null,
+        `Sede legale: ${paese}${provincia ? ' / ' + provincia : ''}`,
+        `Settore: ${settore}`,
+        `Volume annuo: ${volume}`,
+        `Normative: ${normative.join(', ')}`,
+        `Tempistiche: ${tempistiche}`,
+        `Decision maker: ${dmNome} (${dmRuolo})`,
+        note ? `\nNote libere:\n${note}` : null,
+      ].filter(Boolean).join('\n');
+
+      const payload = {
+        source: "tag_enterprise",
+        nome: dmNome,
+        email: dmEmail,
+        telefono: dmTel || undefined,
+        azienda: ragione,
+        ruolo: dmRuolo,
+        segmento: settore || undefined,
+        volume_stimato: volume || undefined,
+        messaggio: noteStrutturate,
+        consent: $("f-consent").checked,
+        website: document.querySelector("[name=website]").value,
+      };
+
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/lead-capture`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "apikey": ANON },
+          body: JSON.stringify(payload),
+        });
+        const j = await r.json();
+        if (!r.ok || !j.success) throw new Error(j?.error || "submit_failed");
+
+        try {
+          if (window.plausible) {
+            window.plausible("lead_tag_enterprise", {
+              props: { settore: settore, volume: volume, tempistiche: tempistiche, paese: paese }
+            });
+          }
+        } catch(_) {}
+
+        box.innerHTML = `<div class="ok-strip">
+          <strong>Domanda registrata.</strong> La sua richiesta di accreditamento (fascicolo <code>${esc(j.lead_id)}</code>) e' stata trasmessa al responsabile commerciale enterprise di Veylon.
+          Riceverete riscontro all'indirizzo <strong>${esc(dmEmail)}</strong> entro tre giorni lavorativi.
+          Per comunicazioni dirette: <a href="mailto:enterprise@veylon.app" style="color: #1e6e3e;">enterprise@veylon.app</a>.
+        </div>`;
+        $("form").reset();
+      } catch (e) {
+        box.innerHTML = `<div class="err-strip">Errore nella trasmissione: ${esc(e.message || String(e))}. La invitiamo a scriverci direttamente a <a href="mailto:enterprise@veylon.app" style="color: #b00020;">enterprise@veylon.app</a> indicando la ragione sociale.</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+  </script>
+</body>
+</html>
