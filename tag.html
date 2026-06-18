@@ -172,14 +172,42 @@
                 <input class="field-input mono" id="f-qty" type="number" value="12" min="1" max="500"/>
               </div>
               <div class="ff-row">
-                <label class="field-label">Modello fisico di tag</label>
+                <label class="field-label">Supporto fisico del certificato</label>
                 <select class="field-input mono" id="f-physical">
-                  <option value="qr">QR adesivo · 0,12&nbsp;€</option>
-                  <option value="nfc" selected>Chip NFC NTAG 213 · 0,38&nbsp;€</option>
-                  <option value="holo">Sigillo olografico · 0,84&nbsp;€</option>
-                  <option value="micro">Microdot invisibile · 1,40&nbsp;€</option>
-                  <option value="tamper">Capsula tamper-evident · 0,22&nbsp;€</option>
+                  <optgroup label="Stampa standard">
+                    <option value="qr_label">QR adesivo · 0,12&nbsp;€</option>
+                    <option value="qr_holo">QR su etichetta olografica · 0,28&nbsp;€</option>
+                    <option value="datamatrix_laser">DataMatrix inciso laser · 0,18&nbsp;€</option>
+                  </optgroup>
+                  <optgroup label="Etichette settoriali">
+                    <option value="etichetta_farma">Etichetta farma (FMD GS1 DataMatrix) · 0,15&nbsp;€</option>
+                    <option value="etichetta_vestiario">Etichetta vestiario TPP (CEN/CENELEC) · 0,14&nbsp;€</option>
+                    <option value="etichetta_food">Etichetta food DOP/IGP · 0,12&nbsp;€</option>
+                  </optgroup>
+                  <optgroup label="Incisioni laser su materiale">
+                    <option value="qr_laser_steel">QR laser su acciaio · 0,22&nbsp;€</option>
+                    <option value="qr_laser_alu">QR laser su alluminio · 0,20&nbsp;€</option>
+                    <option value="qr_laser_glass">QR laser su vetro · 0,30&nbsp;€</option>
+                    <option value="qr_laser_wood">QR laser su legno · 0,18&nbsp;€</option>
+                  </optgroup>
+                  <optgroup label="NFC magnetici">
+                    <option value="nfc_ntag213" selected>NFC NTAG 213 statico (180B) · 0,28&nbsp;€</option>
+                    <option value="nfc_ntag215">NFC NTAG 215 statico (504B) · 0,38&nbsp;€</option>
+                    <option value="nfc_ntag216">NFC NTAG 216 statico (888B) · 0,52&nbsp;€</option>
+                    <option value="nfc_ntag424_dna">NFC NTAG 424 DNA dinamico SUN · 0,78&nbsp;€</option>
+                  </optgroup>
+                  <optgroup label="RFID">
+                    <option value="rfid_uhf">RFID UHF logistica (5m range) · 0,18&nbsp;€</option>
+                  </optgroup>
+                  <optgroup label="Anti-contraffazione avanzata">
+                    <option value="sigillo_olografico">Sigillo olografico tamper-evident · 0,84&nbsp;€</option>
+                    <option value="capsula_tamper_evident">Capsula tamper-evident bottiglia · 0,22&nbsp;€</option>
+                    <option value="microdot">Microdot invisibile 0,3mm · 1,40&nbsp;€</option>
+                    <option value="dna_marker_chimico">DNA marker chimico · 0,32&nbsp;€</option>
+                    <option value="watermark_digitale_invisibile">Watermark digitale invisibile · 0,08&nbsp;€</option>
+                  </optgroup>
                 </select>
+                <p class="small" style="margin-top: 6px; color: var(--ink-3);">Veylon genera il certificato. Tu lo applichi: scarica QR PNG + manifest, stampa etichette, programma chip NFC, o ordina i materiali pronti da <a href="shop.html" style="color: var(--seal);">Veylon Shop</a>.</p>
               </div>
               <div class="ff-row">
                 <label class="field-label">Indice di partenza</label>
