@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Tag · Passaporti digitali</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+</head>
+<body>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">Veylon Tag</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Passaporti <em class="serif-italic" style="color: var(--seal);">digitali.</em>
+        </h1>
+        <p class="lede">QR code sui prodotti fisici, ancorati su Bitcoin. Conforme al Digital Product Passport UE.</p>
+      </div>
+    </section>
+
+    <section style="margin-top: 40px;">
+      <div class="hub">
+        <a href="tag-onboarding.html" class="hub-card"><div class="hub-num">i</div><div class="hub-name">Configura la tua impresa</div><div class="hub-desc">Profilo produttore</div><div class="hub-arrow">→</div></a>
+        <a href="tag-emetti.html" class="hub-card"><div class="hub-num">ii</div><div class="hub-name">Emetti un tag</div><div class="hub-desc">Singolo prodotto</div><div class="hub-arrow">→</div></a>
+        <a href="tag-batch.html" class="hub-card"><div class="hub-num">iii</div><div class="hub-name">Emissione massiva</div><div class="hub-desc">Lotto da CSV</div><div class="hub-arrow">→</div></a>
+        <a href="tag-storico.html" class="hub-card"><div class="hub-num">iv</div><div class="hub-name">Storico emissioni</div><div class="hub-desc">Tutti i tag emessi</div><div class="hub-arrow">→</div></a>
+        <a href="tag-trasferisci.html" class="hub-card"><div class="hub-num">v</div><div class="hub-name">Trasferisci proprietà</div><div class="hub-desc">Cessione di un tag</div><div class="hub-arrow">→</div></a>
+      </div>
+    </section>
+
+    <section style="margin-top: 40px;">
+      <h2 class="serif" style="font-size: 22px;">Riepilogo</h2>
+      <article class="panel-card">
+        <div id="state-loading" class="state-msg">Caricamento riepilogo&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+        <div id="kpis" class="mini-kpi" hidden>
+          <div><div class="kpi-lbl">Tag totali</div><div class="kpi-num" id="k-tot">0</div></div>
+          <div><div class="kpi-lbl">Attivi</div><div class="kpi-num" id="k-att">0</div></div>
+          <div><div class="kpi-lbl">Trasferiti</div><div class="kpi-num" id="k-tra">0</div></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Veylon Tag</span></div></footer>
+
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .hub { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--rule); }
+  .hub-card { display: grid; grid-template-columns: 44px 1fr 24px; gap: 14px; padding: 22px 22px; border-right: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule-2); align-items: center; color: inherit; }
+  .hub-card:nth-child(2n) { border-right: 0; }
+  .hub-card:hover { background: var(--paper-2); }
+  .hub-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 22px; }
+  .hub-name { font-family: var(--serif); font-size: 20px; }
+  .hub-desc { grid-column: 2; font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-2); }
+  .hub-arrow { font-family: var(--mono); color: var(--ink-3); }
+  .mini-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--ink); }
+  .mini-kpi > div { padding: 18px 16px; border-right: 1px solid var(--rule); }
+  .mini-kpi > div:last-child { border-right: 0; }
+  .kpi-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .kpi-num { font-family: var(--serif); font-size: 32px; line-height: 1; }
+  </style>
+
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
+  import { supabase } from "./_shared/supabase-client.js";
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
+  await renderAppShell("tag");
+
+  async function loadKpis() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("kpis").hidden = true;
+
+    async function cnt(table, filter) {
+      try {
+        let q = supabase.from(table).select("*", { count: "exact", head: true });
+        if (filter) q = filter(q);
+        const { count, error } = await q;
+        if (error) return { n: 0, err: error };
+        return { n: count ?? 0, err: null };
+      } catch (e) { return { n: 0, err: e }; }
+    }
+
+    const tot = await cnt("tag_certificati");
+    const att = await cnt("tag_certificati", q => q.eq("stato", "emesso"));
+    const tra = await cnt("tag_certificati", q => q.eq("stato", "trasferito"));
+
+    const anyHard = [tot, att, tra].find(x => x.err && !/relation|does not exist|permission/i.test(x.err.message || ""));
+    document.getElementById("state-loading").hidden = true;
+    if (anyHard) {
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (anyHard.err.message || anyHard.err);
+      err.hidden = false;
+      return;
+    }
+    document.getElementById("k-tot").textContent = String(tot.n);
+    document.getElementById("k-att").textContent = String(att.n);
+    document.getElementById("k-tra").textContent = String(tra.n);
+    document.getElementById("kpis").hidden = false;
+  }
+  loadKpis();
+  </script>
+</body>
+</html>

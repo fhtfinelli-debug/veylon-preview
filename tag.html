@@ -3,114 +3,1496 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VEYLON Tag · Passaporti digitali</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <title>VEYLON Tag · Studio di passaporti digitali</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
   <link rel="stylesheet" href="styles.css"/>
   <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
-  <main class="col" style="padding: 40px 32px 96px;">
-    <section class="head-row">
-      <div>
-        <span class="section-num">Veylon Tag</span>
-        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
-          Passaporti <em class="serif-italic" style="color: var(--seal);">digitali.</em>
-        </h1>
-        <p class="lede">QR code sui prodotti fisici, ancorati su Bitcoin. Conforme al Digital Product Passport UE.</p>
-      </div>
-    </section>
-
-    <section style="margin-top: 40px;">
-      <div class="hub">
-        <a href="tag-onboarding.html" class="hub-card"><div class="hub-num">i</div><div class="hub-name">Configura la tua impresa</div><div class="hub-desc">Profilo produttore</div><div class="hub-arrow">→</div></a>
-        <a href="tag-emetti.html" class="hub-card"><div class="hub-num">ii</div><div class="hub-name">Emetti un tag</div><div class="hub-desc">Singolo prodotto</div><div class="hub-arrow">→</div></a>
-        <a href="tag-batch.html" class="hub-card"><div class="hub-num">iii</div><div class="hub-name">Emissione massiva</div><div class="hub-desc">Lotto da CSV</div><div class="hub-arrow">→</div></a>
-        <a href="tag-storico.html" class="hub-card"><div class="hub-num">iv</div><div class="hub-name">Storico emissioni</div><div class="hub-desc">Tutti i tag emessi</div><div class="hub-arrow">→</div></a>
-        <a href="tag-trasferisci.html" class="hub-card"><div class="hub-num">v</div><div class="hub-name">Trasferisci proprietà</div><div class="hub-desc">Cessione di un tag</div><div class="hub-arrow">→</div></a>
-      </div>
-    </section>
-
-    <section style="margin-top: 40px;">
-      <h2 class="serif" style="font-size: 22px;">Riepilogo</h2>
-      <article class="panel-card">
-        <div id="state-loading" class="state-msg">Caricamento riepilogo&hellip;</div>
-        <div id="state-error" class="state-msg state-err" hidden><span></span></div>
-        <div id="kpis" class="mini-kpi" hidden>
-          <div><div class="kpi-lbl">Tag totali</div><div class="kpi-num" id="k-tot">0</div></div>
-          <div><div class="kpi-lbl">Attivi</div><div class="kpi-num" id="k-att">0</div></div>
-          <div><div class="kpi-lbl">Trasferiti</div><div class="kpi-num" id="k-tra">0</div></div>
-        </div>
-      </article>
-    </section>
-  </main>
-
-  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Veylon Tag</span></div></footer>
-
-  <style>
-  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
-  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
-  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
-  .state-msg.state-err { color: var(--seal); }
-  .hub { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--rule); }
-  .hub-card { display: grid; grid-template-columns: 44px 1fr 24px; gap: 14px; padding: 22px 22px; border-right: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule-2); align-items: center; color: inherit; }
-  .hub-card:nth-child(2n) { border-right: 0; }
-  .hub-card:hover { background: var(--paper-2); }
-  .hub-num { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 22px; }
-  .hub-name { font-family: var(--serif); font-size: 20px; }
-  .hub-desc { grid-column: 2; font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-2); }
-  .hub-arrow { font-family: var(--mono); color: var(--ink-3); }
-  .mini-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--ink); }
-  .mini-kpi > div { padding: 18px 16px; border-right: 1px solid var(--rule); }
-  .mini-kpi > div:last-child { border-right: 0; }
-  .kpi-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
-  .kpi-num { font-family: var(--serif); font-size: 32px; line-height: 1; }
-  </style>
 
   <script type="module">
-  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
-  import { renderAppShell } from "./_shared/app-shell.js";
-  import { supabase } from "./_shared/supabase-client.js";
-  document.documentElement.classList.add("veylon-auth-pending");
-  try {
-    await protectPage();
-  } finally {
-    document.documentElement.classList.remove("veylon-auth-pending");
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("tag"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <div class="masthead-band" style="background: var(--paper-2); border-bottom: 1px solid var(--rule); padding: 10px 24px;">
+    <div class="masthead-band-inner" style="max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--ink-3);">
+      <span>Conforme al <strong style="color: var(--ink);">Reg. UE 2024/1781</strong> Digital Product Passport (DPP)</span>
+      <span>Brand attivo: <strong style="color: var(--ink);" id="brand-attivo">&mdash;</strong></span>
+    </div>
+  </div>
+
+  <main class="col" style="padding: 40px 32px 96px;">
+
+    <!-- INTESTAZIONE -->
+    <div class="row-between" style="align-items: flex-end; margin-bottom: 24px;">
+      <span class="section-num">Studio passaporti &middot; lotto in formazione</span>
+      <span class="roman">i</span>
+    </div>
+
+    <div class="row-between" style="align-items: flex-end; gap: 48px; flex-wrap: wrap; margin-bottom: 8px;">
+      <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 0; max-width: 18ch;">
+        Crea il <em class="serif-italic" style="color: var(--seal);">passaporto digitale</em><br/>di un prodotto.
+      </h1>
+      <div style="text-align: right;">
+        <div class="eyebrow" style="margin-bottom: 6px;">Sessione</div>
+        <div class="mono" style="font-size: 14px;">P-2026-<span id="sessRef">7C1B98</span></div>
+      </div>
+    </div>
+
+    <hr class="rule" style="margin: 48px 0 0;"/>
+
+    <!-- ============================================================
+         § I — STUDIO (form + anteprima live)
+    ============================================================= -->
+    <section style="padding: 56px 0 80px;">
+      <div class="row-between" style="align-items: end; margin-bottom: 32px;">
+        <div>
+          <span class="section-num">§ I &mdash; Studio</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 8px;">
+            Anagrafica del <em class="serif-italic" style="color: var(--seal);">prodotto.</em>
+          </h2>
+        </div>
+        <span class="roman">ii</span>
+      </div>
+
+      <div class="studio">
+
+        <!-- Form -->
+        <form id="form" class="studio-form" onsubmit="event.preventDefault(); onGenerate();">
+
+          <!-- Passo 1: Brand & prodotto -->
+          <fieldset class="ff">
+            <legend class="ff-leg"><span class="ff-num">A</span> Brand &amp; prodotto</legend>
+            <div class="ff-grid">
+              <div class="ff-row">
+                <label class="field-label">Casa / brand</label>
+                <input class="field-input" id="f-brand" value="Maison Genève S.A." placeholder="Ragione sociale del titolare del marchio"/>
+              </div>
+              <div class="ff-row">
+                <label class="field-label">Partita IVA / VAT</label>
+                <input class="field-input mono" id="f-vat" value="CHE-104.418.762" placeholder="P.IVA del titolare"/>
+              </div>
+              <div class="ff-row full">
+                <label class="field-label">Denominazione del prodotto</label>
+                <input class="field-input" id="f-product" value="Cronografo Lemania 1873 — Edizione Numerata" placeholder="Nome commerciale completo"/>
+              </div>
+              <div class="ff-row">
+                <label class="field-label">Categoria merceologica</label>
+                <select class="field-input mono" id="f-cat">
+                  <option value="luxury.watch">Orologeria di lusso</option>
+                  <option value="luxury.jewel">Gioielleria</option>
+                  <option value="luxury.fashion">Moda &amp; pelletteria</option>
+                  <option value="pharma.drug">Farmaco</option>
+                  <option value="pharma.device">Dispositivo medico</option>
+                  <option value="wine.dop">Vino DOP / DOCG</option>
+                  <option value="oil.dop">Olio DOP / IGP</option>
+                  <option value="food.bio">Alimentare biologico</option>
+                  <option value="industry.oem">Componente OEM</option>
+                  <option value="art.edition">Edizione d'arte</option>
+                </select>
+              </div>
+              <div class="ff-row">
+                <label class="field-label">Codice modello</label>
+                <input class="field-input mono" id="f-model" value="LEM-1873-EN" placeholder="SKU / referenza"/>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Passo 2: Filiera & origine -->
+          <fieldset class="ff">
+            <legend class="ff-leg"><span class="ff-num">B</span> Filiera &amp; origine</legend>
+            <div class="ff-grid">
+              <div class="ff-row">
+                <label class="field-label">Paese di origine</label>
+                <select class="field-input mono" id="f-country">
+                  <option value="CH">Svizzera (CH)</option>
+                  <option value="IT" selected>Italia (IT)</option>
+                  <option value="FR">Francia (FR)</option>
+                  <option value="DE">Germania (DE)</option>
+                  <option value="AT">Austria (AT)</option>
+                  <option value="ES">Spagna (ES)</option>
+                </select>
+              </div>
+              <div class="ff-row">
+                <label class="field-label">Stabilimento di produzione</label>
+                <input class="field-input" id="f-plant" value="Manifattura di Lemania — Mortara (PV)"/>
+              </div>
+              <div class="ff-row full">
+                <label class="field-label">Catena di fornitura (sintesi)</label>
+                <textarea class="field-input" id="f-supply" rows="2" style="resize: vertical; border-bottom: var(--hairline-strong);">Movimento Lemania CH-3303 (Mortara, IT) · cassa Acciaio 316L (Brescia, IT) · cinturino in pelle vacchetta (Toscana, IT)</textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Passo 3: Materiali -->
+          <fieldset class="ff">
+            <legend class="ff-leg"><span class="ff-num">C</span> Materiali</legend>
+            <div id="materials">
+              <div class="mat-row">
+                <input class="field-input" placeholder="Materiale" value="Oro" data-mat-name/>
+                <input class="field-input mono" placeholder="Qualità" value="18K" data-mat-grade/>
+                <input class="field-input mono" placeholder="Origine" value="CH" data-mat-origin/>
+                <input class="field-input mono" placeholder="Peso (g)" value="38,4" data-mat-weight/>
+                <button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">×</button>
+              </div>
+              <div class="mat-row">
+                <input class="field-input" placeholder="Materiale" value="Acciaio 316L" data-mat-name/>
+                <input class="field-input mono" placeholder="Qualità" value="surgical" data-mat-grade/>
+                <input class="field-input mono" placeholder="Origine" value="IT" data-mat-origin/>
+                <input class="field-input mono" placeholder="Peso (g)" value="62,1" data-mat-weight/>
+                <button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">×</button>
+              </div>
+              <div class="mat-row">
+                <input class="field-input" placeholder="Materiale" value="Pelle vacchetta" data-mat-name/>
+                <input class="field-input mono" placeholder="Qualità" value="Toscana" data-mat-grade/>
+                <input class="field-input mono" placeholder="Origine" value="IT" data-mat-origin/>
+                <input class="field-input mono" placeholder="Peso (g)" value="14,0" data-mat-weight/>
+                <button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">×</button>
+              </div>
+            </div>
+            <button type="button" class="mat-add" onclick="addMaterial()">+ aggiungi materiale</button>
+          </fieldset>
+
+          <!-- Passo 4: Serializzazione -->
+          <fieldset class="ff">
+            <legend class="ff-leg"><span class="ff-num">D</span> Serializzazione del lotto</legend>
+            <div class="ff-grid">
+              <div class="ff-row">
+                <label class="field-label">Codice lotto</label>
+                <input class="field-input mono" id="f-batch" value="2026/07-A" placeholder="es. 2026/07-A"/>
+              </div>
+              <div class="ff-row">
+                <label class="field-label">Numero di passaporti da emettere</label>
+                <input class="field-input mono" id="f-qty" type="number" value="12" min="1" max="500"/>
+              </div>
+              <div class="ff-row">
+                <label class="field-label">Modello fisico di tag</label>
+                <select class="field-input mono" id="f-physical">
+                  <option value="qr">QR adesivo · 0,12&nbsp;€</option>
+                  <option value="nfc" selected>Chip NFC NTAG 213 · 0,38&nbsp;€</option>
+                  <option value="holo">Sigillo olografico · 0,84&nbsp;€</option>
+                  <option value="micro">Microdot invisibile · 1,40&nbsp;€</option>
+                  <option value="tamper">Capsula tamper-evident · 0,22&nbsp;€</option>
+                </select>
+              </div>
+              <div class="ff-row">
+                <label class="field-label">Indice di partenza</label>
+                <input class="field-input mono" id="f-startidx" type="number" value="248" min="1"/>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="row row-gap" style="margin-top: 32px; flex-wrap: wrap;">
+            <button type="submit" class="btn seal lg">Genera lotto di passaporti <span class="arrow"></span></button>
+            <button type="button" class="btn ghost lg" onclick="resetForm()">Reimposta</button>
+          </div>
+          <p class="small" style="margin-top: 12px;">
+            Costo stimato del lotto: <span id="cost" class="mono" style="color: var(--ink);">€&nbsp;4,56</span>
+            &middot; sigillatura Bitcoin inclusa
+          </p>
+        </form>
+
+        <!-- Anteprima live -->
+        <aside class="studio-preview">
+          <div class="eyebrow seal-c" style="margin-bottom: 16px;">Anteprima &middot; primo pezzo del lotto</div>
+
+          <!-- Mockup tag -->
+          <div class="tag-card">
+            <div class="tag-head">
+              <div class="seal-mark" style="width: 36px; height: 36px;">
+                <span class="glyph" style="font-size: 16px;">V</span>
+              </div>
+              <div class="tag-wm">VEYLON</div>
+            </div>
+            <hr class="rule-2" style="margin: 14px 0;"/>
+            <div class="tag-product" id="pv-product">Cronografo Lemania 1873</div>
+            <div class="tag-brand mono" id="pv-brand">Maison Genève S.A.</div>
+            <div class="tag-qr">
+              <canvas id="qrCanvas" width="180" height="180"></canvas>
+            </div>
+            <hr class="rule-2" style="margin: 6px 0 14px;"/>
+            <div class="tag-meta">
+              <div class="tm-row"><span class="tm-k">Lotto</span><span class="tm-v mono" id="pv-batch">2026/07-A</span></div>
+              <div class="tm-row"><span class="tm-k">Pezzo</span><span class="tm-v mono" id="pv-piece">00248 / 00259</span></div>
+              <div class="tm-row"><span class="tm-k">Origine</span><span class="tm-v mono" id="pv-origin">IT</span></div>
+              <div class="tm-row"><span class="tm-k">Protocollo</span><span class="tm-v mono" id="pv-proto">VLN-TAG-2026-…</span></div>
+            </div>
+            <hr class="rule-2" style="margin: 14px 0 12px;"/>
+            <!-- Sigillo (blockchain) — onesto -->
+            <div class="seal-block">
+              <div class="seal-row">
+                <span class="seal-k">Hash</span>
+                <span class="seal-v mono" id="pv-hash">— in attesa di calcolo —</span>
+              </div>
+              <div class="seal-row">
+                <span class="seal-k">Sigillato</span>
+                <span class="seal-v mono" id="pv-anchored">— non ancora ancorato —</span>
+              </div>
+              <div class="seal-row">
+                <span class="seal-k">Blocco</span>
+                <span class="seal-v mono" id="pv-block">Bitcoin in attesa</span>
+              </div>
+              <div class="seal-row">
+                <span class="seal-k">Tag fisico</span>
+                <span class="seal-v mono" id="pv-physical">NFC · ISO 14443-A</span>
+              </div>
+            </div>
+
+            <!-- DNA Materiale -->
+            <div class="dna-block">
+              <div class="dna-head">
+                <span class="dna-label mono">Impronta del lotto</span>
+                <span class="dna-code mono" id="pv-dna">DNA-000000</span>
+              </div>
+              <canvas id="dnaCanvas" class="dna-canvas" width="280" height="56"></canvas>
+              <div class="dna-cap">
+                Rappresentazione visiva derivata dai dati dichiarati (brand, prodotto, lotto, materiali). <em class="serif-italic">Aiuta il riconoscimento</em> del lotto a colpo d'occhio nel registro; ogni variazione dei dati produce una figura distinta.
+              </div>
+            </div>
+          </div>
+
+          <p class="small" style="margin-top: 16px; text-align: center;">
+            QR autentico &middot; scansionalo per aprire la pagina di verifica
+          </p>
+
+          <!-- Cosa garantisce la blockchain: nota onesta -->
+          <div class="honest-note">
+            <div class="hn-head">
+              <span class="hn-mark">i</span>
+              <div class="eyebrow seal-c">Cosa garantisce davvero il sigillo</div>
+            </div>
+            <p class="hn-body">
+              L'ancoraggio su Bitcoin certifica che il record del passaporto
+              <em class="serif-italic">non è stato alterato dopo l'emissione</em> &mdash;
+              ovvero l'integrità dei dati dichiarati e la loro data certa.
+            </p>
+            <p class="hn-body">
+              Non impedisce, da solo, che un QR venga fotocopiato. Per ostacolare la
+              duplicazione fisica si associa il QR a un supporto difficilmente
+              riproducibile (NFC, sigillo olografico, capsula tamper-evident,
+              microdot) selezionabile nel passo&nbsp;D.
+            </p>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <hr class="rule"/>
+
+    <!-- ============================================================
+         § II — LOTTO GENERATO
+    ============================================================= -->
+    <section id="lotto" style="padding: 64px 0 0; display: none;">
+      <div class="row-between" style="align-items: end; margin-bottom: 32px;">
+        <div>
+          <span class="section-num">§ II &mdash; Lotto generato</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 8px;">
+            <em class="serif-italic" style="color: var(--seal);" id="lot-count">12</em> passaporti pronti per la sigillatura.
+          </h2>
+        </div>
+        <span class="roman">iii</span>
+      </div>
+
+      <div class="lot-toolbar">
+        <div class="lot-stats">
+          <div><div class="eyebrow">Lotto</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-batch">2026/07-A</div></div>
+          <div><div class="eyebrow">Pezzi</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-pieces">248 — 259</div></div>
+          <div><div class="eyebrow">Stato</div><div style="margin-top: 4px;" id="lot-status"><span class="status pending"><span class="dot"></span>In attesa di sigillatura</span></div></div>
+          <div><div class="eyebrow">Costo lotto</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-cost">€&nbsp;4,56</div></div>
+        </div>
+        <div class="lot-actions">
+          <button class="btn seal" id="sealBtn" onclick="sealBatch()">Sigilla tutto su Bitcoin <span class="arrow"></span></button>
+          <button class="btn ghost" onclick="window.print()">Stampa fogli</button>
+          <button class="btn ghost" onclick="exportZip()">Esporta .zip</button>
+        </div>
+      </div>
+
+      <div class="grid-tags" id="grid"></div>
+    </section>
+
+    <!-- ============================================================
+         § III — TRASFORMA / AGGIORNA PASSAPORTO
+    ============================================================= -->
+    <section style="padding: 80px 0 64px;">
+      <div class="row-between" style="align-items: end; margin-bottom: 32px;">
+        <div>
+          <span class="section-num">§ III &mdash; Trasforma</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 8px;">
+            Aggiornare un passaporto <em class="serif-italic" style="color: var(--seal);">esistente.</em>
+          </h2>
+          <p class="lede" style="font-size: 16px; margin-top: 12px; max-width: 50ch;">
+            Ogni aggiornamento è un nuovo sigillo aggiunto al passaporto; lo storico
+            resta interrogabile. La verifica del consumatore mostra sempre l'ultima
+            versione, e l'intera catena se richiesta.
+          </p>
+        </div>
+        <span class="roman">iv</span>
+      </div>
+
+      <div class="transform">
+        <div class="tf-form">
+          <div class="ff-row">
+            <label class="field-label">Codice del passaporto da trasformare</label>
+            <input class="field-input mono" id="tf-code" value="VLN-TAG-2026-A8F4C2D1" placeholder="VLN-TAG-AAAA-XXXXXXXX"/>
+          </div>
+          <div class="ff-row" style="margin-top: 20px;">
+            <label class="field-label">Tipologia di aggiornamento</label>
+            <select class="field-input mono" id="tf-kind">
+              <option>Passaggio di proprietà</option>
+              <option>Intervento di manutenzione</option>
+              <option>Certificazione aggiuntiva</option>
+              <option>Riconfezionamento / nuovo lotto</option>
+              <option>Ritiro dal mercato</option>
+            </select>
+          </div>
+          <div class="ff-row" style="margin-top: 20px;">
+            <label class="field-label">Nota istituzionale</label>
+            <textarea class="field-input" id="tf-note" rows="3" style="resize: vertical; border-bottom: var(--hairline-strong);" placeholder="Descrizione formale dell'evento da registrare nel passaporto…"></textarea>
+          </div>
+          <button class="btn seal" style="margin-top: 24px;">Sigilla aggiornamento <span class="arrow"></span></button>
+        </div>
+
+        <div class="tf-history">
+          <div class="eyebrow seal-c" style="margin-bottom: 16px;">Storico del passaporto</div>
+          <div class="hist-meta">
+            <div class="hist-meta-k">Codice</div>
+            <div class="hist-meta-v mono">VLN-TAG-2026-A8F4C2D1</div>
+            <div class="hist-meta-k">Prodotto</div>
+            <div class="hist-meta-v">Cronografo Lemania 1873 &mdash; Ed. Numerata</div>
+            <div class="hist-meta-k">Eventi registrati</div>
+            <div class="hist-meta-v"><strong>4</strong> &middot; 3 confermati, 1 in stesura</div>
+          </div>
+
+          <ol class="hist">
+            <li>
+              <div class="hist-spine">
+                <div class="hist-dot ok"></div>
+                <div class="hist-line"></div>
+              </div>
+              <div class="hist-body">
+                <div class="hist-row">
+                  <span class="hist-tag emission">Emissione</span>
+                  <span class="hist-when mono">12&nbsp;mar&nbsp;2026 &middot; 09:48</span>
+                </div>
+                <div class="serif hist-title">Passaporto emesso dal titolare del marchio</div>
+                <div class="hist-meta-line mono">Maison Genève S.A. &middot; lotto&nbsp;2026/03-A &middot; pezzo&nbsp;00248</div>
+                <div class="hist-anchor mono">
+                  <span class="ha-k">Blocco</span><span class="ha-v">#&nbsp;874.018</span>
+                  <span class="ha-k">Hash</span><span class="ha-v">a8f4&nbsp;c2d1&nbsp;… 7b39</span>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="hist-spine">
+                <div class="hist-dot ok"></div>
+                <div class="hist-line"></div>
+              </div>
+              <div class="hist-body">
+                <div class="hist-row">
+                  <span class="hist-tag transfer">Passaggio di proprietà</span>
+                  <span class="hist-when mono">28&nbsp;apr&nbsp;2026 &middot; 14:22</span>
+                </div>
+                <div class="serif hist-title">Trasferito al rivenditore autorizzato</div>
+                <div class="hist-meta-line mono">Boutique Romana &middot; Via dei Condotti 14, Roma &middot; P.IVA&nbsp;06214780015</div>
+                <div class="hist-anchor mono">
+                  <span class="ha-k">Blocco</span><span class="ha-v">#&nbsp;874.082</span>
+                  <span class="ha-k">Hash</span><span class="ha-v">3c71&nbsp;b8a2&nbsp;… 4a6c</span>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="hist-spine">
+                <div class="hist-dot ok"></div>
+                <div class="hist-line"></div>
+              </div>
+              <div class="hist-body">
+                <div class="hist-row">
+                  <span class="hist-tag sale">Vendita al cliente finale</span>
+                  <span class="hist-when mono">16&nbsp;mag&nbsp;2026 &middot; 16:34</span>
+                </div>
+                <div class="serif hist-title">Acquistato dal consumatore</div>
+                <div class="hist-meta-line mono">CF&nbsp;VTL···Z &middot; scontrino&nbsp;n.&nbsp;0482/2026 &middot; garanzia legale 24 mesi</div>
+                <div class="hist-anchor mono">
+                  <span class="ha-k">Blocco</span><span class="ha-v">#&nbsp;874.131</span>
+                  <span class="ha-k">Hash</span><span class="ha-v">5b92&nbsp;a1c3&nbsp;… 7b9</span>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="hist-spine">
+                <div class="hist-dot pending"></div>
+              </div>
+              <div class="hist-body">
+                <div class="hist-row">
+                  <span class="hist-tag maint">Intervento di manutenzione</span>
+                  <span class="hist-when mono">in stesura</span>
+                </div>
+                <div class="serif hist-title">Revisione del movimento &mdash; centro autorizzato</div>
+                <div class="hist-meta-line mono">Verrà sigillato all'invio del modulo a sinistra. Il consumatore vedrà la voce solo dopo la conferma su Bitcoin.</div>
+                <div class="hist-anchor mono pending">
+                  <span class="ha-k">Stato</span><span class="ha-v">in stesura · non ancora ancorato</span>
+                </div>
+              </div>
+            </li>
+          </ol>
+
+          <p class="small" style="margin-top: 14px;">
+            <a class="link-seal" href="#">Apri lo storico completo</a> · <a class="link-seal" href="verifica.html">Verifica indipendente su Bitcoin</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule"/>
+
+    <!-- ============================================================
+         § IV — ARCHIVIO LOTTI
+    ============================================================= -->
+    <section style="padding: 56px 0;">
+      <div class="row-between" style="align-items: end; margin-bottom: 32px;">
+        <div>
+          <span class="section-num">§ IV &mdash; Archivio</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 8px;">
+            Lotti emessi <em class="serif-italic" style="color: var(--seal);">in essere.</em>
+          </h2>
+        </div>
+        <span class="roman">v</span>
+      </div>
+
+      <table class="lotti-tbl">
+        <thead>
+          <tr>
+            <th style="width: 120px;">Lotto</th>
+            <th>Prodotto</th>
+            <th style="width: 100px;" class="right">Pezzi</th>
+            <th style="width: 140px;">Tag fisico</th>
+            <th style="width: 160px;">Stato</th>
+            <th style="width: 100px;" class="right">Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="lottiTbody">
+          <tr>
+            <td class="mono">2026/06-C</td>
+            <td><div class="serif" style="font-size: 16px;">Cronografo Lemania 1873 — Ed. Numerata</div><div class="mono small">Maison Genève S.A. · LEM-1873-EN</div></td>
+            <td class="right mono">120</td>
+            <td class="mono small">NFC NTAG 213</td>
+            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.182</span></td>
+            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
+          </tr>
+          <tr>
+            <td class="mono">2026/05-B</td>
+            <td><div class="serif" style="font-size: 16px;">Cinturino in pelle — Edizione Speciale</div><div class="mono small">Maison Genève S.A. · STR-2026-SP</div></td>
+            <td class="right mono">480</td>
+            <td class="mono small">QR adesivo</td>
+            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.131</span></td>
+            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
+          </tr>
+          <tr>
+            <td class="mono">2026/05-A</td>
+            <td><div class="serif" style="font-size: 16px;">Cronografo Lemania 1873 — Ed. Anniversario</div><div class="mono small">Maison Genève S.A. · LEM-1873-AN</div></td>
+            <td class="right mono">88</td>
+            <td class="mono small">Sigillo olografico</td>
+            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.082</span></td>
+            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
+          </tr>
+          <tr>
+            <td class="mono">2026/04-D</td>
+            <td><div class="serif" style="font-size: 16px;">Ricambi originali movimento</div><div class="mono small">Maison Genève S.A. · MOV-PARTS</div></td>
+            <td class="right mono">2.400</td>
+            <td class="mono small">Microdot</td>
+            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.018</span></td>
+            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l. · Servizio fiduciario digitale</span>
+      <span>Sezione X &mdash; Tag</span>
+    </div>
+  </footer>
+
+  <style>
+  /* ============================================================
+     § I — STUDIO
+  ============================================================= */
+  .studio {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 56px;
+    align-items: start;
   }
-  await renderAppShell("tag");
 
-  async function loadKpis() {
-    document.getElementById("state-loading").hidden = false;
-    document.getElementById("state-error").hidden = true;
-    document.getElementById("kpis").hidden = true;
+  /* FORM */
+  .studio-form { display: flex; flex-direction: column; gap: 24px; }
+  .ff {
+    border: 1px solid var(--rule);
+    padding: 22px 26px 26px;
+    background: var(--paper);
+  }
+  .ff-leg {
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .ff-num {
+    font-family: var(--serif); font-style: italic;
+    font-size: 22px;
+    border: 1px solid var(--seal);
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    color: var(--seal);
+  }
+  .ff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 24px;
+    margin-top: 18px;
+  }
+  .ff-row.full { grid-column: 1 / -1; }
+  .ff .field-input {
+    background: transparent;
+    border-bottom: var(--hairline-strong);
+    padding: 8px 0 10px;
+    font-size: 15px;
+  }
+  .ff select.field-input { font-size: 14px; }
 
-    async function cnt(table, filter) {
-      try {
-        let q = supabase.from(table).select("*", { count: "exact", head: true });
-        if (filter) q = filter(q);
-        const { count, error } = await q;
-        if (error) return { n: 0, err: error };
-        return { n: count ?? 0, err: null };
-      } catch (e) { return { n: 0, err: e }; }
+  .mat-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 0.8fr 0.8fr 32px;
+    gap: 14px;
+    margin-top: 14px;
+    align-items: center;
+  }
+  .mat-row .field-input {
+    background: transparent; border-bottom: var(--hairline);
+    padding: 6px 0 8px; font-size: 14px;
+  }
+  .mat-del {
+    background: transparent; border: 1px solid var(--rule);
+    color: var(--ink-3); font-size: 16px; line-height: 1;
+    width: 28px; height: 28px;
+    cursor: pointer; transition: all .15s;
+  }
+  .mat-del:hover { background: var(--seal); border-color: var(--seal); color: var(--paper); }
+  .mat-add {
+    margin-top: 18px;
+    background: transparent; border: 0;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--seal); cursor: pointer;
+    border-bottom: 1px solid var(--seal);
+    padding: 4px 0;
+  }
+
+  /* ANTEPRIMA */
+  .studio-preview {
+    position: sticky; top: 24px;
+  }
+  .tag-card {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 24px 22px 18px;
+    box-shadow: 0 1px 0 var(--rule-2), 0 24px 56px -20px oklch(0.18 0.015 50 / 0.22);
+  }
+  .tag-head { display: flex; gap: 12px; align-items: center; }
+  .tag-wm {
+    font-family: var(--serif); font-size: 18px;
+    letter-spacing: 0.3em; color: var(--ink); padding-left: 4px;
+  }
+  .tag-product {
+    font-family: var(--serif); font-size: 18px; line-height: 1.15;
+    color: var(--ink); letter-spacing: -0.005em;
+  }
+  .tag-brand {
+    font-size: 10.5px; color: var(--ink-3);
+    letter-spacing: 0.06em; margin-top: 4px;
+  }
+  .tag-qr {
+    margin: 16px auto 6px;
+    width: 180px; height: 180px;
+    display: grid; place-items: center;
+    padding: 8px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    overflow: hidden;
+    box-sizing: content-box;
+  }
+  .tag-qr .qr-host {
+    width: 180px !important;
+    height: 180px !important;
+    display: block;
+  }
+  .tag-qr .qr-host img,
+  .tag-qr .qr-host canvas {
+    width: 180px !important;
+    height: 180px !important;
+    display: block;
+  }
+  .tag-qr canvas { width: 180px !important; height: 180px !important; display: block; }
+  .tag-meta { display: flex; flex-direction: column; gap: 6px; padding: 4px 0; }
+  .tm-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .tm-k {
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .tm-v { font-size: 11px; }
+  .tag-foot {
+    font-size: 9.5px; color: var(--ink-3);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* Sigillo / blockchain — onesto, compatto */
+  .seal-block { display: flex; flex-direction: column; gap: 4px; padding: 4px 0 2px; }
+  .seal-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; gap: 12px;
+    padding: 2px 0;
+  }
+  .seal-k {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-3); white-space: nowrap;
+  }
+  .seal-v {
+    font-size: 10px; color: var(--ink-2);
+    word-break: break-all; text-align: right;
+  }
+
+  /* Nota onesta sotto al tag */
+  .honest-note {
+    margin-top: 20px;
+    padding: 14px 16px 16px;
+    border: 1px solid var(--rule);
+    background: var(--paper-2);
+  }
+  .hn-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .hn-mark {
+    width: 18px; height: 18px;
+    border: 1px solid var(--seal);
+    color: var(--seal);
+    font-family: var(--serif); font-style: italic; font-size: 12px;
+    display: grid; place-items: center; line-height: 1;
+    flex-shrink: 0;
+  }
+  .hn-body {
+    font-family: var(--serif); font-size: 13px; line-height: 1.5;
+    color: var(--ink-2); margin: 0 0 8px;
+  }
+  .hn-body:last-child { margin-bottom: 0; }
+
+  /* ============================================================
+     DNA MATERIALE
+  ============================================================= */
+  .dna-block {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule-2);
+  }
+  .dna-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .dna-label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .dna-code {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--seal);
+  }
+  .dna-canvas {
+    width: 100%;
+    height: 56px;
+    display: block;
+    background: var(--paper-2);
+    border: 1px solid var(--rule-2);
+  }
+  .dna-cap {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 11.5px;
+    line-height: 1.4;
+    color: var(--ink-3);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ============================================================
+     § II — LOTTO
+  ============================================================= */
+  .lot-toolbar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    padding: 24px 26px;
+    background: var(--paper-2);
+    border: 1px solid var(--ink);
+    margin-bottom: 32px;
+    align-items: end;
+    flex-wrap: wrap;
+  }
+  .lot-stats {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 32px;
+  }
+  .lot-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .grid-tags {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .lot-tag {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 18px 18px 16px;
+  }
+  .lot-tag .seal-mark { width: 28px; height: 28px; }
+  .lot-tag .seal-mark .glyph { font-size: 14px; }
+  .lot-tag-head { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .lot-tag-wm {
+    font-family: var(--serif); font-size: 14px;
+    letter-spacing: 0.28em; padding-left: 3px;
+  }
+  .lot-tag-qr {
+    width: 140px; height: 140px; margin: 8px auto;
+    border: 1px solid var(--ink); padding: 6px;
+    overflow: hidden; box-sizing: content-box;
+  }
+  .lot-tag-qr .qr-host {
+    width: 140px !important; height: 140px !important;
+  }
+  .lot-tag-qr .qr-host img,
+  .lot-tag-qr .qr-host canvas { width: 140px !important; height: 140px !important; display: block; }
+  .lot-tag-qr canvas { width: 100% !important; height: 100% !important; display: block; }
+  .lot-tag-meta {
+    font-size: 10.5px; color: var(--ink-3);
+    letter-spacing: 0.05em; text-align: center;
+    line-height: 1.5;
+    border-top: 1px solid var(--rule-2);
+    padding-top: 10px;
+  }
+  .lot-tag-meta strong { color: var(--ink); font-weight: 400; }
+  .lot-tag-meta .proto {
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.04em;
+    margin-top: 6px;
+    word-break: break-all;
+  }
+
+  /* ============================================================
+     § III — TRASFORMA
+  ============================================================= */
+  .transform {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .tf-form { padding: 26px; border: 1px solid var(--rule); background: var(--paper); }
+  .tf-history { padding: 0; }
+
+  .hist-meta {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 6px 18px;
+    padding: 14px 18px;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    margin-bottom: 16px;
+  }
+  .hist-meta-k {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-3); padding-top: 2px;
+  }
+  .hist-meta-v { font-size: 13px; color: var(--ink); }
+  .hist-meta-v.mono { font-family: var(--mono); font-size: 12px; }
+
+  .hist {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .hist li {
+    display: grid; grid-template-columns: 20px 1fr; gap: 18px;
+    padding: 16px 0;
+    position: relative;
+  }
+  .hist-spine {
+    display: flex; flex-direction: column; align-items: center;
+    height: 100%;
+  }
+  .hist-dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .hist-dot.ok { background: var(--verify); }
+  .hist-dot.pending { background: var(--amber); border: 1px solid var(--ink); }
+  .hist-line {
+    flex: 1; width: 1px; background: var(--rule);
+    margin-top: 4px;
+  }
+  .hist-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; gap: 16px; margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .hist-tag {
+    font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 3px 10px; border: 1px solid currentColor;
+  }
+  .hist-tag.emission { color: var(--seal); }
+  .hist-tag.transfer { color: oklch(0.55 0.13 250); }
+  .hist-tag.sale     { color: var(--verify); }
+  .hist-tag.maint    { color: var(--amber); }
+  .hist-when {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-3);
+  }
+  .hist-title {
+    font-size: 17px; line-height: 1.25; color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .hist-meta-line {
+    font-size: 11px; color: var(--ink-2);
+    margin-top: 6px; letter-spacing: 0.04em; line-height: 1.5;
+  }
+  .hist-anchor {
+    display: grid; grid-template-columns: auto 1fr auto 1fr;
+    gap: 6px 12px;
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--rule-2);
+    font-size: 10.5px;
+    align-items: baseline;
+  }
+  .hist-anchor.pending { grid-template-columns: auto 1fr; }
+  .ha-k { color: var(--ink-3); letter-spacing: 0.12em; text-transform: uppercase; font-size: 9.5px; }
+  .ha-v { color: var(--ink); }
+
+  /* ============================================================
+     § IV — ARCHIVIO TABLE
+  ============================================================= */
+  .lotti-tbl {
+    width: 100%; border-collapse: collapse;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .lotti-tbl th {
+    text-align: left; padding: 12px 14px;
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+    border-bottom: 1px solid var(--rule);
+  }
+  .lotti-tbl th.right { text-align: right; }
+  .lotti-tbl td {
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--rule-2);
+    font-size: 13px; color: var(--ink-2);
+    vertical-align: top;
+  }
+  .lotti-tbl td.right { text-align: right; }
+  .lotti-tbl td.mono { font-family: var(--mono); }
+  .lotti-tbl tr:last-child td { border-bottom: 0; }
+  .lotti-tbl tr:hover td { background: var(--paper-2); }
+
+  /* ============================================================
+     STAMPA — solo la griglia del lotto, fogli pronti per etichette
+  ============================================================= */
+  @media print {
+    .masthead, .footer, .row-between, .lot-toolbar,
+    .studio-form, .studio-preview, .transform, .lotti-tbl,
+    nav, hr.rule { display: none !important; }
+    main.col { padding: 0 !important; }
+    #lotto { display: block !important; padding: 0 !important; }
+    .grid-tags {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 6mm !important;
+    }
+    .lot-tag {
+      page-break-inside: avoid;
+      break-inside: avoid;
+      border-color: #2d1610 !important;
+    }
+    body { background: white !important; }
+    body::before { display: none !important; }
+  }
+  @media (max-width: 980px) {
+    .studio { grid-template-columns: 1fr; }
+    .studio-preview { position: static; max-width: 320px; margin: 0 auto; }
+    .ff-grid { grid-template-columns: 1fr; }
+    .mat-row { grid-template-columns: 1fr 1fr 28px; gap: 10px; }
+    .mat-row .field-input:nth-child(3),
+    .mat-row .field-input:nth-child(4) { grid-column: span 1; }
+    .lot-toolbar { grid-template-columns: 1fr; }
+    .lot-stats { grid-template-columns: 1fr 1fr; }
+    .grid-tags { grid-template-columns: 1fr 1fr; }
+    .transform { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .grid-tags { grid-template-columns: 1fr; }
+    .lotti-tbl thead { display: none; }
+    .lotti-tbl td { display: block; padding: 6px 0; border: 0; }
+    .lotti-tbl td.right { text-align: left; }
+    .lotti-tbl tr { display: block; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  }
+  </style>
+
+  <script>
+  // ============================================================
+  // STATO E HELPER
+  // ============================================================
+  const $ = (id) => document.getElementById(id);
+  const els = (sel) => Array.from(document.querySelectorAll(sel));
+
+  const PROTO_HEX = '0123456789ABCDEF';
+  function randHex(n) {
+    let s = '';
+    for (let i = 0; i < n; i++) s += PROTO_HEX[Math.floor(Math.random()*16)];
+    return s;
+  }
+
+  // Genera codice protocollo
+  function protocolFor(batch, serial) {
+    const year = new Date().getFullYear();
+    return 'VLN-TAG-' + year + '-' + randHex(8);
+  }
+
+  // URL pubblico di verifica del tag
+  function verifyUrl(proto) {
+    return 'https://veylon.it/t/' + proto;
+  }
+
+  // ============================================================
+  // ANTEPRIMA LIVE
+  // ============================================================
+  let previewProto = 'VLN-TAG-' + new Date().getFullYear() + '-' + randHex(8);
+  let previewHash = computePreviewHash(previewProto);
+
+  // Hash deterministico breve dell'identità del passaporto.
+  // (mostra una "anteprima" della SHA-256 che verrà calcolata al sigillo)
+  function computePreviewHash(seed) {
+    let h = 2166136261 >>> 0;
+    const s = seed + '|' + Date.now();
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    const hex = ('00000000' + h.toString(16)).slice(-8);
+    return hex + hex.split('').reverse().join('') + hex + hex.split('').reverse().join('');
+  }
+
+  function updatePreview() {
+    const brand   = $('f-brand').value.trim();
+    const product = $('f-product').value.trim();
+    const batch   = $('f-batch').value.trim();
+    const startIdx= parseInt($('f-startidx').value, 10) || 1;
+    const qty     = parseInt($('f-qty').value, 10) || 1;
+    const country = $('f-country').value;
+    const physical= $('f-physical').value;
+
+    $('pv-product').textContent = product || '—';
+    $('pv-brand').textContent = brand || '—';
+    $('pv-batch').textContent = batch || '—';
+    $('pv-piece').textContent = String(startIdx).padStart(5,'0') + ' / ' + String(startIdx + qty - 1).padStart(5,'0');
+    $('pv-origin').textContent = country;
+    $('pv-proto').textContent = previewProto;
+
+    // Hash, anchored, block (onesto: non ancora ancorato fino al sigillo)
+    $('pv-hash').textContent = previewHash.match(/.{1,4}/g).slice(0, 4).join(' ') + ' … ' + previewHash.slice(-4);
+    $('pv-anchored').textContent = '— non ancora ancorato —';
+    $('pv-block').textContent = 'Bitcoin · attesa conferma';
+
+    const labels = {
+      qr: 'QR adesivo · stampa offset',
+      nfc: 'NFC NTAG 213 · ISO 14443-A',
+      holo: 'Sigillo olografico · incisione laser',
+      micro: 'Microdot · 50 μm',
+      tamper: 'Capsula tamper-evident · void-on-open'
+    };
+    $('pv-physical').textContent = labels[physical] || 'QR';
+
+    // Costo
+    const prices = { qr: 0.12, nfc: 0.38, holo: 0.84, micro: 1.40, tamper: 0.22 };
+    const cost = (prices[physical] || 0.12) * qty;
+    $('cost').textContent = '€\u00a0' + cost.toFixed(2).replace('.', ',');
+
+    // QR reale
+    renderQR($('qrCanvas'), verifyUrl(previewProto), 180);
+
+    // DNA materiale
+    drawDNA();
+  }
+
+  // ============================================================
+  // DNA MATERIALE — impronta deterministica dai materiali
+  // ============================================================
+  function fnv1a(str) {
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    return h;
+  }
+  function seedRand(seed) {
+    let s = seed >>> 0;
+    return function() {
+      s = (s + 0x6D2B79F5) >>> 0;
+      let t = s;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function dnaSignature() {
+    const mats = readMaterials();
+    const matStr = mats.map(m => m.name + '|' + m.grade + '|' + m.origin + '|' + m.weight).join('::');
+    const seed = (
+      $('f-brand').value + '|' +
+      $('f-product').value + '|' +
+      $('f-batch').value + '|' +
+      $('f-cat').value + '|' +
+      $('f-country').value + '|' +
+      matStr
+    );
+    return fnv1a(seed);
+  }
+
+  function drawDNA() {
+    const canvas = $('dnaCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const W = canvas.clientWidth || 280;
+    const H = canvas.clientHeight || 56;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, W, H);
+
+    const hash = dnaSignature();
+    const code = ('00000000' + hash.toString(16).toUpperCase()).slice(-8).slice(0, 6);
+    $('pv-dna').textContent = 'DNA-' + code;
+
+    const rand = seedRand(hash);
+    const ink = '#2d1610';
+    const gold = '#a67b3a';
+    const seal = '#7a2d1f';
+
+    // Asse centrale
+    ctx.strokeStyle = '#d4c8b8';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(8, H / 2);
+    ctx.lineTo(W - 8, H / 2);
+    ctx.stroke();
+
+    // Doppia elica: 2 curve sinusoidali sfasate, intervallate da tratti verticali
+    const cols = 56;
+    const amp = H * 0.32;
+    const phase = rand() * Math.PI * 2;
+    const freqA = 1.4 + rand() * 1.2;
+    const freqB = freqA + 0.15 + rand() * 0.25;
+    const points = [];
+    for (let i = 0; i <= cols; i++) {
+      const x = 8 + (i / cols) * (W - 16);
+      const t = (i / cols) * Math.PI * 2 * freqA + phase;
+      const u = (i / cols) * Math.PI * 2 * freqB + phase + Math.PI;
+      const yA = H / 2 + Math.sin(t) * amp;
+      const yB = H / 2 + Math.sin(u) * amp;
+      points.push({ x, yA, yB });
     }
 
-    const tot = await cnt("tag_certificati");
-    const att = await cnt("tag_certificati", q => q.eq("stato", "emesso"));
-    const tra = await cnt("tag_certificati", q => q.eq("stato", "trasferito"));
+    // Curva A (oro)
+    ctx.strokeStyle = gold;
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    points.forEach((p, i) => {
+      if (i === 0) ctx.moveTo(p.x, p.yA);
+      else ctx.lineTo(p.x, p.yA);
+    });
+    ctx.stroke();
 
-    const anyHard = [tot, att, tra].find(x => x.err && !/relation|does not exist|permission/i.test(x.err.message || ""));
-    document.getElementById("state-loading").hidden = true;
-    if (anyHard) {
-      const err = document.getElementById("state-error");
-      err.querySelector("span").textContent = "Errore: " + (anyHard.err.message || anyHard.err);
-      err.hidden = false;
+    // Curva B (ink)
+    ctx.strokeStyle = ink;
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    points.forEach((p, i) => {
+      if (i === 0) ctx.moveTo(p.x, p.yB);
+      else ctx.lineTo(p.x, p.yB);
+    });
+    ctx.stroke();
+
+    // Stanghette di collegamento (basi azotate) — selezionate in modo deterministico
+    ctx.strokeStyle = ink;
+    ctx.lineWidth = 0.55;
+    ctx.globalAlpha = 0.45;
+    for (let i = 2; i < cols - 2; i += 2) {
+      if (rand() > 0.55) continue;
+      const p = points[i];
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.yA);
+      ctx.lineTo(p.x, p.yB);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // Marcatori (punti ceralacca) sui picchi
+    ctx.fillStyle = seal;
+    for (let i = 0; i < cols; i++) {
+      if (rand() > 0.94) {
+        const p = points[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.yA, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.yB, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Tacche estremità
+    ctx.strokeStyle = ink;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(4, H / 2 - 6); ctx.lineTo(4, H / 2 + 6);
+    ctx.moveTo(W - 4, H / 2 - 6); ctx.lineTo(W - 4, H / 2 + 6);
+    ctx.stroke();
+  }
+
+  function renderQR(canvas, text, size) {
+    if (!canvas) return;
+    // davidshimjs/qrcodejs API: new QRCode(element, options)
+    if (!window.QRCode) return;
+    // Crea un contenitore vicino al canvas: questa lib disegna in un <div>, creiamo overlay
+    const parent = canvas.parentNode;
+    if (!parent) return;
+    // Sostituisce canvas con un div generato
+    let host = canvas.previousElementSibling;
+    if (!host || !host.classList.contains('qr-host')) {
+      host = document.createElement('div');
+      host.className = 'qr-host';
+      host.style.width = size + 'px';
+      host.style.height = size + 'px';
+      canvas.parentNode.insertBefore(host, canvas);
+      canvas.style.display = 'none';
+    }
+    host.innerHTML = '';
+    new QRCode(host, {
+      text: text,
+      width: size,
+      height: size,
+      colorDark: '#2d1610',
+      colorLight: '#ffffff00',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+    // davidshimjs disegna sia <table> che <canvas>; nascondiamo la table
+    setTimeout(() => {
+      const tbl = host.querySelector('table');
+      if (tbl) tbl.style.display = 'none';
+      const inner = host.querySelector('canvas');
+      if (inner) {
+        inner.style.width = size + 'px';
+        inner.style.height = size + 'px';
+        inner.style.display = 'block';
+      }
+    }, 10);
+  }
+
+  // Aggiungi un materiale
+  function addMaterial() {
+    const row = document.createElement('div');
+    row.className = 'mat-row';
+    row.innerHTML =
+      '<input class="field-input" placeholder="Materiale" data-mat-name/>' +
+      '<input class="field-input mono" placeholder="Qualità" data-mat-grade/>' +
+      '<input class="field-input mono" placeholder="Origine" data-mat-origin/>' +
+      '<input class="field-input mono" placeholder="Peso (g)" data-mat-weight/>' +
+      '<button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">×</button>';
+    $('materials').appendChild(row);
+    bindLive();
+  }
+
+  function bindLive() {
+    els('.studio-form input, .studio-form select, .studio-form textarea')
+      .forEach(el => {
+        el.removeEventListener('input', updatePreview);
+        el.addEventListener('input', updatePreview);
+      });
+  }
+
+  function resetForm() {
+    if (!confirm('Cancellare tutti i campi?')) return;
+    $('form').reset();
+    previewProto = 'VLN-TAG-' + new Date().getFullYear() + '-' + randHex(8);
+    updatePreview();
+  }
+
+  // ============================================================
+  // GENERAZIONE LOTTO
+  // ============================================================
+  function readMaterials() {
+    return els('.mat-row').map(row => ({
+      name: row.querySelector('[data-mat-name]').value,
+      grade: row.querySelector('[data-mat-grade]').value,
+      origin: row.querySelector('[data-mat-origin]').value,
+      weight: row.querySelector('[data-mat-weight]').value
+    })).filter(m => m.name);
+  }
+
+  function onGenerate() {
+    const brand   = $('f-brand').value.trim();
+    const product = $('f-product').value.trim();
+    const batch   = $('f-batch').value.trim();
+    const startIdx= parseInt($('f-startidx').value, 10) || 1;
+    const qty     = Math.min(parseInt($('f-qty').value, 10) || 1, 60); // cap a 60 per render
+    const country = $('f-country').value;
+    const physical= $('f-physical').value;
+    const cat     = $('f-cat').value;
+    const vat     = $('f-vat').value.trim();
+    const model   = $('f-model').value.trim();
+    const materials = readMaterials();
+
+    if (!brand || !product || !batch) {
+      alert('Compilare almeno brand, prodotto e codice lotto.'); return;
+    }
+
+    // Aggiorna intestazioni del lotto
+    $('lot-count').textContent = $('f-qty').value;
+    $('lot-batch').textContent = batch;
+    $('lot-pieces').textContent = startIdx + ' — ' + (startIdx + (parseInt($('f-qty').value,10)||1) - 1);
+    $('lot-cost').textContent = $('cost').textContent;
+    $('lot-status').innerHTML = '<span class="status pending"><span class="dot"></span>In attesa di sigillatura</span>';
+
+    // Genera i tag
+    const grid = $('grid');
+    grid.innerHTML = '';
+    const protos = [];
+    for (let i = 0; i < qty; i++) {
+      const serial = startIdx + i;
+      const proto = 'VLN-TAG-' + new Date().getFullYear() + '-' + randHex(8);
+      protos.push({ serial, proto, brand, product, batch, country, physical });
+
+      const card = document.createElement('article');
+      card.className = 'lot-tag';
+      card.innerHTML = `
+        <div class="lot-tag-head">
+          <div class="seal-mark"><span class="glyph">V</span></div>
+          <div class="lot-tag-wm">VEYLON</div>
+        </div>
+        <div class="lot-tag-qr"><canvas></canvas></div>
+        <div class="lot-tag-meta">
+          <div class="serif" style="font-size: 14px; color: var(--ink); line-height: 1.2; padding: 0 4px 6px;">${escapeHtml(product)}</div>
+          <div><strong>${escapeHtml(brand)}</strong></div>
+          <div>Lotto <strong>${escapeHtml(batch)}</strong> · pezzo <strong>${String(serial).padStart(5,'0')}</strong></div>
+          <div class="proto">${proto}</div>
+        </div>
+      `;
+      grid.appendChild(card);
+      renderQR(card.querySelector('canvas'), verifyUrl(proto), 140);
+    }
+
+    // Persisti in localStorage per archivio futuro
+    try {
+      const all = JSON.parse(localStorage.getItem('veylon_tags') || '[]');
+      all.unshift({
+        batch, brand, product, cat, model, vat, country, physical, materials,
+        qty: parseInt($('f-qty').value,10), startIdx,
+        date: new Date().toISOString(), status: 'pending',
+        protos
+      });
+      localStorage.setItem('veylon_tags', JSON.stringify(all.slice(0, 20)));
+    } catch(e) {}
+
+    // Mostra sezione lotto
+    $('lotto').style.display = 'block';
+    $('lotto').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  async function sealBatch() {
+    const btn = $('sealBtn');
+    btn.disabled = true;
+    btn.innerHTML = 'Caricamento sessione&hellip;';
+    try {
+      // Chiama backend reale Veylon tag-certificato-batch
+      const supaMod = await import('./_shared/supabase-client.js');
+      const supabase = supaMod.supabase;
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+      if (!token) throw new Error('Sessione scaduta. Effettua di nuovo login.');
+
+      const all = JSON.parse(localStorage.getItem('veylon_tags') || '[]');
+      const last = all[0];
+      if (!last || !last.protos || !last.protos.length) {
+        throw new Error('Nessun lotto in memoria. Genera prima un lotto di passaporti.');
+      }
+
+      btn.innerHTML = 'Invio al backend Veylon (' + last.protos.length + ' certificati)&hellip;';
+
+      const payload = {
+        codice_lotto: last.batch,
+        brand: last.brand,
+        product: last.product,
+        categoria: last.cat,
+        modello_fisico: last.physical,
+        paese_origine: last.country,
+        materiali: last.materials,
+        certificati: last.protos.map(p => ({
+          codice_pubblico: p.proto,
+          numero_serie: p.serial
+        }))
+      };
+
+      const r = await fetch('https://hanxxxtgxofjkfdjegfe.supabase.co/functions/v1/tag-certificato-batch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(payload)
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j?.error || 'errore_backend');
+
+      btn.innerHTML = '&check; Sigillato &middot; ' + (j.created ?? last.protos.length) + ' certificati su Bitcoin';
+      btn.style.background = 'var(--verify, #1e6e3e)';
+      btn.style.borderColor = 'var(--verify, #1e6e3e)';
+      $('lot-status').innerHTML = '<span class="status confirmed"><span class="dot"></span>Sigillato &middot; OTS pending</span>';
+
+      // Aggiorna localStorage stato
+      last.status = 'sealed';
+      last.veylon_atti_ids = j.atti_ids ?? [];
+      localStorage.setItem('veylon_tags', JSON.stringify(all));
+    } catch (e) {
+      btn.disabled = false;
+      btn.innerHTML = 'Sigilla tutto su Bitcoin <span class="arrow"></span>';
+      alert('Errore sigillatura: ' + (e?.message ?? e));
+    }
+  }
+
+  // ============================================================
+  // EXPORT .zip — manifest CSV + lista URL + intestazione
+  // ============================================================
+  async function exportZip() {
+    const all = JSON.parse(localStorage.getItem('veylon_tags') || '[]');
+    const last = all[0];
+    if (!last || !last.protos || !last.protos.length) {
+      alert('Nessun lotto da esportare. Generate prima un lotto di passaporti.');
       return;
     }
-    document.getElementById("k-tot").textContent = String(tot.n);
-    document.getElementById("k-att").textContent = String(att.n);
-    document.getElementById("k-tra").textContent = String(tra.n);
-    document.getElementById("kpis").hidden = false;
+
+    // Manifest CSV
+    const csvLines = ['serial,codice_protocollo,url_verifica,brand,prodotto,lotto,origine,tag_fisico'];
+    last.protos.forEach(p => {
+      csvLines.push([
+        p.serial,
+        p.proto,
+        'https://veylon.it/t/' + p.proto,
+        '"' + (p.brand||'').replace(/"/g,'""') + '"',
+        '"' + (p.product||'').replace(/"/g,'""') + '"',
+        '"' + (p.batch||'').replace(/"/g,'""') + '"',
+        p.country || '',
+        p.physical || ''
+      ].join(','));
+    });
+    const csv = csvLines.join('\n');
+
+    const readme = [
+      'LOTTO VEYLON · ' + (last.batch || '—'),
+      '='.repeat(50),
+      '',
+      'Brand:     ' + (last.brand || ''),
+      'Prodotto:  ' + (last.product || ''),
+      'Lotto:     ' + (last.batch || ''),
+      'Pezzi:     ' + last.protos.length,
+      'Emesso il: ' + new Date(last.date).toLocaleString('it-IT'),
+      '',
+      'Contenuto dell\'archivio:',
+      '  · manifest.csv  — elenco completo dei passaporti generati',
+      '  · urls.txt      — solo gli URL di verifica, uno per riga',
+      '  · README.txt    — questo file',
+      '',
+      'Per stampare le etichette fisiche utilizzare la voce "Stampa fogli"',
+      'nello stesso pannello (Ctrl/Cmd + P dal browser).',
+      ''
+    ].join('\n');
+
+    const urls = last.protos.map(p => 'https://veylon.it/t/' + p.proto).join('\n');
+
+    if (!window.JSZip) {
+      // Fallback: scarica solo il CSV
+      downloadBlob(new Blob([csv], {type:'text/csv'}), 'manifest-' + (last.batch||'lotto') + '.csv');
+      alert('Libreria di compressione non disponibile: scaricato solo il manifest CSV. Riprovate quando online.');
+      return;
+    }
+
+    const zip = new JSZip();
+    zip.file('README.txt', readme);
+    zip.file('manifest.csv', csv);
+    zip.file('urls.txt', urls);
+    const blob = await zip.generateAsync({type:'blob'});
+    downloadBlob(blob, 'lotto-' + (last.batch||'veylon').replace(/[^\w-]/g,'_') + '.zip');
   }
-  loadKpis();
+
+  function downloadBlob(blob, name) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
+  }
+
+  function escapeHtml(s) {
+    return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // Logout
+  document.getElementById('logout')?.addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('veylon_session');
+    location.href = 'login.html';
+  });
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  $('sessRef').textContent = randHex(6);
+  bindLive();
+  // Aspetta che QRCode sia disponibile
+  function init() {
+    if (window.QRCode) {
+      updatePreview();
+    } else {
+      setTimeout(init, 50);
+    }
+  }
+  init();
   </script>
 </body>
 </html>
