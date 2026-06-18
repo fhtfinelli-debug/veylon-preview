@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon Shop · Etichette, NFC, sigilli, macchinari per la certificazione</title>
+  <meta name="description" content="Acquista etichette QR adesive, chip NFC NTAG, sigilli olografici, microdot, capsule tamper-evident, macchinari di stampa e codifica per applicare la certificazione Veylon ai tuoi prodotti."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://veylon.app/shop.html"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Veylon Shop · Materiali e macchinari per la certificazione"/>
+  <meta property="og:description" content="Etichette QR, chip NFC, sigilli olografici, capsule, microdot, macchinari di stampa e codifica. Tutto cio che serve per applicare il certificato Veylon ai tuoi prodotti."/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    .sh-nav { max-width: 1180px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sh-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sh-nav .brand em { color: var(--seal); }
+    .sh-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sh-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sh-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sh-nav-links { display: none; } }
+
+    .sh-hero { padding: 56px 32px 36px; max-width: 980px; margin: 0 auto; text-align: center; }
+    .sh-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(38px, 5.5vw, 64px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 20px; }
+    .sh-hero h1 em { color: var(--seal); }
+    .sh-hero .lede { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--ink-2); max-width: 660px; margin: 0 auto 22px; }
+    .sh-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); padding: 6px 14px; border: 1px solid var(--seal); display: inline-block; margin-bottom: 18px; }
+
+    .sh-toolbar { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .sh-tabs { display: flex; gap: 0; flex-wrap: wrap; border-bottom: 1px solid var(--rule); margin-top: 32px; overflow-x: auto; }
+    .sh-tab { padding: 14px 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; background: transparent; border-top: 0; border-left: 0; border-right: 0; white-space: nowrap; }
+    .sh-tab.active { color: var(--ink); border-bottom-color: var(--seal); }
+    .sh-tab:hover { color: var(--ink); }
+
+    .sh-grid { max-width: 1180px; margin: 36px auto 64px; padding: 0 32px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .sh-card { background: var(--paper); border: 1px solid var(--rule); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+    .sh-card .badge-evidenza { position: absolute; top: 12px; right: 12px; background: var(--seal); color: var(--paper); padding: 3px 8px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sh-card .sku { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--ink-3); }
+    .sh-card .nome { font-family: var(--serif); font-weight: normal; font-size: 18px; line-height: 1.25; color: var(--ink); margin: 0; }
+    .sh-card .desc { font-family: var(--serif); font-size: 13.5px; line-height: 1.45; color: var(--ink-2); margin: 0; }
+    .sh-card .specs { display: grid; grid-template-columns: auto auto; gap: 4px 12px; font-family: var(--mono); font-size: 10px; color: var(--ink-3); padding: 8px 0; border-top: 1px solid var(--rule-2); margin-top: auto; }
+    .sh-card .specs .k { letter-spacing: 0.1em; text-transform: uppercase; }
+    .sh-card .specs .v { color: var(--ink); }
+    .sh-card .prezzo { font-family: var(--serif); font-size: 22px; color: var(--seal); margin: 0; }
+    .sh-card .prezzo .unit { font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-left: 6px; letter-spacing: 0.08em; }
+    .sh-card .prezzo .perpz { display: block; font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-top: 2px; letter-spacing: 0.06em; }
+    .sh-card .fornitore { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.06em; }
+    .sh-card .cta-row { display: flex; gap: 8px; margin-top: 8px; }
+    .sh-card button { flex: 1; padding: 10px 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; }
+    .sh-card button:hover { background: var(--seal); border-color: var(--seal); }
+    .sh-card button.ghost { background: transparent; color: var(--ink); }
+
+    .sh-categoria-header { max-width: 1180px; margin: 32px auto 0; padding: 0 32px; }
+    .sh-categoria-header h2 { font-family: var(--serif); font-weight: normal; font-size: 28px; margin: 0 0 6px; }
+    .sh-categoria-header p { font-family: var(--serif); font-size: 14.5px; color: var(--ink-2); margin: 0; }
+
+    .sh-loading { max-width: 980px; margin: 64px auto; padding: 0 32px; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .sh-empty { max-width: 980px; margin: 64px auto; padding: 0 32px; text-align: center; font-family: var(--serif); font-style: italic; color: var(--ink-3); }
+
+    .cart-floater { position: fixed; bottom: 20px; right: 20px; background: var(--ink); color: var(--paper); padding: 14px 22px; border-radius: 999px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.2); display: none; }
+    .cart-floater.visible { display: block; }
+    .cart-floater .count { background: var(--seal); padding: 2px 8px; margin-left: 8px; border-radius: 999px; }
+  </style>
+</head>
+<body>
+  <nav class="sh-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Shop</a>
+    <div class="sh-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="tag-prodotto.html">Tag DPP</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="sh-hero">
+    <span class="kicker">Veylon Shop · Materiali &amp; Macchinari</span>
+    <h1>Tutto cio che serve per <em>applicare</em> Veylon ai tuoi prodotti.</h1>
+    <p class="lede">
+      Veylon offre il certificato applicato (passaporto digitale ancorato Bitcoin). Per portarlo nel mondo fisico servono etichette,
+      chip NFC, sigilli olografici, capsule tamper-evident, microdot, e i macchinari per stamparli + codificarli. Tutto qui, gia
+      compatibile con la nostra piattaforma.
+    </p>
+  </header>
+
+  <div class="sh-toolbar">
+    <div class="sh-tabs" id="tabs">
+      <button class="sh-tab active" data-cat="all">Tutto</button>
+    </div>
+  </div>
+
+  <div id="results">
+    <div class="sh-loading">Caricamento catalogo&hellip;</div>
+  </div>
+
+  <div class="cart-floater" id="cart-floater" onclick="window.location.href='#cart'">
+    Carrello <span class="count" id="cart-count">0</span>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>© MMXXVI · Veylon S.r.l.</span>
+      <span>Shop materiali e macchinari</span>
+    </div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+    const fmtEur = (n) => Number(n ?? 0).toLocaleString("it-IT", { style: "currency", currency: "EUR" });
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    let allData = null;
+    let activeCat = "all";
+    const cart = JSON.parse(localStorage.getItem("veylon_cart") || "[]");
+
+    function updateCartFloater() {
+      const count = cart.reduce((a, b) => a + (b.qty || 0), 0);
+      const el = document.getElementById("cart-floater");
+      const c = document.getElementById("cart-count");
+      c.textContent = count;
+      if (count > 0) el.classList.add("visible");
+      else el.classList.remove("visible");
+    }
+
+    function addToCart(prodId, sku, nome, prezzo, unita) {
+      const existing = cart.find((c) => c.prodotto_id === prodId);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ prodotto_id: prodId, sku, nome, prezzo_unitario_eur: prezzo, unita_misura: unita, qty: 1 });
+      }
+      localStorage.setItem("veylon_cart", JSON.stringify(cart));
+      updateCartFloater();
+      alert("Aggiunto al carrello: " + nome);
+    }
+
+    function specsToHtml(specs) {
+      if (!specs || typeof specs !== "object") return "";
+      const entries = Object.entries(specs).slice(0, 4);
+      return entries.map(([k, v]) => `<span class="k">${esc(k.replace(/_/g, " "))}</span><span class="v">${esc(String(v))}</span>`).join("");
+    }
+
+    function renderProductCard(p) {
+      const evidenza = p.in_evidenza ? '<span class="badge-evidenza">In evidenza</span>' : '';
+      const perpz = (p.quantita_per_unita > 1 && p.prezzo_per_pezzo_eur)
+        ? `<span class="perpz">${fmtEur(p.prezzo_per_pezzo_eur)}/pezzo</span>` : '';
+      return `<article class="sh-card">
+        ${evidenza}
+        <span class="sku">${esc(p.sku)}</span>
+        <h3 class="nome">${esc(p.nome)}</h3>
+        <p class="desc">${esc(p.descrizione_breve || '')}</p>
+        ${p.specifiche ? `<div class="specs">${specsToHtml(p.specifiche)}</div>` : ''}
+        <div class="fornitore">Fornitore: ${esc(p.fornitore_nome)} (${esc(p.fornitore_paese || 'IT')}) &middot; lead time ${p.lead_time_giorni ?? '?'}gg &middot; MOQ ${p.moq_pezzi}pz</div>
+        <p class="prezzo">${fmtEur(p.prezzo_unitario_eur)} <span class="unit">/ ${esc(p.unita_misura)}</span>${perpz}</p>
+        <div class="cta-row">
+          <button onclick="addToCart('${p.id}', '${esc(p.sku)}', ${JSON.stringify(p.nome).replace(/"/g, '&quot;')}, ${p.prezzo_unitario_eur}, '${esc(p.unita_misura)}')">Aggiungi al carrello</button>
+        </div>
+      </article>`;
+    }
+
+    function renderProducts() {
+      if (!allData) return;
+      const grouped = allData.grouped;
+      const results = document.getElementById("results");
+
+      if (activeCat === "all") {
+        let html = '';
+        Object.entries(grouped).forEach(([slug, data]) => {
+          if (!data.prodotti?.length) return;
+          html += `<div class="sh-categoria-header"><h2>${esc(data.categoria.nome)}</h2><p>${esc(data.categoria.descrizione || '')}</p></div>`;
+          html += `<div class="sh-grid">${data.prodotti.map(renderProductCard).join('')}</div>`;
+        });
+        results.innerHTML = html || '<div class="sh-empty">Nessun prodotto disponibile al momento.</div>';
+      } else {
+        const data = grouped[activeCat];
+        if (!data || !data.prodotti?.length) {
+          results.innerHTML = '<div class="sh-empty">Nessun prodotto in questa categoria.</div>';
+          return;
+        }
+        results.innerHTML = `<div class="sh-categoria-header"><h2>${esc(data.categoria.nome)}</h2><p>${esc(data.categoria.descrizione || '')}</p></div><div class="sh-grid">${data.prodotti.map(renderProductCard).join('')}</div>`;
+      }
+    }
+
+    async function loadData() {
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/marketplace-prodotti-list`, { headers: { apikey: ANON } });
+        if (!r.ok) throw new Error("fetch_failed");
+        allData = await r.json();
+
+        // Render tabs
+        const tabs = document.getElementById("tabs");
+        const tabsHtml = '<button class="sh-tab active" data-cat="all">Tutto</button>' +
+          allData.categorie.map((c) => `<button class="sh-tab" data-cat="${esc(c.slug)}">${esc(c.nome)}</button>`).join('');
+        tabs.innerHTML = tabsHtml;
+        tabs.querySelectorAll('.sh-tab').forEach((t) => {
+          t.addEventListener('click', () => {
+            tabs.querySelectorAll('.sh-tab').forEach((x) => x.classList.remove('active'));
+            t.classList.add('active');
+            activeCat = t.dataset.cat;
+            renderProducts();
+            window.scrollTo({ top: tabs.offsetTop - 20, behavior: 'smooth' });
+          });
+        });
+
+        renderProducts();
+      } catch (e) {
+        document.getElementById("results").innerHTML = '<div class="sh-empty">Errore caricamento catalogo: ' + esc(e.message) + '</div>';
+      }
+    }
+
+    updateCartFloater();
+    loadData();
+  </script>
+</body>
+</html>
