@@ -62,6 +62,29 @@
 
     .empty { padding: 32px; text-align: center; color: var(--ink-2); font-family: var(--serif); font-style: italic; }
     .demo-banner { background: #fff3e0; border-left: 4px solid #e65100; padding: 12px 18px; margin-bottom: 16px; font-family: var(--mono); font-size: 12px; color: #6b3a00; }
+
+    /* Webhook tab specifics */
+    .wh-events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 6px 12px; margin-top: 6px; }
+    .wh-events-grid label { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; text-transform: none; letter-spacing: 0; color: var(--ink); margin: 0; cursor: pointer; }
+    .wh-events-grid input[type="checkbox"] { margin: 0; }
+    .wh-event-pill { display: inline-block; padding: 1px 6px; margin: 1px 2px 1px 0; font-family: var(--mono); font-size: 10px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 2px; }
+    .toggle-switch { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    .toggle-switch input { appearance: none; width: 32px; height: 18px; background: #cfd8dc; border-radius: 10px; position: relative; cursor: pointer; transition: background 0.15s; }
+    .toggle-switch input:checked { background: var(--seal); }
+    .toggle-switch input::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: var(--paper); border-radius: 50%; transition: left 0.15s; }
+    .toggle-switch input:checked::after { left: 16px; }
+    .wh-doc { background: var(--paper-2); border: 1px solid var(--rule); padding: 16px; margin-top: 12px; font-family: var(--mono); font-size: 12px; }
+    .wh-doc h4 { font-family: var(--serif); font-weight: normal; margin: 12px 0 6px; font-size: 14px; }
+    .wh-doc h4:first-child { margin-top: 0; }
+    .wh-doc pre { background: var(--paper); border: 1px solid var(--rule); padding: 10px 12px; overflow-x: auto; font-size: 11px; line-height: 1.5; white-space: pre; margin: 6px 0; }
+    .wh-doc code { font-size: 11px; }
+    .wh-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+    .wh-modal-backdrop.open { display: flex; }
+    .wh-modal { background: var(--paper); border: 1px solid var(--ink); max-width: 720px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; }
+    .wh-modal h3 { font-family: var(--serif); font-weight: normal; margin: 0 0 12px; font-size: 18px; }
+    .wh-calls-table { font-size: 12px; }
+    .wh-error-msg { color: #b71c1c; font-size: 11px; word-break: break-word; }
+    .wh-mono-mini { font-family: var(--mono); font-size: 10px; color: var(--ink-2); }
   </style>
 </head>
 <body>
@@ -98,6 +121,7 @@
       <button class="tab active" data-tab="members" role="tab">Membri</button>
       <button class="tab" data-tab="audit" role="tab">Audit log</button>
       <button class="tab" data-tab="apikeys" role="tab">API keys</button>
+      <button class="tab" data-tab="webhooks" role="tab">Webhook</button>
       <button class="tab" data-tab="whitelabel" role="tab">White-label</button>
       <button class="tab" data-tab="billing" role="tab">Billing</button>
       <button class="tab" data-tab="quotas" role="tab">Quote</button>
@@ -182,6 +206,129 @@
         <div id="keys-list"><div class="empty">Caricamento...</div></div>
       </div>
     </section>
+
+    <!-- TAB WEBHOOK -->
+    <section id="panel-webhooks" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h3>Crea nuovo endpoint webhook</h3>
+        <div class="row">
+          <div>
+            <label for="wh-url">URL endpoint (HTTPS obbligatorio)</label>
+            <input id="wh-url" type="url" placeholder="https://api.cliente.com/veylon/webhook"/>
+          </div>
+          <div>
+            <label for="wh-description">Descrizione</label>
+            <input id="wh-description" type="text" maxlength="200" placeholder="Integrazione backend produzione"/>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          <label style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2);">Eventi sottoscritti</label>
+          <div class="wh-events-grid" id="wh-events-create">
+            <label><input type="checkbox" value="atto.creato"/> atto.creato</label>
+            <label><input type="checkbox" value="atto.confermato"/> atto.confermato</label>
+            <label><input type="checkbox" value="firma.completata"/> firma.completata</label>
+            <label><input type="checkbox" value="multi_firma.completata"/> multi_firma.completata</label>
+            <label><input type="checkbox" value="cert.emesso"/> cert.emesso</label>
+            <label><input type="checkbox" value="cert.revocato"/> cert.revocato</label>
+            <label><input type="checkbox" value="tag.trasferito"/> tag.trasferito</label>
+            <label><input type="checkbox" value="tag.emesso"/> tag.emesso</label>
+            <label><input type="checkbox" value="email.consegnata"/> email.consegnata</label>
+            <label><input type="checkbox" value="send.inviato"/> send.inviato</label>
+            <label><input type="checkbox" value="send.aperto"/> send.aperto</label>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          <label class="toggle-switch">
+            <input type="checkbox" id="wh-attivo" checked/>
+            <span style="font-family: var(--mono); font-size: 12px;">Endpoint attivo</span>
+          </label>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" id="btn-create-webhook">Crea endpoint</button>
+        </div>
+        <div id="wh-result" class="key-display" hidden></div>
+      </div>
+
+      <div class="card">
+        <h3>Endpoint configurati</h3>
+        <div id="webhooks-list"><div class="empty">Caricamento...</div></div>
+      </div>
+
+      <div class="card">
+        <h3>Come ricevere webhook</h3>
+        <p style="font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin: 0 0 8px;">
+          Ogni richiesta POST include header <code>X-Veylon-Signature</code> (HMAC-SHA256 in hex del body con il tuo secret) e <code>X-Veylon-Event</code> con il nome dell'evento. Verifica sempre la firma prima di elaborare il payload.
+        </p>
+        <div class="wh-doc">
+          <h4>Esempio Node.js (Express)</h4>
+<pre>import express from 'express';
+import crypto from 'crypto';
+
+const app = express();
+const SECRET = process.env.VEYLON_WEBHOOK_SECRET;
+
+app.post('/veylon/webhook',
+  express.raw({ type: 'application/json' }),
+  (req, res) =&gt; {
+    const sig = req.header('X-Veylon-Signature');
+    const evento = req.header('X-Veylon-Event');
+    const expected = crypto
+      .createHmac('sha256', SECRET)
+      .update(req.body)
+      .digest('hex');
+    if (!sig || !crypto.timingSafeEqual(
+        Buffer.from(sig, 'hex'),
+        Buffer.from(expected, 'hex'))) {
+      return res.status(401).send('invalid signature');
+    }
+    const payload = JSON.parse(req.body.toString('utf8'));
+    console.log('Evento Veylon:', evento, payload);
+    res.status(200).send('ok');
+  });
+
+app.listen(3000);</pre>
+
+          <h4>Esempio Python (Flask)</h4>
+<pre>import hmac, hashlib, os
+from flask import Flask, request, abort
+
+app = Flask(__name__)
+SECRET = os.environ['VEYLON_WEBHOOK_SECRET'].encode()
+
+@app.route('/veylon/webhook', methods=['POST'])
+def webhook():
+    sig = request.headers.get('X-Veylon-Signature', '')
+    evento = request.headers.get('X-Veylon-Event', '')
+    body = request.get_data()
+    expected = hmac.new(SECRET, body, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(sig, expected):
+        abort(401)
+    payload = request.get_json()
+    print(f'Evento Veylon: {evento}', payload)
+    return 'ok', 200</pre>
+
+          <h4>Note importanti</h4>
+          <ul style="margin: 6px 0 0 20px; padding: 0; font-size: 11px; line-height: 1.6;">
+            <li>L'endpoint deve rispondere con HTTP 2xx entro 10 secondi.</li>
+            <li>Le risposte non-2xx vengono ritentate fino a 5 volte con backoff esponenziale.</li>
+            <li>Il body e' sempre JSON con campi: <code>evento</code>, <code>timestamp</code>, <code>organization_id</code>, <code>data</code>.</li>
+            <li>Il secret e' visibile una sola volta alla creazione: salvalo in sicurezza.</li>
+            <li>Usa sempre <code>timingSafeEqual</code>/<code>compare_digest</code> per evitare timing attack.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modale dettagli endpoint webhook -->
+    <div id="wh-modal" class="wh-modal-backdrop" role="dialog" aria-modal="true">
+      <div class="wh-modal">
+        <h3 id="wh-modal-title">Dettagli endpoint</h3>
+        <div id="wh-modal-body"></div>
+        <div class="actions">
+          <button class="btn-ghost" id="btn-wh-modal-close">Chiudi</button>
+        </div>
+      </div>
+    </div>
 
     <!-- TAB WHITE-LABEL -->
     <section id="panel-whitelabel" class="tab-panel" role="tabpanel">
@@ -273,7 +420,7 @@
     // ---------------------------------------------------------------------
     // Veylon Admin (Sezione L.6)
     // ---------------------------------------------------------------------
-    // Tabs: members | audit | apikeys | whitelabel | billing | quotas
+    // Tabs: members | audit | apikeys | webhooks | whitelabel | billing | quotas
     // ---------------------------------------------------------------------
     const SUPABASE_URL = 'https://hanxxxtgxofjkfdjegfe.supabase.co';
 
@@ -335,6 +482,7 @@
         loadMembers(),
         loadAudit(),
         loadKeys(),
+        loadWebhooks(),
         loadWhiteLabel(),
         loadSubscriptions(),
         loadQuotas(),
@@ -553,6 +701,283 @@
         out.textContent = 'Errore: ' + (j.error ?? 'sconosciuto');
       }
     });
+
+    // ----- Webhook -----
+    const WEBHOOK_EVENTS = [
+      'atto.creato', 'atto.confermato', 'firma.completata', 'multi_firma.completata',
+      'cert.emesso', 'cert.revocato', 'tag.trasferito', 'tag.emesso',
+      'email.consegnata', 'send.inviato', 'send.aperto'
+    ];
+
+    function generateWebhookSecret() {
+      const bytes = new Uint8Array(32);
+      crypto.getRandomValues(bytes);
+      // base64url encoding (no padding)
+      let bin = '';
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function isHttpsUrl(s) {
+      try {
+        const u = new URL(s);
+        return u.protocol === 'https:';
+      } catch { return false; }
+    }
+
+    async function userIsOrgAdmin() {
+      if (!currentOrgId || !currentUser) return false;
+      const { data } = await supa
+        .from('organization_members')
+        .select('role')
+        .eq('organization_id', currentOrgId)
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+      return data && (data.role === 'owner' || data.role === 'admin');
+    }
+
+    async function loadWebhooks() {
+      const root = document.getElementById('webhooks-list');
+      if (!currentUser) {
+        root.innerHTML = '<div class="empty">Accedi per gestire i webhook.</div>';
+        return;
+      }
+      try {
+        let query = supa
+          .from('webhook_endpoints')
+          .select('id, organization_id, user_id, url, description, eventi, attivo, created_at, last_called_at, last_status_code, last_error, total_calls, total_failures')
+          .order('created_at', { ascending: false });
+        if (currentOrgId) {
+          query = query.or(`organization_id.eq.${currentOrgId},user_id.eq.${currentUser.id}`);
+        } else {
+          query = query.eq('user_id', currentUser.id);
+        }
+        const { data, error } = await query;
+        if (error) {
+          root.innerHTML = `<div class="empty">Errore: ${escapeHtml(error.message)}</div>`;
+          return;
+        }
+        if (!data || data.length === 0) {
+          root.innerHTML = '<div class="empty">Nessun endpoint configurato.</div>';
+          return;
+        }
+        let html = '<table class="t"><thead><tr><th>URL / Descrizione</th><th>Eventi</th><th>Attivo</th><th>Ultima chiamata</th><th>Stato</th><th>Chiamate</th><th></th></tr></thead><tbody>';
+        data.forEach(w => {
+          const eventiHtml = (w.eventi || []).slice(0, 3).map(e => `<span class="wh-event-pill">${escapeHtml(e)}</span>`).join('') +
+            ((w.eventi || []).length > 3 ? `<span class="wh-event-pill">+${(w.eventi || []).length - 3}</span>` : '');
+          let statoPill = '<span class="pill muted">—</span>';
+          if (w.last_status_code) {
+            const cls = (w.last_status_code >= 200 && w.last_status_code < 300) ? 'ok'
+              : (w.last_status_code >= 500 ? 'err' : 'warn');
+            statoPill = `<span class="pill ${cls}">${w.last_status_code}</span>`;
+          }
+          html += `<tr>
+            <td>
+              <div><code>${escapeHtml(w.url)}</code></div>
+              <div class="wh-mono-mini">${escapeHtml(w.description || '')}</div>
+            </td>
+            <td>${eventiHtml || '<span class="wh-mono-mini">nessuno</span>'}</td>
+            <td>
+              <label class="toggle-switch">
+                <input type="checkbox" data-toggle="${w.id}" ${w.attivo ? 'checked' : ''}/>
+              </label>
+            </td>
+            <td>${formatDate(w.last_called_at)}</td>
+            <td>${statoPill}</td>
+            <td><span class="wh-mono-mini">${w.total_calls || 0} / ${w.total_failures || 0} err</span></td>
+            <td>
+              <button class="btn-ghost" style="padding:4px 8px; font-size:10px;" data-details="${w.id}">Dettagli</button>
+              <button class="btn-ghost" style="padding:4px 8px; font-size:10px;" data-test="${w.id}">Test</button>
+              <button class="btn-danger" data-delete="${w.id}">Elimina</button>
+            </td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        root.innerHTML = html;
+
+        // Wire toggles
+        root.querySelectorAll('[data-toggle]').forEach(el => {
+          el.addEventListener('change', async () => {
+            const id = el.dataset.toggle;
+            const { error } = await supa
+              .from('webhook_endpoints')
+              .update({ attivo: el.checked })
+              .eq('id', id);
+            if (error) { alert('Errore: ' + error.message); el.checked = !el.checked; }
+          });
+        });
+        // Wire delete
+        root.querySelectorAll('[data-delete]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Eliminare questo endpoint? L\'azione e\' irreversibile.')) return;
+            const { error } = await supa
+              .from('webhook_endpoints')
+              .delete()
+              .eq('id', btn.dataset.delete);
+            if (error) { alert('Errore: ' + error.message); return; }
+            await loadWebhooks();
+          });
+        });
+        // Wire details
+        root.querySelectorAll('[data-details]').forEach(btn => {
+          btn.addEventListener('click', () => showWebhookDetails(btn.dataset.details));
+        });
+        // Wire test
+        root.querySelectorAll('[data-test]').forEach(btn => {
+          btn.addEventListener('click', () => testWebhook(btn.dataset.test, data.find(w => w.id === btn.dataset.test)));
+        });
+      } catch (e) {
+        console.error(e);
+        root.innerHTML = `<div class="empty">Errore: ${escapeHtml(e.message)}</div>`;
+      }
+    }
+
+    document.getElementById('btn-create-webhook').addEventListener('click', async () => {
+      if (!currentUser) { alert('Devi essere autenticato'); return; }
+      const url = document.getElementById('wh-url').value.trim();
+      const description = document.getElementById('wh-description').value.trim();
+      const attivo = document.getElementById('wh-attivo').checked;
+      const eventi = Array.from(
+        document.querySelectorAll('#wh-events-create input[type="checkbox"]:checked')
+      ).map(cb => cb.value);
+
+      if (!url) { alert('Inserisci un URL'); return; }
+      if (!isHttpsUrl(url)) { alert('L\'URL deve essere HTTPS'); return; }
+      if (eventi.length === 0) { alert('Seleziona almeno un evento'); return; }
+
+      // Verifica permessi se org selezionata
+      if (currentOrgId) {
+        const isAdmin = await userIsOrgAdmin();
+        if (!isAdmin) {
+          alert('Solo owner/admin dell\'organizzazione possono creare webhook.');
+          return;
+        }
+      }
+
+      const secret = generateWebhookSecret();
+      const payload = {
+        url, description: description || null, eventi, attivo, secret,
+        user_id: currentUser.id,
+        organization_id: currentOrgId || null
+      };
+      const { data, error } = await supa
+        .from('webhook_endpoints')
+        .insert(payload)
+        .select('id')
+        .single();
+
+      const out = document.getElementById('wh-result');
+      out.hidden = false;
+      if (error) {
+        out.innerHTML = `<div class="key-warn">Errore: ${escapeHtml(error.message)}</div>`;
+        return;
+      }
+      out.innerHTML = `<strong>Endpoint creato. Copia ORA il secret:</strong><br/>
+        <code id="wh-secret-display">${escapeHtml(secret)}</code>
+        <button class="btn-ghost" style="margin-left:8px; padding:4px 10px; font-size:10px;" id="btn-copy-secret">Copia</button>
+        <div class="key-warn">Il secret non sara' piu' recuperabile dopo aver lasciato questa pagina. Salvalo in un secret manager.</div>`;
+      document.getElementById('btn-copy-secret').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(secret);
+          document.getElementById('btn-copy-secret').textContent = 'Copiato!';
+        } catch { alert('Copia manuale: ' + secret); }
+      });
+      // Reset form
+      document.getElementById('wh-url').value = '';
+      document.getElementById('wh-description').value = '';
+      document.querySelectorAll('#wh-events-create input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.getElementById('wh-attivo').checked = true;
+      await loadWebhooks();
+    });
+
+    async function showWebhookDetails(endpointId) {
+      const modal = document.getElementById('wh-modal');
+      const body = document.getElementById('wh-modal-body');
+      const title = document.getElementById('wh-modal-title');
+      body.innerHTML = '<div class="empty">Caricamento storico chiamate...</div>';
+      modal.classList.add('open');
+
+      const { data: endpoint } = await supa
+        .from('webhook_endpoints')
+        .select('url, description, eventi')
+        .eq('id', endpointId)
+        .maybeSingle();
+      title.textContent = endpoint ? `Storico chiamate · ${endpoint.url}` : 'Storico chiamate';
+
+      const { data: calls, error } = await supa
+        .from('webhook_calls')
+        .select('id, evento, http_status, response_body_excerpt, duration_ms, error_message, called_at')
+        .eq('endpoint_id', endpointId)
+        .order('called_at', { ascending: false })
+        .limit(50);
+
+      if (error) {
+        body.innerHTML = `<div class="empty">Errore: ${escapeHtml(error.message)}</div>`;
+        return;
+      }
+      if (!calls || calls.length === 0) {
+        body.innerHTML = '<div class="empty">Nessuna chiamata registrata.</div>';
+        return;
+      }
+      let html = '';
+      if (endpoint && endpoint.eventi) {
+        html += '<div style="margin-bottom:12px;"><span class="wh-mono-mini">Eventi sottoscritti:</span> ';
+        endpoint.eventi.forEach(e => { html += `<span class="wh-event-pill">${escapeHtml(e)}</span>`; });
+        html += '</div>';
+      }
+      html += '<table class="t wh-calls-table"><thead><tr><th>Quando</th><th>Evento</th><th>HTTP</th><th>Durata</th><th>Errore / Risposta</th></tr></thead><tbody>';
+      calls.forEach(c => {
+        let cls = 'muted';
+        if (c.http_status) {
+          cls = (c.http_status >= 200 && c.http_status < 300) ? 'ok'
+            : (c.http_status >= 500 ? 'err' : 'warn');
+        } else if (c.error_message) cls = 'err';
+        const statusLabel = c.http_status ?? '—';
+        const errOrResp = c.error_message
+          ? `<span class="wh-error-msg">${escapeHtml(c.error_message)}</span>`
+          : `<span class="wh-mono-mini">${escapeHtml((c.response_body_excerpt || '').slice(0, 120))}</span>`;
+        html += `<tr>
+          <td>${formatDate(c.called_at)}</td>
+          <td><code>${escapeHtml(c.evento)}</code></td>
+          <td><span class="pill ${cls}">${statusLabel}</span></td>
+          <td>${c.duration_ms ?? '—'} ms</td>
+          <td>${errOrResp}</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      body.innerHTML = html;
+    }
+
+    document.getElementById('btn-wh-modal-close').addEventListener('click', () => {
+      document.getElementById('wh-modal').classList.remove('open');
+    });
+    document.getElementById('wh-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'wh-modal') {
+        document.getElementById('wh-modal').classList.remove('open');
+      }
+    });
+
+    async function testWebhook(endpointId, endpoint) {
+      if (!endpoint) return;
+      if (!confirm(`Inviare un evento "webhook.test" all'URL?\n\n${endpoint.url}`)) return;
+      try {
+        const token = (await supa.auth.getSession()).data.session?.access_token;
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/webhook-outbound-cron`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ test: true, endpoint_id: endpointId })
+        });
+        const j = await res.json().catch(() => ({ success: res.ok }));
+        if (j.success || res.ok) {
+          alert('Test inviato. Apri "Dettagli" per vedere il risultato fra qualche secondo.');
+          setTimeout(loadWebhooks, 1500);
+        } else {
+          alert('Errore: ' + (j.error ?? `HTTP ${res.status}`));
+        }
+      } catch (e) {
+        alert('Errore: ' + e.message);
+      }
+    }
 
     // ----- White-label -----
     async function loadWhiteLabel() {
