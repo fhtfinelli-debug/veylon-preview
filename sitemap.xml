@@ -227,4 +227,29 @@
     <priority>0.5</priority>
   </url>
 
+  <!-- Blog SEO hub + 3 articoli (eIDAS art. 41, WeTransfer vs PEC vs Send, DPP Batterie 2027) -->
+  <url>
+    <loc>https://veylon.app/blog.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://veylon.app/blog/eidas-art-41-cosa-significa.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://veylon.app/blog/wetransfer-vs-pec-vs-veylon-send.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://veylon.app/blog/dpp-ue-batterie-deadline-2027.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

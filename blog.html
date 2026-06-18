@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Blog Veylon · Certificazione, blockchain, compliance UE</title>
+  <meta name="description" content="Analisi, guide e approfondimenti su eIDAS, validazione elettronica del timestamp, Digital Product Passport e alternative legali a PEC e WeTransfer. Il blog di Veylon."/>
+  <meta name="robots" content="index,follow"/>
+  <meta name="author" content="Veylon S.r.l."/>
+  <link rel="canonical" href="https://veylon.app/blog.html"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Blog Veylon · Certificazione, blockchain, compliance"/>
+  <meta property="og:description" content="Guide e approfondimenti su eIDAS, DPP UE, alternative legali a PEC e WeTransfer."/>
+  <meta property="og:url" content="https://veylon.app/blog.html"/>
+  <meta property="og:site_name" content="Veylon"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Blog Veylon"/>
+  <meta name="twitter:description" content="Certificazione digitale, blockchain, compliance UE: guide chiare e attuali."/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Blog Veylon",
+    "url": "https://veylon.app/blog.html",
+    "description": "Analisi e guide su eIDAS, validazione elettronica del timestamp, Digital Product Passport e alternative legali a PEC e WeTransfer.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Veylon S.r.l.",
+      "url": "https://veylon.app/"
+    },
+    "blogPost": [
+      {
+        "@type": "BlogPosting",
+        "headline": "Cos'e l'eIDAS art. 41? Validazione elettronica del timestamp spiegata",
+        "url": "https://veylon.app/blog/eidas-art-41-cosa-significa.html",
+        "datePublished": "2026-06-18"
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "WeTransfer vs PEC vs Veylon Send: quale scegliere nel 2026?",
+        "url": "https://veylon.app/blog/wetransfer-vs-pec-vs-veylon-send.html",
+        "datePublished": "2026-06-18"
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Digital Product Passport UE per batterie: deadline 18 febbraio 2027",
+        "url": "https://veylon.app/blog/dpp-ue-batterie-deadline-2027.html",
+        "datePublished": "2026-06-18"
+      }
+    ]
+  }
+  </script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .sp-hero { padding: 72px 32px 48px; max-width: 880px; margin: 0 auto; text-align: center; }
+    .sp-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--seal); margin-bottom: 22px; display: inline-block; padding: 6px 14px; border: 1px solid var(--seal); }
+    .sp-hero h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(40px, 6.5vw, 76px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 26px; }
+    .sp-hero h1 em { color: var(--seal); }
+    .sp-hero .lede { font-family: var(--serif); font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-2); max-width: 640px; margin: 0 auto 0; }
+
+    .post-list { max-width: 980px; margin: 0 auto; padding: 56px 32px; display: flex; flex-direction: column; gap: 0; }
+    .post-card { display: grid; grid-template-columns: 280px 1fr; gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+    .post-card:first-child { border-top: 1px solid var(--rule); }
+    @media (max-width: 720px) { .post-card { grid-template-columns: 1fr; gap: 18px; padding: 28px 0; } }
+    .post-thumb { aspect-ratio: 16/10; background: var(--paper-2); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; font-size: 64px; color: var(--seal); position: relative; overflow: hidden; }
+    .post-thumb .thumb-tag { position: absolute; top: 14px; left: 14px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); background: var(--paper); padding: 4px 10px; border: 1px solid var(--rule); }
+    .post-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .post-meta span { display: flex; align-items: center; gap: 6px; }
+    .post-meta .dot { width: 4px; height: 4px; background: var(--ink-3); border-radius: 50%; }
+    .post-title { font-family: var(--serif); font-weight: normal; font-size: clamp(24px, 3vw, 32px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 14px; }
+    .post-title a { color: var(--ink); }
+    .post-title a:hover { color: var(--seal); }
+    .post-excerpt { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-2); margin: 0 0 18px; }
+    .post-link { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); border-bottom: 1px solid var(--seal); padding-bottom: 2px; }
+    .post-link:hover { color: var(--seal-2); border-color: var(--seal-2); }
+
+    .newsletter-cta { background: var(--paper-2); padding: 72px 32px; text-align: center; margin-top: 24px; }
+    .newsletter-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 40px); margin: 0 0 14px; }
+    .newsletter-cta h2 em { color: var(--seal); }
+    .newsletter-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+    .newsletter-form { max-width: 460px; margin: 0 auto; display: flex; gap: 10px; flex-wrap: wrap; }
+    .newsletter-form input { flex: 1; min-width: 220px; padding: 14px 18px; font-family: var(--serif); font-size: 16px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 999px; }
+    .newsletter-form input:focus { outline: none; border-color: var(--seal); }
+    .newsletter-form button { background: var(--ink); color: var(--paper); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: none; border-radius: 999px; cursor: pointer; }
+    .newsletter-form button:hover { background: var(--seal); }
+    .newsletter-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-top: 18px; }
+
+    .footer { padding: 32px; border-top: 1px solid var(--rule); margin-top: 0; }
+    .footer-base { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="index.html" class="brand"><em>Veylon</em> · Blog</a>
+    <div class="sp-nav-links">
+      <a href="come-funziona.html">9 atti</a>
+      <a href="casi-uso.html">Casi d'uso</a>
+      <a href="pricing.html">Prezzi</a>
+      <a href="login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="sp-hero">
+    <span class="kicker">Blog Veylon</span>
+    <h1>Certificazione, blockchain,<br/><em>compliance UE</em>.</h1>
+    <p class="lede">
+      Guide chiare su eIDAS, validazione elettronica del timestamp, Digital Product Passport e alternative legali a PEC e WeTransfer.
+      Pensate per chi deve decidere oggi senza laurea in diritto.
+    </p>
+  </header>
+
+  <main class="post-list">
+    <article class="post-card">
+      <a href="blog/eidas-art-41-cosa-significa.html" class="post-thumb" aria-label="Leggi: eIDAS art. 41">
+        <span class="thumb-tag">Normativa</span>
+        <span>aEt.</span>
+      </a>
+      <div>
+        <div class="post-meta">
+          <span>18 giugno 2026</span>
+          <span class="dot"></span>
+          <span>9 min</span>
+          <span class="dot"></span>
+          <span>Normativa UE</span>
+        </div>
+        <h2 class="post-title">
+          <a href="blog/eidas-art-41-cosa-significa.html">Cos'e l'eIDAS art. 41? Validazione elettronica del timestamp spiegata</a>
+        </h2>
+        <p class="post-excerpt">
+          Marca temporale, validazione elettronica, timestamp qualificato: tre concetti che vengono confusi quotidianamente.
+          L'art. 41 del regolamento eIDAS 910/2014 mette ordine. Vediamo cosa dice davvero, chi puo emettere timestamp con valore legale,
+          e perche Veylon usa Bitcoin invece di una TSA qualificata.
+        </p>
+        <a href="blog/eidas-art-41-cosa-significa.html" class="post-link">Leggi articolo &rarr;</a>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <a href="blog/wetransfer-vs-pec-vs-veylon-send.html" class="post-thumb" aria-label="Leggi: WeTransfer vs PEC vs Veylon Send">
+        <span class="thumb-tag">Confronto</span>
+        <span>vs.</span>
+      </a>
+      <div>
+        <div class="post-meta">
+          <span>18 giugno 2026</span>
+          <span class="dot"></span>
+          <span>12 min</span>
+          <span class="dot"></span>
+          <span>Trasferimento file</span>
+        </div>
+        <h2 class="post-title">
+          <a href="blog/wetransfer-vs-pec-vs-veylon-send.html">WeTransfer vs PEC vs Veylon Send: quale scegliere nel 2026?</a>
+        </h2>
+        <p class="post-excerpt">
+          Avvocato, comune, freelance: tre profili che ogni giorno devono mandare un file con prova legale. WeTransfer non offre prova,
+          la PEC vale solo in Italia. Confronto onesto su 10 criteri reali, con esempi e tabella, per capire quale tool serve a chi.
+        </p>
+        <a href="blog/wetransfer-vs-pec-vs-veylon-send.html" class="post-link">Leggi articolo &rarr;</a>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <a href="blog/dpp-ue-batterie-deadline-2027.html" class="post-thumb" aria-label="Leggi: DPP UE batterie 2027">
+        <span class="thumb-tag">Regolamento UE</span>
+        <span>DPP</span>
+      </a>
+      <div>
+        <div class="post-meta">
+          <span>18 giugno 2026</span>
+          <span class="dot"></span>
+          <span>11 min</span>
+          <span class="dot"></span>
+          <span>Compliance prodotto</span>
+        </div>
+        <h2 class="post-title">
+          <a href="blog/dpp-ue-batterie-deadline-2027.html">Digital Product Passport UE per batterie: deadline 18 febbraio 2027</a>
+        </h2>
+        <p class="post-excerpt">
+          Il regolamento UE 2023/1542 impone un Battery Passport digitale per ogni batteria industriale, da trazione e LMT venduta in UE
+          dal 18 febbraio 2027. Cosa contiene, chi e obbligato, le penalita, e come prepararsi adesso senza farsi trovare scoperti tra otto mesi.
+        </p>
+        <a href="blog/dpp-ue-batterie-deadline-2027.html" class="post-link">Leggi articolo &rarr;</a>
+      </div>
+    </article>
+  </main>
+
+  <section class="newsletter-cta">
+    <h2>Iscriviti alla <em>newsletter</em>.</h2>
+    <p>Una mail al mese con i nuovi articoli, aggiornamenti normativi UE e changelog Veylon. Niente spam, disiscrizione con un click.</p>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Newsletter in arrivo: registrazione attiva tra pochi giorni.');">
+      <input type="email" placeholder="email@studio.it" required aria-label="Indirizzo email"/>
+      <button type="submit">Iscrivimi</button>
+    </form>
+    <p class="newsletter-note">Doppio opt-in &middot; GDPR compliant &middot; Server EU</p>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>Blog Veylon &middot; Certificazione e compliance UE</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Veylon · Conferma iscrizione newsletter</title>
+  <meta name="robots" content="noindex,nofollow"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .nc-layout { max-width: 560px; margin: 96px auto; padding: 0 32px; text-align: center; }
+    .nc-layout h1 { font-family: var(--serif); font-weight: normal; font-size: 36px; margin: 0 0 18px; line-height: 1.15; }
+    .nc-layout h1 em { color: var(--seal); }
+    .nc-layout p { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-2); margin: 0 0 22px; }
+    .nc-card { background: var(--paper); border: 1px solid var(--rule); padding: 40px 36px; margin-top: 24px; }
+    .nc-loading { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+    .nc-ok { color: #1e6e3e; font-family: var(--serif); font-style: italic; font-size: 28px; margin-bottom: 8px; }
+    .nc-err { color: #b00020; font-family: var(--serif); font-style: italic; font-size: 22px; margin-bottom: 8px; }
+    .nc-cta { margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .nc-btn { padding: 12px 26px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; text-decoration: none; display: inline-block; }
+    .nc-btn.ghost { background: transparent; color: var(--ink); }
+  </style>
+</head>
+<body>
+  <main class="nc-layout">
+    <h1>Conferma <em class="serif-italic">iscrizione</em>.</h1>
+    <p>Stiamo verificando il tuo token di conferma...</p>
+    <div class="nc-card">
+      <div id="result-state" class="nc-loading">Verifica in corso...</div>
+    </div>
+    <div class="nc-cta" id="cta">
+      <a href="index.html" class="nc-btn">Vai a Veylon</a>
+      <a href="blog.html" class="nc-btn ghost">Blog</a>
+    </div>
+  </main>
+
+  <script>
+    (async function () {
+      const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+      const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhbnh4eHRneG9mamtmZGplZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDU0ODcsImV4cCI6MjA5NjQ4MTQ4N30.feoybVVmvEP0N4vwkaOrrWqXDyVH48LPGrsCL0n9aOw";
+      const state = document.getElementById("result-state");
+      const params = new URLSearchParams(location.search);
+      const token = params.get("token");
+      if (!token) {
+        state.className = "nc-err";
+        state.textContent = "Token mancante nel link.";
+        return;
+      }
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/newsletter-confirm`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "apikey": ANON },
+          body: JSON.stringify({ token }),
+        });
+        const j = await r.json();
+        if (r.ok && j.success) {
+          state.className = "nc-ok";
+          state.textContent = "Iscrizione confermata! Grazie.";
+          const sub = document.createElement("div");
+          sub.className = "nc-loading";
+          sub.style.marginTop = "12px";
+          sub.textContent = "Riceverai aggiornamenti sui contenuti che ti interessano.";
+          state.parentNode.appendChild(sub);
+        } else if (r.status === 200 && j.already_confirmed) {
+          state.className = "nc-ok";
+          state.textContent = "Eri gia confermato.";
+        } else {
+          state.className = "nc-err";
+          state.textContent = j.error || j.message || "Conferma fallita.";
+        }
+      } catch (e) {
+        state.className = "nc-err";
+        state.textContent = "Errore di connessione: " + (e?.message || e);
+      }
+    })();
+  </script>
+</body>
+</html>
