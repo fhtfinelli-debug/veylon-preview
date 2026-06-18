@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>EU GMP Annex 11 vs FDA 21 CFR Part 11: la guida 2026 per CMO pharma</title>
+  <meta name="description" content="EU GMP Annex 11 e FDA 21 CFR Part 11 regolano i sistemi computerizzati nell'industria farmaceutica. Guida pratica per CMO italiane: 12 requisiti Annex 11 confrontati con Part 11, e-signature meaning, 4-eyes rule, ALCOA+ audit trail, e come Veylon Cert Pharma li implementa."/>
+  <meta name="robots" content="index,follow"/>
+  <meta name="author" content="Veylon S.r.l."/>
+  <meta name="keywords" content="GMP Annex 11, 21 CFR Part 11 compliance, audit trail pharma, CMO pharma, ALCOA+, e-signature pharma, 4-eyes rule, lot release, FDA EMA GxP"/>
+  <link rel="canonical" href="https://veylon.app/blog/gmp-annex-11-vs-21-cfr-part-11.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="EU GMP Annex 11 vs FDA 21 CFR Part 11: la guida 2026 per CMO pharma"/>
+  <meta property="og:description" content="Confronto tra Annex 11 e Part 11: 12 requisiti, e-signature, 4-eyes rule, ALCOA+, e come una CMO italiana puo conformarsi a entrambe senza duplicare i sistemi."/>
+  <meta property="og:url" content="https://veylon.app/blog/gmp-annex-11-vs-21-cfr-part-11.html"/>
+  <meta property="og:site_name" content="Veylon"/>
+  <meta property="article:published_time" content="2026-06-18T12:00:00+02:00"/>
+  <meta property="article:modified_time" content="2026-06-18T12:00:00+02:00"/>
+  <meta property="article:section" content="Pharma compliance"/>
+  <meta property="article:tag" content="GMP"/>
+  <meta property="article:tag" content="Annex 11"/>
+  <meta property="article:tag" content="21 CFR Part 11"/>
+  <meta property="article:tag" content="ALCOA+"/>
+  <link rel="stylesheet" href="../styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "EU GMP Annex 11 vs FDA 21 CFR Part 11: la guida 2026 per CMO pharma",
+    "description": "Confronto Annex 11 vs 21 CFR Part 11 con tabella 12 requisiti, e-signature meaning, 4-eyes rule, ALCOA+ audit trail e implementazione per CMO italiane.",
+    "image": "https://veylon.app/og/blog-gmp-annex-11.png",
+    "datePublished": "2026-06-18T12:00:00+02:00",
+    "dateModified": "2026-06-18T12:00:00+02:00",
+    "author": {
+      "@type": "Organization",
+      "name": "Veylon S.r.l.",
+      "url": "https://veylon.app/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Veylon S.r.l.",
+      "url": "https://veylon.app/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://veylon.app/og/veylon-logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://veylon.app/blog/gmp-annex-11-vs-21-cfr-part-11.html"
+    },
+    "keywords": "GMP Annex 11, 21 CFR Part 11 compliance, audit trail pharma, CMO pharma, ALCOA+, e-signature pharma, 4-eyes rule"
+  }
+  </script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .article-header { max-width: 740px; margin: 0 auto; padding: 64px 32px 32px; }
+    .breadcrumb { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 24px; }
+    .breadcrumb a { color: var(--ink-3); }
+    .breadcrumb a:hover { color: var(--seal); }
+    .article-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 18px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .article-meta .dot { width: 4px; height: 4px; background: var(--ink-3); border-radius: 50%; display: inline-block; align-self: center; }
+    .article-header h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(36px, 5.5vw, 60px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 22px; }
+    .article-header h1 em { color: var(--seal); }
+    .article-header .deck { font-family: var(--serif); font-size: clamp(18px, 2vw, 22px); line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+    .article-body { max-width: 720px; margin: 0 auto; padding: 16px 32px 56px; font-family: var(--serif); font-size: 18px; line-height: 1.7; color: var(--ink); }
+    .article-body p { margin: 0 0 22px; }
+    .article-body h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(26px, 3.4vw, 36px); line-height: 1.18; letter-spacing: -0.015em; margin: 52px 0 18px; color: var(--ink); }
+    .article-body h2 em { color: var(--seal); }
+    .article-body h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 32px 0 12px; color: var(--ink); }
+    .article-body strong { font-weight: 600; }
+    .article-body a { color: var(--seal); border-bottom: 1px solid var(--seal); }
+    .article-body a:hover { color: var(--seal-2); border-color: var(--seal-2); }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 22px; }
+    .article-body li { margin-bottom: 10px; }
+    .article-body blockquote { border-left: 3px solid var(--seal); padding: 6px 0 6px 22px; margin: 24px 0; color: var(--ink-2); font-style: italic; }
+    .article-body code { font-family: var(--mono); font-size: 0.88em; background: var(--paper-2); padding: 2px 6px; border-radius: 4px; }
+    .callout { background: var(--paper-2); border-left: 3px solid var(--seal); padding: 22px 26px; margin: 28px 0; font-size: 16px; }
+    .callout .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 8px; display: block; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin: 28px 0; font-family: var(--serif); font-size: 15px; }
+    .compare-table th, .compare-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
+    .compare-table thead th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+    .compare-table td:first-child { font-weight: 600; color: var(--ink); width: 26%; }
+    @media (max-width: 720px) { .compare-table, .compare-table thead, .compare-table tbody, .compare-table th, .compare-table td, .compare-table tr { display: block; } .compare-table thead tr { position: absolute; left: -9999px; } .compare-table tr { margin-bottom: 16px; border-bottom: 1px solid var(--rule); padding-bottom: 8px; } .compare-table td { border: 0; padding: 4px 0; } .compare-table td:first-child { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--seal); padding-top: 12px; } }
+
+    .article-footer-cta { background: var(--paper-2); padding: 56px 32px; text-align: center; }
+    .article-footer-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 40px); margin: 0 0 14px; }
+    .article-footer-cta h2 em { color: var(--seal); }
+    .article-footer-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .related { max-width: 720px; margin: 0 auto; padding: 48px 32px; }
+    .related h3 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px; }
+    .related ul { list-style: none; padding: 0; margin: 0; }
+    .related li { padding: 14px 0; border-top: 1px solid var(--rule-2); font-family: var(--serif); font-size: 17px; }
+    .related li:last-child { border-bottom: 1px solid var(--rule-2); }
+    .related a { color: var(--ink); }
+    .related a:hover { color: var(--seal); }
+
+    .footer { padding: 32px; border-top: 1px solid var(--rule); }
+    .footer-base { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="../index.html" class="brand"><em>Veylon</em> &middot; Blog</a>
+    <div class="sp-nav-links">
+      <a href="../come-funziona.html">9 atti</a>
+      <a href="../casi-uso.html">Casi d'uso</a>
+      <a href="../pricing.html">Prezzi</a>
+      <a href="../login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="article-header">
+    <div class="breadcrumb">
+      <a href="../blog.html">Blog</a> &rsaquo; Pharma compliance
+    </div>
+    <div class="article-meta">
+      <span>18 giugno 2026</span>
+      <span class="dot"></span>
+      <span>11 min di lettura</span>
+      <span class="dot"></span>
+      <span>Pharma compliance</span>
+    </div>
+    <h1>EU GMP <em>Annex 11</em> vs FDA <em>21 CFR Part 11</em>: la guida 2026 per CMO pharma</h1>
+    <p class="deck">
+      Le CMO italiane che producono per il mercato UE e per l'export USA devono dimostrare conformita
+      a entrambi i regolamenti sui sistemi computerizzati. Annex 11 della EU GMP e 21 CFR Part 11 della FDA
+      sono cugini stretti ma non sovrapponibili. Guida pratica per le piccole e medie CMO: cosa cambia,
+      cosa basta fare una volta sola, cosa va duplicato.
+    </p>
+  </header>
+
+  <article class="article-body">
+
+    <h2>Cos'e <em>EU GMP Annex 11</em></h2>
+
+    <p>
+      Annex 11 e l'allegato 11 della parte 1 della <strong>EudraLex Volume 4</strong>, il manuale delle Good
+      Manufacturing Practices europee per i medicinali umani e veterinari. Si applica a tutti i sistemi
+      computerizzati che fanno parte di un processo GMP, dalla pesata delle materie prime al rilascio dei lotti.
+    </p>
+
+    <p>
+      Il principio fondamentale di Annex 11 e semplice: l'introduzione di un computer non puo ridurre la qualita
+      del prodotto, la sicurezza del paziente, o l'integrita dei dati. Il computer e un sostituto di un'azione
+      umana o di un sistema cartaceo, e deve essere validato per dimostrare che fa esattamente quello che si
+      dichiara, in modo riproducibile.
+    </p>
+
+    <p>
+      Annex 11 e applicabile in tutti i 27 Stati UE piu i Paesi del SEE e quelli con accordi di Mutual Recognition
+      (UK post-Brexit, Svizzera, Canada, Giappone). Le ispezioni AIFA, EMA, MHRA seguono questo allegato.
+    </p>
+
+    <h2>Cos'e <em>FDA 21 CFR Part 11</em></h2>
+
+    <p>
+      21 CFR Part 11 e la parte 11 del titolo 21 del Code of Federal Regulations USA, intitolata
+      "Electronic Records; Electronic Signatures". Pubblicata nel 1997, definisce i criteri perche un record
+      elettronico e una firma elettronica siano considerati equivalenti ai record cartacei e alle firme manoscritte
+      ai fini regolatori FDA.
+    </p>
+
+    <p>
+      Si applica a tutti i sistemi computerizzati usati in attivita soggette a regolamentazione FDA: produzione
+      di farmaci umani e veterinari, dispositivi medici, alimenti, cosmetici, sangue, vaccini. Non e limitato
+      alla produzione GMP ma copre anche la ricerca clinica (GCP) e i laboratori di controllo qualita (GLP).
+    </p>
+
+    <p>
+      Per una CMO italiana che esporta negli USA, la conformita Part 11 e oggetto di ispezione FDA durante le
+      pre-approval inspection (PAI) e le routine inspection. La gestione tipica e in due fasi: una review
+      documentale remota e un'ispezione on-site di 3-5 giorni.
+    </p>
+
+    <h2>I <em>12 requisiti</em> Annex 11 confrontati con Part 11</h2>
+
+    <p>
+      I due regolamenti coprono territori simili ma li articolano in modo diverso. Qui sotto la tabella di
+      confronto sui 12 requisiti operativi principali che ogni CMO deve implementare.
+    </p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Requisito</th>
+          <th>Annex 11 (UE)</th>
+          <th>21 CFR Part 11 (USA)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Validazione del sistema</td>
+          <td>Para. 4 &middot; validazione computerizzata estesa, GAMP 5 framework</td>
+          <td>11.10(a) &middot; validazione richiesta, no framework specifico</td>
+        </tr>
+        <tr>
+          <td>Risk assessment</td>
+          <td>Para. 1 &middot; obbligatorio basato su impatto paziente</td>
+          <td>FDA guidance 2003 &middot; risk-based approach raccomandato</td>
+        </tr>
+        <tr>
+          <td>Audit trail</td>
+          <td>Para. 9 &middot; immutabile, sequenziale, time-stamped</td>
+          <td>11.10(e) &middot; secure, computer-generated, time-stamped</td>
+        </tr>
+        <tr>
+          <td>Accuracy check sui dati</td>
+          <td>Para. 6 &middot; controllo input/output, integrita</td>
+          <td>11.10(c) &middot; protezione record, accuratezza</td>
+        </tr>
+        <tr>
+          <td>Sistema di backup</td>
+          <td>Para. 7 &middot; backup periodico, restore test</td>
+          <td>11.10(c) &middot; record retention nel periodo richiesto</td>
+        </tr>
+        <tr>
+          <td>Controllo degli accessi</td>
+          <td>Para. 12 &middot; password policy, ruoli, deactivation</td>
+          <td>11.10(d)(g) &middot; system access limited a authorized individuals</td>
+        </tr>
+        <tr>
+          <td>E-signature meaning</td>
+          <td>Para. 14 &middot; signed/approved/reviewed esplicitato</td>
+          <td>11.50 &middot; signed name, date, meaning obbligatori</td>
+        </tr>
+        <tr>
+          <td>Identita firmatario</td>
+          <td>Para. 12.4 &middot; unique to one individual</td>
+          <td>11.100 &middot; unique to one individual, not reassigned</td>
+        </tr>
+        <tr>
+          <td>Two-component authentication</td>
+          <td>Implicito &middot; raccomandato risk-based</td>
+          <td>11.200(a)(1) &middot; obbligatorio per non-biometric</td>
+        </tr>
+        <tr>
+          <td>Change control</td>
+          <td>Para. 10 &middot; change management formale</td>
+          <td>11.10(k) &middot; written policy on system access</td>
+        </tr>
+        <tr>
+          <td>Disaster recovery</td>
+          <td>Para. 16 &middot; business continuity plan</td>
+          <td>11.10(c) &middot; protection of records</td>
+        </tr>
+        <tr>
+          <td>Periodic review</td>
+          <td>Para. 11 &middot; periodic evaluation richiesta</td>
+          <td>11.10(d) &middot; system suitability assessments</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Conclusione operativa: una CMO che implementa correttamente Annex 11 ha gia coperto l'80% dei requisiti
+      Part 11. Le differenze residue (two-component auth obbligatoria, e-signature meaning sempre esplicitato,
+      audit trail con metadata dettagliato) si gestiscono con configurazioni aggiuntive sullo stesso sistema.
+    </p>
+
+    <h2>E-signature <em>meaning</em>: il punto critico</h2>
+
+    <p>
+      Il piu citato in audit FDA. Part 11 richiede che ogni firma elettronica riporti tre informazioni esplicite,
+      visibili nel record firmato e nel suo audit trail:
+    </p>
+
+    <ul>
+      <li>il <strong>nome stampato</strong> del firmatario (non solo username);</li>
+      <li>la <strong>data e l'ora</strong> della firma in formato ISO;</li>
+      <li>il <strong>significato</strong> della firma (approved by, reviewed by, performed by).</li>
+    </ul>
+
+    <p>
+      Esempio non conforme: un report con solo username e timestamp. Esempio conforme: "Approved by Mario Rossi,
+      Quality Assurance Manager, on 2026-06-18 14:32:11 CET". Annex 11 richiede informazioni simili al paragrafo 14,
+      ma e meno esplicito sul formato.
+    </p>
+
+    <p>
+      Per le CMO italiane che producono per il mercato USA, la regola pratica e: configurare il sistema secondo
+      i requisiti Part 11 (piu stringente sulla forma), e l'audit AIFA sara automaticamente soddisfatto.
+    </p>
+
+    <h2>4-eyes rule per <em>lot release</em></h2>
+
+    <p>
+      Il rilascio di un lotto di farmaco e una delle operazioni piu critiche in GMP. Annex 11 paragrafo 14
+      e Part 11 sezione 11.50 convergono su un principio: il rilascio deve essere firmato elettronicamente da
+      almeno due persone qualificate, con ruoli distinti.
+    </p>
+
+    <p>
+      Tipicamente: il Quality Control Manager firma l'esecuzione dei test di rilascio (performed by), il Qualified
+      Person firma l'approvazione finale del lotto (approved by). Le due firme devono essere indipendenti, non
+      sostituibili l'una dall'altra, e tracciate nell'audit trail con timestamp diversi.
+    </p>
+
+    <p>
+      Veylon Cert Pharma implementa la 4-eyes rule come flusso nativo: il QC carica i dati di rilascio nel sistema,
+      firma con il proprio certificato, il record passa in coda di approvazione, il QP riceve notifica, controlla,
+      firma a sua volta. Il certificato finale e firmato a quattro mani con timestamp Bitcoin di chiusura.
+    </p>
+
+    <h2>ALCOA+ come framework <em>unificato</em></h2>
+
+    <p>
+      ALCOA+ e l'acronimo che FDA, EMA e MHRA usano per riassumere i principi di data integrity applicabili in
+      ambito GxP. Significa: Attributable, Legible, Contemporaneous, Original, Accurate, piu Complete, Consistent,
+      Enduring, Available.
+    </p>
+
+    <p>
+      Implementare ALCOA+ in un sistema computerizzato copre automaticamente buona parte dei requisiti tecnici
+      sia di Annex 11 sia di Part 11. La traduzione operativa di ogni lettera:
+    </p>
+
+    <ul>
+      <li><strong>Attributable</strong>: ogni dato e collegato a un'identita univoca (login utente, certificato);</li>
+      <li><strong>Legible</strong>: i dati restano leggibili per tutto il periodo di retention legale (minimo 10 anni in pharma);</li>
+      <li><strong>Contemporaneous</strong>: registrazione al momento dell'esecuzione, non a posteriori;</li>
+      <li><strong>Original</strong>: si conserva il record originale, non solo trascrizioni;</li>
+      <li><strong>Accurate</strong>: il dato registrato e quello effettivamente generato dallo strumento;</li>
+      <li><strong>Complete</strong>: nessun dato omesso, neanche le ripetizioni di test falliti;</li>
+      <li><strong>Consistent</strong>: ordine cronologico mantenuto, niente backdating;</li>
+      <li><strong>Enduring</strong>: supporto di memorizzazione affidabile (no fogli volanti, no chiavette USB);</li>
+      <li><strong>Available</strong>: recuperabile su richiesta dell'ispettore in tempi ragionevoli.</li>
+    </ul>
+
+    <h2>Veylon Cert Pharma per CMO <em>piccole-medie</em></h2>
+
+    <p>
+      La sfida di una CMO italiana sotto i 200 dipendenti e che gli ERP pharma "grandi" (Werum PAS-X, Rockwell PharmaSuite,
+      Korber Werum) costano centinaia di migliaia di euro l'anno e richiedono team IT dedicati. Per una CMO che
+      produce 10-50 lotti l'anno il rapporto costo/beneficio non torna.
+    </p>
+
+    <p>
+      Veylon Cert Pharma e l'atto della piattaforma dedicato alla generazione di certificati GxP firmati e ancorati,
+      pensato per le CMO che vogliono compliance senza overhead. Il sistema produce certificati di analisi (CoA),
+      certificati di rilascio lotto, batch record digitali, tutti con firma PAdES B-T sui PDF e audit trail
+      immutabile ancorato su Bitcoin.
+    </p>
+
+    <p>
+      Implementa nativamente: ALCOA+ su ogni record, 4-eyes rule per il rilascio, e-signature meaning conforme
+      Part 11, audit trail con timestamp ancorati, ruoli QC/QA/QP con permessi granulari, e API di integrazione
+      con i LIMS gia esistenti in azienda.
+    </p>
+
+    <h2>Accreditamenti: <em>ISO 27001 + GxP audit</em></h2>
+
+    <p>
+      Per essere utilizzabile in ambito GMP, un fornitore di software pharma deve dimostrare due cose distinte
+      ma complementari: la sicurezza del proprio data center (ISO/IEC 27001) e l'aderenza ai principi GxP di
+      sviluppo software (GAMP 5).
+    </p>
+
+    <p>
+      ISO 27001 e un certificato emesso da un ente accreditato (DNV, Bureau Veritas, BSI in Italia) sulla base
+      di un audit annuale del sistema di gestione della sicurezza delle informazioni (ISMS). Copre data center,
+      processi, formazione, gestione incidenti.
+    </p>
+
+    <p>
+      L'audit GxP, invece, e tipicamente condotto direttamente dalla CMO cliente o da un consulente terzo,
+      sul fornitore software (Veylon in questo caso) come parte della propria due diligence. Verifica che il
+      processo di sviluppo, test, rilascio del software segua i principi GAMP 5 e che esista la documentazione
+      di validazione (URS, FS, DS, IQ, OQ, PQ).
+    </p>
+
+    <p>
+      Veylon Cert Pharma e progettato per essere "audit-ready" per entrambi: certificazione ISO 27001 in corso
+      con DNV per chiusura 2027, e documentazione GAMP 5 disponibile sotto NDA per i clienti che la richiedono
+      come parte del proprio Vendor Qualification.
+    </p>
+
+    <div class="callout">
+      <span class="label">Riferimenti utili</span>
+      <a href="https://health.ec.europa.eu/medicinal-products/eudralex/eudralex-volume-4_en" target="_blank" rel="noopener">EudraLex Volume 4 Annex 11</a> &middot;
+      <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfcfr/CFRSearch.cfm?CFRPart=11" target="_blank" rel="noopener">21 CFR Part 11 su FDA</a> &middot;
+      <a href="https://ispe.org/publications/guidance-documents/gamp-5-guide-2nd-edition" target="_blank" rel="noopener">ISPE GAMP 5 (2nd Edition)</a>
+    </div>
+
+    <p>
+      In sintesi: per una CMO italiana che produce per UE e USA conviene partire dai requisiti Part 11 (piu
+      stringenti) e validare contro Annex 11 (incluso nella stessa documentazione). Un solo sistema, un solo
+      processo di validazione, due ispezioni soddisfatte. Veylon Cert Pharma copre nativamente entrambi i framework
+      con costi proporzionati alle CMO sotto i 50 lotti l'anno.
+    </p>
+
+  </article>
+
+  <section class="article-footer-cta">
+    <h2>Genera il primo Certificate of Analysis <em>firmato e ancorato</em>.</h2>
+    <p>Veylon Cert Pharma in versione pilot: 10 certificati gratuiti per validare flusso QC/QA/QP, audit trail ALCOA+, firma PAdES B-T. Senza impegno.</p>
+    <div class="cta-row">
+      <a href="../cert-prodotto.html" class="btn-primary">Scopri Veylon Cert</a>
+      <a href="../pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <aside class="related">
+    <h3>Continua a leggere</h3>
+    <ul>
+      <li><a href="firma-pades-guida-completa.html">Firma PAdES: guida completa al formato PDF firmato digitale</a></li>
+      <li><a href="eidas-art-41-cosa-significa.html">Cos'e l'eIDAS art. 41? La validazione elettronica del timestamp spiegata bene</a></li>
+    </ul>
+  </aside>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span><a href="../blog.html" style="color: var(--ink-3);">&larr; Tutti gli articoli</a></span>
+    </div>
+  </footer>
+</body>
+</html>

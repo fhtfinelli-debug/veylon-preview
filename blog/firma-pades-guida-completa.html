@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Firma PAdES: guida completa al formato PDF firmato digitale</title>
+  <meta name="description" content="PAdES (PDF Advanced Electronic Signatures) e lo standard ETSI EN 319 142 per la firma digitale dei PDF. Livelli baseline B-B, B-T, B-LT, B-LTA spiegati, differenze con CAdES e XAdES, certificato X.509 PKCS#12, e come Veylon Firma applica PAdES K-S.1 lato client."/>
+  <meta name="robots" content="index,follow"/>
+  <meta name="author" content="Veylon S.r.l."/>
+  <meta name="keywords" content="firma PAdES, PAdES B-B, PDF firma digitale, ETSI EN 319 142, certificato X.509, PKCS12, CAdES, XAdES, firma elettronica qualificata"/>
+  <link rel="canonical" href="https://veylon.app/blog/firma-pades-guida-completa.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="Firma PAdES: guida completa al formato PDF firmato digitale"/>
+  <meta property="og:description" content="Guida tecnica e legale alla firma PAdES: livelli baseline ETSI, differenze con CAdES e XAdES, certificato X.509 PKCS#12, privacy client-side."/>
+  <meta property="og:url" content="https://veylon.app/blog/firma-pades-guida-completa.html"/>
+  <meta property="og:site_name" content="Veylon"/>
+  <meta property="article:published_time" content="2026-06-18T10:00:00+02:00"/>
+  <meta property="article:modified_time" content="2026-06-18T10:00:00+02:00"/>
+  <meta property="article:section" content="Firma digitale"/>
+  <meta property="article:tag" content="PAdES"/>
+  <meta property="article:tag" content="Firma digitale"/>
+  <meta property="article:tag" content="ETSI"/>
+  <link rel="stylesheet" href="../styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Firma PAdES: guida completa al formato PDF firmato digitale",
+    "description": "Guida tecnica e legale alla firma PAdES: livelli baseline ETSI EN 319 142, differenze con CAdES e XAdES, certificato X.509 PKCS#12, privacy client-side.",
+    "image": "https://veylon.app/og/blog-firma-pades.png",
+    "datePublished": "2026-06-18T10:00:00+02:00",
+    "dateModified": "2026-06-18T10:00:00+02:00",
+    "author": {
+      "@type": "Organization",
+      "name": "Veylon S.r.l.",
+      "url": "https://veylon.app/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Veylon S.r.l.",
+      "url": "https://veylon.app/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://veylon.app/og/veylon-logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://veylon.app/blog/firma-pades-guida-completa.html"
+    },
+    "keywords": "firma PAdES, PAdES B-B, PDF firma digitale ETSI, certificato X.509, PKCS12, CAdES, XAdES"
+  }
+  </script>
+  <style>
+    .sp-nav { max-width: 1080px; margin: 0 auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); }
+    .sp-nav .brand { font-family: var(--serif); font-weight: normal; font-size: 22px; color: var(--ink); text-decoration: none; }
+    .sp-nav .brand em { color: var(--seal); }
+    .sp-nav-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .sp-nav-links a { color: var(--ink-2); text-decoration: none; }
+    .sp-nav-links a:hover { color: var(--seal); }
+    @media (max-width: 640px) { .sp-nav-links { display: none; } }
+
+    .article-header { max-width: 740px; margin: 0 auto; padding: 64px 32px 32px; }
+    .breadcrumb { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 24px; }
+    .breadcrumb a { color: var(--ink-3); }
+    .breadcrumb a:hover { color: var(--seal); }
+    .article-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 18px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .article-meta .dot { width: 4px; height: 4px; background: var(--ink-3); border-radius: 50%; display: inline-block; align-self: center; }
+    .article-header h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(36px, 5.5vw, 60px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 22px; }
+    .article-header h1 em { color: var(--seal); }
+    .article-header .deck { font-family: var(--serif); font-size: clamp(18px, 2vw, 22px); line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+    .article-body { max-width: 720px; margin: 0 auto; padding: 16px 32px 56px; font-family: var(--serif); font-size: 18px; line-height: 1.7; color: var(--ink); }
+    .article-body p { margin: 0 0 22px; }
+    .article-body h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(26px, 3.4vw, 36px); line-height: 1.18; letter-spacing: -0.015em; margin: 52px 0 18px; color: var(--ink); }
+    .article-body h2 em { color: var(--seal); }
+    .article-body h3 { font-family: var(--serif); font-weight: normal; font-size: 22px; margin: 32px 0 12px; color: var(--ink); }
+    .article-body strong { font-weight: 600; }
+    .article-body a { color: var(--seal); border-bottom: 1px solid var(--seal); }
+    .article-body a:hover { color: var(--seal-2); border-color: var(--seal-2); }
+    .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 22px; }
+    .article-body li { margin-bottom: 10px; }
+    .article-body blockquote { border-left: 3px solid var(--seal); padding: 6px 0 6px 22px; margin: 24px 0; color: var(--ink-2); font-style: italic; }
+    .article-body code { font-family: var(--mono); font-size: 0.88em; background: var(--paper-2); padding: 2px 6px; border-radius: 4px; }
+    .callout { background: var(--paper-2); border-left: 3px solid var(--seal); padding: 22px 26px; margin: 28px 0; font-size: 16px; }
+    .callout .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 8px; display: block; }
+
+    .article-footer-cta { background: var(--paper-2); padding: 56px 32px; text-align: center; }
+    .article-footer-cta h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 4vw, 40px); margin: 0 0 14px; }
+    .article-footer-cta h2 em { color: var(--seal); }
+    .article-footer-cta p { font-family: var(--serif); font-size: 16px; color: var(--ink-2); max-width: 540px; margin: 0 auto 28px; }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: var(--ink); color: var(--paper); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--seal); }
+    .btn-ghost { color: var(--ink); padding: 14px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; display: inline-block; }
+
+    .related { max-width: 720px; margin: 0 auto; padding: 48px 32px; }
+    .related h3 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px; }
+    .related ul { list-style: none; padding: 0; margin: 0; }
+    .related li { padding: 14px 0; border-top: 1px solid var(--rule-2); font-family: var(--serif); font-size: 17px; }
+    .related li:last-child { border-bottom: 1px solid var(--rule-2); }
+    .related a { color: var(--ink); }
+    .related a:hover { color: var(--seal); }
+
+    .footer { padding: 32px; border-top: 1px solid var(--rule); }
+    .footer-base { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <a href="../index.html" class="brand"><em>Veylon</em> &middot; Blog</a>
+    <div class="sp-nav-links">
+      <a href="../come-funziona.html">9 atti</a>
+      <a href="../casi-uso.html">Casi d'uso</a>
+      <a href="../pricing.html">Prezzi</a>
+      <a href="../login.html">Accedi</a>
+    </div>
+  </nav>
+
+  <header class="article-header">
+    <div class="breadcrumb">
+      <a href="../blog.html">Blog</a> &rsaquo; Firma digitale
+    </div>
+    <div class="article-meta">
+      <span>18 giugno 2026</span>
+      <span class="dot"></span>
+      <span>10 min di lettura</span>
+      <span class="dot"></span>
+      <span>Firma digitale</span>
+    </div>
+    <h1>Firma <em>PAdES</em>: guida completa al formato PDF firmato digitale</h1>
+    <p class="deck">
+      PAdES e lo standard ETSI EN 319 142 che definisce come si firma un PDF in modo che la firma sia legalmente
+      opponibile in tutti i 27 Stati UE. Quattro livelli baseline, un certificato X.509, e un mucchio di confusione
+      con CAdES e XAdES. Vediamo cosa serve davvero sapere per firmare un contratto, una fattura o un atto pubblico in formato PDF.
+    </p>
+  </header>
+
+  <article class="article-body">
+
+    <h2>Cos'e <em>PAdES</em> e perche esiste</h2>
+
+    <p>
+      PAdES sta per <strong>PDF Advanced Electronic Signatures</strong>. E uno standard tecnico pubblicato da ETSI
+      (European Telecommunications Standards Institute) con il numero <strong>EN 319 142</strong>, in due parti:
+      la prima descrive i requisiti generali, la seconda descrive i profili baseline.
+    </p>
+
+    <p>
+      In pratica PAdES dice una cosa semplice: come incorporare una firma digitale dentro un file PDF in modo che
+      qualsiasi verificatore (un giudice, una pubblica amministrazione, un cliente) possa controllare in autonomia
+      che il PDF non sia stato modificato dopo la firma, che il firmatario sia identificabile, e che la firma sia
+      valida nel tempo.
+    </p>
+
+    <p>
+      Esempio concreto. Un commercialista invia per email una fattura proforma firmata in PAdES B-B a un cliente
+      tedesco. Il cliente apre il PDF in Adobe Reader e vede subito la barra verde "firma valida", con il nome del
+      firmatario, l'autorita di certificazione, e l'integrita del documento garantita. Niente plugin, niente upload
+      su portali esterni.
+    </p>
+
+    <p>
+      Questa interoperabilita "fuori dalla scatola" e il motivo per cui PAdES e diventato lo standard de facto per
+      la firma digitale dei PDF in Europa. Tutti i lettori PDF moderni lo supportano nativamente.
+    </p>
+
+    <h2>I quattro livelli <em>baseline</em>: B-B, B-T, B-LT, B-LTA</h2>
+
+    <p>
+      ETSI EN 319 142-1 definisce quattro profili di conformita, in ordine crescente di robustezza. La sigla
+      "B" davanti sta per "baseline": sono i profili minimi, quelli che ogni implementazione deve supportare.
+    </p>
+
+    <h3>PAdES B-B (Basic)</h3>
+
+    <p>
+      Il livello minimo. Include la firma del documento con un certificato X.509 e l'identita del firmatario.
+      Niente timestamp esterno, niente prova di esistenza della firma in un dato istante. Se il certificato
+      del firmatario scade tra cinque anni, dopo quella data la firma diventa "scaduta" e va riverificata con altri mezzi.
+    </p>
+
+    <p>
+      Caso d'uso tipico: firma istantanea di una proposta commerciale, dove la durata legale necessaria e breve
+      (settimane o mesi) e si accetta la dipendenza dal certificato.
+    </p>
+
+    <h3>PAdES B-T (Timestamp)</h3>
+
+    <p>
+      Aggiunge una <strong>marca temporale qualificata</strong> alla firma. Il timestamp e emesso da un QTSP
+      (Qualified Trust Service Provider) e prova che la firma esisteva in un dato istante.
+    </p>
+
+    <p>
+      Vantaggio enorme: anche se il certificato del firmatario scade, la firma resta valida perche il timestamp
+      dimostra che era ancora valido al momento della firma. E il livello minimo per documenti che devono
+      sopravvivere al certificato del firmatario.
+    </p>
+
+    <h3>PAdES B-LT (Long Term)</h3>
+
+    <p>
+      Estende B-T includendo nel PDF tutti i dati di verifica della firma: la catena dei certificati, le CRL
+      (Certificate Revocation List) o le risposte OCSP. Il PDF diventa <strong>autosufficiente</strong>: si verifica
+      anche offline, senza dover contattare l'autorita di certificazione.
+    </p>
+
+    <p>
+      Caso d'uso: archiviazione legale di contratti decennali. Anche se tra vent'anni l'autorita di certificazione
+      non esiste piu, la firma resta verificabile dai dati incorporati.
+    </p>
+
+    <h3>PAdES B-LTA (Long Term with Archive timestamps)</h3>
+
+    <p>
+      Il livello massimo. Aggiunge a B-LT una serie di <strong>archive timestamp</strong> periodici (tipicamente
+      ogni 5-10 anni) che ri-sigillano l'intero contenuto del documento, incluse le firme e i dati di verifica precedenti.
+    </p>
+
+    <p>
+      Resiste al passare del tempo praticamente indefinitamente: anche se gli algoritmi crittografici originali
+      (SHA-256, RSA-2048) diventassero deboli tra trent'anni, gli archive timestamp con algoritmi piu recenti
+      garantiscono comunque l'integrita. E lo standard per archivi documentali decennali della pubblica amministrazione.
+    </p>
+
+    <div class="callout">
+      <span class="label">Riferimento normativo</span>
+      ETSI EN 319 142-1 e EN 319 142-2, pubblicati nella libreria standard ETSI come parte del framework
+      eIDAS per le firme elettroniche. Disponibili gratuitamente su <a href="https://www.etsi.org/standards" target="_blank" rel="noopener">etsi.org/standards</a>.
+    </div>
+
+    <h2>Differenza tra <em>PAdES, CAdES e XAdES</em></h2>
+
+    <p>
+      I tre standard ETSI per le firme avanzate sono cugini stretti, ma nascono per scenari diversi.
+      Confonderli e l'errore numero uno nei progetti di firma digitale.
+    </p>
+
+    <ul>
+      <li><strong>CAdES</strong> (CMS Advanced Electronic Signatures, EN 319 122): firma generica su file di qualunque tipo.
+        Produce un file separato con estensione <code>.p7m</code> che contiene il documento originale piu la firma.
+        E il formato storico di Aruba e InfoCert per la firma di file Word, Excel, immagini.</li>
+      <li><strong>XAdES</strong> (XML Advanced Electronic Signatures, EN 319 132): firma incorporata in XML.
+        Usato dalle fatture elettroniche XML (FatturaPA in Italia), dalle dichiarazioni doganali, dai documenti SDI.</li>
+      <li><strong>PAdES</strong> (PDF Advanced Electronic Signatures, EN 319 142): firma incorporata direttamente nel PDF.
+        Il file resta un PDF leggibile da chiunque, ma con la firma incapsulata nei metadata.</li>
+    </ul>
+
+    <p>
+      Regola pratica: se il documento e gia un PDF, si usa <strong>PAdES</strong>. Se e un XML, si usa <strong>XAdES</strong>.
+      Per tutto il resto, si usa <strong>CAdES</strong>. I tre formati hanno gli stessi quattro livelli baseline
+      (B-B, B-T, B-LT, B-LTA) e lo stesso valore legale ex eIDAS, ma differiscono nel modo in cui la firma e tecnicamente
+      attaccata al documento.
+    </p>
+
+    <h2>Certificato <em>X.509</em> e contenitore PKCS#12</h2>
+
+    <p>
+      Per firmare in PAdES serve un certificato X.509. E un file digitale emesso da una Certification Authority
+      (Aruba, InfoCert, Namirial, Poste Italiane in Italia) che lega un'identita (il nome del firmatario,
+      il codice fiscale, eventuali poteri di rappresentanza) a una coppia di chiavi crittografiche (pubblica e privata).
+    </p>
+
+    <p>
+      Il certificato vive dentro un contenitore <strong>PKCS#12</strong>, tipicamente con estensione <code>.p12</code>
+      o <code>.pfx</code>, protetto da una password. Dentro il PKCS#12 ci sono tre cose: la chiave privata del firmatario,
+      il certificato X.509 con la chiave pubblica, e la catena di certificati dell'autorita di certificazione.
+    </p>
+
+    <p>
+      Operativamente: si compra un certificato di firma da un QTSP italiano (costo tipico 30-50 euro all'anno per
+      un certificato remoto, 80-150 euro per smart card o token USB), si scarica il <code>.p12</code>, e si usa
+      con qualsiasi software compatibile PAdES per firmare i PDF.
+    </p>
+
+    <p>
+      Per firmare in autonomia senza software pesanti tipo Adobe Sign o ARSS, esistono librerie open source come
+      <code>pdf-lib</code>, <code>node-signpdf</code> o <code>jsignpdf</code> che producono PDF PAdES B-B partendo da
+      un PKCS#12 e un PDF di input. Per i livelli B-T, B-LT, B-LTA serve integrare un QTSP per i timestamp e le CRL.
+    </p>
+
+    <h2>Privacy: firma <em>client-side</em> vs server-side</h2>
+
+    <p>
+      Il punto piu trascurato dei progetti di firma digitale. Dove va a finire la chiave privata?
+    </p>
+
+    <p>
+      Nella firma <strong>server-side</strong> (tipica delle piattaforme cloud di firma "remota"), la chiave privata
+      e custodita dal QTSP in un HSM (Hardware Security Module) e usata via API ogni volta che l'utente conferma
+      una firma con un codice OTP. Comoda per il firmatario, ma il documento da firmare passa dal server del QTSP.
+      In scenari con NDA, segreti industriali o documenti riservati, e un punto di esposizione.
+    </p>
+
+    <p>
+      Nella firma <strong>client-side</strong> (la nostra preferita), la chiave privata resta sul dispositivo del
+      firmatario (browser, smart card, token, telefono) e il documento non lascia mai il client. La firma viene
+      calcolata localmente, il PDF firmato viene poi caricato (o no) sul server solo se serve archiviarlo.
+    </p>
+
+    <p>
+      Per gli usi quotidiani (contratti commerciali B2B, NDA, atti riservati) la firma client-side e nettamente
+      preferibile per ragioni di privacy. Per gli usi con presunzione di esattezza (firma qualificata FEQ con HSM
+      certificato), il server-side resta necessario.
+    </p>
+
+    <h2>Veylon Firma <em>PAdES K-S.1</em>: firma client-side su PDF</h2>
+
+    <p>
+      Veylon Firma e uno dei nove atti notarili digitali della piattaforma. Implementa la firma PAdES B-B (e opzionalmente
+      B-T tramite QTSP integrato) interamente lato client: il PDF viene firmato nel browser dell'utente, senza upload
+      al server Veylon del documento in chiaro.
+    </p>
+
+    <h3>Come funziona in pratica</h3>
+
+    <p>
+      L'utente carica il proprio certificato PKCS#12 e il PDF da firmare. Il browser calcola localmente l'impronta SHA-256
+      del PDF, costruisce la struttura di firma PAdES (campo /Sig, /ByteRange, /Contents), firma con la chiave privata
+      del certificato, e produce il PDF firmato.
+    </p>
+
+    <p>
+      In parallelo, Veylon Sigillo aggiunge un'ancora Bitcoin OpenTimestamps sull'impronta del PDF firmato, che
+      sopravvive al certificato del firmatario e a Veylon stessa. Il risultato e un PDF PAdES B-B con timestamp
+      Bitcoin esterno, verificabile in autonomia per decenni.
+    </p>
+
+    <p>
+      Per le firme che richiedono presunzione legale piena (atti notarili, contratti pubblici), Veylon integra QTSP
+      italiani accreditati AgID per il timestamp qualificato che porta il livello a PAdES B-T.
+    </p>
+
+    <div class="callout">
+      <span class="label">Riferimenti utili</span>
+      <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX%3A32014R0910" target="_blank" rel="noopener">eIDAS 910/2014 su Eur-Lex</a> &middot;
+      <a href="https://www.etsi.org/deliver/etsi_en/319100_319199/31914201/" target="_blank" rel="noopener">ETSI EN 319 142-1 PAdES</a> &middot;
+      <a href="https://www.agid.gov.it/it/piattaforme/firma-elettronica-qualificata" target="_blank" rel="noopener">AgID &middot; Firma elettronica qualificata</a>
+    </div>
+
+    <p>
+      In sintesi: PAdES e lo standard giusto per firmare PDF in modo legalmente opponibile in UE. Per la maggior
+      parte degli usi B-B basta, per documenti che devono sopravvivere anni serve B-T o B-LT. La scelta tra firma
+      client-side e server-side dipende dalla riservatezza del contenuto, non dalla disponibilita tecnologica.
+    </p>
+
+  </article>
+
+  <section class="article-footer-cta">
+    <h2>Firma il tuo primo PDF in <em>PAdES</em>, gratis.</h2>
+    <p>Carica il PDF, carica il tuo certificato PKCS#12, ottieni il PDF firmato in 10 secondi. Firma client-side, privacy garantita.</p>
+    <div class="cta-row">
+      <a href="../firma-prodotto.html" class="btn-primary">Scopri Veylon Firma</a>
+      <a href="../pricing.html" class="btn-ghost">Vedi prezzi</a>
+    </div>
+  </section>
+
+  <aside class="related">
+    <h3>Continua a leggere</h3>
+    <ul>
+      <li><a href="eidas-art-41-cosa-significa.html">Cos'e l'eIDAS art. 41? La validazione elettronica del timestamp spiegata bene</a></li>
+      <li><a href="wetransfer-vs-pec-vs-veylon-send.html">WeTransfer vs PEC vs Veylon Send: quale scegliere nel 2026?</a></li>
+    </ul>
+  </aside>
+
+  <footer class="footer">
+    <div class="footer-base">
+      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span><a href="../blog.html" style="color: var(--ink-3);">&larr; Tutti gli articoli</a></span>
+    </div>
+  </footer>
+</body>
+</html>

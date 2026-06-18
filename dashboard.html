@@ -28,7 +28,7 @@
     <!-- Empty state hero (mostrato solo se zero attivita, nascosto da JS quando ci sono KPI) -->
     <section id="empty-hero" class="empty-state-hero" style="margin-top: 40px;" hidden>
       <div class="eyebrow seal-c" style="margin-bottom: 12px;">Primi passi</div>
-      <h3>Inizia con la tua prima <em class="serif-italic" style="color: var(--seal);">prova matematica.</em></h3>
+      <h3>Nessun atto ancora. <em class="serif-italic" style="color: var(--seal);">Inizia gratis.</em></h3>
       <p>
         Sigilla un documento, invia un file con tracciabilita' end-to-end,
         oppure emetti una garanzia d'appalto. Tre azioni primarie per cominciare.
@@ -36,7 +36,7 @@
       <div class="empty-state-actions">
         <a href="notarizza.html" class="empty-state-action">
           <div class="label">Atto i</div>
-          <div class="title">Notarizza un documento &rarr;</div>
+          <div class="title">Crea il primo sigillo &rarr;</div>
         </a>
         <a href="invia.html" class="empty-state-action">
           <div class="label">Atto ii</div>
@@ -45,6 +45,82 @@
         <a href="garanzie.html" class="empty-state-action">
           <div class="label">Atto iv</div>
           <div class="title">Crea una garanzia &rarr;</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- §0 Hero KPI principali (5 card grandi) -->
+    <section id="hero-kpi-section" style="margin-top: 56px;" hidden>
+      <div class="row-between" style="align-items: flex-end; margin-bottom: 20px;">
+        <div>
+          <span class="section-num">§ 0 &mdash; Sommario</span>
+          <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 10px;">
+            La tua <em class="serif-italic" style="color: var(--seal);">attivita' in sintesi.</em>
+          </h2>
+        </div>
+      </div>
+      <div class="hero-kpis">
+        <div class="hero-kpi">
+          <div class="hero-kpi-lbl">Atti totali</div>
+          <div class="hero-kpi-num serif-italic" id="hk-atti">&mdash;</div>
+          <div class="hero-kpi-sub" id="hk-atti-sub">archivio sigilli</div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-lbl">Sigilli BTC confermati</div>
+          <div class="hero-kpi-num serif-italic" id="hk-btc">&mdash;</div>
+          <div class="hero-kpi-sub" id="hk-btc-sub">ancorati su Bitcoin</div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-lbl">Trasmissioni inviate</div>
+          <div class="hero-kpi-num serif-italic" id="hk-send">&mdash;</div>
+          <div class="hero-kpi-sub" id="hk-send-sub">plichi cifrati</div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-lbl">Firme completate</div>
+          <div class="hero-kpi-num serif-italic" id="hk-firme">&mdash;</div>
+          <div class="hero-kpi-sub" id="hk-firme-sub">con OTP</div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-lbl">Cert emessi</div>
+          <div class="hero-kpi-num serif-italic" id="hk-cert">&mdash;</div>
+          <div class="hero-kpi-sub" id="hk-cert-sub">certificati istituzionali</div>
+        </div>
+      </div>
+      <div id="hero-kpi-skeleton" class="hero-kpis hero-kpis-skeleton">
+        <div class="hero-kpi sk"></div><div class="hero-kpi sk"></div><div class="hero-kpi sk"></div><div class="hero-kpi sk"></div><div class="hero-kpi sk"></div>
+      </div>
+    </section>
+
+    <!-- §0bis Quick Actions -->
+    <section style="margin-top: 40px;">
+      <div class="quick-actions">
+        <a href="notarizza.html" class="qa">
+          <div class="qa-num serif-italic">i</div>
+          <div>
+            <div class="qa-title">Nuovo sigillo</div>
+            <div class="qa-desc">Marca temporale su documento</div>
+          </div>
+        </a>
+        <a href="invia.html" class="qa">
+          <div class="qa-num serif-italic">ii</div>
+          <div>
+            <div class="qa-title">Invia plico</div>
+            <div class="qa-desc">Trasmissione cifrata E2E</div>
+          </div>
+        </a>
+        <a href="cert-emetti.html" class="qa">
+          <div class="qa-num serif-italic">viii</div>
+          <div>
+            <div class="qa-title">Crea cert</div>
+            <div class="qa-desc">Diploma o attestato</div>
+          </div>
+        </a>
+        <a href="tag-emetti.html" class="qa">
+          <div class="qa-num serif-italic">vii</div>
+          <div>
+            <div class="qa-title">Emetti tag</div>
+            <div class="qa-desc">QR su prodotto fisico</div>
+          </div>
         </a>
       </div>
     </section>
@@ -74,27 +150,104 @@
       </div>
     </section>
 
-    <!-- §II KPI -->
+    <!-- §II Indicatori per atto (9 mini-card con sparkline) -->
     <section style="margin-top: 64px;">
       <div class="row-between" style="align-items: flex-end; margin-bottom: 20px;">
         <div>
           <span class="section-num">§ II &mdash; Indicatori</span>
           <h2 class="serif" style="font-size: 28px; line-height: 1.1; margin-top: 10px;">
-            La tua <em class="serif-italic" style="color: var(--seal);">attività.</em>
+            La tua <em class="serif-italic" style="color: var(--seal);">attivita' per atto.</em>
           </h2>
+          <p class="lede" style="font-size: 14px; color: var(--ink-3); margin: 8px 0 0; font-family: var(--mono); letter-spacing: 0.04em;">
+            Ultimi 30 giorni &mdash; tendenza giornaliera per ciascun servizio.
+          </p>
         </div>
       </div>
-      <div id="kpi-state-loading" class="state-msg">Caricamento indicatori&hellip;</div>
       <div id="kpi-state-error" class="state-msg state-err" hidden>
         <span></span> <button class="link-seal" id="kpi-retry" type="button">Riprova</button>
       </div>
-      <div id="kpi-grid" class="kpis" hidden>
-        <div class="kpi"><div class="kpi-lbl">Sigilli</div><div class="kpi-num" id="kpi-sigilli">0</div></div>
-        <div class="kpi"><div class="kpi-lbl">Trasmissioni</div><div class="kpi-num" id="kpi-trasmissioni">0</div></div>
-        <div class="kpi"><div class="kpi-lbl">Email</div><div class="kpi-num" id="kpi-email">0</div></div>
-        <div class="kpi"><div class="kpi-lbl">Garanzie</div><div class="kpi-num" id="kpi-garanzie">0</div></div>
-        <div class="kpi"><div class="kpi-lbl">Firme</div><div class="kpi-num" id="kpi-firme">0</div></div>
-        <div class="kpi"><div class="kpi-lbl">Tag</div><div class="kpi-num" id="kpi-tag">0</div></div>
+      <div id="kpi9-grid" class="kpi9-grid">
+        <a href="notarizza.html" class="kpi9 sk" data-mod="sigillo">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">i</span>
+            <span class="kpi9-name">Sigillo</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="invia.html" class="kpi9 sk" data-mod="send">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">ii</span>
+            <span class="kpi9-name">Send</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="mail.html" class="kpi9 sk" data-mod="mail">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">iii</span>
+            <span class="kpi9-name">Mail</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="firma.html" class="kpi9 sk" data-mod="firma">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">iv</span>
+            <span class="kpi9-name">Firma</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="garanzie.html" class="kpi9 sk" data-mod="garanzie">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">v</span>
+            <span class="kpi9-name">Garanzie</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="onboarding.html" class="kpi9 sk" data-mod="kyc">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">vi</span>
+            <span class="kpi9-name">KYC</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="tag.html" class="kpi9 sk" data-mod="tag">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">vii</span>
+            <span class="kpi9-name">Tag</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="cert.html" class="kpi9 sk" data-mod="cert">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">viii</span>
+            <span class="kpi9-name">Cert</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
+        <a href="archivio.html" class="kpi9 sk" data-mod="archivio">
+          <div class="kpi9-head">
+            <span class="kpi9-num serif-italic">ix</span>
+            <span class="kpi9-name">Archivio</span>
+          </div>
+          <div class="kpi9-count" data-c>&mdash;</div>
+          <svg class="kpi9-spark" viewBox="0 0 120 28" preserveAspectRatio="none" data-spark><path d="" fill="none" stroke="var(--seal)" stroke-width="1.2"/></svg>
+          <div class="kpi9-foot" data-last>&mdash;</div>
+        </a>
       </div>
     </section>
 
@@ -156,17 +309,66 @@
   .feed-mark { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; background: var(--seal); }
   .feed-line { font-family: var(--serif); font-size: 14px; line-height: 1.35; color: var(--ink); }
   .feed-meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); margin-top: 4px; }
+
+  /* Pill stato (recenti) */
+  .pill { display: inline-block; padding: 2px 8px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid var(--rule); color: var(--ink-2); background: var(--paper-2); border-radius: 999px; line-height: 1.6; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); background: transparent; }
+  .pill.warn { color: var(--amber); border-color: var(--amber); background: transparent; }
+  .pill.err { color: var(--seal); border-color: var(--seal); background: transparent; }
+
+  /* Hero KPI (5 grandi card) */
+  .hero-kpis { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .hero-kpi { padding: 28px 22px 24px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; gap: 10px; min-height: 138px; }
+  .hero-kpi:last-child { border-right: 0; }
+  .hero-kpi-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+  .hero-kpi-num { font-family: var(--serif); font-style: italic; font-size: 48px; line-height: 1; color: var(--seal); letter-spacing: -0.01em; }
+  .hero-kpi-sub { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.04em; margin-top: auto; }
+  .hero-kpis-skeleton .hero-kpi.sk { background: linear-gradient(90deg, var(--paper-2) 0%, var(--paper-3) 50%, var(--paper-2) 100%); background-size: 200% 100%; animation: sk-shimmer 1.4s ease-in-out infinite; min-height: 138px; }
+
+  /* Quick Actions (4 bottoni grandi) */
+  .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--ink); }
+  .qa { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 22px 22px; border-right: 1px solid var(--rule); align-items: center; color: inherit; transition: background .15s; background: var(--paper); }
+  .qa:last-child { border-right: 0; }
+  .qa:hover { background: var(--seal-50); }
+  .qa-num { font-size: 38px; color: var(--seal); line-height: 1; text-align: center; }
+  .qa-title { font-family: var(--serif); font-size: 22px; line-height: 1.1; color: var(--ink); }
+  .qa-desc { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+
+  /* KPI 9 atti con sparkline */
+  .kpi9-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+  .kpi9 { display: flex; flex-direction: column; gap: 8px; padding: 18px 20px 16px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); color: inherit; transition: background .15s; min-height: 156px; }
+  .kpi9:hover { background: var(--paper-2); }
+  .kpi9-head { display: flex; align-items: baseline; gap: 12px; }
+  .kpi9-num { font-size: 22px; color: var(--seal); line-height: 1; }
+  .kpi9-name { font-family: var(--serif); font-size: 19px; line-height: 1; color: var(--ink); }
+  .kpi9-count { font-family: var(--serif); font-style: italic; font-size: 38px; line-height: 1; color: var(--ink); letter-spacing: -0.01em; }
+  .kpi9-spark { width: 100%; height: 28px; opacity: 0.85; }
+  .kpi9-foot { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.04em; margin-top: auto; }
+  .kpi9.sk { position: relative; overflow: hidden; }
+  .kpi9.sk::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, oklch(0.93 0.012 65 / 0.55) 50%, transparent 100%); background-size: 200% 100%; animation: sk-shimmer 1.4s ease-in-out infinite; pointer-events: none; }
+
+  @keyframes sk-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
   @media (max-width: 1100px) {
     .svc-grid { grid-template-columns: 1fr; }
     .svc { border-right: 0; }
-    .kpis { grid-template-columns: repeat(3, 1fr); }
-    .kpi:nth-child(3n) { border-right: 0; }
-    .kpi:nth-child(-n+3) { border-bottom: 1px solid var(--rule); }
+    .hero-kpis { grid-template-columns: repeat(3, 1fr); }
+    .hero-kpi:nth-child(3n) { border-right: 0; }
+    .hero-kpi:nth-child(-n+3) { border-bottom: 1px solid var(--rule); }
+    .quick-actions { grid-template-columns: repeat(2, 1fr); }
+    .qa:nth-child(2n) { border-right: 0; }
+    .qa:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+    .kpi9-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 720px) {
-    .kpis { grid-template-columns: repeat(2, 1fr); }
-    .kpi { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-    .kpi:nth-child(2n) { border-right: 0; }
+    .hero-kpis { grid-template-columns: 1fr; }
+    .hero-kpi { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .hero-kpi:last-child { border-bottom: 0; }
+    .quick-actions { grid-template-columns: 1fr; }
+    .qa { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .qa:last-child { border-bottom: 0; }
+    .kpi9-grid { grid-template-columns: 1fr; }
+    .feed li { grid-template-columns: 70px 12px 1fr; gap: 10px; }
   }
   </style>
 
@@ -184,57 +386,166 @@
   const name = getDisplayName(user) || (user?.email ?? "");
   document.getElementById("user-name").textContent = name || "operatore";
 
-  // ----- KPI -----
-  async function loadKpis() {
-    document.getElementById("kpi-state-loading").hidden = false;
-    document.getElementById("kpi-state-error").hidden = true;
-    document.getElementById("kpi-grid").hidden = true;
-
-    const tables = [
-      ["veylon_atti", "kpi-sigilli"],
-      ["trasmissioni", "kpi-trasmissioni"],
-      ["email_certificate", "kpi-email"],
-      ["garanzie", "kpi-garanzie"],
-      ["firme", "kpi-firme"],
-      ["tag_certificati", "kpi-tag"],
-    ];
-
-    let anyError = null;
-    let totalCount = 0;
-    for (const [t, id] of tables) {
-      try {
-        const { count, error } = await supabase.from(t).select("*", { count: "exact", head: true });
-        if (error) {
-          // tabella mancante -> 0, errore vero -> segnala
-          if (!/relation|does not exist|permission/i.test(error.message)) anyError = error;
-          document.getElementById(id).textContent = "0";
-        } else {
-          const c = count ?? 0;
-          totalCount += c;
-          document.getElementById(id).textContent = String(c);
-        }
-      } catch (e) {
-        anyError = e;
-        document.getElementById(id).textContent = "0";
-      }
-    }
-
-    document.getElementById("kpi-state-loading").hidden = true;
-    if (anyError) {
-      const err = document.getElementById("kpi-state-error");
-      err.querySelector("span").textContent = "Errore nel caricamento indicatori.";
-      err.hidden = false;
-      return;
-    }
-    document.getElementById("kpi-grid").hidden = false;
-
-    // Empty state hero: mostra solo se zero attivita totali
-    const emptyHero = document.getElementById("empty-hero");
-    if (emptyHero) emptyHero.hidden = totalCount > 0;
+  // ====== Helpers ======
+  function escapeHtml(s) {
+    return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
   }
-  document.getElementById("kpi-retry").addEventListener("click", loadKpis);
+  function fmtNum(n) {
+    if (n == null) return "0";
+    if (n >= 1000) return new Intl.NumberFormat("it-IT").format(n);
+    return String(n);
+  }
+  function fmtRel(iso) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    const diff = (Date.now() - d.getTime()) / 1000;
+    if (diff < 60) return "adesso";
+    if (diff < 3600) return Math.floor(diff/60) + "min fa";
+    if (diff < 86400) return Math.floor(diff/3600) + "h fa";
+    if (diff < 86400*7) return Math.floor(diff/86400) + "g fa";
+    return d.toLocaleDateString("it-IT", { day: "2-digit", month: "short" });
+  }
+  function isTableMissingError(error) {
+    if (!error) return false;
+    return /relation|does not exist|permission|not found|schema/i.test(error.message || "");
+  }
 
-  // ----- Attività recente -----
+  // Sparkline SVG inline (no librerie). Renderizza polyline area su buckets giornalieri.
+  function renderSparkline(svgPath, buckets) {
+    if (!svgPath) return;
+    const W = 120, H = 28;
+    const max = Math.max(1, ...buckets);
+    const n = buckets.length;
+    if (n === 0) { svgPath.setAttribute("d", ""); return; }
+    const stepX = W / (n - 1 || 1);
+    let d = "";
+    for (let i = 0; i < n; i++) {
+      const x = i * stepX;
+      const y = H - (buckets[i] / max) * (H - 4) - 2;
+      d += (i === 0 ? "M" : "L") + x.toFixed(1) + "," + y.toFixed(1) + " ";
+    }
+    svgPath.setAttribute("d", d.trim());
+  }
+
+  // Aggrega per giorno (ultimi 30 giorni) i record con campo created_at
+  function bucketByDay(records, days = 30) {
+    const buckets = new Array(days).fill(0);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const startMs = now.getTime() - (days - 1) * 86400000;
+    for (const r of records) {
+      const t = r?.created_at ? new Date(r.created_at).getTime() : NaN;
+      if (isNaN(t)) continue;
+      const idx = Math.floor((t - startMs) / 86400000);
+      if (idx >= 0 && idx < days) buckets[idx]++;
+    }
+    return buckets;
+  }
+
+  // Conta safe: ritorna { count, lastAt, rows } per una query base; tollera tabelle mancanti.
+  async function safeFetch(table, options = {}) {
+    const { select = "created_at", filter, recentLimit = 30 } = options;
+    try {
+      // Conteggio totale (head)
+      let q = supabase.from(table).select(select, { count: "exact", head: true });
+      if (filter) q = filter(q);
+      const cRes = await q;
+      if (cRes.error) {
+        if (isTableMissingError(cRes.error)) return { count: 0, lastAt: null, rows: [], missing: true };
+        return { count: 0, lastAt: null, rows: [], error: cRes.error };
+      }
+      // Righe recenti per sparkline + ultimo timestamp (ultimi 30 giorni)
+      const sinceIso = new Date(Date.now() - 30 * 86400000).toISOString();
+      let q2 = supabase.from(table).select("created_at").gte("created_at", sinceIso).order("created_at", { ascending: false }).limit(2000);
+      if (filter) q2 = filter(q2);
+      const rRes = await q2;
+      const rows = (rRes.error ? [] : (rRes.data || []));
+      const lastAt = rows.length > 0 ? rows[0].created_at : null;
+      return { count: cRes.count ?? 0, lastAt, rows };
+    } catch (e) {
+      return { count: 0, lastAt: null, rows: [], error: e };
+    }
+  }
+
+  // ====== Hero KPI (5 grandi) ======
+  async function loadHeroKpis() {
+    const skeleton = document.getElementById("hero-kpi-skeleton");
+    const heroSection = document.getElementById("hero-kpi-section");
+    heroSection.hidden = false;
+
+    const tasks = [
+      // Atti totali (tutti i veylon_atti dell'utente, RLS owner)
+      safeFetch("veylon_atti"),
+      // BTC confermati
+      safeFetch("veylon_atti", { filter: (q) => q.eq("ots_status", "confirmed") }),
+      // Trasmissioni inviate (mittente_id = utente, RLS si occupa di filtrarci)
+      safeFetch("trasmissioni"),
+      // Firme completate
+      safeFetch("firme", { filter: (q) => q.eq("stato", "firmato") }),
+      // Cert emessi
+      safeFetch("cert_certificati"),
+    ];
+    const [atti, btc, send, firme, cert] = await Promise.all(tasks);
+
+    document.getElementById("hk-atti").textContent  = fmtNum(atti.count);
+    document.getElementById("hk-btc").textContent   = fmtNum(btc.count);
+    document.getElementById("hk-send").textContent  = fmtNum(send.count);
+    document.getElementById("hk-firme").textContent = fmtNum(firme.count);
+    document.getElementById("hk-cert").textContent  = fmtNum(cert.count);
+
+    // Sub: ultimo evento
+    if (atti.lastAt)  document.getElementById("hk-atti-sub").textContent  = "ultimo " + fmtRel(atti.lastAt);
+    if (btc.lastAt)   document.getElementById("hk-btc-sub").textContent   = "ultimo " + fmtRel(btc.lastAt);
+    if (send.lastAt)  document.getElementById("hk-send-sub").textContent  = "ultimo " + fmtRel(send.lastAt);
+    if (firme.lastAt) document.getElementById("hk-firme-sub").textContent = "ultima " + fmtRel(firme.lastAt);
+    if (cert.lastAt)  document.getElementById("hk-cert-sub").textContent  = "ultimo " + fmtRel(cert.lastAt);
+
+    skeleton.hidden = true;
+
+    // Empty state hero: mostra solo se zero atti totali (tutti i moduli)
+    const totalAll = (atti.count || 0) + (send.count || 0) + (firme.count || 0) + (cert.count || 0);
+    const emptyHero = document.getElementById("empty-hero");
+    if (emptyHero) emptyHero.hidden = totalAll > 0;
+    return { totalAll };
+  }
+
+  // ====== 9 atti KPI + sparkline ======
+  // Mappa modulo -> {table, filter (opzionale per metadata.modulo o stato)}
+  const moduleDefs = {
+    sigillo:  { table: "veylon_atti" },                                      // archivio sigilli (tutti)
+    send:     { table: "trasmissioni" },                                     // tutte le trasmissioni
+    mail:     { table: "email_certificate" },                                // tutte le email certificate
+    firma:    { table: "firme" },                                            // tutte le firme richieste
+    garanzie: { table: "garanzie" },                                         // tutte le garanzie
+    kyc:      { table: "kyc_pratiche" },                                     // tutte le pratiche kyc
+    tag:      { table: "tag_certificati" },                                  // tutti i tag
+    cert:     { table: "cert_certificati" },                                 // tutti i cert
+    archivio: { table: "veylon_atti" },                                      // alias archivio
+  };
+
+  async function loadModuleKpi(mod) {
+    const def = moduleDefs[mod];
+    const card = document.querySelector(`.kpi9[data-mod="${mod}"]`);
+    if (!def || !card) return;
+    const res = await safeFetch(def.table);
+    const countEl = card.querySelector("[data-c]");
+    const lastEl  = card.querySelector("[data-last]");
+    const sparkPath = card.querySelector("[data-spark] path");
+    if (countEl) countEl.textContent = fmtNum(res.count);
+    if (lastEl)  lastEl.textContent  = res.lastAt ? "ultimo " + fmtRel(res.lastAt) : "nessun atto";
+    renderSparkline(sparkPath, bucketByDay(res.rows, 30));
+    card.classList.remove("sk");
+  }
+
+  async function loadAllModuleKpis() {
+    document.getElementById("kpi-state-error").hidden = true;
+    const mods = Object.keys(moduleDefs);
+    await Promise.all(mods.map(loadModuleKpi));
+  }
+  document.getElementById("kpi-retry").addEventListener("click", loadAllModuleKpis);
+
+  // ====== Attivita' recente (10 ultimi veylon_atti con sha256+pill+link) ======
   async function loadActivity() {
     document.getElementById("act-state-loading").hidden = false;
     document.getElementById("act-state-error").hidden = true;
@@ -244,14 +555,14 @@
     try {
       const { data, error } = await supabase
         .from("veylon_atti")
-        .select("id, doc_name, sha256, created_at")
+        .select("id, doc_name, sha256, ots_status, created_at, metadata")
         .order("created_at", { ascending: false })
         .limit(10);
 
       document.getElementById("act-state-loading").hidden = true;
       if (error) {
         const err = document.getElementById("act-state-error");
-        err.querySelector("span").textContent = "Errore nel caricamento attività.";
+        err.querySelector("span").textContent = "Errore nel caricamento attivita'.";
         err.hidden = false;
         return;
       }
@@ -263,12 +574,30 @@
       list.innerHTML = data.map((a) => {
         const d = a.created_at ? new Date(a.created_at) : null;
         const t = d ? d.toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "";
+        const stato = a.ots_status || "pending";
+        const pillCls = stato === "confirmed" ? "ok" : (stato === "failed" ? "err" : "warn");
+        const pillTxt = stato === "confirmed" ? "BTC confermato" : (stato === "failed" ? "BTC fallito" : "BTC pending");
+        const shaShort = a.sha256 ? a.sha256.substring(0, 12) + "…" : "—";
+        const modulo = (a.metadata && a.metadata.modulo) ? String(a.metadata.modulo) : "sigillo";
+        const moduloLabel = ({
+          firma: "Firma", firma_pades: "Firma PAdES", firma_grafica: "Firma grafica",
+          garanzie: "Garanzia", tag: "Tag", tag_epcis: "Tag EPCIS",
+          cert: "Cert", cert_pharma_lot_release: "Cert pharma",
+          kyc: "KYC", send_timbrato: "Send", sigillo_send_upload: "Send"
+        })[modulo] || "Sigillo";
+        const idEnc = encodeURIComponent(a.id || "");
         return `<li>
-          <span class="feed-time">${t}</span>
+          <span class="feed-time">${escapeHtml(t)}</span>
           <span class="feed-mark"></span>
           <div>
-            <div class="feed-line"><strong>Sigillo</strong> &mdash; ${escapeHtml(a.doc_name || "Atto senza nome")}</div>
-            <div class="feed-meta">${escapeHtml(a.sha256 ? a.sha256.substring(0, 16) + "…" : "")}</div>
+            <div class="feed-line">
+              <strong>${escapeHtml(moduloLabel)}</strong> &mdash; ${escapeHtml(a.doc_name || "Atto senza nome")}
+              <a href="sigillo.html?id=${idEnc}" class="link-seal small" style="margin-left: 8px; font-family: var(--mono); font-size: 11px;">vedi &rarr;</a>
+            </div>
+            <div class="feed-meta">
+              <span class="mono">${escapeHtml(shaShort)}</span>
+              <span class="pill ${pillCls}" style="margin-left: 8px;">${escapeHtml(pillTxt)}</span>
+            </div>
           </div>
         </li>`;
       }).join("");
@@ -282,12 +611,14 @@
   }
   document.getElementById("act-retry").addEventListener("click", loadActivity);
 
-  function escapeHtml(s) {
-    return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-  }
-
-  loadKpis();
-  loadActivity();
+  // ====== Avvio: caricamento parallelo ======
+  Promise.all([
+    loadHeroKpis(),
+    loadAllModuleKpis(),
+    loadActivity(),
+  ]).catch((e) => {
+    console.error("[dashboard] errore caricamento KPI:", e);
+  });
   </script>
   <script>document.addEventListener('DOMContentLoaded', () => { try { const p = new URL(location.href).searchParams; if ((p.get('stripe') === 'success' || p.get('checkout') === 'success') && window.plausible) { window.plausible('checkout_completed', { props: { source: 'stripe' } }); } } catch (_) {} });</script>
 </body>
