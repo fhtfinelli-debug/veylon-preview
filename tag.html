@@ -120,25 +120,40 @@
         <!-- Form -->
         <form id="form" class="studio-form" onsubmit="event.preventDefault(); onGenerate();">
 
+          <!-- Spiegazione "Cosa stai facendo qui" -->
+          <div style="background: #f5f3ee; border-left: 3px solid var(--seal); padding: 16px 20px; margin-bottom: 24px;">
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 8px;">Come funziona</div>
+            <p style="font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink); margin: 0 0 8px;">
+              In questa pagina <strong>crei un lotto di certificati Veylon</strong> per i tuoi prodotti fisici. Compili l&apos;anagrafica del prodotto (sezioni A-C), scegli come applicarlo fisicamente al prodotto (sezione D), poi lanci la generazione.
+            </p>
+            <p style="font-family: var(--serif); font-size: 13.5px; line-height: 1.5; color: var(--ink-2); margin: 0;">
+              <strong>Output</strong>: ogni unita riceve un codice univoco + URL pubblica di verifica + sigillo Bitcoin via OpenTimestamps. Scarica poi un bundle di file pronti per stampa (QR PNG, manifest CSV, etichette farma/vestiario, NFC encoding) oppure ordina i materiali pre-codificati dal nostro <a href="shop.html" style="color: var(--seal);">Shop</a>. Vedi il <a href="../docs/TAG-FILIERA-CERTIFICAZIONE.md" style="color: var(--seal);">white paper</a> per dettagli normativi.
+            </p>
+          </div>
+
           <!-- Passo 1: Brand & prodotto -->
           <fieldset class="ff">
             <legend class="ff-leg"><span class="ff-num">A</span> Brand &amp; prodotto</legend>
+            <p class="small" style="margin: 4px 0 14px; color: var(--ink-3); font-family: var(--serif); font-style: italic;">
+              Anagrafica del marchio e del prodotto che vuoi certificare. Questi dati saranno visibili nella pagina pubblica di verifica.
+            </p>
             <div class="ff-grid">
               <div class="ff-row">
-                <label class="field-label">Casa / brand</label>
-                <input class="field-input" id="f-brand" value="Maison Genève S.A." placeholder="Ragione sociale del titolare del marchio"/>
+                <label class="field-label">Casa / brand <span style="color: var(--seal)">*</span></label>
+                <input class="field-input" id="f-brand" value="" placeholder="Es. Cantine Acme S.r.l. · Mario Rossi Atelier · Pharma Spa"/>
               </div>
               <div class="ff-row">
-                <label class="field-label">Partita IVA / VAT</label>
-                <input class="field-input mono" id="f-vat" value="CHE-104.418.762" placeholder="P.IVA del titolare"/>
+                <label class="field-label">Partita IVA / VAT del brand</label>
+                <input class="field-input mono" id="f-vat" value="" placeholder="Es. IT01234567890 (11 cifre IT) o CHE-123.456.789"/>
               </div>
               <div class="ff-row full">
-                <label class="field-label">Denominazione del prodotto</label>
-                <input class="field-input" id="f-product" value="Cronografo Lemania 1873 — Edizione Numerata" placeholder="Nome commerciale completo"/>
+                <label class="field-label">Denominazione del prodotto <span style="color: var(--seal)">*</span></label>
+                <input class="field-input" id="f-product" value="" placeholder="Nome commerciale completo (es. Olio EVO DOP Toscano - Linea 2026)"/>
               </div>
               <div class="ff-row">
-                <label class="field-label">Categoria merceologica</label>
-                <select class="field-input mono" id="f-cat">
+                <label class="field-label">Categoria merceologica <span style="color: var(--seal)">*</span></label>
+                <select class="field-input mono" id="f-cat" required>
+                  <option value="" selected>Seleziona&hellip;</option>
                   <option value="luxury.watch">Orologeria di lusso</option>
                   <option value="luxury.jewel">Gioielleria</option>
                   <option value="luxury.fashion">Moda &amp; pelletteria</option>
@@ -152,8 +167,8 @@
                 </select>
               </div>
               <div class="ff-row">
-                <label class="field-label">Codice modello</label>
-                <input class="field-input mono" id="f-model" value="LEM-1873-EN" placeholder="SKU / referenza"/>
+                <label class="field-label">Codice modello / SKU</label>
+                <input class="field-input mono" id="f-model" value="" placeholder="Es. EVO-2026-001"/>
               </div>
             </div>
           </fieldset>
@@ -161,25 +176,36 @@
           <!-- Passo 2: Filiera & origine -->
           <fieldset class="ff">
             <legend class="ff-leg"><span class="ff-num">B</span> Filiera &amp; origine</legend>
+            <p class="small" style="margin: 4px 0 14px; color: var(--ink-3); font-family: var(--serif); font-style: italic;">
+              Dichiarazione del paese e dello stabilimento di produzione. Per EUDR (Reg. UE 2023/1115) e DPP UE serve per la tracciabilita.
+            </p>
             <div class="ff-grid">
               <div class="ff-row">
-                <label class="field-label">Paese di origine</label>
+                <label class="field-label">Paese di origine <span style="color: var(--seal)">*</span></label>
                 <select class="field-input mono" id="f-country">
-                  <option value="CH">Svizzera (CH)</option>
                   <option value="IT" selected>Italia (IT)</option>
+                  <option value="CH">Svizzera (CH)</option>
                   <option value="FR">Francia (FR)</option>
                   <option value="DE">Germania (DE)</option>
                   <option value="AT">Austria (AT)</option>
                   <option value="ES">Spagna (ES)</option>
+                  <option value="PT">Portogallo (PT)</option>
+                  <option value="BE">Belgio (BE)</option>
+                  <option value="NL">Olanda (NL)</option>
+                  <option value="GB">Regno Unito (GB)</option>
+                  <option value="US">Stati Uniti (US)</option>
+                  <option value="JP">Giappone (JP)</option>
+                  <option value="CN">Cina (CN)</option>
+                  <option value="altro">Altro</option>
                 </select>
               </div>
               <div class="ff-row">
                 <label class="field-label">Stabilimento di produzione</label>
-                <input class="field-input" id="f-plant" value="Manifattura di Lemania — Mortara (PV)"/>
+                <input class="field-input" id="f-plant" value="" placeholder="Es. Cantina principale - Montalcino (SI)"/>
               </div>
               <div class="ff-row full">
                 <label class="field-label">Catena di fornitura (sintesi)</label>
-                <textarea class="field-input" id="f-supply" rows="2" style="resize: vertical; border-bottom: var(--hairline-strong);">Movimento Lemania CH-3303 (Mortara, IT) · cassa Acciaio 316L (Brescia, IT) · cinturino in pelle vacchetta (Toscana, IT)</textarea>
+                <textarea class="field-input" id="f-supply" rows="2" style="resize: vertical; border-bottom: var(--hairline-strong);" placeholder="Descrivi la filiera in poche righe: fornitori, materie prime, lavorazioni. Esempio: Uve Sangiovese 100% (Montalcino, IT) - Vinificazione cantina propria - Imbottigliamento Cantina ABC (Siena, IT)"></textarea>
               </div>
             </div>
           </fieldset>
@@ -187,27 +213,16 @@
           <!-- Passo 3: Materiali -->
           <fieldset class="ff">
             <legend class="ff-leg"><span class="ff-num">C</span> Materiali</legend>
+            <p class="small" style="margin: 4px 0 14px; color: var(--ink-3); font-family: var(--serif); font-style: italic;">
+              Lista materiali del prodotto. Per ESPR (Reg. UE 2024/1781) serve dichiarare origine + qualita. Per pharma: AIC, lotto, scadenza. Aggiungi una riga per ogni materiale.
+            </p>
             <div id="materials">
               <div class="mat-row">
-                <input class="field-input" placeholder="Materiale" value="Oro" data-mat-name/>
-                <input class="field-input mono" placeholder="Qualità" value="18K" data-mat-grade/>
-                <input class="field-input mono" placeholder="Origine" value="CH" data-mat-origin/>
-                <input class="field-input mono" placeholder="Peso (g)" value="38,4" data-mat-weight/>
-                <button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">×</button>
-              </div>
-              <div class="mat-row">
-                <input class="field-input" placeholder="Materiale" value="Acciaio 316L" data-mat-name/>
-                <input class="field-input mono" placeholder="Qualità" value="surgical" data-mat-grade/>
-                <input class="field-input mono" placeholder="Origine" value="IT" data-mat-origin/>
-                <input class="field-input mono" placeholder="Peso (g)" value="62,1" data-mat-weight/>
-                <button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">×</button>
-              </div>
-              <div class="mat-row">
-                <input class="field-input" placeholder="Materiale" value="Pelle vacchetta" data-mat-name/>
-                <input class="field-input mono" placeholder="Qualità" value="Toscana" data-mat-grade/>
-                <input class="field-input mono" placeholder="Origine" value="IT" data-mat-origin/>
-                <input class="field-input mono" placeholder="Peso (g)" value="14,0" data-mat-weight/>
-                <button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">×</button>
+                <input class="field-input" placeholder="Materiale (es. Sangiovese)" data-mat-name/>
+                <input class="field-input mono" placeholder="Qualita (es. DOCG)" data-mat-grade/>
+                <input class="field-input mono" placeholder="Origine ISO2 (es. IT)" data-mat-origin/>
+                <input class="field-input mono" placeholder="Peso/quantita" data-mat-weight/>
+                <button type="button" class="mat-del" onclick="this.parentNode.remove(); updatePreview();" aria-label="Rimuovi">&times;</button>
               </div>
             </div>
             <button type="button" class="mat-add" onclick="addMaterial()">+ aggiungi materiale</button>
@@ -216,14 +231,17 @@
           <!-- Passo 4: Serializzazione -->
           <fieldset class="ff">
             <legend class="ff-leg"><span class="ff-num">D</span> Serializzazione del lotto</legend>
+            <p class="small" style="margin: 4px 0 14px; color: var(--ink-3); font-family: var(--serif); font-style: italic;">
+              Definisci quanti certificati emettere e come li vuoi applicare fisicamente al prodotto. La scelta del supporto influisce su costo e applicazione.
+            </p>
             <div class="ff-grid">
               <div class="ff-row">
-                <label class="field-label">Codice lotto</label>
-                <input class="field-input mono" id="f-batch" value="2026/07-A" placeholder="es. 2026/07-A"/>
+                <label class="field-label">Codice lotto <span style="color: var(--seal)">*</span></label>
+                <input class="field-input mono" id="f-batch" value="" placeholder="Es. 2026/A001 (formato libero)" required/>
               </div>
               <div class="ff-row">
-                <label class="field-label">Numero di passaporti da emettere</label>
-                <input class="field-input mono" id="f-qty" type="number" value="12" min="1" max="500"/>
+                <label class="field-label">Numero di certificati da emettere <span style="color: var(--seal)">*</span></label>
+                <input class="field-input mono" id="f-qty" type="number" value="" min="1" max="500" placeholder="Es. 100 (max 500 per batch UI; per volumi superiori usare API REST)" required/>
               </div>
               <div class="ff-row">
                 <label class="field-label">Supporto fisico del certificato</label>
@@ -265,18 +283,21 @@
               </div>
               <div class="ff-row">
                 <label class="field-label">Indice di partenza</label>
-                <input class="field-input mono" id="f-startidx" type="number" value="248" min="1"/>
+                <input class="field-input mono" id="f-startidx" type="number" value="1" min="1" placeholder="Es. 1 (numero progressivo del primo pezzo)"/>
               </div>
             </div>
           </fieldset>
 
           <div class="row row-gap" style="margin-top: 32px; flex-wrap: wrap;">
-            <button type="submit" class="btn seal lg">Genera lotto di passaporti <span class="arrow"></span></button>
+            <button type="submit" class="btn seal lg">Genera lotto di certificati <span class="arrow"></span></button>
             <button type="button" class="btn ghost lg" onclick="resetForm()">Reimposta</button>
           </div>
           <p class="small" style="margin-top: 12px;">
-            Costo stimato del lotto: <span id="cost" class="mono" style="color: var(--ink);">€&nbsp;4,56</span>
+            Costo stimato del lotto: <span id="cost" class="mono" style="color: var(--ink);">&euro; 0,00</span>
             &middot; sigillatura Bitcoin inclusa
+          </p>
+          <p class="small" style="margin-top: 14px; padding: 12px 14px; background: #fff3e0; border-left: 3px solid #ef6c00; color: #6b3a00; font-family: var(--serif); font-size: 13px; line-height: 1.5;">
+            <strong>Cosa succede al click:</strong> Veylon riceve la tua richiesta, emette <em>N</em> certificati univoci, ognuno con SHA-256 della dichiarazione + sigillatura su Bitcoin via OpenTimestamps (conferma in 1-3 ore). Vedi il riepilogo a destra prima di confermare.
           </p>
         </form>
 
@@ -293,17 +314,17 @@
               <div class="tag-wm">VEYLON</div>
             </div>
             <hr class="rule-2" style="margin: 14px 0;"/>
-            <div class="tag-product" id="pv-product">Cronografo Lemania 1873</div>
-            <div class="tag-brand mono" id="pv-brand">Maison Genève S.A.</div>
+            <div class="tag-product" id="pv-product" style="color: var(--ink-3); font-style: italic;">&mdash; nome prodotto &mdash;</div>
+            <div class="tag-brand mono" id="pv-brand" style="color: var(--ink-3);">&mdash; brand &mdash;</div>
             <div class="tag-qr">
               <canvas id="qrCanvas" width="180" height="180"></canvas>
             </div>
             <hr class="rule-2" style="margin: 6px 0 14px;"/>
             <div class="tag-meta">
-              <div class="tm-row"><span class="tm-k">Lotto</span><span class="tm-v mono" id="pv-batch">2026/07-A</span></div>
-              <div class="tm-row"><span class="tm-k">Pezzo</span><span class="tm-v mono" id="pv-piece">00248 / 00259</span></div>
-              <div class="tm-row"><span class="tm-k">Origine</span><span class="tm-v mono" id="pv-origin">IT</span></div>
-              <div class="tm-row"><span class="tm-k">Protocollo</span><span class="tm-v mono" id="pv-proto">VLN-TAG-2026-…</span></div>
+              <div class="tm-row"><span class="tm-k">Lotto</span><span class="tm-v mono" id="pv-batch">&mdash;</span></div>
+              <div class="tm-row"><span class="tm-k">Pezzo</span><span class="tm-v mono" id="pv-piece">&mdash;</span></div>
+              <div class="tm-row"><span class="tm-k">Origine</span><span class="tm-v mono" id="pv-origin">&mdash;</span></div>
+              <div class="tm-row"><span class="tm-k">Protocollo</span><span class="tm-v mono" id="pv-proto">VLN-TAG-AAAA-XXXXXXXX</span></div>
             </div>
             <hr class="rule-2" style="margin: 14px 0 12px;"/>
             <!-- Sigillo (blockchain) — onesto -->
@@ -382,17 +403,26 @@
         <span class="roman">iii</span>
       </div>
 
+      <div style="background: #fff3e0; border-left: 3px solid #ef6c00; padding: 14px 18px; margin-bottom: 24px; font-family: var(--serif); font-size: 13.5px; line-height: 1.55; color: #6b3a00;">
+        <strong>Pronto per sigillare.</strong> I codici sono stati pre-generati e mostrati a sinistra. Quando clicchi "Sigilla tutto su Bitcoin", Veylon:
+        <ol style="margin: 8px 0 4px 18px; padding: 0;">
+          <li>Salva i certificati sul database (RLS owner-only).</li>
+          <li>Calcola SHA-256 di ogni dichiarazione canonica.</li>
+          <li>Ancora gli hash su Bitcoin via OpenTimestamps (conferma 1-3 ore).</li>
+          <li>Restituisce gli atto_id e gli URL pubblici di verifica.</li>
+        </ol>
+      </div>
       <div class="lot-toolbar">
         <div class="lot-stats">
-          <div><div class="eyebrow">Lotto</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-batch">2026/07-A</div></div>
-          <div><div class="eyebrow">Pezzi</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-pieces">248 — 259</div></div>
+          <div><div class="eyebrow">Lotto</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-batch">&mdash;</div></div>
+          <div><div class="eyebrow">Pezzi</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-pieces">&mdash;</div></div>
           <div><div class="eyebrow">Stato</div><div style="margin-top: 4px;" id="lot-status"><span class="status pending"><span class="dot"></span>In attesa di sigillatura</span></div></div>
-          <div><div class="eyebrow">Costo lotto</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-cost">€&nbsp;4,56</div></div>
+          <div><div class="eyebrow">Costo lotto</div><div class="mono" style="font-size: 14px; margin-top: 4px;" id="lot-cost">&euro; 0,00</div></div>
         </div>
         <div class="lot-actions">
           <button class="btn seal" id="sealBtn" onclick="sealBatch()">Sigilla tutto su Bitcoin <span class="arrow"></span></button>
           <button class="btn ghost" onclick="window.print()">Stampa fogli</button>
-          <button class="btn ghost" onclick="exportZip()">Esporta .zip</button>
+          <button class="btn ghost" onclick="exportZip()">Scarica bundle file</button>
         </div>
       </div>
 
@@ -418,118 +448,44 @@
         <span class="roman">iv</span>
       </div>
 
+      <div style="background: #f5f3ee; border-left: 3px solid var(--seal); padding: 16px 20px; margin-bottom: 24px;">
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 8px;">Cosa significa "trasformare un certificato"</div>
+        <p style="font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0;">
+          Quando un prodotto cambia stato (passaggio di proprieta, manutenzione, riconfezionamento, ritiro dal mercato), aggiungi un evento al passaporto Veylon. Lo storico resta sempre interrogabile: la pagina pubblica di verifica mostra sempre l&apos;ultima versione + l&apos;intera catena se richiesta.
+        </p>
+      </div>
+
       <div class="transform">
         <div class="tf-form">
           <div class="ff-row">
-            <label class="field-label">Codice del passaporto da trasformare</label>
-            <input class="field-input mono" id="tf-code" value="VLN-TAG-2026-A8F4C2D1" placeholder="VLN-TAG-AAAA-XXXXXXXX"/>
+            <label class="field-label">Codice del certificato da trasformare</label>
+            <input class="field-input mono" id="tf-code" value="" placeholder="VLN-TAG-AAAA-XXXXXXXX (incolla qui)"/>
           </div>
           <div class="ff-row" style="margin-top: 20px;">
             <label class="field-label">Tipologia di aggiornamento</label>
             <select class="field-input mono" id="tf-kind">
-              <option>Passaggio di proprietà</option>
-              <option>Intervento di manutenzione</option>
-              <option>Certificazione aggiuntiva</option>
-              <option>Riconfezionamento / nuovo lotto</option>
-              <option>Ritiro dal mercato</option>
+              <option value="">Seleziona&hellip;</option>
+              <option value="trasferimento">Passaggio di proprieta</option>
+              <option value="manutenzione">Intervento di manutenzione</option>
+              <option value="cert_aggiuntiva">Certificazione aggiuntiva</option>
+              <option value="riconfezionamento">Riconfezionamento / nuovo lotto</option>
+              <option value="ritiro">Ritiro dal mercato</option>
             </select>
           </div>
           <div class="ff-row" style="margin-top: 20px;">
             <label class="field-label">Nota istituzionale</label>
-            <textarea class="field-input" id="tf-note" rows="3" style="resize: vertical; border-bottom: var(--hairline-strong);" placeholder="Descrizione formale dell'evento da registrare nel passaporto…"></textarea>
+            <textarea class="field-input" id="tf-note" rows="3" style="resize: vertical; border-bottom: var(--hairline-strong);" placeholder="Descrivi formalmente l&apos;evento (max 500 char). Es: Trasferimento al cliente finale CF XXXXXXXX, scontrino n. NNN/AAAA."></textarea>
           </div>
-          <button class="btn seal" style="margin-top: 24px;">Sigilla aggiornamento <span class="arrow"></span></button>
+          <button class="btn seal" style="margin-top: 24px;" onclick="alert('Funzione disponibile dopo Sigillo del lotto. Implementazione: chiama edge function tag-trasferimento.'); return false;">Sigilla aggiornamento <span class="arrow"></span></button>
         </div>
 
         <div class="tf-history">
-          <div class="eyebrow seal-c" style="margin-bottom: 16px;">Storico del passaporto</div>
-          <div class="hist-meta">
-            <div class="hist-meta-k">Codice</div>
-            <div class="hist-meta-v mono">VLN-TAG-2026-A8F4C2D1</div>
-            <div class="hist-meta-k">Prodotto</div>
-            <div class="hist-meta-v">Cronografo Lemania 1873 &mdash; Ed. Numerata</div>
-            <div class="hist-meta-k">Eventi registrati</div>
-            <div class="hist-meta-v"><strong>4</strong> &middot; 3 confermati, 1 in stesura</div>
+          <div class="eyebrow seal-c" style="margin-bottom: 16px;">Storico del certificato</div>
+          <div id="tf-history-empty" style="background: var(--paper); border: 1px dashed var(--rule); padding: 28px 22px; text-align: center; font-family: var(--serif); font-style: italic; color: var(--ink-3); font-size: 14px;">
+            Incolla un codice VLN-TAG-AAAA-XXXXXXXX a sinistra per vedere lo storico eventi del certificato.
           </div>
-
-          <ol class="hist">
-            <li>
-              <div class="hist-spine">
-                <div class="hist-dot ok"></div>
-                <div class="hist-line"></div>
-              </div>
-              <div class="hist-body">
-                <div class="hist-row">
-                  <span class="hist-tag emission">Emissione</span>
-                  <span class="hist-when mono">12&nbsp;mar&nbsp;2026 &middot; 09:48</span>
-                </div>
-                <div class="serif hist-title">Passaporto emesso dal titolare del marchio</div>
-                <div class="hist-meta-line mono">Maison Genève S.A. &middot; lotto&nbsp;2026/03-A &middot; pezzo&nbsp;00248</div>
-                <div class="hist-anchor mono">
-                  <span class="ha-k">Blocco</span><span class="ha-v">#&nbsp;874.018</span>
-                  <span class="ha-k">Hash</span><span class="ha-v">a8f4&nbsp;c2d1&nbsp;… 7b39</span>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="hist-spine">
-                <div class="hist-dot ok"></div>
-                <div class="hist-line"></div>
-              </div>
-              <div class="hist-body">
-                <div class="hist-row">
-                  <span class="hist-tag transfer">Passaggio di proprietà</span>
-                  <span class="hist-when mono">28&nbsp;apr&nbsp;2026 &middot; 14:22</span>
-                </div>
-                <div class="serif hist-title">Trasferito al rivenditore autorizzato</div>
-                <div class="hist-meta-line mono">Boutique Romana &middot; Via dei Condotti 14, Roma &middot; P.IVA&nbsp;06214780015</div>
-                <div class="hist-anchor mono">
-                  <span class="ha-k">Blocco</span><span class="ha-v">#&nbsp;874.082</span>
-                  <span class="ha-k">Hash</span><span class="ha-v">3c71&nbsp;b8a2&nbsp;… 4a6c</span>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="hist-spine">
-                <div class="hist-dot ok"></div>
-                <div class="hist-line"></div>
-              </div>
-              <div class="hist-body">
-                <div class="hist-row">
-                  <span class="hist-tag sale">Vendita al cliente finale</span>
-                  <span class="hist-when mono">16&nbsp;mag&nbsp;2026 &middot; 16:34</span>
-                </div>
-                <div class="serif hist-title">Acquistato dal consumatore</div>
-                <div class="hist-meta-line mono">CF&nbsp;VTL···Z &middot; scontrino&nbsp;n.&nbsp;0482/2026 &middot; garanzia legale 24 mesi</div>
-                <div class="hist-anchor mono">
-                  <span class="ha-k">Blocco</span><span class="ha-v">#&nbsp;874.131</span>
-                  <span class="ha-k">Hash</span><span class="ha-v">5b92&nbsp;a1c3&nbsp;… 7b9</span>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="hist-spine">
-                <div class="hist-dot pending"></div>
-              </div>
-              <div class="hist-body">
-                <div class="hist-row">
-                  <span class="hist-tag maint">Intervento di manutenzione</span>
-                  <span class="hist-when mono">in stesura</span>
-                </div>
-                <div class="serif hist-title">Revisione del movimento &mdash; centro autorizzato</div>
-                <div class="hist-meta-line mono">Verrà sigillato all'invio del modulo a sinistra. Il consumatore vedrà la voce solo dopo la conferma su Bitcoin.</div>
-                <div class="hist-anchor mono pending">
-                  <span class="ha-k">Stato</span><span class="ha-v">in stesura · non ancora ancorato</span>
-                </div>
-              </div>
-            </li>
-          </ol>
-
           <p class="small" style="margin-top: 14px;">
-            <a class="link-seal" href="#">Apri lo storico completo</a> · <a class="link-seal" href="verifica.html">Verifica indipendente su Bitcoin</a>
+            <a class="link-seal" href="verifica.html">Verifica indipendente su Bitcoin &rarr;</a>
           </p>
         </div>
       </div>
@@ -551,6 +507,10 @@
         <span class="roman">v</span>
       </div>
 
+      <p class="lede" style="font-size: 15px; margin: 0 0 24px; color: var(--ink-2); max-width: 60ch;">
+        Tutti i lotti che hai gia emesso. Cliccando "apri" vedi i certificati del lotto + scarichi il bundle file per applicazione fisica.
+      </p>
+
       <table class="lotti-tbl">
         <thead>
           <tr>
@@ -563,37 +523,10 @@
           </tr>
         </thead>
         <tbody id="lottiTbody">
-          <tr>
-            <td class="mono">2026/06-C</td>
-            <td><div class="serif" style="font-size: 16px;">Cronografo Lemania 1873 — Ed. Numerata</div><div class="mono small">Maison Genève S.A. · LEM-1873-EN</div></td>
-            <td class="right mono">120</td>
-            <td class="mono small">NFC NTAG 213</td>
-            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.182</span></td>
-            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
-          </tr>
-          <tr>
-            <td class="mono">2026/05-B</td>
-            <td><div class="serif" style="font-size: 16px;">Cinturino in pelle — Edizione Speciale</div><div class="mono small">Maison Genève S.A. · STR-2026-SP</div></td>
-            <td class="right mono">480</td>
-            <td class="mono small">QR adesivo</td>
-            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.131</span></td>
-            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
-          </tr>
-          <tr>
-            <td class="mono">2026/05-A</td>
-            <td><div class="serif" style="font-size: 16px;">Cronografo Lemania 1873 — Ed. Anniversario</div><div class="mono small">Maison Genève S.A. · LEM-1873-AN</div></td>
-            <td class="right mono">88</td>
-            <td class="mono small">Sigillo olografico</td>
-            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.082</span></td>
-            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
-          </tr>
-          <tr>
-            <td class="mono">2026/04-D</td>
-            <td><div class="serif" style="font-size: 16px;">Ricambi originali movimento</div><div class="mono small">Maison Genève S.A. · MOV-PARTS</div></td>
-            <td class="right mono">2.400</td>
-            <td class="mono small">Microdot</td>
-            <td><span class="status confirmed"><span class="dot"></span>Sigillato &middot; #&nbsp;874.018</span></td>
-            <td class="right"><button type="button" class="link-seal small" onclick="alert('Vista di dettaglio del lotto: disponibile in produzione.'); return false;" style="background: none; border: 0; cursor: pointer; font: inherit;">apri</button></td>
+          <tr id="lotti-empty-row">
+            <td colspan="6" style="text-align: center; padding: 40px 20px; font-family: var(--serif); font-style: italic; color: var(--ink-3); font-size: 14px;">
+              Nessun lotto emesso. Compila il form sopra e clicca "Genera lotto di certificati" per iniziare.
+            </td>
           </tr>
         </tbody>
       </table>
