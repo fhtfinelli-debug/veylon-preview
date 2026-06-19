@@ -30,20 +30,24 @@ const NAV = [
 // Mappa di pagine secondarie -> chiave sezione, per evidenziare correttamente
 // il link attivo anche quando l'utente naviga in sotto-pagine.
 const SECTION_OF = {
-  "trasmissioni":       "invia",
-  "condivisione":       "archivio",
-  "tag-onboarding":     "tag",
-  "tag-emetti":         "tag",
-  "tag-batch":          "tag",
-  "tag-storico":        "tag",
-  "tag-trasferisci":    "tag",
-  "tag-prodotti":       "tag",
-  "cert-istituzione":   "cert",
-  "cert-emetti":        "cert",
-  "cert-emetti-batch":  "cert",
-  "cert-mio":           "cert",
-  "certificato":        "cert",
-  "certificazioni":     "cert",
+  "trasmissioni":         "invia",
+  "condivisione":         "archivio",
+  "tag-onboarding":       "tag",
+  "tag-emetti":           "tag",
+  "tag-batch":            "tag",
+  "tag-storico":          "tag",
+  "tag-trasferisci":      "tag",
+  "tag-prodotti":         "tag",
+  "cert-istituzione":     "cert",
+  "cert-emetti":          "cert",
+  "cert-emetti-batch":    "cert",
+  "cert-mio":             "cert",
+  "certificato":          "cert",
+  "certificazioni":       "cert",
+  // ProofOS — sotto-pagine della sezione Mail
+  "proof-inbox":          "mail",
+  "proof-archive":        "mail",
+  "proof-capsule-detail": "mail",
 };
 
 export async function renderAppShell(activeKey = "") {

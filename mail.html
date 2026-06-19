@@ -20,6 +20,26 @@
       </div>
     </section>
 
+    <section style="margin-top: 32px;">
+      <nav class="proof-strip" aria-label="Sezioni Mail">
+        <a href="proof-inbox.html" class="proof-card">
+          <span class="proof-card-eyebrow">Inbox</span>
+          <span class="proof-card-title">Cose da gestire</span>
+          <span class="proof-card-sub">Nuove capsule, trust basso, errori, senza fascicolo.</span>
+        </a>
+        <a href="proof-archive.html" class="proof-card">
+          <span class="proof-card-eyebrow">Archivio</span>
+          <span class="proof-card-title">Cerca una prova</span>
+          <span class="proof-card-sub">Ricerca per mittente, oggetto, hash, fascicolo, data.</span>
+        </a>
+        <a href="verify-proof.html" class="proof-card" target="_blank" rel="noopener">
+          <span class="proof-card-eyebrow">Verifica pubblica</span>
+          <span class="proof-card-title">Portale di verifica</span>
+          <span class="proof-card-sub">Apri il portale pubblico privacy-safe. Niente login.</span>
+        </a>
+      </nav>
+    </section>
+
     <section style="margin-top: 40px;">
       <article class="panel-card">
         <h2 class="serif" style="font-size: 22px; margin: 0 0 6px;">Modalita di certificazione</h2>
@@ -205,6 +225,13 @@
   .cred-box { padding: 16px; background: var(--paper-2); border: 1px solid var(--rule); margin: 12px 0; font-family: var(--mono); font-size: 12px; display: grid; grid-template-columns: 100px 1fr; gap: 8px 16px; align-items: center; }
   .cred-box .k { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
   .cred-box code { background: var(--paper); padding: 2px 6px; border: 1px solid var(--rule); }
+  .proof-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 760px) { .proof-strip { grid-template-columns: 1fr; } }
+  .proof-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; background: var(--paper); border: 1px solid var(--rule); text-decoration: none; color: var(--ink); transition: border-color 120ms ease, transform 120ms ease; }
+  .proof-card:hover { border-color: var(--seal); transform: translateY(-1px); }
+  .proof-card-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); }
+  .proof-card-title { font-family: var(--serif); font-size: 18px; line-height: 1.2; }
+  .proof-card-sub { font-family: var(--serif); font-size: 13px; color: var(--ink-3); line-height: 1.4; }
   </style>
 
   <script type="module">
