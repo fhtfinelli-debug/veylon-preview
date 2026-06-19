@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Tag CRM · Bacheca</title>
+  <meta name="description" content="Veylon Tag CRM. Bacheca operativa con carte guidate per creare prodotti, scegliere supporti fisici, emettere lotti, gestire destinatari e certificati."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    html.veylon-auth-pending body { visibility: hidden; }
+
+    /* ============================== LAYOUT BASE ============================== */
+    body.crm-layout { margin: 0; background: var(--paper); color: var(--ink); }
+    .crm-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+    .crm-main {
+      padding: 36px clamp(20px, 4vw, 48px) 96px;
+      max-width: 1320px;
+      width: 100%;
+    }
+
+    /* ============================== SIDEBAR ================================ */
+    .crm-aside {
+      background: var(--paper-2);
+      border-right: 1px solid var(--rule);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+    }
+    .crm-aside-brand {
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--rule-2);
+      margin-bottom: 18px;
+    }
+    .crm-aside-brand-name {
+      display: block;
+      font-family: var(--serif);
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .crm-aside-brand-tag {
+      display: block;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-top: 4px;
+    }
+    .crm-aside-section {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding: 14px 10px 8px;
+    }
+    .crm-aside-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 8px;
+    }
+    .crm-aside-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      font-family: var(--serif);
+      font-size: 14.5px;
+      color: var(--ink-2);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .crm-aside-link:hover { background: var(--paper); color: var(--ink); }
+    .crm-aside-link.is-active {
+      color: var(--seal);
+      background: var(--paper);
+      border-left-color: var(--seal);
+      font-weight: 600;
+    }
+    .crm-aside-user {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--rule-2);
+    }
+    .crm-aside-user-card {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid var(--rule-2);
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+    }
+    .crm-aside-user-card:hover { background: var(--paper); }
+    .crm-aside-avatar {
+      width: 32px; height: 32px;
+      background: var(--seal);
+      color: var(--paper);
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+    .crm-aside-user-meta { display: flex; flex-direction: column; min-width: 0; }
+    .crm-aside-user-email {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+    .crm-aside-user-action {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--seal);
+      margin-top: 2px;
+    }
+
+    /* Mobile drawer */
+    .crm-drawer-toggle {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 60;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    .crm-drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: oklch(0 0 0 / 0.32);
+      z-index: 40;
+    }
+    @media (max-width: 800px) {
+      .crm-grid { grid-template-columns: 1fr; }
+      .crm-aside {
+        position: fixed;
+        top: 0; left: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 50;
+        transform: translateX(-100%);
+        transition: transform 0.22s ease-out;
+      }
+      .crm-aside.is-open { transform: translateX(0); }
+      .crm-drawer-toggle { display: inline-flex; align-items: center; gap: 8px; }
+      .crm-drawer-backdrop.is-open { display: block; }
+      .crm-main { padding-top: 72px; }
+    }
+
+    /* ============================== HEADER ================================ */
+    .crm-welcome {
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 36px;
+    }
+    .crm-welcome h1 {
+      font-family: var(--serif);
+      font-size: clamp(34px, 4.4vw, 50px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 8px 0 14px;
+    }
+    .crm-welcome h1 em { font-style: italic; color: var(--seal); }
+    .crm-welcome .lede { max-width: 60ch; }
+
+    /* ============================== QUICK ACTIONS ========================== */
+    .crm-quick {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+    .crm-quick-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 22px 20px;
+      background: var(--paper-2);
+      border: 1px solid var(--rule);
+      text-decoration: none;
+      color: var(--ink);
+      transition: transform 0.18s, border-color 0.18s, background 0.18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .crm-quick-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--seal);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.22s ease-out;
+    }
+    .crm-quick-card:hover { background: var(--paper); border-color: var(--seal-2); transform: translateY(-1px); }
+    .crm-quick-card:hover::before { transform: scaleY(1); }
+    .crm-quick-card .qc-eye {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .crm-quick-card .qc-title {
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+    .crm-quick-card .qc-sub {
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink-2);
+      line-height: 1.45;
+    }
+    .crm-quick-card .qc-arrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--seal);
+      margin-top: 4px;
+    }
+    .crm-quick-card.is-primary {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+    .crm-quick-card.is-primary .qc-eye { color: oklch(0.760 0.012 65); }
+    .crm-quick-card.is-primary .qc-title { color: var(--paper); }
+    .crm-quick-card.is-primary .qc-sub { color: oklch(0.870 0.010 70); }
+    .crm-quick-card.is-primary .qc-arrow { color: var(--seal-50); }
+    .crm-quick-card.is-primary::before { background: var(--seal-50); }
+    .crm-quick-card.is-primary:hover { background: var(--seal-2); }
+
+    /* ============================== KPI ROW ================================ */
+    .crm-kpi {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0;
+      margin-bottom: 40px;
+      border: 1px solid var(--rule);
+    }
+    .crm-kpi-cell {
+      padding: 22px 22px;
+      border-right: 1px solid var(--rule-2);
+      background: var(--paper);
+      position: relative;
+    }
+    .crm-kpi-cell:last-child { border-right: 0; }
+    @media (max-width: 800px) {
+      .crm-kpi-cell { border-right: 0; border-bottom: 1px solid var(--rule-2); }
+      .crm-kpi-cell:last-child { border-bottom: 0; }
+    }
+    .crm-kpi-label {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 12px;
+    }
+    .crm-kpi-num {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 48px;
+      line-height: 1;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .crm-kpi-sub {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+      margin-top: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================== SECTION GRID =========================== */
+    .crm-section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .crm-card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 24px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .crm-card.is-wide { grid-column: 1 / -1; }
+    .crm-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule-2);
+    }
+    .crm-card-head h2 {
+      font-family: var(--serif);
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .crm-card-head h2 em { font-style: italic; color: var(--seal); }
+    .crm-card-head a {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--seal);
+      text-decoration: none;
+    }
+    .crm-card-head a:hover { text-decoration: underline; }
+
+    /* ============================== GUIDA RAPIDA =========================== */
+    .crm-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+    }
+    .crm-step {
+      display: block;
+      text-decoration: none;
+      padding: 16px 16px 18px;
+      border-left: 2px solid var(--seal);
+      background: var(--paper-2);
+      color: var(--ink);
+      transition: background 0.18s, transform 0.18s;
+    }
+    .crm-step:hover { background: var(--paper); transform: translateX(2px); }
+    .crm-step-roman {
+      font-family: var(--serif);
+      font-style: italic;
+      color: var(--seal);
+      font-size: 26px;
+      line-height: 1;
+    }
+    .crm-step-eye {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin: 8px 0 6px;
+    }
+    .crm-step-title {
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+    .crm-step-cta {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--seal);
+      margin-top: 10px;
+    }
+
+    /* ============================== LISTS ================================== */
+    .crm-list { list-style: none; padding: 0; margin: 0; }
+    .crm-list-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px 18px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--rule-2);
+      align-items: center;
+    }
+    .crm-list-item:last-child { border-bottom: 0; }
+    .crm-list-main { min-width: 0; }
+    .crm-list-title {
+      font-family: var(--serif);
+      font-size: 15px;
+      color: var(--ink);
+      display: block;
+    }
+    .crm-list-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-3);
+      margin-top: 4px;
+      letter-spacing: 0.03em;
+    }
+    .crm-list-aside {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .crm-pill {
+      display: inline-block;
+      padding: 3px 9px;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid var(--rule);
+      color: var(--ink-2);
+    }
+    .crm-pill.is-ok { color: var(--seal); border-color: var(--seal); }
+    .crm-pill.is-wait { color: var(--ink-3); }
+    .crm-list-open {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--seal);
+      text-decoration: none;
+    }
+    .crm-list-open:hover { text-decoration: underline; }
+
+    /* Empty state */
+    .crm-empty {
+      padding: 32px 24px;
+      text-align: center;
+      border: 1px dashed var(--rule);
+      background: var(--paper-2);
+    }
+    .crm-empty-roman {
+      font-family: var(--serif);
+      font-style: italic;
+      color: var(--seal);
+      font-size: 32px;
+      line-height: 1;
+    }
+    .crm-empty-title {
+      font-family: var(--serif);
+      font-size: 17px;
+      margin: 10px 0 6px;
+    }
+    .crm-empty-sub {
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink-2);
+      max-width: 42ch;
+      margin: 0 auto 14px;
+    }
+    .crm-empty-cta {
+      display: inline-block;
+      padding: 9px 18px;
+      background: var(--seal);
+      color: var(--paper);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .crm-empty-cta:hover { background: var(--seal-2); }
+
+    /* Risorse */
+    .crm-resources {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .crm-resource-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule-2);
+    }
+    .crm-resource-row:last-child { border-bottom: 0; }
+    .crm-resource-row a {
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .crm-resource-row a:hover { color: var(--seal); }
+    .crm-resource-row .res-kind {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .crm-enterprise-box {
+      margin-top: 18px;
+      padding: 18px 20px;
+      background: var(--ink);
+      color: var(--paper);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .crm-enterprise-box h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .crm-enterprise-box p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 13px;
+      color: oklch(0.870 0.010 70);
+      line-height: 1.5;
+    }
+    .crm-enterprise-cta {
+      display: inline-block;
+      align-self: flex-start;
+      margin-top: 4px;
+      padding: 8px 16px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .crm-enterprise-cta:hover { background: var(--seal-50); }
+
+    /* Prodotti recenti */
+    .crm-prod-row {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--rule-2);
+      align-items: center;
+    }
+    .crm-prod-row:last-child { border-bottom: 0; }
+    .crm-prod-thumb {
+      width: 48px; height: 48px;
+      background: var(--paper-2);
+      border: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-style: italic;
+      color: var(--seal);
+      font-size: 18px;
+    }
+    .crm-prod-name {
+      font-family: var(--serif);
+      font-size: 14.5px;
+      color: var(--ink);
+      display: block;
+    }
+    .crm-prod-meta {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+      margin-top: 3px;
+      letter-spacing: 0.04em;
+    }
+    .crm-prod-stat {
+      text-align: right;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+    }
+    .crm-prod-stat strong {
+      display: block;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body class="crm-layout">
+
+  <button class="crm-drawer-toggle" id="crm-drawer-toggle" type="button" aria-label="Apri menu" aria-controls="crm-aside" aria-expanded="false">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <span class="sr-only">Menu</span>
+  </button>
+  <div class="crm-drawer-backdrop" id="crm-drawer-backdrop" aria-hidden="true"></div>
+
+  <div class="crm-grid">
+
+    <aside class="crm-aside" id="crm-aside" aria-label="Navigazione CRM Veylon Tag">
+      <div class="crm-aside-brand">
+        <a href="tag-crm.html" style="text-decoration:none;">
+          <span class="crm-aside-brand-name">VEYLON</span>
+          <span class="crm-aside-brand-tag">Tag CRM</span>
+        </a>
+      </div>
+
+      <div class="crm-aside-section">Bacheca</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-crm.html" class="crm-aside-link is-active">Bacheca</a></li>
+      </ul>
+
+      <div class="crm-aside-section">Catalogo</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-prodotti.html" class="crm-aside-link">Prodotti</a></li>
+        <li><a href="tag-supporti.html" class="crm-aside-link">Supporti Veylon</a></li>
+      </ul>
+
+      <div class="crm-aside-section">Operativita</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-storico.html" class="crm-aside-link">Lotti</a></li>
+        <li><a href="tag-destinatari.html" class="crm-aside-link">Destinatari</a></li>
+        <li><a href="cert.html" class="crm-aside-link">Certificati</a></li>
+      </ul>
+
+      <div class="crm-aside-section">Sistema</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="developers.html" class="crm-aside-link">API &amp; Webhook</a></li>
+        <li><a href="dashboard.html" class="crm-aside-link">Impostazioni</a></li>
+      </ul>
+
+      <div class="crm-aside-user">
+        <button class="crm-aside-user-card" id="crm-logout" type="button" aria-label="Esci dall'account">
+          <span class="crm-aside-avatar" id="crm-avatar" aria-hidden="true">VL</span>
+          <span class="crm-aside-user-meta">
+            <span class="crm-aside-user-email" id="crm-user-email">—</span>
+            <span class="crm-aside-user-action">Esci</span>
+          </span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="crm-main">
+
+      <!-- WELCOME ============================================================ -->
+      <section class="crm-welcome">
+        <span class="eyebrow eyebrow-seal" style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;">Veylon Tag CRM · MMXXVI</span>
+        <h1>Bentornato in <em>Veylon Tag CRM</em>.</h1>
+        <p class="lede">La tua centrale operativa per certificare i prodotti: registra l'anagrafica, scegli il supporto fisico, emetti lotti e gestisci la filiera fino al consumatore finale.</p>
+      </section>
+
+      <!-- QUICK ACTIONS ====================================================== -->
+      <section aria-label="Azioni rapide" class="crm-quick">
+        <a href="tag-prodotti.html?action=new" class="crm-quick-card is-primary">
+          <span class="qc-eye">i</span>
+          <span class="qc-title">+ Nuovo prodotto</span>
+          <span class="qc-sub">Registra un articolo nel catalogo del tuo CRM: SKU, brand, materiali, normative.</span>
+          <span class="qc-arrow">apri →</span>
+        </a>
+        <a href="tag-nuovo-lotto.html" class="crm-quick-card">
+          <span class="qc-eye">ii</span>
+          <span class="qc-title">+ Emetti lotto</span>
+          <span class="qc-sub">Seleziona prodotto e supporto, genera N certificati e scarica il bundle pronto.</span>
+          <span class="qc-arrow">apri →</span>
+        </a>
+        <a href="tag-supporti.html" class="crm-quick-card">
+          <span class="qc-eye">iii</span>
+          <span class="qc-title">Esplora supporti</span>
+          <span class="qc-sub">25 modelli fisici disponibili: QR, NFC, RFID, laser, sigilli, microdot, DNA.</span>
+          <span class="qc-arrow">apri →</span>
+        </a>
+        <a href="verifica.html" class="crm-quick-card">
+          <span class="qc-eye">iv</span>
+          <span class="qc-title">Verifica certificato</span>
+          <span class="qc-sub">Controlla autenticita di un codice certificato e leggi la timeline OTS.</span>
+          <span class="qc-arrow">apri →</span>
+        </a>
+        <a href="developers.html" class="crm-quick-card">
+          <span class="qc-eye">v</span>
+          <span class="qc-title">Documentazione API</span>
+          <span class="qc-sub">Integra la stessa pipeline via REST o webhook nel tuo ERP/MES esistente.</span>
+          <span class="qc-arrow">apri →</span>
+        </a>
+      </section>
+
+      <!-- KPI ROW ============================================================ -->
+      <section aria-label="Indicatori chiave" class="crm-kpi">
+        <div class="crm-kpi-cell">
+          <div class="crm-kpi-label">Prodotti catalogo</div>
+          <div class="crm-kpi-num" id="kpi-prodotti">—</div>
+          <div class="crm-kpi-sub" id="kpi-prodotti-sub">in attesa di dati</div>
+        </div>
+        <div class="crm-kpi-cell">
+          <div class="crm-kpi-label">Lotti emessi</div>
+          <div class="crm-kpi-num" id="kpi-lotti">—</div>
+          <div class="crm-kpi-sub" id="kpi-lotti-sub">in attesa di dati</div>
+        </div>
+        <div class="crm-kpi-cell">
+          <div class="crm-kpi-label">Certificati emessi</div>
+          <div class="crm-kpi-num" id="kpi-certificati">—</div>
+          <div class="crm-kpi-sub" id="kpi-certificati-sub">in attesa di dati</div>
+        </div>
+        <div class="crm-kpi-cell">
+          <div class="crm-kpi-label">Sigillati Bitcoin</div>
+          <div class="crm-kpi-num" id="kpi-ots">—</div>
+          <div class="crm-kpi-sub" id="kpi-ots-sub">OpenTimestamps confirmed</div>
+        </div>
+        <div class="crm-kpi-cell">
+          <div class="crm-kpi-label">Destinatari</div>
+          <div class="crm-kpi-num" id="kpi-destinatari">—</div>
+          <div class="crm-kpi-sub" id="kpi-destinatari-sub">in attesa di dati</div>
+        </div>
+      </section>
+
+      <!-- GUIDA RAPIDA ======================================================= -->
+      <section class="crm-card is-wide" aria-label="Guida rapida">
+        <header class="crm-card-head">
+          <h2>Guida rapida <em>creazione certificato</em></h2>
+          <a href="come-funziona.html">approfondisci →</a>
+        </header>
+        <p style="font-family: var(--serif); font-size: 14px; color: var(--ink-2); margin: 0 0 8px; max-width: 64ch;">
+          Quattro passaggi per emettere il tuo primo certificato Veylon Tag. Ogni step e un link operativo: parti da dove ti serve, gli altri restano disponibili.
+        </p>
+        <nav class="crm-steps" aria-label="Step guidati">
+          <a class="crm-step" href="tag-prodotti.html?action=new">
+            <div class="crm-step-roman">i</div>
+            <div class="crm-step-eye">Step 1</div>
+            <div class="crm-step-title">Registra il tuo prodotto nel catalogo</div>
+            <div class="crm-step-cta">apri anagrafica →</div>
+          </a>
+          <a class="crm-step" href="tag-supporti.html">
+            <div class="crm-step-roman">ii</div>
+            <div class="crm-step-eye">Step 2</div>
+            <div class="crm-step-title">Esplora i 25 supporti Veylon disponibili</div>
+            <div class="crm-step-cta">vedi catalogo →</div>
+          </a>
+          <a class="crm-step" href="tag-nuovo-lotto.html">
+            <div class="crm-step-roman">iii</div>
+            <div class="crm-step-eye">Step 3</div>
+            <div class="crm-step-title">Emetti un lotto di certificati</div>
+            <div class="crm-step-cta">avvia emissione →</div>
+          </a>
+          <a class="crm-step" href="tag-storico.html">
+            <div class="crm-step-roman">iv</div>
+            <div class="crm-step-eye">Step 4</div>
+            <div class="crm-step-title">Scarica bundle file pronti per applicazione</div>
+            <div class="crm-step-cta">archivio lotti →</div>
+          </a>
+        </nav>
+      </section>
+
+      <!-- LOTTI + PRODOTTI =================================================== -->
+      <section class="crm-section-grid">
+
+        <article class="crm-card" aria-label="Ultimi lotti emessi">
+          <header class="crm-card-head">
+            <h2>Ultimi <em>lotti</em> emessi</h2>
+            <a href="tag-storico.html">tutti →</a>
+          </header>
+          <div id="lotti-content">
+            <div class="crm-empty" id="lotti-empty" hidden>
+              <div class="crm-empty-roman">i</div>
+              <div class="crm-empty-title">Non hai ancora emesso lotti.</div>
+              <div class="crm-empty-sub">Inizia con il primo prodotto: il catalogo + un supporto fisico bastano per generare il tuo primo lotto.</div>
+              <a class="crm-empty-cta" href="tag-prodotti.html?action=new">Crea il primo prodotto</a>
+            </div>
+            <ul class="crm-list" id="lotti-list" hidden></ul>
+            <div id="lotti-loading" style="padding: 28px; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; text-transform: uppercase;">Caricamento…</div>
+          </div>
+        </article>
+
+        <article class="crm-card" aria-label="Ultimi prodotti catalogo">
+          <header class="crm-card-head">
+            <h2>Ultimi <em>prodotti</em> aggiunti</h2>
+            <a href="tag-prodotti.html">catalogo →</a>
+          </header>
+          <div id="prodotti-content">
+            <div class="crm-empty" id="prodotti-empty" hidden>
+              <div class="crm-empty-roman">ii</div>
+              <div class="crm-empty-title">Il tuo catalogo e vuoto.</div>
+              <div class="crm-empty-sub">Inserisci la tua merce reale: SKU, brand, materiali e categoria. Il prodotto sara riusabile per ogni lotto futuro.</div>
+              <a class="crm-empty-cta" href="tag-prodotti.html?action=new">+ Nuovo prodotto</a>
+            </div>
+            <div id="prodotti-list" hidden></div>
+            <div id="prodotti-loading" style="padding: 28px; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; text-transform: uppercase;">Caricamento…</div>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- RISORSE ============================================================ -->
+      <section class="crm-card is-wide" aria-label="Risorse e supporto">
+        <header class="crm-card-head">
+          <h2>Risorse e <em>supporto</em></h2>
+          <a href="contatti.html">contatti →</a>
+        </header>
+        <div class="crm-resources">
+          <div class="crm-resource-row">
+            <a href="../docs/TAG-FILIERA-CERTIFICAZIONE.md">White paper filiera di certificazione</a>
+            <span class="res-kind">PDF · markdown</span>
+          </div>
+          <div class="crm-resource-row">
+            <a href="developers.html">Documentazione API &amp; webhook</a>
+            <span class="res-kind">Reference</span>
+          </div>
+          <div class="crm-resource-row">
+            <a href="tag-enterprise.html">Pitch enterprise &amp; SLA</a>
+            <span class="res-kind">PDF · pagina</span>
+          </div>
+          <div class="crm-resource-row">
+            <a href="casi-uso.html">Casi d'uso reali (lusso, pharma, vino, tessile)</a>
+            <span class="res-kind">Industry</span>
+          </div>
+        </div>
+
+        <div class="crm-enterprise-box">
+          <h3>Hai una grande realta? Richiedi accreditamento enterprise.</h3>
+          <p>Onboarding dedicato in 3-6 settimane, tenant white-label, SLA enterprise firmato, pilot 1.000-5.000 unita di validazione QC, audit report quarterly.</p>
+          <a class="crm-enterprise-cta" href="tag-enterprise.html">Richiedi accreditamento →</a>
+        </div>
+      </section>
+
+      <footer class="footer" style="margin-top: 56px;">
+        <div class="footer-base">
+          <span>© MMXXVI · Veylon S.r.l.</span>
+          <span>Tag CRM · Bacheca</span>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script type="module">
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { supabase, getUser, signOut } from "./_shared/supabase-client.js";
+
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+
+    let session;
+    document.documentElement.classList.add("veylon-auth-pending");
+    try {
+      ({ session } = await protectPage());
+    } finally {
+      document.documentElement.classList.remove("veylon-auth-pending");
+    }
+
+    // ---------- User badge ----------
+    const user = await getUser();
+    const email = user?.email ?? "";
+    const initials = (email.split("@")[0] || "VL").slice(0, 2).toUpperCase();
+    document.getElementById("crm-user-email").textContent = email || "—";
+    document.getElementById("crm-avatar").textContent = initials;
+
+    // ---------- Logout ----------
+    document.getElementById("crm-logout").addEventListener("click", async (e) => {
+      e.preventDefault();
+      await signOut();
+    });
+
+    // ---------- Drawer mobile ----------
+    const toggleBtn = document.getElementById("crm-drawer-toggle");
+    const sidebar = document.getElementById("crm-aside");
+    const backdrop = document.getElementById("crm-drawer-backdrop");
+    function closeDrawer() {
+      sidebar?.classList.remove("is-open");
+      backdrop?.classList.remove("is-open");
+      toggleBtn?.setAttribute("aria-expanded", "false");
+    }
+    function openDrawer() {
+      sidebar?.classList.add("is-open");
+      backdrop?.classList.add("is-open");
+      toggleBtn?.setAttribute("aria-expanded", "true");
+    }
+    toggleBtn?.addEventListener("click", () => {
+      sidebar?.classList.contains("is-open") ? closeDrawer() : openDrawer();
+    });
+    backdrop?.addEventListener("click", closeDrawer);
+    sidebar?.querySelectorAll(".crm-aside-link").forEach((a) => a.addEventListener("click", closeDrawer));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+
+    // ---------- KPI + lists loader (real data from Supabase) ----------
+    function relativeTime(iso) {
+      if (!iso) return "—";
+      const t = new Date(iso).getTime();
+      if (!Number.isFinite(t)) return "—";
+      const diff = Date.now() - t;
+      const sec = Math.floor(diff / 1000);
+      if (sec < 60) return "ora";
+      const min = Math.floor(sec / 60);
+      if (min < 60) return `${min} min fa`;
+      const h = Math.floor(min / 60);
+      if (h < 24) return `${h} h fa`;
+      const d = Math.floor(h / 24);
+      if (d < 30) return `${d} g fa`;
+      const mo = Math.floor(d / 30);
+      if (mo < 12) return `${mo} mesi fa`;
+      const y = Math.floor(d / 365);
+      return `${y} anni fa`;
+    }
+
+    function setKpi(id, value, sub) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+      const subEl = document.getElementById(`${id}-sub`);
+      if (subEl && sub != null) subEl.textContent = sub;
+    }
+
+    async function loadKpiProdotti() {
+      try {
+        const { count } = await supabase
+          .from("crm_prodotti_cliente")
+          .select("id", { count: "exact", head: true })
+          .eq("attivo", true);
+        setKpi("kpi-prodotti", count ?? 0, count ? "nel catalogo attivo" : "nessun prodotto attivo");
+      } catch { setKpi("kpi-prodotti", 0, "nessun dato"); }
+    }
+
+    async function loadKpiDestinatari() {
+      try {
+        const { count } = await supabase
+          .from("crm_destinatari")
+          .select("id", { count: "exact", head: true })
+          .eq("attivo", true);
+        setKpi("kpi-destinatari", count ?? 0, count ? "anagrafiche attive" : "nessun destinatario");
+      } catch { setKpi("kpi-destinatari", 0, "nessun dato"); }
+    }
+
+    async function loadKpiCertificati() {
+      try {
+        const { count } = await supabase
+          .from("tag_certificati")
+          .select("id", { count: "exact", head: true });
+        setKpi("kpi-certificati", count ?? 0, count ? "totali tracciati" : "nessun certificato");
+      } catch { setKpi("kpi-certificati", 0, "nessun dato"); }
+    }
+
+    async function loadKpiOts() {
+      try {
+        const { count } = await supabase
+          .from("tag_certificati")
+          .select("id", { count: "exact", head: true })
+          .eq("ots_status", "confirmed");
+        setKpi("kpi-ots", count ?? 0, count ? "sigillati Bitcoin" : "in attesa di conferma");
+      } catch { setKpi("kpi-ots", 0, "nessun dato"); }
+    }
+
+    async function loadLotti() {
+      const listEl = document.getElementById("lotti-list");
+      const emptyEl = document.getElementById("lotti-empty");
+      const loadingEl = document.getElementById("lotti-loading");
+      try {
+        // ultimi 5 lotti distinti basati su codice_lotto piu recente
+        const { data, error } = await supabase
+          .from("tag_certificati")
+          .select("codice_lotto, descrizione, modello_fisico, ots_status, created_at")
+          .not("codice_lotto", "is", null)
+          .order("created_at", { ascending: false })
+          .limit(50);
+        if (error) throw error;
+
+        const seen = new Map();
+        for (const row of (data ?? [])) {
+          if (!seen.has(row.codice_lotto)) {
+            seen.set(row.codice_lotto, { ...row, pezzi: 1 });
+          } else {
+            seen.get(row.codice_lotto).pezzi += 1;
+          }
+          if (seen.size >= 5) break;
+        }
+        const lotti = Array.from(seen.values());
+        loadingEl.hidden = true;
+
+        if (lotti.length === 0) {
+          emptyEl.hidden = false;
+          setKpi("kpi-lotti", 0, "ancora nessun lotto");
+          return;
+        }
+
+        listEl.innerHTML = lotti.map((l) => {
+          const stato = l.ots_status === "confirmed"
+            ? '<span class="crm-pill is-ok">sigillato</span>'
+            : '<span class="crm-pill is-wait">in attesa</span>';
+          const desc = l.descrizione ? String(l.descrizione).slice(0, 48) : "—";
+          const mf = l.modello_fisico ? String(l.modello_fisico).replace(/_/g, " ") : "—";
+          const codice = String(l.codice_lotto || "—").slice(0, 24);
+          return `
+            <li class="crm-list-item">
+              <div class="crm-list-main">
+                <span class="crm-list-title">${desc}</span>
+                <span class="crm-list-meta">Lotto ${codice} · ${l.pezzi} pezzi · supporto ${mf} · ${relativeTime(l.created_at)}</span>
+              </div>
+              <div class="crm-list-aside">
+                ${stato}
+                <a class="crm-list-open" href="tag-storico.html?lotto=${encodeURIComponent(l.codice_lotto)}">apri →</a>
+              </div>
+            </li>`;
+        }).join("");
+        listEl.hidden = false;
+
+        // KPI lotti = numero di codice_lotto distinti totali (best-effort sui 50 caricati;
+        // per il count esatto serve RPC, vedi nota in roadmap CRM)
+        setKpi("kpi-lotti", lotti.length, "ultimi visualizzati");
+      } catch (e) {
+        loadingEl.hidden = true;
+        emptyEl.hidden = false;
+      }
+    }
+
+    async function loadProdottiRecenti() {
+      const listEl = document.getElementById("prodotti-list");
+      const emptyEl = document.getElementById("prodotti-empty");
+      const loadingEl = document.getElementById("prodotti-loading");
+      try {
+        const { data, error } = await supabase
+          .from("crm_prodotti_cliente")
+          .select("id, nome, codice_interno, categoria_merc, lotti_emessi_count, ultima_emissione_at, immagine_url")
+          .eq("attivo", true)
+          .order("created_at", { ascending: false })
+          .limit(5);
+        if (error) throw error;
+        loadingEl.hidden = true;
+
+        if (!data || data.length === 0) {
+          emptyEl.hidden = false;
+          return;
+        }
+
+        listEl.innerHTML = data.map((p) => {
+          const inits = (p.nome || "?").slice(0, 2).toUpperCase();
+          const cat = p.categoria_merc ? String(p.categoria_merc).replace(".", " · ") : "non categorizzato";
+          const lotti = p.lotti_emessi_count ?? 0;
+          const ult = p.ultima_emissione_at ? relativeTime(p.ultima_emissione_at) : "mai emesso";
+          return `
+            <div class="crm-prod-row">
+              <div class="crm-prod-thumb">${inits}</div>
+              <div>
+                <a class="crm-prod-name" style="text-decoration:none; color:inherit;" href="tag-prodotti.html?id=${encodeURIComponent(p.id)}">${p.nome ?? "—"}</a>
+                <div class="crm-prod-meta">${p.codice_interno ?? "—"} · ${cat}</div>
+              </div>
+              <div class="crm-prod-stat"><strong>${lotti}</strong>lotti · ${ult}</div>
+            </div>`;
+        }).join("");
+        listEl.hidden = false;
+      } catch (e) {
+        loadingEl.hidden = true;
+        emptyEl.hidden = false;
+      }
+    }
+
+    // run in parallel
+    await Promise.allSettled([
+      loadKpiProdotti(),
+      loadKpiDestinatari(),
+      loadKpiCertificati(),
+      loadKpiOts(),
+      loadLotti(),
+      loadProdottiRecenti(),
+    ]);
+  </script>
+</body>
+</html>

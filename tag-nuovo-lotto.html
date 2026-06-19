@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Tag CRM &middot; Nuovo lotto di certificati</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .wiz-layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    @media (max-width: 800px) { .wiz-layout { grid-template-columns: 1fr; } }
+    .wiz-sidebar { background: var(--paper); border-right: 1px solid var(--rule); padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .wiz-sidebar .brand { padding: 0 24px 18px; border-bottom: 1px solid var(--rule); font-family: var(--serif); font-size: 22px; color: var(--ink); text-decoration: none; display: block; }
+    .wiz-sidebar .brand em { color: var(--seal); }
+    .wiz-sidebar nav { padding: 18px 0; display: flex; flex-direction: column; }
+    .wiz-sidebar nav a { padding: 10px 24px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; border-left: 2px solid transparent; }
+    .wiz-sidebar nav a:hover { color: var(--ink); background: var(--paper-2); }
+    .wiz-sidebar nav a.current { color: var(--seal); border-left-color: var(--seal); background: var(--paper-2); }
+    .wiz-sidebar .group-label { padding: 16px 24px 6px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+    @media (max-width: 800px) { .wiz-sidebar { display: none; } }
+
+    .wiz-main { padding: 32px 48px 96px; max-width: 1200px; }
+    @media (max-width: 640px) { .wiz-main { padding: 24px 24px 80px; } }
+
+    .wiz-breadcrumb { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--ink-3); text-transform: uppercase; margin-bottom: 14px; }
+    .wiz-breadcrumb a { color: var(--ink-3); text-decoration: none; }
+    .wiz-breadcrumb a:hover { color: var(--seal); }
+
+    .wiz-header h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(28px, 3.5vw, 42px); line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 8px; }
+    .wiz-header h1 em { color: var(--seal); }
+    .wiz-header p.lede { font-family: var(--serif); font-size: 16px; line-height: 1.5; color: var(--ink-2); margin: 0 0 32px; max-width: 60ch; }
+
+    .wiz-stepper { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 32px 0 40px; border: 1px solid var(--rule); }
+    .wiz-step { padding: 18px 22px; border-right: 1px solid var(--rule); display: flex; align-items: center; gap: 14px; cursor: default; }
+    .wiz-step:last-child { border-right: 0; }
+    .wiz-step .circle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); display: grid; place-items: center; font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink-3); flex-shrink: 0; }
+    .wiz-step.active .circle { border-color: var(--seal); background: var(--seal); color: var(--paper); }
+    .wiz-step.done .circle { border-color: var(--verify, #1e6e3e); background: var(--verify, #1e6e3e); color: var(--paper); }
+    .wiz-step .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 4px; }
+    .wiz-step .name { font-family: var(--serif); font-size: 15px; color: var(--ink); display: block; }
+    .wiz-step.active .name { color: var(--seal); }
+
+    .wiz-panel { background: var(--paper); border: 1px solid var(--rule); padding: 32px 40px; margin-bottom: 20px; }
+    @media (max-width: 640px) { .wiz-panel { padding: 22px 24px; } }
+    .wiz-panel h2 { font-family: var(--serif); font-weight: normal; font-size: 24px; margin: 0 0 6px; }
+    .wiz-panel p.intro { font-family: var(--serif); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0 0 22px; max-width: 60ch; }
+
+    .info-box { background: #f5f3ee; border-left: 3px solid var(--seal); padding: 14px 18px; margin: 18px 0; font-family: var(--serif); font-size: 13.5px; line-height: 1.5; color: var(--ink); }
+    .warn-box { background: #fff3e0; border-left: 3px solid #ef6c00; padding: 14px 18px; margin: 18px 0; font-family: var(--serif); font-size: 13.5px; line-height: 1.5; color: #6b3a00; }
+
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+    .prod-card { background: var(--paper); border: 1px solid var(--rule); padding: 20px; cursor: pointer; transition: border-color 120ms ease, transform 120ms ease; }
+    .prod-card:hover { border-color: var(--ink); transform: translateY(-1px); }
+    .prod-card.selected { border-color: var(--seal); background: #fefcf7; box-shadow: 0 0 0 2px rgba(166, 123, 58, 0.15); }
+    .prod-card .cat-pill { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); margin-bottom: 8px; }
+    .prod-card h3 { font-family: var(--serif); font-weight: normal; font-size: 17px; margin: 0 0 4px; color: var(--ink); }
+    .prod-card .meta { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+    .prod-card .stats { display: flex; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+    .prod-card .stats span strong { color: var(--ink); font-weight: normal; font-size: 12px; }
+
+    .prod-empty { padding: 48px 24px; text-align: center; background: var(--paper); border: 1px dashed var(--rule); font-family: var(--serif); font-style: italic; color: var(--ink-3); }
+    .prod-empty a { color: var(--seal); text-decoration: none; border-bottom: 1px solid var(--seal); padding-bottom: 1px; }
+
+    .sup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 24px; }
+    .sup-card { background: var(--paper); border: 1px solid var(--rule); padding: 18px; cursor: pointer; transition: border-color 120ms ease; }
+    .sup-card:hover { border-color: var(--ink); }
+    .sup-card.selected { border-color: var(--seal); background: #fefcf7; box-shadow: 0 0 0 2px rgba(166, 123, 58, 0.15); }
+    .sup-card .group { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+    .sup-card h4 { font-family: var(--serif); font-weight: normal; font-size: 15px; line-height: 1.2; margin: 0 0 6px; color: var(--ink); }
+    .sup-card .price { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--seal); margin: 6px 0 4px; }
+    .sup-card .price .unit { font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-left: 4px; }
+    .sup-card .desc { font-family: var(--serif); font-size: 12.5px; line-height: 1.4; color: var(--ink-2); margin: 4px 0 0; }
+
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+    .field label .req { color: var(--seal); }
+    .field input, .field select, .field textarea { width: 100%; padding: 10px 12px; font-family: var(--serif); font-size: 14px; border: 1px solid var(--ink); background: var(--paper); box-sizing: border-box; }
+    .field input.mono { font-family: var(--mono); font-size: 13px; }
+    .field .hint { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 540px) { .row2 { grid-template-columns: 1fr; } }
+
+    .review-table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+    .review-table th { text-align: left; padding: 8px 12px 8px 0; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); width: 35%; vertical-align: top; }
+    .review-table td { padding: 8px 0; font-family: var(--serif); font-size: 14px; color: var(--ink); border-bottom: 1px solid var(--rule-2); }
+    .review-table .total td { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--seal); padding-top: 16px; border-top: 2px solid var(--ink); border-bottom: 0; }
+
+    .wiz-actions { display: flex; justify-content: space-between; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+    .btn { padding: 12px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border-radius: 999px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--ink); }
+    .btn.primary { background: var(--ink); color: var(--paper); }
+    .btn.primary:hover { background: var(--seal); border-color: var(--seal); }
+    .btn.ghost { background: transparent; color: var(--ink); }
+    .btn.ghost:hover { background: var(--ink); color: var(--paper); }
+    .btn.seal { background: var(--seal); color: var(--paper); border-color: var(--seal); }
+    .btn.seal:hover { background: var(--ink); border-color: var(--ink); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .api-snippet { background: var(--paper-2); border: 1px solid var(--rule); padding: 14px 18px; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; color: var(--ink); overflow-x: auto; margin: 14px 0; }
+    .api-snippet .comment { color: var(--ink-3); }
+    .api-snippet .string { color: #16482a; }
+  </style>
+</head>
+<body>
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    try { await protectPage(); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <div class="wiz-layout">
+    <aside class="wiz-sidebar">
+      <a href="index.html" class="brand"><em>Veylon</em> Tag CRM</a>
+      <nav>
+        <span class="group-label">Bacheca</span>
+        <a href="tag-crm.html">Dashboard</a>
+        <span class="group-label">Catalogo</span>
+        <a href="tag-prodotti.html">I tuoi prodotti</a>
+        <a href="tag-supporti.html">Supporti Veylon</a>
+        <span class="group-label">Operativita</span>
+        <a href="tag-nuovo-lotto.html" class="current">+ Emetti lotto</a>
+        <a href="tag.html">Studio passaporti</a>
+        <span class="group-label">Sistema</span>
+        <a href="developers.html">API &amp; webhook</a>
+        <a href="tag-enterprise.html">Accreditamento</a>
+        <a href="dashboard.html">Cruscotto generale</a>
+      </nav>
+    </aside>
+
+    <main class="wiz-main">
+      <div class="wiz-breadcrumb">
+        <a href="tag-crm.html">Veylon Tag CRM</a> &rsaquo; Nuovo lotto di certificati
+      </div>
+
+      <div class="wiz-header">
+        <h1>Emetti un <em>nuovo lotto</em> di certificati.</h1>
+        <p class="lede">
+          In 4 passaggi: scegli un prodotto dal tuo catalogo, scegli come applicare il certificato fisicamente, compila i dati del lotto, conferma. Veylon sigilla tutto su Bitcoin e ti consegna un bundle di file pronti per la stampa o la codifica.
+        </p>
+      </div>
+
+      <ol class="wiz-stepper">
+        <li class="wiz-step active" data-step="1">
+          <div class="circle">i</div>
+          <div>
+            <span class="lbl">Passo 1</span>
+            <span class="name">Scegli prodotto</span>
+          </div>
+        </li>
+        <li class="wiz-step" data-step="2">
+          <div class="circle">ii</div>
+          <div>
+            <span class="lbl">Passo 2</span>
+            <span class="name">Scegli supporto</span>
+          </div>
+        </li>
+        <li class="wiz-step" data-step="3">
+          <div class="circle">iii</div>
+          <div>
+            <span class="lbl">Passo 3</span>
+            <span class="name">Dati del lotto</span>
+          </div>
+        </li>
+        <li class="wiz-step" data-step="4">
+          <div class="circle">iv</div>
+          <div>
+            <span class="lbl">Passo 4</span>
+            <span class="name">Revisione &amp; sigillo</span>
+          </div>
+        </li>
+      </ol>
+
+      <!-- STEP 1: scegli prodotto -->
+      <section id="step-1" class="wiz-panel">
+        <h2>Scegli un prodotto dal tuo catalogo</h2>
+        <p class="intro">Seleziona un prodotto gia registrato nel <a href="tag-prodotti.html" style="color: var(--seal);">catalogo prodotti</a>. Tutti i dati del prodotto (brand, P.IVA, filiera, materiali, conformita) verranno usati per il lotto.</p>
+
+        <div class="info-box">
+          <strong>Non vedi il tuo prodotto?</strong> Vai al <a href="tag-prodotti.html?action=new" style="color: var(--seal);">catalogo</a> per registrarlo prima. La registrazione richiede 2 minuti e il prodotto resta riusabile per emissioni future.
+        </div>
+
+        <div id="prod-list" class="prod-grid">
+          <div class="prod-empty">Caricamento prodotti dal tuo catalogo&hellip;</div>
+        </div>
+
+        <div class="wiz-actions">
+          <a href="tag-crm.html" class="btn ghost">&larr; Torna alla bacheca</a>
+          <button class="btn primary" id="btn-step1-next" disabled>Prosegui &rarr;</button>
+        </div>
+      </section>
+
+      <!-- STEP 2: scegli supporto -->
+      <section id="step-2" class="wiz-panel" style="display: none;">
+        <h2>Scegli come applicare fisicamente il certificato</h2>
+        <p class="intro">Veylon supporta <strong>25 modelli fisici</strong>. Il supporto determina come il consumatore verifica l&apos;autenticita (scansione QR, tap NFC, lettura DataMatrix, ecc.) e il costo per pezzo. Consulta il <a href="tag-supporti.html" style="color: var(--seal);">catalogo supporti</a> per dettagli tecnici.</p>
+
+        <div id="sup-list" class="sup-grid"></div>
+
+        <div class="wiz-actions">
+          <button class="btn ghost" id="btn-step2-back">&larr; Indietro</button>
+          <button class="btn primary" id="btn-step2-next" disabled>Prosegui &rarr;</button>
+        </div>
+      </section>
+
+      <!-- STEP 3: dati lotto -->
+      <section id="step-3" class="wiz-panel" style="display: none;">
+        <h2>Compila i dati specifici del lotto</h2>
+        <p class="intro">Inserisci il codice di lotto interno e il numero di certificati. Aggiungi (opzionale) la data di scadenza e altri dati tipici per la categoria del prodotto.</p>
+
+        <div class="row2">
+          <div class="field">
+            <label for="f-batch">Codice lotto <span class="req">*</span></label>
+            <input type="text" id="f-batch" class="mono" placeholder="Es. 2026/A001"/>
+            <div class="hint">Formato libero, deve essere univoco per il tuo account.</div>
+          </div>
+          <div class="field">
+            <label for="f-qty">Numero di certificati <span class="req">*</span></label>
+            <input type="number" id="f-qty" class="mono" min="1" max="10000" placeholder="Es. 100"/>
+            <div class="hint">Da UI fino a 500/batch. Per volumi superiori usare API REST.</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="f-scadenza">Data di scadenza (opzionale)</label>
+            <input type="date" id="f-scadenza" class="mono"/>
+            <div class="hint">Obbligatoria per pharma (FMD) e food perishable.</div>
+          </div>
+          <div class="field">
+            <label for="f-data-prod">Data di produzione (opzionale)</label>
+            <input type="date" id="f-data-prod" class="mono"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-note">Note interne (opzionale)</label>
+          <textarea id="f-note" rows="2" placeholder="Note non visibili pubblicamente. Es. 'Lotto pilota linea A'"></textarea>
+        </div>
+
+        <div class="info-box">
+          <strong>Cosa succede dopo?</strong> Al passo successivo vedrai la revisione completa (prodotto + supporto + dati lotto + costo stimato). Da li potrai sigillare su Bitcoin.
+        </div>
+
+        <div class="wiz-actions">
+          <button class="btn ghost" id="btn-step3-back">&larr; Indietro</button>
+          <button class="btn primary" id="btn-step3-next">Prosegui &rarr;</button>
+        </div>
+      </section>
+
+      <!-- STEP 4: revisione + sigillo -->
+      <section id="step-4" class="wiz-panel" style="display: none;">
+        <h2>Revisione e sigillatura</h2>
+        <p class="intro">Verifica i dati. Quando confermi, Veylon genera <em id="r-count-inline">N</em> certificati univoci, calcola lo SHA-256 di ogni dichiarazione e li ancora su Bitcoin via OpenTimestamps.</p>
+
+        <table class="review-table">
+          <tr><th>Prodotto</th><td id="r-prodotto">&mdash;</td></tr>
+          <tr><th>Brand</th><td id="r-brand">&mdash;</td></tr>
+          <tr><th>Categoria</th><td id="r-categoria">&mdash;</td></tr>
+          <tr><th>Supporto fisico</th><td id="r-supporto">&mdash;</td></tr>
+          <tr><th>Codice lotto</th><td id="r-batch">&mdash;</td></tr>
+          <tr><th>Numero certificati</th><td id="r-qty">&mdash;</td></tr>
+          <tr><th>Paese origine</th><td id="r-origine">&mdash;</td></tr>
+          <tr><th>Costo per pezzo</th><td id="r-prezzo-pz">&mdash;</td></tr>
+          <tr class="total"><th>Totale lotto</th><td id="r-totale">&mdash;</td></tr>
+        </table>
+
+        <div class="warn-box">
+          <strong>Conferma sigillatura.</strong> Cliccando "Sigilla su Bitcoin" verra' creato un record per ogni certificato in `tag_certificati` (RLS owner-only) + ancoraggio OTS Bitcoin (conferma in 1-3 ore). Riceverai i codici univoci e l&apos;URL pubblica di verifica per ogni pezzo. Potrai scaricare il bundle file (QR PNG, manifest CSV, NFC encoding, etichette FMD/TPP) dalla pagina del lotto.
+        </div>
+
+        <details>
+          <summary style="cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3); text-transform: uppercase; padding: 8px 0;">Mostra equivalente API REST</summary>
+          <div class="api-snippet"><span class="comment"># Stesso flusso via API REST (per integrazione MES/SAP/ERP):</span>
+curl -X POST https://hanxxxtgxofjkfdjegfe.supabase.co/functions/v1/tag-certificato-batch \
+  -H "Authorization: Bearer <span class="string">$VEYLON_API_KEY</span>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    <span class="string">"produttore_id"</span>: "&lt;UUID&gt;",
+    <span class="string">"applicazione"</span>: "&lt;modello_fisico&gt;",
+    <span class="string">"righe"</span>: [
+      { <span class="string">"sha256_dichiarazione"</span>: "&lt;64hex&gt;", <span class="string">"lotto"</span>: "...", <span class="string">"numero_serie"</span>: "..." },
+      ...
+    ]
+  }'
+<span class="comment"># Vedi <a href="developers.html" style="color: inherit; text-decoration: underline;">/developers</a> per API completa + webhook outbound.</span></div>
+        </details>
+
+        <div class="wiz-actions">
+          <button class="btn ghost" id="btn-step4-back">&larr; Indietro</button>
+          <button class="btn seal" id="btn-sigilla">Sigilla su Bitcoin &rarr;</button>
+        </div>
+
+        <div id="result-box" style="margin-top: 22px;"></div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const $ = (id) => document.getElementById(id);
+
+    // Catalogo supporti (allineato a constraint check su tag_certificati.modello_fisico)
+    const SUPPORTI = [
+      { id: "qr_label", group: "Stampa standard", name: "QR adesivo", price: 0.12, desc: "Stampato su etichetta carta termica. Volumi medi/alti." },
+      { id: "qr_holo", group: "Stampa standard", name: "QR su etichetta olografica", price: 0.28, desc: "Olografia tamper-evident integrata." },
+      { id: "datamatrix_laser", group: "Stampa standard", name: "DataMatrix inciso laser", price: 0.18, desc: "Per metalli, vetro, materiali tecnici." },
+      { id: "etichetta_farma", group: "Etichette settoriali", name: "Etichetta farma (FMD GS1)", price: 0.15, desc: "Conforme Reg. UE 2016/161 (FMD). GTIN + SN + Lotto + Scadenza." },
+      { id: "etichetta_vestiario", group: "Etichette settoriali", name: "Etichetta vestiario TPP", price: 0.14, desc: "CEN/CENELEC TPP per ESPR tessile." },
+      { id: "etichetta_food", group: "Etichette settoriali", name: "Etichetta food DOP/IGP", price: 0.12, desc: "Conforme disciplinari DOP/IGP/biologico." },
+      { id: "qr_laser_steel", group: "Incisione laser", name: "QR laser su acciaio", price: 0.22, desc: "Orologi, gioielli, attrezzature." },
+      { id: "qr_laser_alu", group: "Incisione laser", name: "QR laser su alluminio", price: 0.20, desc: "Componenti aerospace e automotive." },
+      { id: "qr_laser_glass", group: "Incisione laser", name: "QR laser su vetro", price: 0.30, desc: "Bottiglie di pregio, profumi premium." },
+      { id: "qr_laser_wood", group: "Incisione laser", name: "QR laser su legno", price: 0.18, desc: "Mobili artigianali, edilizia." },
+      { id: "nfc_ntag213", group: "NFC magnetici", name: "NFC NTAG 213 statico", price: 0.28, desc: "180 byte. Statico. Tap col telefono." },
+      { id: "nfc_ntag215", group: "NFC magnetici", name: "NFC NTAG 215 statico", price: 0.38, desc: "504 byte. Statico, piu memoria." },
+      { id: "nfc_ntag216", group: "NFC magnetici", name: "NFC NTAG 216 statico", price: 0.52, desc: "888 byte. Statico, massima memoria." },
+      { id: "nfc_ntag424_dna", group: "NFC magnetici", name: "NFC NTAG 424 DNA dinamico", price: 0.78, desc: "SUN. Codice unico ad ogni tap. Anti-clonazione." },
+      { id: "rfid_uhf", group: "RFID", name: "RFID UHF logistica", price: 0.18, desc: "Lettura 5m range. Magazzino." },
+      { id: "sigillo_olografico", group: "Anti-contraffazione", name: "Sigillo olografico", price: 0.84, desc: "Tamper-evident. Lusso heritage." },
+      { id: "capsula_tamper_evident", group: "Anti-contraffazione", name: "Capsula tamper-evident", price: 0.22, desc: "Collo bottiglia. Vini pregio, distillati." },
+      { id: "microdot", group: "Anti-contraffazione", name: "Microdot 0.3mm", price: 1.40, desc: "Invisibile. Lusso ad alto valore." },
+      { id: "dna_marker_chimico", group: "Anti-contraffazione", name: "DNA marker chimico", price: 0.32, desc: "Marker molecolare. Anti-frode farmaco." },
+      { id: "watermark_digitale_invisibile", group: "Anti-contraffazione", name: "Watermark digitale invisibile", price: 0.08, desc: "Basso costo, alta scalabilita." }
+    ];
+
+    const state = {
+      step: 1,
+      prodotto: null,
+      supporto: null,
+      batch: "",
+      qty: 0,
+      scadenza: "",
+      data_prod: "",
+      note: ""
+    };
+
+    function showStep(n) {
+      state.step = n;
+      [1,2,3,4].forEach((i) => {
+        const el = $("step-" + i);
+        if (el) el.style.display = i === n ? "block" : "none";
+        document.querySelectorAll(".wiz-step").forEach((s) => {
+          const d = parseInt(s.dataset.step, 10);
+          s.classList.toggle("active", d === n);
+          s.classList.toggle("done", d < n);
+        });
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function CATEGORIA_LABEL(cat) {
+      return {
+        "luxury.watch": "Orologeria di lusso",
+        "luxury.jewel": "Gioielleria",
+        "luxury.fashion": "Moda & pelletteria",
+        "pharma.drug": "Farmaco",
+        "pharma.device": "Dispositivo medico",
+        "wine.dop": "Vino DOP/DOCG",
+        "oil.dop": "Olio DOP/IGP",
+        "food.bio": "Alimentare biologico",
+        "industry.oem": "Componente OEM",
+        "art.edition": "Edizione d'arte"
+      }[cat] || cat || "Altro";
+    }
+
+    async function loadProdotti() {
+      const list = $("prod-list");
+      const { data, error } = await supabase
+        .from("crm_prodotti_cliente")
+        .select("id, codice_interno, nome, brand, categoria_merc, gtin, lotti_emessi_count, ultima_emissione_at, paese_origine, brand_vat, modello_fisico_default")
+        .eq("attivo", true)
+        .order("ultima_emissione_at", { ascending: false, nullsFirst: false })
+        .limit(50);
+      if (error) {
+        list.innerHTML = '<div class="prod-empty">Errore caricamento: ' + esc(error.message) + '</div>';
+        return;
+      }
+      if (!data || data.length === 0) {
+        list.innerHTML = '<div class="prod-empty">Non hai ancora prodotti nel catalogo.<br/>Vai al <a href="tag-prodotti.html?action=new">catalogo prodotti</a> per registrare il primo.</div>';
+        return;
+      }
+      list.innerHTML = data.map((p) => `
+        <div class="prod-card" data-id="${esc(p.id)}">
+          <div class="cat-pill">${esc(CATEGORIA_LABEL(p.categoria_merc))}</div>
+          <h3>${esc(p.nome)}</h3>
+          <div class="meta">${esc(p.codice_interno)} &middot; ${esc(p.brand || "—")}</div>
+          <div class="stats">
+            <span>Lotti emessi <strong>${p.lotti_emessi_count ?? 0}</strong></span>
+            <span>Origine <strong>${esc(p.paese_origine || "—")}</strong></span>
+          </div>
+        </div>
+      `).join("");
+      list.querySelectorAll(".prod-card").forEach((c) => {
+        c.addEventListener("click", () => {
+          list.querySelectorAll(".prod-card").forEach((x) => x.classList.remove("selected"));
+          c.classList.add("selected");
+          state.prodotto = data.find((p) => p.id === c.dataset.id);
+          $("btn-step1-next").disabled = false;
+        });
+      });
+    }
+
+    function renderSupporti() {
+      const list = $("sup-list");
+      // Raggruppa per group
+      const groups = {};
+      SUPPORTI.forEach((s) => {
+        if (!groups[s.group]) groups[s.group] = [];
+        groups[s.group].push(s);
+      });
+      let html = "";
+      for (const [g, items] of Object.entries(groups)) {
+        items.forEach((s) => {
+          html += `<div class="sup-card" data-id="${esc(s.id)}">
+            <div class="group">${esc(g)}</div>
+            <h4>${esc(s.name)}</h4>
+            <div class="price">&euro; ${s.price.toFixed(2).replace(".", ",")}<span class="unit">/pezzo</span></div>
+            <p class="desc">${esc(s.desc)}</p>
+          </div>`;
+        });
+      }
+      list.innerHTML = html;
+      list.querySelectorAll(".sup-card").forEach((c) => {
+        c.addEventListener("click", () => {
+          list.querySelectorAll(".sup-card").forEach((x) => x.classList.remove("selected"));
+          c.classList.add("selected");
+          state.supporto = SUPPORTI.find((s) => s.id === c.dataset.id);
+          $("btn-step2-next").disabled = false;
+        });
+      });
+    }
+
+    function showReview() {
+      $("r-prodotto").textContent = state.prodotto?.nome ?? "—";
+      $("r-brand").textContent = state.prodotto?.brand ?? "—";
+      $("r-categoria").textContent = CATEGORIA_LABEL(state.prodotto?.categoria_merc);
+      $("r-supporto").textContent = state.supporto?.name ?? "—";
+      $("r-batch").textContent = state.batch || "—";
+      $("r-qty").textContent = state.qty || "—";
+      $("r-origine").textContent = state.prodotto?.paese_origine || "—";
+      $("r-prezzo-pz").innerHTML = "€ " + (state.supporto?.price ?? 0).toFixed(2).replace(".", ",");
+      const totale = (state.supporto?.price ?? 0) * (state.qty ?? 0);
+      $("r-totale").innerHTML = "€ " + totale.toFixed(2).replace(".", ",");
+      $("r-count-inline").textContent = state.qty ?? "N";
+    }
+
+    function genCodiceUnivoco(idx) {
+      const year = new Date().getFullYear();
+      const rand = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).toUpperCase().padStart(8, "0");
+      return `VLN-TAG-${year}-${rand}`;
+    }
+
+    async function sigillaLotto() {
+      const btn = $("btn-sigilla");
+      btn.disabled = true;
+      btn.textContent = "Preparazione...";
+      const box = $("result-box");
+      box.innerHTML = "";
+
+      try {
+        // Verifica/crea produttore: per simplicita usiamo organization se presente, altrimenti
+        // creiamo automaticamente un tag_produttori con dati del brand del prodotto selezionato.
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        let produttoreId;
+        const { data: existing } = await supabase
+          .from("tag_produttori")
+          .select("id")
+          .eq("user_id", user.id)
+          .limit(1)
+          .maybeSingle();
+        if (existing) {
+          produttoreId = existing.id;
+        } else {
+          btn.textContent = "Registro produttore...";
+          const { data: nuovo, error: prErr } = await supabase
+            .from("tag_produttori")
+            .insert({
+              user_id: user.id,
+              ragione_sociale: state.prodotto.brand || "Brand non specificato",
+              p_iva: state.prodotto.brand_vat || null,
+              paese: state.prodotto.paese_origine || "IT"
+            })
+            .select("id")
+            .single();
+          if (prErr) throw new Error("Errore creazione produttore: " + prErr.message);
+          produttoreId = nuovo.id;
+        }
+
+        btn.textContent = "Sigillo " + state.qty + " certificati...";
+
+        // INSERT batch certificati (RLS owner-only)
+        const certificatiData = [];
+        for (let i = 0; i < state.qty; i++) {
+          const codice = genCodiceUnivoco(i);
+          certificatiData.push({
+            produttore_id: produttoreId,
+            codice_pubblico: codice,
+            doc_name: state.prodotto.nome,
+            modello_fisico: state.supporto.id,
+            categoria_merc: state.prodotto.categoria_merc,
+            brand: state.prodotto.brand,
+            codice_lotto: state.batch,
+            lotto: state.batch,
+            numero_serie: String(i + 1).padStart(6, "0"),
+            paese_origine: state.prodotto.paese_origine,
+            data_prevista_applicazione: state.data_prod || null,
+            metadata: {
+              note: state.note,
+              scadenza: state.scadenza,
+              prodotto_id: state.prodotto.id,
+              prodotto_codice_interno: state.prodotto.codice_interno
+            }
+          });
+        }
+
+        const { error: insErr, count } = await supabase
+          .from("tag_certificati")
+          .insert(certificatiData, { count: "exact" });
+        if (insErr) throw new Error("Errore inserimento certificati: " + insErr.message);
+
+        // Aggiorna counter prodotto
+        await supabase
+          .from("crm_prodotti_cliente")
+          .update({
+            lotti_emessi_count: (state.prodotto.lotti_emessi_count ?? 0) + 1,
+            ultima_emissione_at: new Date().toISOString()
+          })
+          .eq("id", state.prodotto.id);
+
+        box.innerHTML = `
+          <div style="background: #e8f5e9; border-left: 3px solid #1e6e3e; padding: 18px 22px; font-family: var(--serif); font-size: 14px; color: #16482a;">
+            <strong>&check; Lotto creato con successo.</strong>
+            <p style="margin: 8px 0 0;">Sono stati emessi ${state.qty} certificati per il lotto <strong>${esc(state.batch)}</strong> del prodotto <strong>${esc(state.prodotto.nome)}</strong>.</p>
+            <p style="margin: 12px 0 0; font-family: var(--mono); font-size: 11px;">La sigillatura su Bitcoin via OpenTimestamps richiede 1-3 ore. Riceverai notifica via email quando confermato.</p>
+            <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="tag-crm.html" class="btn primary">Torna alla bacheca</a>
+              <a href="tag-nuovo-lotto.html" class="btn ghost">Emetti un altro lotto</a>
+            </div>
+          </div>
+        `;
+        btn.style.display = "none";
+
+      } catch (e) {
+        box.innerHTML = `<div style="background: #fde7e4; border-left: 3px solid #b00020; padding: 14px 18px; color: #5a0a0a; font-family: var(--serif); font-size: 14px;">Errore: ${esc(e.message || e)}</div>`;
+        btn.disabled = false;
+        btn.textContent = "Riprova";
+      }
+    }
+
+    // Handlers
+    $("btn-step1-next").addEventListener("click", () => {
+      if (!state.prodotto) return;
+      renderSupporti();
+      // Pre-seleziona supporto default del prodotto
+      if (state.prodotto.modello_fisico_default) {
+        const def = SUPPORTI.find((s) => s.id === state.prodotto.modello_fisico_default);
+        if (def) {
+          state.supporto = def;
+          $("btn-step2-next").disabled = false;
+          setTimeout(() => {
+            const card = document.querySelector(`.sup-card[data-id="${def.id}"]`);
+            if (card) card.classList.add("selected");
+          }, 0);
+        }
+      }
+      showStep(2);
+    });
+
+    $("btn-step2-back").addEventListener("click", () => showStep(1));
+    $("btn-step2-next").addEventListener("click", () => {
+      if (!state.supporto) return;
+      showStep(3);
+    });
+
+    $("btn-step3-back").addEventListener("click", () => showStep(2));
+    $("btn-step3-next").addEventListener("click", () => {
+      state.batch = $("f-batch").value.trim();
+      state.qty = parseInt($("f-qty").value, 10);
+      state.scadenza = $("f-scadenza").value;
+      state.data_prod = $("f-data-prod").value;
+      state.note = $("f-note").value.trim();
+      if (!state.batch) { alert("Inserisci un codice lotto."); return; }
+      if (!state.qty || state.qty < 1 || state.qty > 10000) { alert("Numero di certificati non valido (1-10000)."); return; }
+      showReview();
+      showStep(4);
+    });
+
+    $("btn-step4-back").addEventListener("click", () => showStep(3));
+    $("btn-sigilla").addEventListener("click", sigillaLotto);
+
+    // Pre-seleziona prodotto via query param
+    const params = new URLSearchParams(location.search);
+    const preProd = params.get("prodotto_id");
+
+    loadProdotti().then(() => {
+      if (preProd) {
+        const card = document.querySelector(`.prod-card[data-id="${preProd}"]`);
+        if (card) card.click();
+      }
+    });
+  </script>
+</body>
+</html>
