@@ -1,0 +1,2177 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Tag CRM · Catalogo prodotti</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+
+  <style>
+    /* =========================================================
+       VEYLON Tag CRM · Catalogo prodotti
+       Layout 2 colonne: app-sidebar (240px gestita da app-shell)
+       + main content con header, toolbar, viste tabella/griglia/kanban,
+       wizard 4 step, dettaglio split-pane.
+       ========================================================= */
+
+    .crm-shell {
+      display: block;
+      padding: 0;
+      max-width: none;
+      width: 100%;
+    }
+
+    /* ----------------------- BREADCRUMB + HEADER ----------------------- */
+    .crm-topbar {
+      padding: 18px 32px 0;
+      border-bottom: 1px solid var(--rule-2);
+      background: var(--paper);
+    }
+    .crm-breadcrumb {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 14px;
+    }
+    .crm-breadcrumb a { color: var(--ink-3); border-bottom: 1px solid transparent; }
+    .crm-breadcrumb a:hover { color: var(--ink); border-bottom-color: var(--seal); }
+    .crm-breadcrumb .sep { padding: 0 8px; color: var(--ink-4); }
+
+    .crm-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 18px;
+    }
+    .crm-header-title h1 {
+      font-family: var(--serif);
+      font-size: clamp(30px, 3.4vw, 42px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0 0 6px;
+      color: var(--ink);
+    }
+    .crm-header-title h1 em { font-style: italic; color: var(--seal); }
+    .crm-header-counter {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .crm-header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ----------------------- BUTTONS ----------------------- */
+    .btn-prim, .btn-sec, .btn-ghost, .btn-icon {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      border: 1px solid var(--seal);
+      background: var(--seal);
+      color: var(--paper);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-prim:hover { background: var(--seal-2); border-color: var(--seal-2); }
+    .btn-sec {
+      background: var(--paper);
+      color: var(--seal);
+    }
+    .btn-sec:hover { background: var(--seal-50); }
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--rule);
+      color: var(--ink-2);
+    }
+    .btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+    .btn-prim:disabled, .btn-sec:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ----------------------- VIEW SWITCHER ----------------------- */
+    .view-switcher {
+      display: inline-flex;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+    }
+    .view-switcher button {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      background: transparent;
+      border: 0;
+      border-right: 1px solid var(--rule);
+      color: var(--ink-3);
+      cursor: pointer;
+    }
+    .view-switcher button:last-child { border-right: 0; }
+    .view-switcher button.is-active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    /* ----------------------- TOOLBAR FILTRI ----------------------- */
+    .crm-toolbar {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 12px;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper-2);
+    }
+    .crm-toolbar .search-box {
+      position: relative;
+    }
+    .crm-toolbar .search-box input,
+    .crm-toolbar select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .crm-toolbar .search-box input:focus,
+    .crm-toolbar select:focus {
+      outline: none;
+      border-color: var(--seal);
+    }
+    .filter-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    /* ----------------------- BACHECA CARTE (empty/onboarding) ----------------------- */
+    .bacheca-onboarding {
+      padding: 32px;
+      background: var(--paper);
+    }
+    .bacheca-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .bacheca-card {
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      padding: 22px;
+      transition: border-color 0.15s, transform 0.15s;
+      cursor: pointer;
+      position: relative;
+    }
+    .bacheca-card:hover {
+      border-color: var(--seal);
+      transform: translateY(-2px);
+    }
+    .bacheca-card-num {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--seal);
+      line-height: 1;
+    }
+    .bacheca-card-title {
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.2;
+      color: var(--ink);
+      margin: 10px 0 6px;
+    }
+    .bacheca-card-desc {
+      font-family: var(--serif);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      margin: 0 0 12px;
+    }
+    .bacheca-card-action {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--seal);
+    }
+
+    /* ----------------------- CONTENT WRAPPER ----------------------- */
+    .crm-content {
+      padding: 24px 32px 96px;
+      background: var(--paper);
+      min-height: 60vh;
+    }
+
+    /* ----------------------- VISTA TABELLA ----------------------- */
+    .crm-table-wrap {
+      border: 1px solid var(--rule);
+      background: var(--paper);
+    }
+    .crm-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .crm-table th {
+      text-align: left;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper-2);
+      position: sticky;
+      top: 0;
+    }
+    .crm-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--rule-2);
+      font-family: var(--serif);
+      color: var(--ink);
+      vertical-align: middle;
+    }
+    .crm-table tr { cursor: pointer; transition: background 0.1s; }
+    .crm-table tbody tr:hover { background: var(--paper-2); }
+    .crm-table tr.is-selected { background: var(--seal-50); }
+    .crm-table td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); }
+    .crm-table td.thumb { width: 56px; padding: 8px 12px; }
+    .crm-table td.thumb img,
+    .crm-table td.thumb .thumb-placeholder {
+      width: 44px; height: 44px;
+      object-fit: cover;
+      border: 1px solid var(--rule-2);
+      background: var(--paper-3);
+      display: block;
+    }
+    .crm-table td.thumb .thumb-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--ink-3);
+      letter-spacing: 0.1em;
+    }
+    .crm-table td.actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .crm-table td.actions button {
+      background: transparent;
+      border: 0;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      cursor: pointer;
+      padding: 4px 8px;
+      margin-left: 2px;
+    }
+    .crm-table td.actions button:hover { color: var(--seal); }
+
+    .pill {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border: 1px solid var(--rule);
+      display: inline-block;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      background: var(--paper);
+      white-space: nowrap;
+    }
+    .pill.cat-luxury { color: var(--seal); border-color: var(--seal); }
+    .pill.cat-pharma { color: oklch(0.5 0.13 250); border-color: oklch(0.5 0.13 250); }
+    .pill.cat-food { color: oklch(0.45 0.13 145); border-color: oklch(0.45 0.13 145); }
+    .pill.cat-wine { color: oklch(0.42 0.13 25); border-color: oklch(0.42 0.13 25); }
+    .pill.cat-oil { color: oklch(0.55 0.12 95); border-color: oklch(0.55 0.12 95); }
+    .pill.cat-industry { color: var(--ink-2); border-color: var(--ink-2); }
+    .pill.cat-art { color: oklch(0.45 0.13 320); border-color: oklch(0.45 0.13 320); }
+    .pill.status-on { color: oklch(0.45 0.13 145); border-color: oklch(0.45 0.13 145); }
+    .pill.status-off { color: var(--ink-3); }
+
+    /* ----------------------- VISTA GRIGLIA ----------------------- */
+    .crm-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .crm-grid-card {
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+    }
+    .crm-grid-card:hover { border-color: var(--seal); transform: translateY(-2px); }
+    .crm-grid-thumb {
+      height: 180px;
+      background: var(--paper-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--rule-2);
+      overflow: hidden;
+    }
+    .crm-grid-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .crm-grid-thumb .ph {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .crm-grid-body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+    .crm-grid-cat { margin-bottom: 8px; }
+    .crm-grid-nome {
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1.2;
+      color: var(--ink);
+      margin: 0 0 4px;
+    }
+    .crm-grid-brand {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--ink-2);
+      margin: 0 0 10px;
+    }
+    .crm-grid-codice {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+      margin: 0 0 12px;
+    }
+    .crm-grid-kpi {
+      display: flex;
+      gap: 14px;
+      padding: 10px 0;
+      border-top: 1px solid var(--rule-2);
+      margin-top: auto;
+    }
+    .crm-grid-kpi span {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--ink-3);
+    }
+    .crm-grid-kpi strong {
+      font-family: var(--serif);
+      font-size: 16px;
+      color: var(--ink);
+      display: block;
+      letter-spacing: 0;
+    }
+    .crm-grid-actions {
+      display: flex;
+      border-top: 1px solid var(--rule);
+    }
+    .crm-grid-actions button {
+      flex: 1;
+      padding: 10px 6px;
+      background: transparent;
+      border: 0;
+      border-right: 1px solid var(--rule-2);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      cursor: pointer;
+    }
+    .crm-grid-actions button:last-child { border-right: 0; }
+    .crm-grid-actions button:hover { background: var(--seal-50); color: var(--seal); }
+
+    /* ----------------------- VISTA KANBAN ----------------------- */
+    .crm-kanban {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 280px;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 18px;
+    }
+    .crm-kanban-col {
+      background: var(--paper-2);
+      border: 1px solid var(--rule-2);
+      display: flex;
+      flex-direction: column;
+    }
+    .crm-kanban-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .crm-kanban-head h3 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0;
+      color: var(--ink);
+    }
+    .crm-kanban-head .cnt {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-3);
+    }
+    .crm-kanban-body {
+      padding: 10px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 200px;
+    }
+    .kanban-card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 12px;
+      cursor: pointer;
+    }
+    .kanban-card:hover { border-color: var(--seal); }
+    .kanban-card-nome {
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--ink);
+      margin: 0 0 4px;
+      line-height: 1.25;
+    }
+    .kanban-card-meta {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      color: var(--ink-3);
+      letter-spacing: 0.06em;
+    }
+
+    /* ----------------------- EMPTY STATE ----------------------- */
+    .empty-state {
+      padding: 80px 32px;
+      text-align: center;
+      border: 1px dashed var(--rule);
+      background: var(--paper);
+    }
+    .empty-state h2 {
+      font-family: var(--serif);
+      font-size: 26px;
+      color: var(--ink);
+      margin: 0 0 10px;
+    }
+    .empty-state p {
+      font-family: var(--serif);
+      font-size: 15px;
+      color: var(--ink-2);
+      max-width: 50ch;
+      margin: 0 auto 24px;
+    }
+
+    /* ----------------------- PAGINATION ----------------------- */
+    .crm-pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-top: 1px solid var(--rule);
+      background: var(--paper-2);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+      letter-spacing: 0.08em;
+    }
+    .crm-pagination .pager-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .crm-pagination button {
+      padding: 6px 10px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-2);
+      cursor: pointer;
+    }
+    .crm-pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .crm-pagination select {
+      padding: 5px 8px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      font-family: var(--mono);
+      font-size: 10.5px;
+    }
+
+    /* ----------------------- BULK ACTIONS BAR ----------------------- */
+    .bulk-bar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 12px 18px;
+      background: var(--ink);
+      color: var(--paper);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .bulk-bar span {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+    .bulk-bar button {
+      background: transparent;
+      border: 1px solid var(--paper);
+      color: var(--paper);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .bulk-bar button:hover { background: var(--paper); color: var(--ink); }
+
+    /* ----------------------- BADGE BOZZA ----------------------- */
+    .draft-badge {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      background: var(--seal);
+      color: var(--paper);
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--seal-2);
+      z-index: 50;
+      cursor: pointer;
+    }
+    .draft-badge:hover { background: var(--seal-2); }
+
+    /* ----------------------- WIZARD MODALE ----------------------- */
+    .wizard-backdrop {
+      position: fixed;
+      inset: 0;
+      background: oklch(0.18 0.015 50 / 0.55);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .wizard-backdrop[hidden] { display: none; }
+    .wizard {
+      background: var(--paper);
+      width: 100%;
+      max-width: 880px;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--rule);
+      box-shadow: 0 30px 80px oklch(0.18 0.015 50 / 0.25);
+    }
+    .wizard-head {
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .wizard-head h2 {
+      font-family: var(--serif);
+      font-size: 26px;
+      color: var(--ink);
+      margin: 0;
+    }
+    .wizard-head .close-btn {
+      background: transparent;
+      border: 1px solid var(--rule);
+      width: 32px; height: 32px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--ink-2);
+    }
+    .wizard-steps {
+      display: flex;
+      padding: 14px 28px;
+      gap: 8px;
+      border-bottom: 1px solid var(--rule-2);
+      background: var(--paper-2);
+    }
+    .wizard-steps .step {
+      flex: 1;
+      padding: 8px 6px;
+      border-bottom: 2px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      text-align: center;
+    }
+    .wizard-steps .step.is-active {
+      border-bottom-color: var(--seal);
+      color: var(--seal);
+    }
+    .wizard-steps .step.is-done {
+      border-bottom-color: var(--ink);
+      color: var(--ink);
+    }
+    .wizard-body {
+      padding: 26px 28px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .wizard-foot {
+      padding: 18px 28px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--paper-2);
+    }
+    .wizard-foot .wizard-foot-right { display: flex; gap: 8px; }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .field-grid.full > * { grid-column: 1 / -1; }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .field.span-2 { grid-column: 1 / -1; }
+    .field label {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .field label .req { color: var(--seal); }
+    .field input, .field select, .field textarea {
+      padding: 10px 12px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--ink);
+      width: 100%;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--seal);
+    }
+    .field textarea { min-height: 70px; resize: vertical; font-family: var(--serif); }
+    .field-hint {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+    .field-error {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--seal);
+      letter-spacing: 0.05em;
+    }
+
+    /* Materiali dinamici step 3 */
+    .materiali-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+    .materiale-row {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1fr 0.8fr 0.8fr 30px;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--rule-2);
+      background: var(--paper-2);
+      align-items: center;
+    }
+    .materiale-row input, .materiale-row select {
+      padding: 7px 9px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      font-family: var(--serif);
+      font-size: 12px;
+    }
+    .materiale-row .del-mat {
+      background: transparent;
+      border: 1px solid var(--rule);
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--ink-3);
+      height: 28px;
+    }
+
+    /* Supporti Veylon step 4 */
+    .supporti-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .supporto-card {
+      padding: 14px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .supporto-card:hover { border-color: var(--seal); }
+    .supporto-card.is-active {
+      border-color: var(--seal);
+      background: var(--seal-50);
+    }
+    .supporto-card h4 {
+      font-family: var(--serif);
+      font-size: 16px;
+      margin: 0 0 4px;
+      color: var(--ink);
+    }
+    .supporto-card .supp-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .supporto-card .supp-desc {
+      font-family: var(--serif);
+      font-size: 12.5px;
+      color: var(--ink-2);
+      margin: 6px 0 0;
+      line-height: 1.4;
+    }
+
+    /* Conformita checkboxes step 4 */
+    .conformita-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .conformita-grid label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 6px 10px;
+      border: 1px solid var(--rule-2);
+      background: var(--paper);
+    }
+    .conformita-grid label:hover { border-color: var(--rule); }
+    .conformita-grid input[type="checkbox"] { accent-color: var(--seal); }
+
+    /* ----------------------- DETTAGLIO SPLIT-PANE ----------------------- */
+    .detail-pane {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 380px;
+      max-width: 92vw;
+      height: 100vh;
+      background: var(--paper);
+      border-left: 1px solid var(--rule);
+      box-shadow: -20px 0 50px oklch(0.18 0.015 50 / 0.12);
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+    }
+    .detail-pane.is-open { transform: translateX(0); }
+    .detail-head {
+      padding: 22px 22px 14px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .detail-head .close-d {
+      float: right;
+      background: transparent;
+      border: 1px solid var(--rule);
+      width: 30px; height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--ink-2);
+    }
+    .detail-head h3 {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: var(--ink);
+      margin: 8px 0 4px;
+      max-width: 80%;
+    }
+    .detail-head .detail-codice {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-3);
+      letter-spacing: 0.1em;
+    }
+    .detail-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper-2);
+    }
+    .detail-tabs button {
+      flex: 1;
+      padding: 12px 8px;
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      cursor: pointer;
+    }
+    .detail-tabs button.is-active {
+      color: var(--ink);
+      border-bottom-color: var(--seal);
+    }
+    .detail-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 22px;
+    }
+    .detail-section { margin-bottom: 22px; }
+    .detail-section h4 {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin: 0 0 8px;
+    }
+    .detail-section dl {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 6px 14px;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 13.5px;
+    }
+    .detail-section dt { color: var(--ink-3); font-style: italic; }
+    .detail-section dd { margin: 0; color: var(--ink); }
+    .detail-foot {
+      padding: 16px 22px;
+      border-top: 1px solid var(--rule);
+      background: var(--paper-2);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .detail-foot button { flex: 1; min-width: 140px; }
+
+    /* ----------------------- STATE MESSAGES ----------------------- */
+    .state-msg {
+      padding: 28px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-2);
+      text-align: center;
+    }
+    .state-msg.state-err { color: var(--seal); }
+
+    /* ----------------------- RESPONSIVE ----------------------- */
+    @media (max-width: 1100px) {
+      .crm-toolbar { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 800px) {
+      .crm-topbar, .crm-content, .crm-toolbar { padding-left: 18px; padding-right: 18px; }
+      .crm-toolbar { grid-template-columns: 1fr; }
+      .crm-header { flex-direction: column; align-items: flex-start; }
+      .crm-header-actions { width: 100%; flex-wrap: wrap; }
+      .crm-header-actions .view-switcher { width: 100%; }
+      .crm-header-actions .view-switcher button { flex: 1; }
+      .crm-table-wrap { overflow-x: auto; }
+      .crm-table { min-width: 880px; }
+      .field-grid { grid-template-columns: 1fr; }
+      .detail-pane { width: 100vw; }
+      .materiale-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try { await protectPage(); await renderAppShell("tag"); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  </script>
+
+  <div class="crm-shell">
+
+    <!-- TOPBAR: breadcrumb + header con titolo, counter, azioni -->
+    <div class="crm-topbar">
+      <div class="crm-breadcrumb">
+        <a href="dashboard.html">Cruscotto</a>
+        <span class="sep">&rsaquo;</span>
+        <a href="tag.html">Veylon Tag</a>
+        <span class="sep">&rsaquo;</span>
+        <a href="tag.html">CRM</a>
+        <span class="sep">&rsaquo;</span>
+        <span>Catalogo prodotti</span>
+      </div>
+
+      <div class="crm-header">
+        <div class="crm-header-title">
+          <h1>I tuoi <em>prodotti</em>.</h1>
+          <div class="crm-header-counter" id="counter-prodotti">Caricamento&hellip;</div>
+        </div>
+        <div class="crm-header-actions">
+          <div class="view-switcher" role="tablist" aria-label="Cambia vista">
+            <button type="button" data-view="tabella" class="is-active">Tabella</button>
+            <button type="button" data-view="griglia">Griglia</button>
+            <button type="button" data-view="kanban">Kanban</button>
+          </div>
+          <button type="button" class="btn-ghost" id="btn-import">Importa CSV</button>
+          <button type="button" class="btn-prim" id="btn-nuovo">+ Nuovo prodotto</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLBAR FILTRI -->
+    <div class="crm-toolbar">
+      <div class="search-box">
+        <label class="filter-label" for="f-search">Cerca</label>
+        <input type="search" id="f-search" placeholder="Nome prodotto o codice interno..."/>
+      </div>
+      <div>
+        <label class="filter-label" for="f-categoria">Categoria</label>
+        <select id="f-categoria">
+          <option value="">Tutte le categorie</option>
+          <option value="luxury.watch">Lusso · Orologi</option>
+          <option value="luxury.jewel">Lusso · Gioielli</option>
+          <option value="luxury.fashion">Lusso · Fashion</option>
+          <option value="pharma.drug">Pharma · Farmaco</option>
+          <option value="pharma.device">Pharma · Dispositivo</option>
+          <option value="wine.dop">Vino DOP</option>
+          <option value="oil.dop">Olio DOP</option>
+          <option value="food.bio">Food Biologico</option>
+          <option value="industry.oem">Industria OEM</option>
+          <option value="art.edition">Arte · Edizione</option>
+        </select>
+      </div>
+      <div>
+        <label class="filter-label" for="f-stato">Stato</label>
+        <select id="f-stato">
+          <option value="">Tutti</option>
+          <option value="attivo">Attivo</option>
+          <option value="inattivo">Inattivo</option>
+        </select>
+      </div>
+      <div>
+        <label class="filter-label" for="f-conformita">Conformita</label>
+        <select id="f-conformita">
+          <option value="">Tutte le normative</option>
+          <option value="ESPR">ESPR (Reg. UE 2024/1781)</option>
+          <option value="EUDR">EUDR (Reg. UE 2023/1115)</option>
+          <option value="FMD">FMD (Dir. 2016/161)</option>
+          <option value="Battery">Battery Reg. 2023/1542</option>
+          <option value="GS1">GS1 Digital Link</option>
+          <option value="eIDAS">eIDAS art. 41</option>
+        </select>
+      </div>
+      <div>
+        <label class="filter-label" for="f-sort">Ordina per</label>
+        <select id="f-sort">
+          <option value="recent">Piu recenti</option>
+          <option value="nome">Nome A-Z</option>
+          <option value="lotti">Lotti emessi</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="crm-content">
+
+      <!-- BACHECA ONBOARDING (mostrata se 0 prodotti) -->
+      <div id="bacheca-onboarding" class="bacheca-onboarding" hidden>
+        <div style="margin-bottom: 24px;">
+          <span class="filter-label">Per iniziare</span>
+          <h2 style="font-family: var(--serif); font-size: 28px; margin: 6px 0 4px; color: var(--ink);">
+            Crea il tuo primo prodotto.
+          </h2>
+          <p style="font-family: var(--serif); font-size: 15px; color: var(--ink-2); margin: 0; max-width: 60ch;">
+            Il catalogo CRM raccoglie tutta la tua merce. Una volta inserito un prodotto, potrai emettere certificati Veylon Tag in serie selezionando il prodotto, scegliendo il supporto fisico e aggiungendo i dati di lotto.
+          </p>
+        </div>
+        <div class="bacheca-grid">
+          <div class="bacheca-card" data-card="manual">
+            <div class="bacheca-card-num">i</div>
+            <h3 class="bacheca-card-title">Crea manualmente</h3>
+            <p class="bacheca-card-desc">Wizard guidato in 4 step: identificazione, brand, filiera, supporto fisico e conformita.</p>
+            <span class="bacheca-card-action">Apri wizard &rarr;</span>
+          </div>
+          <div class="bacheca-card" data-card="csv">
+            <div class="bacheca-card-num">ii</div>
+            <h3 class="bacheca-card-title">Importa CSV</h3>
+            <p class="bacheca-card-desc">Carica fino a 5.000 prodotti da foglio Excel/CSV. Template fornito a download.</p>
+            <span class="bacheca-card-action">Carica file &rarr;</span>
+          </div>
+          <div class="bacheca-card" data-card="api">
+            <div class="bacheca-card-num">iii</div>
+            <h3 class="bacheca-card-title">Sincronizza via API</h3>
+            <p class="bacheca-card-desc">Collega il tuo ERP/PIM via REST. Endpoint POST /api/crm/prodotti documentato in Developers.</p>
+            <span class="bacheca-card-action">Vai a Developers &rarr;</span>
+          </div>
+          <div class="bacheca-card" data-card="demo">
+            <div class="bacheca-card-num">iv</div>
+            <h3 class="bacheca-card-title">Esempio dimostrativo</h3>
+            <p class="bacheca-card-desc">Crea un prodotto di esempio pre-compilato per categoria, da modificare e usare come template.</p>
+            <span class="bacheca-card-action">Inserisci esempio &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BULK ACTIONS BAR (sticky quando ci sono selezionati) -->
+      <div id="bulk-bar" class="bulk-bar" hidden>
+        <span><strong id="bulk-count">0</strong> prodotti selezionati</span>
+        <div>
+          <button type="button" data-bulk="activate">Attiva</button>
+          <button type="button" data-bulk="deactivate">Disattiva</button>
+          <button type="button" data-bulk="export">Esporta CSV</button>
+          <button type="button" data-bulk="delete">Elimina</button>
+          <button type="button" data-bulk="clear">Annulla</button>
+        </div>
+      </div>
+
+      <!-- STATE -->
+      <div id="state-loading" class="state-msg">Caricamento catalogo&hellip;</div>
+      <div id="state-error" class="state-msg state-err" hidden><span></span></div>
+
+      <!-- EMPTY (post-load se nessun risultato filtro) -->
+      <div id="state-empty" class="empty-state" hidden>
+        <h2>Nessun prodotto corrisponde ai filtri.</h2>
+        <p>Modifica i criteri di ricerca oppure crea un nuovo prodotto.</p>
+        <button type="button" class="btn-prim" id="btn-empty-new">+ Nuovo prodotto</button>
+      </div>
+
+      <!-- VISTA TABELLA -->
+      <div id="view-tabella" class="crm-table-wrap" hidden>
+        <table class="crm-table" id="tbl">
+          <thead>
+            <tr>
+              <th style="width: 32px;"><input type="checkbox" id="chk-all"/></th>
+              <th></th>
+              <th>Codice interno</th>
+              <th>Nome</th>
+              <th>Brand</th>
+              <th>Categoria</th>
+              <th>GTIN</th>
+              <th style="text-align: right;">Lotti</th>
+              <th>Ultima emissione</th>
+              <th>Stato</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbl-body"></tbody>
+        </table>
+        <div class="crm-pagination">
+          <span id="pager-info">&mdash;</span>
+          <div class="pager-controls">
+            <span>Righe per pagina:</span>
+            <select id="page-size">
+              <option value="25">25</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+            <button type="button" id="page-prev">&larr;</button>
+            <span id="page-cur">1</span>
+            <button type="button" id="page-next">&rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA GRIGLIA -->
+      <div id="view-griglia" class="crm-grid" hidden></div>
+
+      <!-- VISTA KANBAN -->
+      <div id="view-kanban" class="crm-kanban" hidden></div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- WIZARD MODALE NUOVO PRODOTTO -->
+  <!-- ===================================================================== -->
+  <div id="wizard-backdrop" class="wizard-backdrop" hidden>
+    <div class="wizard" role="dialog" aria-modal="true" aria-labelledby="wizard-title">
+      <div class="wizard-head">
+        <div>
+          <h2 id="wizard-title">Nuovo prodotto</h2>
+          <p style="font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-2); margin: 4px 0 0;">
+            Anagrafica riusabile per emettere certificati Veylon Tag in serie.
+          </p>
+        </div>
+        <button type="button" class="close-btn" id="wizard-close" aria-label="Chiudi">&times;</button>
+      </div>
+
+      <div class="wizard-steps" id="wizard-steps">
+        <div class="step is-active" data-step="1">i &middot; Identificazione</div>
+        <div class="step" data-step="2">ii &middot; Brand</div>
+        <div class="step" data-step="3">iii &middot; Filiera</div>
+        <div class="step" data-step="4">iv &middot; Supporto</div>
+      </div>
+
+      <div class="wizard-body" id="wizard-body">
+        <!-- STEP 1: IDENTIFICAZIONE -->
+        <div data-step-content="1">
+          <div class="field-grid">
+            <div class="field">
+              <label for="w-codice">Codice interno (SKU) <span class="req">*</span></label>
+              <input type="text" id="w-codice" placeholder="Es. EVO-2026-001" required maxlength="64"/>
+              <span class="field-hint">Identificatore univoco nel tuo catalogo.</span>
+            </div>
+            <div class="field">
+              <label for="w-nome">Nome prodotto <span class="req">*</span></label>
+              <input type="text" id="w-nome" placeholder="Es. Evoluzione Carbon 39mm" required maxlength="180"/>
+            </div>
+            <div class="field span-2">
+              <label for="w-descrizione">Descrizione</label>
+              <textarea id="w-descrizione" placeholder="Descrizione commerciale del prodotto (max 800 caratteri)..." maxlength="800"></textarea>
+            </div>
+            <div class="field">
+              <label for="w-categoria">Categoria merceologica <span class="req">*</span></label>
+              <select id="w-categoria" required>
+                <option value="">Seleziona categoria...</option>
+                <option value="luxury.watch">Lusso &middot; Orologi</option>
+                <option value="luxury.jewel">Lusso &middot; Gioielli</option>
+                <option value="luxury.fashion">Lusso &middot; Fashion</option>
+                <option value="pharma.drug">Pharma &middot; Farmaco</option>
+                <option value="pharma.device">Pharma &middot; Dispositivo</option>
+                <option value="wine.dop">Vino DOP</option>
+                <option value="oil.dop">Olio DOP</option>
+                <option value="food.bio">Food Biologico</option>
+                <option value="industry.oem">Industria OEM</option>
+                <option value="art.edition">Arte &middot; Edizione</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="w-immagine">Immagine prodotto (URL)</label>
+              <input type="url" id="w-immagine" placeholder="https://..."/>
+              <span class="field-hint">URL pubblico (Supabase Storage). Upload diretto in arrivo.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: BRAND -->
+        <div data-step-content="2" hidden>
+          <div class="field-grid">
+            <div class="field span-2">
+              <label for="w-brand">Brand / ragione sociale</label>
+              <input type="text" id="w-brand" placeholder="Es. Maison Geneve S.A." maxlength="180"/>
+              <span class="field-hint">Compare nel passaporto digitale come titolare del marchio.</span>
+            </div>
+            <div class="field">
+              <label for="w-brand-vat">Partita IVA brand</label>
+              <input type="text" id="w-brand-vat" placeholder="Es. CHE-100.123.456" maxlength="40"/>
+            </div>
+            <div class="field">
+              <label for="w-brand-eori">Codice EORI</label>
+              <input type="text" id="w-brand-eori" placeholder="Es. CHE100123456" maxlength="40"/>
+              <span class="field-hint">Operatore economico (per export UE).</span>
+            </div>
+            <div class="field span-2">
+              <label for="w-gtin">GTIN (codice EAN/UPC)</label>
+              <input type="text" id="w-gtin" placeholder="14 cifre" maxlength="14" pattern="[0-9]{14}"/>
+              <span class="field-hint">Obbligatorio per pharma (FMD) e GS1 Digital Link.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: FILIERA E ORIGINE -->
+        <div data-step-content="3" hidden>
+          <div class="field-grid">
+            <div class="field">
+              <label for="w-paese">Paese di origine (ISO2)</label>
+              <input type="text" id="w-paese" placeholder="Es. IT, CH, FR" maxlength="2" style="text-transform: uppercase;"/>
+            </div>
+            <div class="field">
+              <label for="w-stabilimento">Stabilimento produttivo</label>
+              <input type="text" id="w-stabilimento" placeholder="Es. Bienne, sito FR-002" maxlength="160"/>
+            </div>
+            <div class="field span-2">
+              <label for="w-filiera">Catena di fornitura</label>
+              <textarea id="w-filiera" placeholder="Descrivi la filiera di approvvigionamento (es. materie prime &rarr; lavorazione &rarr; assemblaggio &rarr; spedizione)..."></textarea>
+            </div>
+            <div class="field span-2">
+              <label>Materiali e componenti</label>
+              <span class="field-hint">Aggiungi i materiali che compongono il prodotto (per ESPR Digital Product Passport).</span>
+              <div class="materiali-list" id="materiali-list"></div>
+              <button type="button" class="btn-ghost" id="add-materiale" style="margin-top: 10px; width: fit-content;">+ Aggiungi materiale</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: SUPPORTO + CONFORMITA -->
+        <div data-step-content="4" hidden>
+          <div class="field span-2">
+            <label>Supporto fisico Veylon preferito</label>
+            <span class="field-hint">Sara' il supporto di default in fase di emissione lotti. Potrai modificarlo per ogni emissione.</span>
+            <div class="supporti-grid" id="supporti-grid"></div>
+          </div>
+
+          <div class="field span-2" style="margin-top: 24px;">
+            <label>Conformita normativa applicabile</label>
+            <span class="field-hint">Seleziona le normative che il prodotto rispetta.</span>
+            <div class="conformita-grid">
+              <label><input type="checkbox" value="ESPR" data-conf/>ESPR (Reg. UE 2024/1781)</label>
+              <label><input type="checkbox" value="EUDR" data-conf/>EUDR (Reg. UE 2023/1115)</label>
+              <label><input type="checkbox" value="FMD" data-conf/>FMD (Dir. 2016/161)</label>
+              <label><input type="checkbox" value="Battery" data-conf/>Battery Reg. 2023/1542</label>
+              <label><input type="checkbox" value="GS1" data-conf/>GS1 Digital Link</label>
+              <label><input type="checkbox" value="eIDAS" data-conf/>eIDAS art. 41</label>
+              <label><input type="checkbox" value="EN18221" data-conf/>EN 18221</label>
+              <label><input type="checkbox" value="DOP" data-conf/>DOP / IGP / DOC</label>
+            </div>
+          </div>
+
+          <div id="dati-specifici-wrap" class="field span-2" style="margin-top: 24px;" hidden>
+            <label>Dati specifici per categoria</label>
+            <div id="dati-specifici-fields"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wizard-foot">
+        <button type="button" class="btn-ghost" id="wizard-prev" disabled>&larr; Indietro</button>
+        <div class="wizard-foot-right">
+          <button type="button" class="btn-sec" id="wizard-save-more" hidden>Salva e crea altro</button>
+          <button type="button" class="btn-prim" id="wizard-next">Avanti &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- DETTAGLIO SPLIT-PANE -->
+  <!-- ===================================================================== -->
+  <aside class="detail-pane" id="detail-pane" aria-hidden="true">
+    <div class="detail-head">
+      <button type="button" class="close-d" id="detail-close" aria-label="Chiudi">&times;</button>
+      <span class="filter-label" id="detail-categoria">&mdash;</span>
+      <h3 id="detail-nome">&mdash;</h3>
+      <div class="detail-codice" id="detail-codice">&mdash;</div>
+    </div>
+    <div class="detail-tabs">
+      <button type="button" data-dtab="generale" class="is-active">Generale</button>
+      <button type="button" data-dtab="materiali">Materiali</button>
+      <button type="button" data-dtab="lotti">Storico lotti</button>
+      <button type="button" data-dtab="allegati">Allegati</button>
+    </div>
+    <div class="detail-body" id="detail-body"></div>
+    <div class="detail-foot">
+      <button type="button" class="btn-ghost" id="d-modifica">Modifica</button>
+      <button type="button" class="btn-prim" id="d-emetti">Emetti lotto</button>
+      <button type="button" class="btn-sec" id="d-duplica">Duplica</button>
+      <button type="button" class="btn-ghost" id="d-elimina" style="color: var(--seal); border-color: var(--seal);">Elimina</button>
+    </div>
+  </aside>
+
+  <!-- BADGE BOZZA -->
+  <button type="button" class="draft-badge" id="draft-badge" hidden>
+    Bozza non salvata &middot; Riprendi
+  </button>
+
+  <!-- ===================================================================== -->
+  <!-- SCRIPT APPLICATIVO -->
+  <!-- ===================================================================== -->
+  <script type="module">
+    import { supabase, getUser } from "./_shared/supabase-client.js";
+
+    // ---------- CONSTANTS ----------
+    const CATEGORIE = {
+      "luxury.watch":   { label: "Lusso · Orologi",     cls: "cat-luxury" },
+      "luxury.jewel":   { label: "Lusso · Gioielli",    cls: "cat-luxury" },
+      "luxury.fashion": { label: "Lusso · Fashion",     cls: "cat-luxury" },
+      "pharma.drug":    { label: "Pharma · Farmaco",    cls: "cat-pharma" },
+      "pharma.device":  { label: "Pharma · Dispositivo",cls: "cat-pharma" },
+      "wine.dop":       { label: "Vino DOP",            cls: "cat-wine" },
+      "oil.dop":        { label: "Olio DOP",            cls: "cat-oil" },
+      "food.bio":       { label: "Food Biologico",      cls: "cat-food" },
+      "industry.oem":   { label: "Industria OEM",       cls: "cat-industry" },
+      "art.edition":    { label: "Arte · Edizione",     cls: "cat-art" },
+    };
+
+    // Supporti Veylon disponibili (allineati a tag_certificati.modello_fisico)
+    const SUPPORTI = [
+      { code: "qr",     nome: "QR adesivo",          costo: "0.12 €", desc: "Etichetta QR adesiva resistente, lettura smartphone." },
+      { code: "nfc",    nome: "NFC NTAG 213",        costo: "0.38 €", desc: "Chip NFC statico, tap su smartphone, no app." },
+      { code: "holo",   nome: "Sigillo olografico",  costo: "0.84 €", desc: "Sigillo olografico anti-contraffazione." },
+      { code: "micro",  nome: "Microdot invisibile", costo: "1.40 €", desc: "Microdot UV invisibile, ispezione forensica." },
+      { code: "tamper", nome: "Capsula tamper",      costo: "0.22 €", desc: "Capsula tamper-evident apertura confezione." },
+    ];
+
+    // Campi specifici per categoria
+    const DATI_SPECIFICI = {
+      "pharma.drug":   [["aic", "AIC (Autorizzazione)"], ["scadenza_default", "Scadenza tipica (mesi)"]],
+      "pharma.device": [["cnd", "Codice CND"], ["udi", "UDI base"]],
+      "wine.dop":      [["disciplinare", "Disciplinare DOP"], ["annata_default", "Annata"]],
+      "oil.dop":       [["disciplinare", "Disciplinare DOP"], ["acidita_max", "Acidita max (%)"]],
+      "food.bio":      [["certificatore_bio", "Ente certificatore BIO"], ["scadenza_default", "Scadenza tipica (giorni)"]],
+      "luxury.watch":  [["calibro", "Calibro / movimento"], ["materiale_cassa", "Materiale cassa"]],
+      "luxury.jewel":  [["caratura", "Caratura oro/platino"], ["pietra_principale", "Pietra principale"]],
+      "industry.oem":  [["norma_ce", "Norma CE applicata"], ["classe", "Classe prodotto"]],
+      "art.edition":   [["autore", "Autore"], ["edizione", "Edizione (es. 1/100)"]],
+    };
+
+    const DRAFT_KEY = "veylon:tag-prodotti:draft-v1";
+    const PAGE_SIZE_KEY = "veylon:tag-prodotti:pagesize";
+
+    // ---------- STATE ----------
+    let state = {
+      user: null,
+      prodotti: [],
+      filtered: [],
+      view: "tabella",
+      page: 1,
+      pageSize: parseInt(localStorage.getItem(PAGE_SIZE_KEY) || "50", 10),
+      selected: new Set(),
+      detailId: null,
+      detailTab: "generale",
+      wizardStep: 1,
+      wizardData: null,
+      wizardEditId: null,
+      filters: { search: "", categoria: "", stato: "", conformita: "", sort: "recent" },
+    };
+
+    // ---------- UTILS ----------
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => Array.from(document.querySelectorAll(s));
+    function escapeHtml(s) {
+      return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    }
+    function slugify(s) {
+      return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+    }
+    function fmtDate(d) {
+      if (!d) return "—";
+      try { return new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" }); }
+      catch { return "—"; }
+    }
+    function debounce(fn, ms) {
+      let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+    }
+    function showError(msg) {
+      const el = $("#state-error");
+      el.querySelector("span").textContent = msg;
+      el.hidden = false;
+    }
+    function clearError() { $("#state-error").hidden = true; }
+
+    // ---------- LOAD ----------
+    async function loadProdotti() {
+      $("#state-loading").hidden = false;
+      clearError();
+      try {
+        const { data, error } = await supabase
+          .from("crm_prodotti_cliente")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(2000);
+        if (error) throw error;
+        state.prodotti = data ?? [];
+        applyFilters();
+      } catch (e) {
+        console.error("[crm-prodotti] load error", e);
+        showError("Impossibile caricare il catalogo: " + (e.message || "errore sconosciuto"));
+      } finally {
+        $("#state-loading").hidden = true;
+      }
+    }
+
+    // ---------- FILTERS ----------
+    function applyFilters() {
+      const f = state.filters;
+      let list = state.prodotti.slice();
+      if (f.search) {
+        const q = f.search.toLowerCase();
+        list = list.filter(p =>
+          (p.nome || "").toLowerCase().includes(q) ||
+          (p.codice_interno || "").toLowerCase().includes(q) ||
+          (p.brand || "").toLowerCase().includes(q)
+        );
+      }
+      if (f.categoria) list = list.filter(p => p.categoria_merc === f.categoria);
+      if (f.stato === "attivo") list = list.filter(p => p.attivo === true);
+      if (f.stato === "inattivo") list = list.filter(p => p.attivo === false);
+      if (f.conformita) list = list.filter(p => Array.isArray(p.conformita_normativa) && p.conformita_normativa.includes(f.conformita));
+      if (f.sort === "nome") list.sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "it"));
+      else if (f.sort === "lotti") list.sort((a, b) => (b.lotti_emessi_count || 0) - (a.lotti_emessi_count || 0));
+      else list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      state.filtered = list;
+      state.page = 1;
+      render();
+    }
+
+    // ---------- RENDER ----------
+    function render() {
+      const tot = state.prodotti.length;
+      const attivi = state.prodotti.filter(p => p.attivo).length;
+      $("#counter-prodotti").textContent = `${tot} prodotti totali · ${attivi} attivi`;
+
+      const isEmpty = tot === 0;
+      $("#bacheca-onboarding").hidden = !isEmpty;
+      $("#view-tabella").hidden = isEmpty || state.view !== "tabella";
+      $("#view-griglia").hidden = isEmpty || state.view !== "griglia";
+      $("#view-kanban").hidden = isEmpty || state.view !== "kanban";
+      $("#state-empty").hidden = isEmpty || state.filtered.length > 0;
+
+      if (isEmpty) return;
+      if (state.filtered.length === 0) return;
+
+      if (state.view === "tabella") renderTabella();
+      else if (state.view === "griglia") renderGriglia();
+      else if (state.view === "kanban") renderKanban();
+
+      renderBulkBar();
+    }
+
+    function renderTabella() {
+      const start = (state.page - 1) * state.pageSize;
+      const slice = state.filtered.slice(start, start + state.pageSize);
+      const tbody = $("#tbl-body");
+      tbody.innerHTML = slice.map(p => {
+        const cat = CATEGORIE[p.categoria_merc] || { label: "—", cls: "" };
+        const checked = state.selected.has(p.id) ? "checked" : "";
+        const sel = state.detailId === p.id ? "is-selected" : "";
+        const thumb = p.immagine_url
+          ? `<img src="${escapeHtml(p.immagine_url)}" alt=""/>`
+          : `<div class="thumb-placeholder">${escapeHtml((p.codice_interno || "—").slice(0, 3).toUpperCase())}</div>`;
+        return `
+          <tr class="${sel}" data-id="${escapeHtml(p.id)}">
+            <td onclick="event.stopPropagation()"><input type="checkbox" data-bulk-chk="${escapeHtml(p.id)}" ${checked}/></td>
+            <td class="thumb">${thumb}</td>
+            <td class="mono">${escapeHtml(p.codice_interno || "—")}</td>
+            <td><strong>${escapeHtml(p.nome || "—")}</strong></td>
+            <td>${escapeHtml(p.brand || "—")}</td>
+            <td><span class="pill ${cat.cls}">${escapeHtml(cat.label)}</span></td>
+            <td class="mono">${escapeHtml(p.gtin || "—")}</td>
+            <td style="text-align: right;" class="mono">${p.lotti_emessi_count || 0}</td>
+            <td>${fmtDate(p.ultima_emissione_at)}</td>
+            <td><span class="pill ${p.attivo ? "status-on" : "status-off"}">${p.attivo ? "Attivo" : "Inattivo"}</span></td>
+            <td class="actions">
+              <button type="button" data-act="emetti" data-id="${escapeHtml(p.id)}">Emetti</button>
+              <button type="button" data-act="edit" data-id="${escapeHtml(p.id)}">Modifica</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      // Pagination info
+      const total = state.filtered.length;
+      const from = total === 0 ? 0 : start + 1;
+      const to = Math.min(start + state.pageSize, total);
+      $("#pager-info").textContent = `${from}-${to} di ${total} prodotti`;
+      $("#page-cur").textContent = String(state.page);
+      $("#page-prev").disabled = state.page <= 1;
+      $("#page-next").disabled = to >= total;
+    }
+
+    function renderGriglia() {
+      const list = state.filtered;
+      const wrap = $("#view-griglia");
+      wrap.innerHTML = list.map(p => {
+        const cat = CATEGORIE[p.categoria_merc] || { label: "—", cls: "" };
+        const thumb = p.immagine_url
+          ? `<img src="${escapeHtml(p.immagine_url)}" alt=""/>`
+          : `<div class="ph">${escapeHtml(cat.label)}</div>`;
+        return `
+          <article class="crm-grid-card" data-id="${escapeHtml(p.id)}">
+            <div class="crm-grid-thumb">${thumb}</div>
+            <div class="crm-grid-body">
+              <div class="crm-grid-cat"><span class="pill ${cat.cls}">${escapeHtml(cat.label)}</span></div>
+              <h3 class="crm-grid-nome">${escapeHtml(p.nome || "—")}</h3>
+              <div class="crm-grid-brand">${escapeHtml(p.brand || "—")}</div>
+              <div class="crm-grid-codice">${escapeHtml(p.codice_interno || "—")}</div>
+              <div class="crm-grid-kpi">
+                <div><strong>${p.lotti_emessi_count || 0}</strong><span>Lotti emessi</span></div>
+                <div><strong>${p.attivo ? "Attivo" : "Off"}</strong><span>Stato</span></div>
+              </div>
+            </div>
+            <div class="crm-grid-actions">
+              <button type="button" data-act="edit" data-id="${escapeHtml(p.id)}">Modifica</button>
+              <button type="button" data-act="emetti" data-id="${escapeHtml(p.id)}">Emetti</button>
+              <button type="button" data-act="duplica" data-id="${escapeHtml(p.id)}">Duplica</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderKanban() {
+      const wrap = $("#view-kanban");
+      const cols = Object.keys(CATEGORIE).map(catKey => {
+        const items = state.filtered.filter(p => p.categoria_merc === catKey);
+        const cards = items.map(p => `
+          <div class="kanban-card" data-id="${escapeHtml(p.id)}">
+            <h4 class="kanban-card-nome">${escapeHtml(p.nome || "—")}</h4>
+            <div class="kanban-card-meta">${escapeHtml(p.codice_interno || "—")} &middot; ${p.lotti_emessi_count || 0} lotti</div>
+          </div>
+        `).join("");
+        return `
+          <div class="crm-kanban-col">
+            <div class="crm-kanban-head">
+              <h3>${escapeHtml(CATEGORIE[catKey].label)}</h3>
+              <span class="cnt">${items.length}</span>
+            </div>
+            <div class="crm-kanban-body">${cards || '<div style="font-family: var(--serif); font-style: italic; color: var(--ink-3); font-size: 12px; padding: 8px;">Nessun prodotto</div>'}</div>
+          </div>
+        `;
+      }).join("");
+      wrap.innerHTML = cols;
+    }
+
+    function renderBulkBar() {
+      const n = state.selected.size;
+      $("#bulk-bar").hidden = n === 0;
+      $("#bulk-count").textContent = String(n);
+    }
+
+    // ---------- WIZARD ----------
+    function defaultWizardData() {
+      return {
+        codice_interno: "",
+        nome: "",
+        slug: "",
+        descrizione: "",
+        categoria_merc: "",
+        immagine_url: "",
+        brand: "",
+        brand_vat: "",
+        brand_eori: "",
+        gtin: "",
+        paese_origine: "",
+        stabilimento: "",
+        catena_fornitura: "",
+        materiali: [],
+        modello_fisico_default: "qr",
+        conformita_normativa: [],
+        dati_specifici: {},
+      };
+    }
+
+    function openWizard(editProd) {
+      // Recupera bozza se non in modifica
+      let draft = null;
+      if (!editProd) {
+        try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch { /* ignore */ }
+      }
+      state.wizardData = editProd
+        ? sanitizeForWizard(editProd)
+        : (draft || defaultWizardData());
+      state.wizardEditId = editProd ? editProd.id : null;
+      state.wizardStep = 1;
+      $("#draft-badge").hidden = true;
+      $("#wizard-backdrop").hidden = false;
+      $("#wizard-title").textContent = editProd ? "Modifica prodotto" : "Nuovo prodotto";
+      renderWizardStep();
+      renderSupporti();
+      renderMateriali();
+      fillWizardForm();
+    }
+
+    function sanitizeForWizard(p) {
+      const d = defaultWizardData();
+      Object.keys(d).forEach(k => { if (p[k] !== undefined && p[k] !== null) d[k] = p[k]; });
+      d.materiali = Array.isArray(p.materiali) ? p.materiali : [];
+      d.conformita_normativa = Array.isArray(p.conformita_normativa) ? p.conformita_normativa : [];
+      d.dati_specifici = (p.dati_specifici && typeof p.dati_specifici === "object") ? p.dati_specifici : {};
+      return d;
+    }
+
+    function closeWizard(saved) {
+      $("#wizard-backdrop").hidden = true;
+      if (!saved) {
+        // Salva bozza se ci sono dati non vuoti
+        const d = collectWizardData();
+        if (d.codice_interno || d.nome) {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(d));
+          $("#draft-badge").hidden = false;
+        }
+      } else {
+        localStorage.removeItem(DRAFT_KEY);
+        $("#draft-badge").hidden = true;
+      }
+      state.wizardData = null;
+      state.wizardEditId = null;
+    }
+
+    function renderWizardStep() {
+      const step = state.wizardStep;
+      $$(".wizard-steps .step").forEach(el => {
+        const n = parseInt(el.dataset.step, 10);
+        el.classList.toggle("is-active", n === step);
+        el.classList.toggle("is-done", n < step);
+      });
+      $$("[data-step-content]").forEach(el => {
+        el.hidden = parseInt(el.dataset.stepContent, 10) !== step;
+      });
+      $("#wizard-prev").disabled = step === 1;
+      $("#wizard-next").textContent = step === 4 ? "Salva prodotto" : "Avanti →";
+      $("#wizard-save-more").hidden = step !== 4;
+    }
+
+    function renderSupporti() {
+      const sel = state.wizardData?.modello_fisico_default || "qr";
+      $("#supporti-grid").innerHTML = SUPPORTI.map(s => `
+        <div class="supporto-card ${s.code === sel ? "is-active" : ""}" data-supp="${s.code}">
+          <span class="supp-meta">${escapeHtml(s.costo)}</span>
+          <h4>${escapeHtml(s.nome)}</h4>
+          <p class="supp-desc">${escapeHtml(s.desc)}</p>
+        </div>
+      `).join("");
+    }
+
+    function renderMateriali() {
+      const list = state.wizardData?.materiali || [];
+      $("#materiali-list").innerHTML = list.map((m, i) => `
+        <div class="materiale-row" data-mi="${i}">
+          <input type="text" placeholder="Nome materiale" value="${escapeHtml(m.nome || "")}" data-mf="nome"/>
+          <input type="text" placeholder="Qualita / lega" value="${escapeHtml(m.qualita || "")}" data-mf="qualita"/>
+          <input type="text" placeholder="Origine" value="${escapeHtml(m.origine || "")}" data-mf="origine"/>
+          <input type="text" placeholder="Peso (g)" value="${escapeHtml(m.peso || "")}" data-mf="peso"/>
+          <input type="text" placeholder="% riciclato" value="${escapeHtml(m.riciclato_pct || "")}" data-mf="riciclato_pct"/>
+          <button type="button" class="del-mat" data-del-mat="${i}" aria-label="Rimuovi">&times;</button>
+        </div>
+      `).join("");
+    }
+
+    function fillWizardForm() {
+      const d = state.wizardData;
+      $("#w-codice").value = d.codice_interno || "";
+      $("#w-nome").value = d.nome || "";
+      $("#w-descrizione").value = d.descrizione || "";
+      $("#w-categoria").value = d.categoria_merc || "";
+      $("#w-immagine").value = d.immagine_url || "";
+      $("#w-brand").value = d.brand || "";
+      $("#w-brand-vat").value = d.brand_vat || "";
+      $("#w-brand-eori").value = d.brand_eori || "";
+      $("#w-gtin").value = d.gtin || "";
+      $("#w-paese").value = d.paese_origine || "";
+      $("#w-stabilimento").value = d.stabilimento || "";
+      $("#w-filiera").value = d.catena_fornitura || "";
+      $$("[data-conf]").forEach(el => {
+        el.checked = (d.conformita_normativa || []).includes(el.value);
+      });
+      renderDatiSpecifici();
+    }
+
+    function renderDatiSpecifici() {
+      const cat = state.wizardData?.categoria_merc;
+      const fields = DATI_SPECIFICI[cat];
+      const wrap = $("#dati-specifici-wrap");
+      const fwrap = $("#dati-specifici-fields");
+      if (!fields) { wrap.hidden = true; fwrap.innerHTML = ""; return; }
+      wrap.hidden = false;
+      fwrap.innerHTML = `<div class="field-grid">${fields.map(([key, label]) => `
+        <div class="field">
+          <label for="ds-${escapeHtml(key)}">${escapeHtml(label)}</label>
+          <input type="text" id="ds-${escapeHtml(key)}" data-ds-key="${escapeHtml(key)}" value="${escapeHtml(state.wizardData.dati_specifici?.[key] || "")}"/>
+        </div>
+      `).join("")}</div>`;
+    }
+
+    function collectWizardData() {
+      const d = state.wizardData || defaultWizardData();
+      d.codice_interno = $("#w-codice").value.trim();
+      d.nome = $("#w-nome").value.trim();
+      d.slug = slugify(d.nome || d.codice_interno);
+      d.descrizione = $("#w-descrizione").value.trim();
+      d.categoria_merc = $("#w-categoria").value || null;
+      d.immagine_url = $("#w-immagine").value.trim() || null;
+      d.brand = $("#w-brand").value.trim() || null;
+      d.brand_vat = $("#w-brand-vat").value.trim() || null;
+      d.brand_eori = $("#w-brand-eori").value.trim() || null;
+      d.gtin = $("#w-gtin").value.trim() || null;
+      d.paese_origine = ($("#w-paese").value || "").trim().toUpperCase().slice(0, 2) || null;
+      d.stabilimento = $("#w-stabilimento").value.trim() || null;
+      d.catena_fornitura = $("#w-filiera").value.trim() || null;
+      d.conformita_normativa = $$("[data-conf]:checked").map(el => el.value);
+      // Materiali raccolti dai DOM rows
+      d.materiali = $$(".materiale-row").map(row => {
+        const r = {};
+        row.querySelectorAll("[data-mf]").forEach(inp => { r[inp.dataset.mf] = inp.value.trim(); });
+        return r;
+      }).filter(r => r.nome);
+      // Dati specifici
+      const ds = {};
+      $$("[data-ds-key]").forEach(inp => { if (inp.value.trim()) ds[inp.dataset.dsKey] = inp.value.trim(); });
+      d.dati_specifici = ds;
+      return d;
+    }
+
+    function validateWizardStep(step) {
+      const d = collectWizardData();
+      if (step >= 1) {
+        if (!d.codice_interno) return "Inserisci il codice interno (SKU).";
+        if (!d.nome) return "Inserisci il nome del prodotto.";
+        if (!d.categoria_merc) return "Seleziona la categoria merceologica.";
+      }
+      if (step >= 2) {
+        if (d.gtin && !/^[0-9]{14}$/.test(d.gtin)) return "Il GTIN deve essere 14 cifre.";
+        if (d.paese_origine && !/^[A-Z]{2}$/.test(d.paese_origine)) return "Paese origine: 2 lettere ISO (es. IT).";
+      }
+      return null;
+    }
+
+    async function saveProdotto(stayInWizard) {
+      const err = validateWizardStep(4);
+      if (err) { alert(err); return false; }
+      const d = collectWizardData();
+      try {
+        if (state.wizardEditId) {
+          const { error } = await supabase
+            .from("crm_prodotti_cliente")
+            .update({ ...d, updated_at: new Date().toISOString() })
+            .eq("id", state.wizardEditId);
+          if (error) throw error;
+        } else {
+          const payload = { ...d, user_id: state.user.id };
+          const { error } = await supabase
+            .from("crm_prodotti_cliente")
+            .insert(payload);
+          if (error) throw error;
+        }
+        await loadProdotti();
+        if (stayInWizard) {
+          state.wizardData = defaultWizardData();
+          state.wizardEditId = null;
+          state.wizardStep = 1;
+          renderWizardStep();
+          renderSupporti();
+          renderMateriali();
+          fillWizardForm();
+          localStorage.removeItem(DRAFT_KEY);
+        } else {
+          closeWizard(true);
+        }
+        return true;
+      } catch (e) {
+        console.error("[crm-prodotti] save error", e);
+        alert("Errore salvataggio: " + (e.message || "sconosciuto"));
+        return false;
+      }
+    }
+
+    // ---------- DETTAGLIO ----------
+    function openDetail(id) {
+      const p = state.prodotti.find(x => x.id === id);
+      if (!p) return;
+      state.detailId = id;
+      state.detailTab = "generale";
+      $("#detail-pane").classList.add("is-open");
+      $("#detail-pane").setAttribute("aria-hidden", "false");
+      $("#detail-categoria").textContent = (CATEGORIE[p.categoria_merc] || {}).label || "—";
+      $("#detail-nome").textContent = p.nome || "—";
+      $("#detail-codice").textContent = p.codice_interno || "—";
+      $$(".detail-tabs button").forEach(b => b.classList.toggle("is-active", b.dataset.dtab === "generale"));
+      renderDetailBody(p);
+      // Aggiorna riga selezionata
+      if (state.view === "tabella") renderTabella();
+    }
+
+    function closeDetail() {
+      $("#detail-pane").classList.remove("is-open");
+      $("#detail-pane").setAttribute("aria-hidden", "true");
+      state.detailId = null;
+      if (state.view === "tabella") renderTabella();
+    }
+
+    function renderDetailBody(p) {
+      const tab = state.detailTab;
+      const body = $("#detail-body");
+      if (tab === "generale") {
+        body.innerHTML = `
+          <div class="detail-section">
+            <h4>Identificazione</h4>
+            <dl>
+              <dt>Codice interno</dt><dd>${escapeHtml(p.codice_interno || "—")}</dd>
+              <dt>Slug</dt><dd>${escapeHtml(p.slug || "—")}</dd>
+              <dt>GTIN</dt><dd>${escapeHtml(p.gtin || "—")}</dd>
+              <dt>Categoria</dt><dd>${escapeHtml((CATEGORIE[p.categoria_merc] || {}).label || "—")}</dd>
+            </dl>
+          </div>
+          <div class="detail-section">
+            <h4>Brand</h4>
+            <dl>
+              <dt>Brand</dt><dd>${escapeHtml(p.brand || "—")}</dd>
+              <dt>P.IVA brand</dt><dd>${escapeHtml(p.brand_vat || "—")}</dd>
+              <dt>EORI</dt><dd>${escapeHtml(p.brand_eori || "—")}</dd>
+            </dl>
+          </div>
+          <div class="detail-section">
+            <h4>Filiera</h4>
+            <dl>
+              <dt>Paese origine</dt><dd>${escapeHtml(p.paese_origine || "—")}</dd>
+              <dt>Stabilimento</dt><dd>${escapeHtml(p.stabilimento || "—")}</dd>
+              <dt>Catena fornitura</dt><dd>${escapeHtml(p.catena_fornitura || "—")}</dd>
+            </dl>
+          </div>
+          <div class="detail-section">
+            <h4>Supporto + conformita</h4>
+            <dl>
+              <dt>Supporto default</dt><dd>${escapeHtml((SUPPORTI.find(s => s.code === p.modello_fisico_default) || {}).nome || "—")}</dd>
+              <dt>Normative</dt><dd>${(p.conformita_normativa || []).map(n => `<span class="pill">${escapeHtml(n)}</span>`).join(" ") || "—"}</dd>
+              <dt>Stato</dt><dd>${p.attivo ? "Attivo" : "Inattivo"}</dd>
+              <dt>Creato il</dt><dd>${fmtDate(p.created_at)}</dd>
+            </dl>
+          </div>
+        `;
+      } else if (tab === "materiali") {
+        const mats = p.materiali || [];
+        body.innerHTML = mats.length === 0
+          ? `<p class="state-msg">Nessun materiale registrato.</p>`
+          : mats.map(m => `
+              <div class="detail-section">
+                <h4>${escapeHtml(m.nome || "—")}</h4>
+                <dl>
+                  <dt>Qualita</dt><dd>${escapeHtml(m.qualita || "—")}</dd>
+                  <dt>Origine</dt><dd>${escapeHtml(m.origine || "—")}</dd>
+                  <dt>Peso</dt><dd>${escapeHtml(m.peso || "—")}</dd>
+                  <dt>Riciclato</dt><dd>${escapeHtml(m.riciclato_pct || "—")}%</dd>
+                </dl>
+              </div>
+            `).join("");
+      } else if (tab === "lotti") {
+        body.innerHTML = `
+          <div class="detail-section">
+            <h4>Riepilogo</h4>
+            <dl>
+              <dt>Lotti emessi</dt><dd>${p.lotti_emessi_count || 0}</dd>
+              <dt>Ultima emissione</dt><dd>${fmtDate(p.ultima_emissione_at)}</dd>
+            </dl>
+          </div>
+          <p style="font-family: var(--serif); font-style: italic; color: var(--ink-3); font-size: 13px;">
+            Per visualizzare lo storico dettagliato dei lotti, apri <a href="tag-storico.html?prodotto=${encodeURIComponent(p.id)}" style="color: var(--seal);">Storico emissioni &rarr;</a>
+          </p>
+        `;
+      } else if (tab === "allegati") {
+        const all = p.allegati || [];
+        body.innerHTML = all.length === 0
+          ? `<p class="state-msg">Nessun allegato.</p>`
+          : `<ul>${all.map(a => `<li><a href="${escapeHtml(a.url || "#")}" target="_blank">${escapeHtml(a.nome || a.url)}</a></li>`).join("")}</ul>`;
+      }
+    }
+
+    // ---------- ACTIONS ----------
+    async function deleteProdotti(ids) {
+      if (!ids.length) return;
+      if (!confirm(`Eliminare ${ids.length} prodott${ids.length === 1 ? "o" : "i"}? L'azione non e' reversibile.`)) return;
+      try {
+        const { error } = await supabase.from("crm_prodotti_cliente").delete().in("id", ids);
+        if (error) throw error;
+        state.selected.clear();
+        await loadProdotti();
+      } catch (e) {
+        alert("Errore eliminazione: " + (e.message || "sconosciuto"));
+      }
+    }
+
+    async function toggleAttivo(ids, attivo) {
+      try {
+        const { error } = await supabase.from("crm_prodotti_cliente").update({ attivo }).in("id", ids);
+        if (error) throw error;
+        state.selected.clear();
+        await loadProdotti();
+      } catch (e) {
+        alert("Errore aggiornamento: " + (e.message || "sconosciuto"));
+      }
+    }
+
+    function exportCsv(ids) {
+      const list = state.prodotti.filter(p => ids.includes(p.id));
+      const rows = list.map(p => [
+        p.codice_interno, p.nome, p.brand || "", p.categoria_merc || "",
+        p.gtin || "", p.paese_origine || "", p.lotti_emessi_count || 0,
+        p.attivo ? "attivo" : "inattivo"
+      ].map(c => `"${String(c).replace(/"/g, '""')}"`).join(","));
+      const csv = ["codice_interno,nome,brand,categoria,gtin,paese,lotti,stato", ...rows].join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = `veylon-prodotti-${Date.now()}.csv`; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function duplicaProdotto(id) {
+      const p = state.prodotti.find(x => x.id === id);
+      if (!p) return;
+      const dup = sanitizeForWizard(p);
+      dup.codice_interno = (p.codice_interno || "") + "-copy-" + Date.now().toString(36).slice(-4);
+      dup.nome = (p.nome || "") + " (copia)";
+      dup.slug = slugify(dup.nome);
+      try {
+        const { error } = await supabase
+          .from("crm_prodotti_cliente")
+          .insert({ ...dup, user_id: state.user.id, lotti_emessi_count: 0, ultima_emissione_at: null });
+        if (error) throw error;
+        await loadProdotti();
+      } catch (e) {
+        alert("Errore duplicazione: " + (e.message || "sconosciuto"));
+      }
+    }
+
+    function emettiLotto(id) {
+      // Redirect a tag-emetti con prodotto pre-selezionato
+      window.location.href = `tag-emetti.html?prodotto=${encodeURIComponent(id)}`;
+    }
+
+    // ---------- EVENT WIRING ----------
+    function wireEvents() {
+      // View switcher
+      $$(".view-switcher button").forEach(b => {
+        b.addEventListener("click", () => {
+          state.view = b.dataset.view;
+          $$(".view-switcher button").forEach(x => x.classList.toggle("is-active", x === b));
+          render();
+        });
+      });
+
+      // Filtri
+      $("#f-search").addEventListener("input", debounce((e) => {
+        state.filters.search = e.target.value;
+        applyFilters();
+      }, 250));
+      $("#f-categoria").addEventListener("change", e => { state.filters.categoria = e.target.value; applyFilters(); });
+      $("#f-stato").addEventListener("change", e => { state.filters.stato = e.target.value; applyFilters(); });
+      $("#f-conformita").addEventListener("change", e => { state.filters.conformita = e.target.value; applyFilters(); });
+      $("#f-sort").addEventListener("change", e => { state.filters.sort = e.target.value; applyFilters(); });
+
+      // Nuovo + import
+      $("#btn-nuovo").addEventListener("click", () => openWizard(null));
+      $("#btn-empty-new").addEventListener("click", () => openWizard(null));
+      $("#btn-import").addEventListener("click", () => {
+        alert("Import CSV: in arrivo. Per ora usa il wizard manuale o l'API REST /api/crm/prodotti.");
+      });
+
+      // Bacheca cards
+      $$(".bacheca-card").forEach(c => c.addEventListener("click", () => {
+        const k = c.dataset.card;
+        if (k === "manual" || k === "demo") openWizard(null);
+        else if (k === "csv") $("#btn-import").click();
+        else if (k === "api") window.location.href = "developers.html";
+      }));
+
+      // Tabella eventi delegati
+      $("#tbl-body").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-act]");
+        if (btn) {
+          e.stopPropagation();
+          const act = btn.dataset.act, id = btn.dataset.id;
+          if (act === "emetti") emettiLotto(id);
+          else if (act === "edit") {
+            const p = state.prodotti.find(x => x.id === id);
+            if (p) openWizard(p);
+          }
+          return;
+        }
+        const chk = e.target.closest("[data-bulk-chk]");
+        if (chk) {
+          const id = chk.dataset.bulkChk;
+          if (chk.checked) state.selected.add(id);
+          else state.selected.delete(id);
+          renderBulkBar();
+          return;
+        }
+        const row = e.target.closest("tr[data-id]");
+        if (row) openDetail(row.dataset.id);
+      });
+      $("#chk-all").addEventListener("change", (e) => {
+        const start = (state.page - 1) * state.pageSize;
+        const slice = state.filtered.slice(start, start + state.pageSize);
+        if (e.target.checked) slice.forEach(p => state.selected.add(p.id));
+        else slice.forEach(p => state.selected.delete(p.id));
+        renderTabella();
+        renderBulkBar();
+      });
+
+      // Pagination
+      $("#page-prev").addEventListener("click", () => { if (state.page > 1) { state.page--; renderTabella(); } });
+      $("#page-next").addEventListener("click", () => {
+        const max = Math.ceil(state.filtered.length / state.pageSize);
+        if (state.page < max) { state.page++; renderTabella(); }
+      });
+      $("#page-size").value = String(state.pageSize);
+      $("#page-size").addEventListener("change", (e) => {
+        state.pageSize = parseInt(e.target.value, 10);
+        localStorage.setItem(PAGE_SIZE_KEY, String(state.pageSize));
+        state.page = 1;
+        renderTabella();
+      });
+
+      // Griglia click
+      $("#view-griglia").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-act]");
+        if (btn) {
+          e.stopPropagation();
+          const act = btn.dataset.act, id = btn.dataset.id;
+          if (act === "emetti") emettiLotto(id);
+          else if (act === "edit") { const p = state.prodotti.find(x => x.id === id); if (p) openWizard(p); }
+          else if (act === "duplica") duplicaProdotto(id);
+          return;
+        }
+        const card = e.target.closest(".crm-grid-card");
+        if (card) openDetail(card.dataset.id);
+      });
+
+      // Kanban click
+      $("#view-kanban").addEventListener("click", (e) => {
+        const card = e.target.closest(".kanban-card");
+        if (card) openDetail(card.dataset.id);
+      });
+
+      // Bulk actions
+      $("#bulk-bar").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-bulk]");
+        if (!btn) return;
+        const ids = Array.from(state.selected);
+        const act = btn.dataset.bulk;
+        if (act === "delete") deleteProdotti(ids);
+        else if (act === "activate") toggleAttivo(ids, true);
+        else if (act === "deactivate") toggleAttivo(ids, false);
+        else if (act === "export") exportCsv(ids);
+        else if (act === "clear") { state.selected.clear(); render(); }
+      });
+
+      // Wizard
+      $("#wizard-close").addEventListener("click", () => closeWizard(false));
+      $("#wizard-prev").addEventListener("click", () => {
+        if (state.wizardStep > 1) { state.wizardStep--; renderWizardStep(); }
+      });
+      $("#wizard-next").addEventListener("click", async () => {
+        const err = validateWizardStep(state.wizardStep);
+        if (err) { alert(err); return; }
+        if (state.wizardStep < 4) { state.wizardStep++; renderWizardStep(); return; }
+        await saveProdotto(false);
+      });
+      $("#wizard-save-more").addEventListener("click", () => saveProdotto(true));
+
+      // Wizard form bindings
+      $("#w-categoria").addEventListener("change", () => {
+        state.wizardData.categoria_merc = $("#w-categoria").value;
+        renderDatiSpecifici();
+      });
+      $("#supporti-grid").addEventListener("click", (e) => {
+        const card = e.target.closest("[data-supp]");
+        if (!card) return;
+        state.wizardData.modello_fisico_default = card.dataset.supp;
+        renderSupporti();
+      });
+      $("#add-materiale").addEventListener("click", () => {
+        state.wizardData = collectWizardData();
+        state.wizardData.materiali.push({ nome: "", qualita: "", origine: "", peso: "", riciclato_pct: "" });
+        renderMateriali();
+      });
+      $("#materiali-list").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-del-mat]");
+        if (!btn) return;
+        state.wizardData = collectWizardData();
+        state.wizardData.materiali.splice(parseInt(btn.dataset.delMat, 10), 1);
+        renderMateriali();
+      });
+
+      // Detail pane
+      $("#detail-close").addEventListener("click", closeDetail);
+      $$(".detail-tabs button").forEach(b => b.addEventListener("click", () => {
+        state.detailTab = b.dataset.dtab;
+        $$(".detail-tabs button").forEach(x => x.classList.toggle("is-active", x === b));
+        const p = state.prodotti.find(x => x.id === state.detailId);
+        if (p) renderDetailBody(p);
+      }));
+      $("#d-modifica").addEventListener("click", () => {
+        const p = state.prodotti.find(x => x.id === state.detailId);
+        if (p) { closeDetail(); openWizard(p); }
+      });
+      $("#d-emetti").addEventListener("click", () => { if (state.detailId) emettiLotto(state.detailId); });
+      $("#d-duplica").addEventListener("click", () => { if (state.detailId) duplicaProdotto(state.detailId); });
+      $("#d-elimina").addEventListener("click", () => { if (state.detailId) { deleteProdotti([state.detailId]); closeDetail(); } });
+
+      // Draft badge
+      $("#draft-badge").addEventListener("click", () => openWizard(null));
+
+      // Esc per chiudere modali
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (!$("#wizard-backdrop").hidden) closeWizard(false);
+          else if (state.detailId) closeDetail();
+        }
+      });
+    }
+
+    // ---------- INIT ----------
+    (async function init() {
+      state.user = await getUser();
+      if (!state.user) return; // protectPage gestisce
+      // Bozza esistente?
+      try {
+        const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
+        if (draft && (draft.codice_interno || draft.nome)) {
+          $("#draft-badge").hidden = false;
+        }
+      } catch { /* ignore */ }
+      wireEvents();
+      await loadProdotti();
+
+      // Real-time: ricarica quando un lotto viene emesso
+      try {
+        supabase
+          .channel("crm-prodotti-changes")
+          .on("postgres_changes", { event: "*", schema: "public", table: "crm_prodotti_cliente" }, () => {
+            loadProdotti();
+          })
+          .subscribe();
+      } catch (e) {
+        console.warn("[crm-prodotti] realtime non disponibile", e);
+      }
+    })();
+  </script>
+
+  <noscript>
+    <div style="padding: 40px; text-align: center; font-family: var(--serif); color: var(--ink);">
+      Questa pagina richiede JavaScript abilitato per funzionare.
+    </div>
+  </noscript>
+
+</body>
+</html>

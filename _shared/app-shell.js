@@ -36,6 +36,7 @@ const SECTION_OF = {
   "tag-batch":          "tag",
   "tag-storico":        "tag",
   "tag-trasferisci":    "tag",
+  "tag-prodotti":       "tag",
   "cert-istituzione":   "cert",
   "cert-emetti":        "cert",
   "cert-emetti-batch":  "cert",
