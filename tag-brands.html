@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Tag CRM · Brand portfolio</title>
+  <meta name="description" content="Brand portfolio Veylon Tag CRM. Registra e gestisci tutti i brand della tua societa: anagrafica, storia, trademark, modelli fisici, certificazioni."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    html.veylon-auth-pending body { visibility: hidden; }
+    body.crm-layout { margin: 0; background: var(--paper); color: var(--ink); }
+
+    .crm-grid { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+    .crm-main { padding: 0 0 96px; max-width: 100%; min-width: 0; }
+    .crm-main-inner { padding: 28px clamp(20px, 4vw, 48px) 0; max-width: 1400px; width: 100%; }
+
+    .crm-aside { background: var(--paper-2); border-right: 1px solid var(--rule); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; padding: 24px 18px; overflow-y: auto; }
+    .crm-aside-brand { padding-bottom: 18px; border-bottom: 1px solid var(--rule-2); margin-bottom: 18px; }
+    .crm-aside-brand-name { display: block; font-family: var(--serif); font-size: 22px; letter-spacing: 0.04em; color: var(--ink); font-weight: 600; }
+    .crm-aside-brand-tag { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin-top: 4px; }
+    .crm-aside-section { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); padding: 14px 10px 8px; }
+    .crm-aside-list { list-style: none; padding: 0; margin: 0 0 8px; }
+    .crm-aside-link { display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-family: var(--serif); font-size: 14.5px; color: var(--ink-2); text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .crm-aside-link:hover { background: var(--paper); color: var(--ink); }
+    .crm-aside-link.is-active { color: var(--seal); background: var(--paper); border-left-color: var(--seal); font-weight: 600; }
+    .crm-aside-user { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--rule-2); }
+    .crm-aside-user-card { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px; background: transparent; border: 1px solid var(--rule-2); cursor: pointer; text-align: left; font: inherit; color: inherit; }
+    .crm-aside-user-card:hover { background: var(--paper); }
+    .crm-aside-avatar { width: 32px; height: 32px; background: var(--seal); color: var(--paper); border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; }
+    .crm-aside-user-meta { display: flex; flex-direction: column; min-width: 0; }
+    .crm-aside-user-email { font-family: var(--mono); font-size: 11px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+    .crm-aside-user-action { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--seal); margin-top: 2px; }
+    .crm-drawer-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 60; background: var(--paper); border: 1px solid var(--rule); padding: 8px 10px; cursor: pointer; }
+    .crm-drawer-backdrop { display: none; position: fixed; inset: 0; background: oklch(0 0 0 / 0.32); z-index: 40; }
+    @media (max-width: 800px) {
+      .crm-grid { grid-template-columns: 1fr; }
+      .crm-aside { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; z-index: 50; transform: translateX(-100%); transition: transform 0.22s ease-out; }
+      .crm-aside.is-open { transform: translateX(0); }
+      .crm-drawer-toggle { display: inline-flex; align-items: center; gap: 8px; }
+      .crm-drawer-backdrop.is-open { display: block; }
+      .crm-main-inner { padding-top: 72px; }
+    }
+
+    /* PAGE HEAD */
+    .crm-pagehead { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); margin-bottom: 32px; flex-wrap: wrap; }
+    .crm-pagehead h1 { font-family: var(--serif); font-size: clamp(30px, 4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin: 8px 0 12px; }
+    .crm-pagehead h1 em { font-style: italic; color: var(--seal); }
+    .crm-pagehead .lede { max-width: 60ch; font-family: var(--serif); font-size: 14.5px; color: var(--ink-2); margin: 0; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--ink); color: var(--paper); border: 1px solid var(--ink); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .btn-primary:hover { background: var(--seal); border-color: var(--seal); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--paper); color: var(--ink); border: 1px solid var(--ink); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .btn-secondary:hover { background: var(--paper-2); }
+    .btn-danger { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: transparent; color: var(--seal); border: 1px solid var(--seal); font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+    .btn-danger:hover { background: var(--seal-50); }
+
+    /* FILTERS BAR */
+    .filters-bar { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--paper-2); border: 1px solid var(--rule-2); margin-bottom: 24px; flex-wrap: wrap; }
+    .filters-bar input[type="search"] { flex: 1; min-width: 200px; padding: 9px 12px; border: 1px solid var(--rule); font-family: var(--mono); font-size: 13px; background: var(--paper); }
+    .filters-bar select { padding: 9px 12px; border: 1px solid var(--rule); font-family: var(--mono); font-size: 12.5px; background: var(--paper); }
+    .filters-count { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.06em; }
+
+    /* GRID 3-COL CARDS */
+    .brand-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 1100px) { .brand-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 720px)  { .brand-grid { grid-template-columns: 1fr; } }
+    .brand-card { background: var(--paper); border: 1px solid var(--rule); display: flex; flex-direction: column; transition: border-color 0.18s, transform 0.18s; position: relative; overflow: hidden; min-width: 0; }
+    .brand-card:hover { border-color: var(--seal-2); transform: translateY(-1px); }
+    .brand-card-header { display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; padding: 18px 18px 14px; align-items: center; border-bottom: 1px solid var(--rule-2); }
+    .brand-card-logo { width: 56px; height: 56px; background: var(--paper-2); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 22px; overflow: hidden; }
+    .brand-card-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-card-name { display: block; font-family: var(--serif); font-size: 19px; color: var(--ink); letter-spacing: -0.01em; line-height: 1.2; word-break: break-word; }
+    .brand-card-slug { display: block; font-family: var(--mono); font-size: 9.5px; color: var(--ink-3); letter-spacing: 0.08em; margin-top: 3px; }
+    .brand-card-eye-toggle { background: transparent; border: 0; cursor: pointer; padding: 4px 8px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border: 1px solid var(--rule-2); }
+    .brand-card-eye-toggle.is-on { color: var(--seal); border-color: var(--seal); background: var(--seal-50); }
+    .brand-card-body { padding: 14px 18px 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .brand-card-payoff { font-family: var(--serif); font-style: italic; font-size: 14.5px; color: var(--ink-2); line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .brand-card-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.04em; }
+    .brand-card-meta span strong { color: var(--ink-2); font-weight: 500; }
+    .brand-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule-2); margin-top: 6px; }
+    .brand-card-stat { padding: 10px 12px; border-right: 1px solid var(--rule-2); background: var(--paper-2); }
+    .brand-card-stat:last-child { border-right: 0; }
+    .brand-card-stat-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .brand-card-stat-num { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--ink); margin-top: 4px; line-height: 1; }
+    .brand-card-actions { padding: 12px 18px; border-top: 1px solid var(--rule-2); display: flex; gap: 10px; justify-content: space-between; align-items: center; background: var(--paper-2); }
+    .brand-card-actions .left { display: flex; gap: 8px; }
+    .brand-card-actions .right { display: flex; gap: 8px; }
+    .link-action { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal); text-decoration: none; padding: 8px 12px; border: 1px solid var(--rule-2); }
+    .link-action:hover { background: var(--paper); border-color: var(--seal); }
+
+    /* EMPTY STATE */
+    .empty-state { padding: 80px 32px; text-align: center; border: 1px dashed var(--rule); background: var(--paper-2); }
+    .empty-state-roman { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 38px; line-height: 1; }
+    .empty-state-title { font-family: var(--serif); font-size: 26px; margin: 16px 0 12px; letter-spacing: -0.01em; }
+    .empty-state-sub { font-family: var(--serif); color: var(--ink-2); font-size: 15px; max-width: 50ch; margin: 0 auto 22px; line-height: 1.55; }
+
+    .crm-loading { padding: 60px 24px; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; text-transform: uppercase; }
+
+    /* MODAL */
+    .modal-backdrop { position: fixed; inset: 0; background: oklch(0.18 0.015 50 / 0.55); z-index: 100; display: none; align-items: flex-start; justify-content: center; padding: 32px 16px; overflow-y: auto; }
+    .modal-backdrop.is-open { display: flex; }
+    .modal { background: var(--paper); border: 1px solid var(--rule); width: 100%; max-width: 760px; max-height: calc(100vh - 64px); overflow-y: auto; }
+    .modal-head { padding: 20px 28px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--paper); z-index: 1; }
+    .modal-head h2 { margin: 0; font-family: var(--serif); font-size: 24px; letter-spacing: -0.01em; }
+    .modal-head h2 em { font-style: italic; color: var(--seal); }
+    .modal-close { background: transparent; border: 0; font-size: 22px; cursor: pointer; color: var(--ink-2); padding: 0 6px; line-height: 1; }
+    .modal-close:hover { color: var(--seal); }
+    .modal-body { padding: 24px 28px; }
+    .modal-foot { padding: 16px 28px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 12px; position: sticky; bottom: 0; background: var(--paper); }
+
+    /* FORM */
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 20px; }
+    .form-grid.full-1col { grid-template-columns: 1fr; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.is-wide { grid-column: 1 / -1; }
+    .field label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .field .req { color: var(--seal); margin-left: 3px; }
+    .field input[type="text"], .field input[type="url"], .field input[type="number"], .field select, .field textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--rule); background: var(--paper-2);
+      font-family: var(--mono); font-size: 13px; color: var(--ink); border-radius: 0;
+    }
+    .field textarea { font-family: var(--serif); font-size: 14px; min-height: 90px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--seal); outline-offset: 1px; border-color: var(--seal); }
+    .field-help { font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+    .field optgroup { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .section-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin: 24px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--rule-2); }
+
+    /* TAG INPUT (classi nizza, conformita) */
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .tag-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--seal-50); border: 1px solid var(--seal); color: var(--seal); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; }
+    .tag-chip button { background: transparent; border: 0; cursor: pointer; color: var(--seal); font-family: var(--mono); font-size: 13px; padding: 0; line-height: 1; }
+
+    /* TOAST */
+    .toast { position: fixed; top: 20px; right: 20px; padding: 14px 18px; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 11.5px; z-index: 200; max-width: 360px; box-shadow: 0 6px 20px oklch(0 0 0 / 0.18); transform: translateX(120%); transition: transform 0.28s ease-out; }
+    .toast.is-visible { transform: translateX(0); }
+    .toast.is-error { background: var(--seal); }
+    .toast.is-ok { background: var(--verify); }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body class="crm-layout">
+
+  <button class="crm-drawer-toggle" id="crm-drawer-toggle" type="button" aria-label="Apri menu" aria-controls="crm-aside" aria-expanded="false">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <span class="sr-only">Menu</span>
+  </button>
+  <div class="crm-drawer-backdrop" id="crm-drawer-backdrop" aria-hidden="true"></div>
+
+  <div class="crm-grid">
+
+    <aside class="crm-aside" id="crm-aside" aria-label="Navigazione CRM Veylon Tag">
+      <div class="crm-aside-brand">
+        <a href="tag-crm.html" style="text-decoration:none;">
+          <span class="crm-aside-brand-name">VEYLON</span>
+          <span class="crm-aside-brand-tag">Tag CRM Enterprise</span>
+        </a>
+      </div>
+      <div class="crm-aside-section">Bacheca</div>
+      <ul class="crm-aside-list" role="list"><li><a href="tag-crm.html" class="crm-aside-link">Bacheca</a></li></ul>
+      <div class="crm-aside-section">Azienda</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-profilo.html" class="crm-aside-link">Profilo societa</a></li>
+        <li><a href="tag-brands.html" class="crm-aside-link is-active">Brand portfolio</a></li>
+      </ul>
+      <div class="crm-aside-section">Catalogo</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-prodotti.html" class="crm-aside-link">Prodotti</a></li>
+        <li><a href="tag-supporti.html" class="crm-aside-link">Supporti fisici</a></li>
+      </ul>
+      <div class="crm-aside-section">Produzione</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-storico.html" class="crm-aside-link">Lotti emessi</a></li>
+        <li><a href="tag-nuovo-lotto.html" class="crm-aside-link">Nuovo lotto</a></li>
+        <li><a href="tag-batch.html" class="crm-aside-link">Bulk jobs</a></li>
+      </ul>
+      <div class="crm-aside-section">Sistema</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="developers.html" class="crm-aside-link">API &amp; webhook</a></li>
+        <li><a href="dashboard.html" class="crm-aside-link">Impostazioni</a></li>
+      </ul>
+      <div class="crm-aside-user">
+        <button class="crm-aside-user-card" id="crm-logout" type="button" aria-label="Esci dall'account">
+          <span class="crm-aside-avatar" id="crm-avatar" aria-hidden="true">VL</span>
+          <span class="crm-aside-user-meta">
+            <span class="crm-aside-user-email" id="crm-user-email">—</span>
+            <span class="crm-aside-user-action">Esci</span>
+          </span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="crm-main">
+      <div class="crm-main-inner">
+
+        <section class="crm-pagehead">
+          <div>
+            <span class="eyebrow eyebrow-seal" style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;">Brand portfolio</span>
+            <h1>I tuoi <em>brand</em>.</h1>
+            <p class="lede">Registra ogni brand del tuo gruppo. Per ognuno potrai poi creare prodotti, scegliere supporti fisici e emettere certificati con identita visiva e narrativa dedicate.</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-primary" id="btn-new-brand" type="button">+ Nuovo brand</button>
+          </div>
+        </section>
+
+        <!-- FILTERS -->
+        <div class="filters-bar" id="filters-bar" hidden>
+          <input id="search-input" type="search" placeholder="Cerca per nome, slug, payoff…" aria-label="Cerca brand"/>
+          <select id="filter-categoria">
+            <option value="">Tutte le categorie</option>
+            <option value="lusso">Lusso</option>
+            <option value="fashion">Fashion &amp; abbigliamento</option>
+            <option value="pelletteria">Pelletteria &amp; scarpe</option>
+            <option value="gioielli">Gioielli &amp; orologi</option>
+            <option value="alimentare">Alimentare &amp; vino</option>
+            <option value="pharma">Pharma</option>
+            <option value="cosmetica">Cosmetica</option>
+            <option value="arte">Arte &amp; collezionismo</option>
+            <option value="industriale">Industriale</option>
+            <option value="oem">OEM</option>
+          </select>
+          <span class="filters-count" id="filters-count">—</span>
+        </div>
+
+        <div id="brands-loading" class="crm-loading">Caricamento brand portfolio…</div>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-state" id="empty-state" hidden>
+          <div class="empty-state-roman">i</div>
+          <h2 class="empty-state-title">Non hai ancora brand registrati.</h2>
+          <p class="empty-state-sub">Crea il primo brand del tuo gruppo per iniziare a emettere certificati. Ogni brand puo avere prodotti, supporti fisici e identita visiva propri.</p>
+          <button class="btn-primary" id="btn-new-brand-empty" type="button">+ Crea il primo brand</button>
+        </div>
+
+        <!-- GRID -->
+        <div class="brand-grid" id="brands-grid" hidden></div>
+
+        <footer class="footer" style="margin-top: 56px;">
+          <div class="footer-base">
+            <span>© MMXXVI · Veylon S.r.l.</span>
+            <span>Tag CRM Enterprise · Brand portfolio</span>
+          </div>
+        </footer>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL CREA/MODIFICA BRAND -->
+  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal" id="modal-brand">
+      <div class="modal-head">
+        <h2 id="modal-title">Nuovo <em>brand</em></h2>
+        <button class="modal-close" id="modal-close" type="button" aria-label="Chiudi">×</button>
+      </div>
+      <form id="brand-form" autocomplete="off">
+        <div class="modal-body">
+
+          <div class="section-title">Identita</div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="bf-nome">Nome brand<span class="req">*</span></label>
+              <input id="bf-nome" name="nome" type="text" required maxlength="120" placeholder="Es. Veylon Reserve"/>
+            </div>
+            <div class="field">
+              <label for="bf-slug">Slug URL</label>
+              <input id="bf-slug" name="slug" type="text" maxlength="120" placeholder="veylon-reserve" pattern="[a-z0-9-]+"/>
+              <span class="field-help">Auto-generato dal nome. Solo lettere minuscole, numeri, trattini.</span>
+            </div>
+            <div class="field is-wide">
+              <label for="bf-payoff">Payoff <span style="text-transform:none; letter-spacing:0;">(max 140 caratteri)</span></label>
+              <input id="bf-payoff" name="payoff" type="text" maxlength="140" placeholder="Es. Il lusso autenticato nella sua forma piu pura."/>
+            </div>
+            <div class="field is-wide">
+              <label for="bf-storia">Storia / racconto del brand</label>
+              <textarea id="bf-storia" name="storia" rows="4" maxlength="2000" placeholder="Racconta la nascita del brand, i valori, l'heritage. Massimo 2000 caratteri."></textarea>
+            </div>
+            <div class="field">
+              <label for="bf-logo_url">URL logo</label>
+              <input id="bf-logo_url" name="logo_url" type="url" maxlength="500" placeholder="https://…/logo.png"/>
+              <span class="field-help">Carica il logo su un CDN, poi incolla l'URL. Upload in-app in v2.</span>
+            </div>
+            <div class="field">
+              <label for="bf-sito_web">Sito web</label>
+              <input id="bf-sito_web" name="sito_web" type="url" maxlength="200" placeholder="https://…"/>
+            </div>
+          </div>
+
+          <div class="section-title">Origine e trademark</div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="bf-anno_fondazione">Anno fondazione</label>
+              <input id="bf-anno_fondazione" name="anno_fondazione" type="number" min="1800" max="2100" placeholder="2023"/>
+            </div>
+            <div class="field">
+              <label for="bf-paese_origine">Paese di origine</label>
+              <input id="bf-paese_origine" name="paese_origine" type="text" maxlength="60" placeholder="Italia"/>
+            </div>
+            <div class="field">
+              <label for="bf-trademark_registrato">Marchio registrato</label>
+              <select id="bf-trademark_registrato" name="trademark_registrato">
+                <option value="no">No</option>
+                <option value="pending">In domanda</option>
+                <option value="si">Si, registrato</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="bf-trademark_paese">Paese del marchio</label>
+              <input id="bf-trademark_paese" name="trademark_paese" type="text" maxlength="60" placeholder="EUIPO, USPTO, UIBM…"/>
+            </div>
+            <div class="field is-wide">
+              <label for="bf-classi_nizza_input">Classi di Nizza coperte</label>
+              <input id="bf-classi_nizza_input" type="text" maxlength="10" placeholder="Es. 18, 25, 35 — premi Invio per aggiungere"/>
+              <div class="tag-list" id="classi_nizza_tags"></div>
+              <span class="field-help">Classi di Nizza (1-45) coperte dal marchio registrato.</span>
+            </div>
+          </div>
+
+          <div class="section-title">Social</div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="bf-instagram">Instagram</label>
+              <input id="bf-instagram" name="instagram" type="text" maxlength="120" placeholder="@brandhandle"/>
+            </div>
+            <div class="field">
+              <label for="bf-linkedin">LinkedIn</label>
+              <input id="bf-linkedin" name="linkedin" type="url" maxlength="200" placeholder="https://linkedin.com/company/…"/>
+            </div>
+          </div>
+
+          <div class="section-title">Default produzione</div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="bf-categoria_principale">Categoria principale<span class="req">*</span></label>
+              <select id="bf-categoria_principale" name="categoria_principale" required>
+                <option value="">— seleziona —</option>
+                <option value="luxury.fashion_abbigliamento">Lusso · Fashion &amp; abbigliamento</option>
+                <option value="luxury.pelletteria">Lusso · Pelletteria</option>
+                <option value="luxury.scarpe_cuoio">Lusso · Scarpe in cuoio</option>
+                <option value="luxury.sneakers">Lusso · Sneakers</option>
+                <option value="luxury.gioielli">Lusso · Gioielli &amp; orologi</option>
+                <option value="alimentare.vino">Alimentare · Vino</option>
+                <option value="alimentare.dop_igp">Alimentare · DOP/IGP</option>
+                <option value="pharma">Pharma &amp; medical device</option>
+                <option value="cosmetica">Cosmetica e profumeria</option>
+                <option value="arte.opere_pittura">Arte · Opere e pittura</option>
+                <option value="industriale.oem">Industriale &amp; OEM</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="bf-modello_fisico_default">Supporto fisico default</label>
+              <select id="bf-modello_fisico_default" name="modello_fisico_default">
+                <option value="">— nessuno —</option>
+                <optgroup label="Etichette tessili">
+                  <option value="etichetta_collare_abito">Etichetta da collare per abito</option>
+                  <option value="etichetta_lavaggio_cucita">Etichetta di lavaggio cucita</option>
+                  <option value="hangtag_cartellino_tessile">Hangtag / cartellino tessile</option>
+                </optgroup>
+                <optgroup label="Pelletteria e accessori">
+                  <option value="fascetta_sigillata_pelle">Fascetta sigillata in pelle</option>
+                  <option value="fibra_intrecciata_rfid">Fibra intrecciata con RFID</option>
+                  <option value="anello_fibbia_inciso">Anello / fibbia inciso</option>
+                  <option value="suola_chip_nfc">Suola con chip NFC</option>
+                </optgroup>
+                <optgroup label="QR &amp; NFC">
+                  <option value="qr_su_componente_oem">QR su componente OEM</option>
+                  <option value="epc_gen2_tag">EPC Gen2 RFID tag</option>
+                </optgroup>
+                <optgroup label="Sigilli &amp; placche">
+                  <option value="etichetta_cera_ceralacca">Etichetta in cera / ceralacca</option>
+                  <option value="placca_metallica_numerata">Placca metallica numerata</option>
+                </optgroup>
+                <optgroup label="Documenti">
+                  <option value="certificato_provenienza_cartaceo">Certificato di provenienza cartaceo</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="field is-wide">
+              <label for="bf-conformita_input">Conformita default</label>
+              <input id="bf-conformita_input" type="text" maxlength="40" placeholder="Es. CE, ISO 9001, GOTS — premi Invio per aggiungere"/>
+              <div class="tag-list" id="conformita_tags"></div>
+              <span class="field-help">Conformita applicate di default ai prodotti di questo brand.</span>
+            </div>
+          </div>
+
+          <div class="section-title">Visibilita</div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="bf-attivo">Stato</label>
+              <select id="bf-attivo" name="attivo">
+                <option value="true">Attivo</option>
+                <option value="false">Disattivato (archivio)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="bf-in_evidenza">In evidenza</label>
+              <select id="bf-in_evidenza" name="in_evidenza">
+                <option value="false">No</option>
+                <option value="true">Si, in cima alla bacheca</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-foot">
+          <button class="btn-danger" id="btn-delete" type="button" hidden>Elimina brand</button>
+          <div style="display:flex; gap:10px; margin-left:auto;">
+            <button class="btn-secondary" id="btn-cancel" type="button">Annulla</button>
+            <button class="btn-primary" id="btn-save" type="submit">Salva brand</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module">
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { supabase, getUser, signOut } from "./_shared/supabase-client.js";
+
+    let session;
+    document.documentElement.classList.add("veylon-auth-pending");
+    try {
+      ({ session } = await protectPage());
+    } finally {
+      document.documentElement.classList.remove("veylon-auth-pending");
+    }
+
+    const user = await getUser();
+    const email = user?.email ?? "";
+    const initials = (email.split("@")[0] || "VL").slice(0, 2).toUpperCase();
+    document.getElementById("crm-user-email").textContent = email || "—";
+    document.getElementById("crm-avatar").textContent = initials;
+
+    document.getElementById("crm-logout").addEventListener("click", async (e) => {
+      e.preventDefault();
+      await signOut();
+    });
+
+    // Drawer
+    const toggleBtn = document.getElementById("crm-drawer-toggle");
+    const sidebarEl = document.getElementById("crm-aside");
+    const backdropEl = document.getElementById("crm-drawer-backdrop");
+    function closeDrawer() {
+      sidebarEl?.classList.remove("is-open");
+      backdropEl?.classList.remove("is-open");
+      toggleBtn?.setAttribute("aria-expanded", "false");
+    }
+    toggleBtn?.addEventListener("click", () => {
+      const isOpen = sidebarEl?.classList.contains("is-open");
+      sidebarEl?.classList.toggle("is-open", !isOpen);
+      backdropEl?.classList.toggle("is-open", !isOpen);
+      toggleBtn?.setAttribute("aria-expanded", String(!isOpen));
+    });
+    backdropEl?.addEventListener("click", closeDrawer);
+
+    // ---------- Toast ----------
+    const toastEl = document.getElementById("toast");
+    let toastTimer;
+    function toast(msg, type = "ok") {
+      toastEl.textContent = msg;
+      toastEl.classList.remove("is-ok", "is-error");
+      toastEl.classList.add(type === "error" ? "is-error" : "is-ok");
+      toastEl.classList.add("is-visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("is-visible"), 3200);
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
+    }
+    function fmtNum(n) {
+      if (n == null || !Number.isFinite(Number(n))) return "0";
+      return new Intl.NumberFormat("it-IT").format(Number(n));
+    }
+    function slugify(s) {
+      return String(s || "")
+        .toLowerCase()
+        .normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 80);
+    }
+
+    // ---------- State ----------
+    let allBrands = [];
+    let editingId = null;
+    let classiNizza = [];
+    let conformita = [];
+    let searchQuery = "";
+    let filterCat = "";
+
+    // ---------- Load ----------
+    async function loadBrands() {
+      const loadingEl = document.getElementById("brands-loading");
+      const gridEl = document.getElementById("brands-grid");
+      const emptyEl = document.getElementById("empty-state");
+      const filtersEl = document.getElementById("filters-bar");
+      try {
+        const { data, error } = await supabase
+          .from("brands")
+          .select("*")
+          .order("in_evidenza", { ascending: false })
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        loadingEl.hidden = true;
+        allBrands = data || [];
+        if (allBrands.length === 0) {
+          emptyEl.hidden = false;
+          gridEl.hidden = true;
+          filtersEl.hidden = true;
+        } else {
+          emptyEl.hidden = true;
+          filtersEl.hidden = false;
+          renderGrid();
+        }
+      } catch (e) {
+        loadingEl.hidden = true;
+        emptyEl.hidden = false;
+        toast("Errore caricamento brand: " + (e.message || ""), "error");
+      }
+    }
+
+    function renderGrid() {
+      const gridEl = document.getElementById("brands-grid");
+      const filtered = allBrands.filter((b) => {
+        if (filterCat && !(b.categoria_principale || "").includes(filterCat)) return false;
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const hay = `${b.nome || ""} ${b.slug || ""} ${b.payoff || ""}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+      document.getElementById("filters-count").textContent = `${filtered.length} di ${allBrands.length} brand`;
+      gridEl.hidden = filtered.length === 0;
+      gridEl.innerHTML = filtered.map((b) => {
+        const inits = (b.nome || "?").slice(0, 2).toUpperCase();
+        const logo = b.logo_url
+          ? `<img src="${escapeHtml(b.logo_url)}" alt="">`
+          : escapeHtml(inits);
+        const payoff = b.payoff ? escapeHtml(b.payoff) : '<span style="color: var(--ink-3);">Nessun payoff registrato.</span>';
+        const meta = [
+          b.anno_fondazione ? `<span><strong>Anno:</strong> ${escapeHtml(String(b.anno_fondazione))}</span>` : null,
+          b.paese_origine ? `<span><strong>Origine:</strong> ${escapeHtml(b.paese_origine)}</span>` : null,
+          b.trademark_registrato === "si" ? `<span><strong>™:</strong> registrato</span>` : null,
+        ].filter(Boolean).join("");
+        const evidenza = b.in_evidenza === true ? "is-on" : "";
+        const evidenzaLabel = b.in_evidenza === true ? "in evidenza" : "evidenzia";
+        return `
+          <article class="brand-card" data-id="${escapeHtml(b.id)}">
+            <header class="brand-card-header">
+              <div class="brand-card-logo">${logo}</div>
+              <div style="min-width: 0;">
+                <span class="brand-card-name">${escapeHtml(b.nome || "—")}</span>
+                <span class="brand-card-slug">${escapeHtml(b.slug || "")}</span>
+              </div>
+              <button class="brand-card-eye-toggle ${evidenza}" type="button" data-action="toggle-eye" data-id="${escapeHtml(b.id)}" title="Toggle in evidenza">★ ${evidenzaLabel}</button>
+            </header>
+            <div class="brand-card-body">
+              <div class="brand-card-payoff">${payoff}</div>
+              <div class="brand-card-meta">${meta || '<span style="color: var(--ink-3);">Anagrafica incompleta.</span>'}</div>
+              <div class="brand-card-stats">
+                <div class="brand-card-stat">
+                  <div class="brand-card-stat-label">Prodotti</div>
+                  <div class="brand-card-stat-num">${fmtNum(b.prodotti_count ?? 0)}</div>
+                </div>
+                <div class="brand-card-stat">
+                  <div class="brand-card-stat-label">Certificati</div>
+                  <div class="brand-card-stat-num">${fmtNum(b.certificati_emessi_count ?? 0)}</div>
+                </div>
+              </div>
+            </div>
+            <div class="brand-card-actions">
+              <div class="left">
+                <a class="link-action" href="tag-prodotti.html?brand=${encodeURIComponent(b.id)}">prodotti</a>
+                <a class="link-action" href="tag-storico.html?brand=${encodeURIComponent(b.id)}">lotti</a>
+              </div>
+              <div class="right">
+                <button class="link-action" type="button" data-action="edit" data-id="${escapeHtml(b.id)}">modifica</button>
+              </div>
+            </div>
+          </article>`;
+      }).join("");
+
+      gridEl.querySelectorAll("[data-action='edit']").forEach((b) => {
+        b.addEventListener("click", () => openModal(b.dataset.id));
+      });
+      gridEl.querySelectorAll("[data-action='toggle-eye']").forEach((b) => {
+        b.addEventListener("click", () => toggleEvidenza(b.dataset.id));
+      });
+    }
+
+    // ---------- Filters ----------
+    document.getElementById("search-input").addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim();
+      renderGrid();
+    });
+    document.getElementById("filter-categoria").addEventListener("change", (e) => {
+      filterCat = e.target.value;
+      renderGrid();
+    });
+
+    // ---------- Toggle in evidenza ----------
+    async function toggleEvidenza(id) {
+      const brand = allBrands.find((b) => b.id === id);
+      if (!brand) return;
+      const newVal = !(brand.in_evidenza === true);
+      try {
+        const { error } = await supabase.from("brands").update({ in_evidenza: newVal }).eq("id", id);
+        if (error) throw error;
+        brand.in_evidenza = newVal;
+        toast(newVal ? "Brand portato in evidenza." : "Brand rimosso dall'evidenza.");
+        renderGrid();
+      } catch (e) {
+        toast("Errore: " + (e.message || ""), "error");
+      }
+    }
+
+    // ---------- Modal: open/close ----------
+    const modalBackdrop = document.getElementById("modal-backdrop");
+    const modalTitle = document.getElementById("modal-title");
+    const form = document.getElementById("brand-form");
+    const btnDelete = document.getElementById("btn-delete");
+
+    function resetForm() {
+      form.reset();
+      classiNizza = [];
+      conformita = [];
+      renderClassi();
+      renderConformita();
+    }
+    function openModal(id = null) {
+      editingId = id;
+      resetForm();
+      if (id) {
+        const b = allBrands.find((x) => x.id === id);
+        if (!b) return;
+        modalTitle.innerHTML = `Modifica <em>brand</em>`;
+        btnDelete.hidden = false;
+        const FIELDS = ["nome", "slug", "payoff", "storia", "logo_url", "sito_web", "anno_fondazione", "paese_origine", "trademark_registrato", "trademark_paese", "instagram", "linkedin", "categoria_principale", "modello_fisico_default"];
+        for (const k of FIELDS) {
+          const el = document.getElementById(`bf-${k}`);
+          if (el && b[k] != null) el.value = b[k];
+        }
+        document.getElementById("bf-attivo").value = b.attivo === false ? "false" : "true";
+        document.getElementById("bf-in_evidenza").value = b.in_evidenza === true ? "true" : "false";
+        classiNizza = Array.isArray(b.classi_nizza) ? b.classi_nizza.slice() : [];
+        conformita = Array.isArray(b.conformita_default) ? b.conformita_default.slice() : [];
+        renderClassi();
+        renderConformita();
+      } else {
+        modalTitle.innerHTML = `Nuovo <em>brand</em>`;
+        btnDelete.hidden = true;
+      }
+      modalBackdrop.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => document.getElementById("bf-nome").focus(), 100);
+    }
+    function closeModal() {
+      modalBackdrop.classList.remove("is-open");
+      document.body.style.overflow = "";
+      editingId = null;
+    }
+    document.getElementById("btn-new-brand").addEventListener("click", () => openModal());
+    document.getElementById("btn-new-brand-empty").addEventListener("click", () => openModal());
+    document.getElementById("modal-close").addEventListener("click", closeModal);
+    document.getElementById("btn-cancel").addEventListener("click", closeModal);
+    modalBackdrop.addEventListener("click", (e) => { if (e.target === modalBackdrop) closeModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && modalBackdrop.classList.contains("is-open")) closeModal(); });
+
+    // ---------- Slug auto ----------
+    document.getElementById("bf-nome").addEventListener("blur", () => {
+      const slugEl = document.getElementById("bf-slug");
+      if (!slugEl.value.trim()) {
+        slugEl.value = slugify(document.getElementById("bf-nome").value);
+      }
+    });
+
+    // ---------- Tag inputs ----------
+    function renderClassi() {
+      const wrap = document.getElementById("classi_nizza_tags");
+      wrap.innerHTML = classiNizza.map((t, i) => `<span class="tag-chip">cl. ${escapeHtml(String(t))} <button type="button" data-idx="${i}">×</button></span>`).join("");
+      wrap.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        classiNizza.splice(Number(b.dataset.idx), 1);
+        renderClassi();
+      }));
+    }
+    function renderConformita() {
+      const wrap = document.getElementById("conformita_tags");
+      wrap.innerHTML = conformita.map((t, i) => `<span class="tag-chip">${escapeHtml(t)} <button type="button" data-idx="${i}">×</button></span>`).join("");
+      wrap.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        conformita.splice(Number(b.dataset.idx), 1);
+        renderConformita();
+      }));
+    }
+    document.getElementById("bf-classi_nizza_input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const n = parseInt(e.target.value, 10);
+        if (Number.isInteger(n) && n >= 1 && n <= 45 && !classiNizza.includes(n)) {
+          classiNizza.push(n);
+          renderClassi();
+        }
+        e.target.value = "";
+      }
+    });
+    document.getElementById("bf-conformita_input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const v = e.target.value.trim();
+        if (v && !conformita.includes(v)) {
+          conformita.push(v);
+          renderConformita();
+        }
+        e.target.value = "";
+      }
+    });
+
+    // ---------- Save brand ----------
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById("btn-save");
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Salvataggio…";
+      try {
+        const fd = new FormData(form);
+        const payload = {};
+        for (const [k, v] of fd.entries()) {
+          payload[k] = (v === "" || v == null) ? null : v;
+        }
+        if (payload.anno_fondazione != null) payload.anno_fondazione = parseInt(payload.anno_fondazione, 10) || null;
+        payload.attivo = payload.attivo === "true";
+        payload.in_evidenza = payload.in_evidenza === "true";
+        if (!payload.slug && payload.nome) payload.slug = slugify(payload.nome);
+        payload.classi_nizza = classiNizza;
+        payload.conformita_default = conformita;
+
+        if (!payload.nome) throw new Error("Il nome del brand e obbligatorio.");
+        if (!payload.categoria_principale) throw new Error("La categoria principale e obbligatoria.");
+
+        if (editingId) {
+          const { error } = await supabase.from("brands").update(payload).eq("id", editingId);
+          if (error) throw error;
+          toast(`Brand "${payload.nome}" aggiornato.`);
+        } else {
+          const { data: orgRow, error: orgErr } = await supabase
+            .from("organization_profile")
+            .select("id")
+            .maybeSingle();
+          if (orgErr) throw orgErr;
+          payload.organization_id = orgRow?.id ?? null;
+          const { error } = await supabase.from("brands").insert(payload);
+          if (error) throw error;
+          toast(`Brand "${payload.nome}" creato.`);
+        }
+        closeModal();
+        await loadBrands();
+      } catch (err) {
+        toast("Errore di salvataggio: " + (err.message || ""), "error");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Salva brand";
+      }
+    });
+
+    // ---------- Delete brand ----------
+    btnDelete.addEventListener("click", async () => {
+      if (!editingId) return;
+      const brand = allBrands.find((b) => b.id === editingId);
+      const ok = window.confirm(`Eliminare definitivamente il brand "${brand?.nome || ''}"?\n\nI prodotti e i certificati gia emessi NON verranno cancellati. Il brand sara solo rimosso dal portfolio.`);
+      if (!ok) return;
+      try {
+        const { error } = await supabase.from("brands").delete().eq("id", editingId);
+        if (error) throw error;
+        toast("Brand eliminato.");
+        closeModal();
+        await loadBrands();
+      } catch (e) {
+        toast("Errore: " + (e.message || ""), "error");
+      }
+    });
+
+    // ---------- Boot ----------
+    await loadBrands();
+
+    // Deep link ?id=… apre modale
+    const urlParams = new URLSearchParams(window.location.search);
+    const deepId = urlParams.get("id");
+    if (deepId && allBrands.some((b) => b.id === deepId)) {
+      openModal(deepId);
+    } else if (urlParams.get("action") === "new") {
+      openModal();
+    }
+  </script>
+</body>
+</html>
