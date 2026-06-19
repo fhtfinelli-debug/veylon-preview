@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Strumenti PDF</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+  <style>
+    .sp-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--rule); margin: 24px 0 28px; }
+    .sp-tab { padding: 12px 18px; border: none; background: transparent; cursor: pointer; font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; color: var(--ink-3); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .sp-tab.is-active { color: var(--ink); border-bottom-color: var(--seal); }
+    .sp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .sp-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 18px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); cursor: pointer; text-align: left; transition: border-color 120ms, transform 120ms; font-family: inherit; }
+    .sp-card:hover { border-color: var(--seal); transform: translateY(-1px); }
+    .sp-card-head { display: flex; align-items: baseline; gap: 8px; }
+    .sp-card-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--ink-3); text-transform: uppercase; }
+    .sp-card-name { font-family: var(--serif); font-size: 18px; line-height: 1.15; color: var(--ink); }
+    .sp-card-desc { font-size: 13.5px; line-height: 1.4; color: var(--ink-2); margin-top: 4px; }
+    .sp-banner { padding: 14px 18px; border: 1px solid var(--rule); border-left: 3px solid var(--seal); border-radius: 6px; background: oklch(98% 0.01 80); font-size: 14px; line-height: 1.45; margin-bottom: 24px; }
+    .sp-banner.is-warn { border-left-color: oklch(72% 0.16 50); }
+    .sp-banner.is-err { border-left-color: oklch(58% 0.22 25); }
+    .sp-banner.is-ok { border-left-color: oklch(60% 0.16 145); }
+    .sp-modal-back { position: fixed; inset: 0; background: rgba(20, 20, 20, 0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+    .sp-modal-back.is-open { display: flex; }
+    .sp-modal { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 28px 28px 24px; }
+    .sp-modal h3 { font-family: var(--serif); font-size: 22px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+    .sp-modal p.sp-modal-desc { font-size: 14px; color: var(--ink-2); margin: 0 0 16px; }
+    .sp-modal label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-3); text-transform: uppercase; margin: 12px 0 4px; }
+    .sp-modal input[type="file"], .sp-modal input[type="text"], .sp-modal input[type="password"], .sp-modal input[type="url"], .sp-modal input[type="number"], .sp-modal select, .sp-modal textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; font: inherit; background: var(--paper); color: var(--ink); }
+    .sp-modal input[type="checkbox"] { width: auto; margin-right: 6px; }
+    .sp-modal .sp-check { display: flex; align-items: center; gap: 6px; font-family: inherit; font-size: 14px; color: var(--ink-2); text-transform: none; letter-spacing: 0; margin: 8px 0 0; }
+    .sp-modal-foot { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; }
+    .sp-btn-primary { background: var(--seal); color: var(--paper); border: none; padding: 10px 18px; border-radius: 6px; font: inherit; font-size: 14px; cursor: pointer; }
+    .sp-btn-primary:disabled { opacity: 0.5; cursor: wait; }
+    .sp-btn-ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--rule); padding: 10px 18px; border-radius: 6px; font: inherit; font-size: 14px; cursor: pointer; }
+    .sp-result { margin-top: 18px; padding: 14px 16px; background: oklch(98% 0.005 145); border: 1px solid var(--rule); border-radius: 6px; font-size: 13.5px; line-height: 1.5; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+    .sp-progress { font-family: var(--mono); font-size: 12px; color: var(--ink-3); margin-top: 12px; }
+    @media (max-width: 640px) { .sp-grid { grid-template-columns: 1fr; } .sp-modal { padding: 20px; } }
+  </style>
+</head>
+<body>
+
+  <main class="col" style="padding: 40px 32px 96px;">
+
+    <section class="head-row">
+      <div>
+        <span class="section-num">§ Strumenti PDF</span>
+        <h1 class="serif" style="font-size: clamp(36px, 4.2vw, 50px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Suite <em class="serif-italic" style="color: var(--seal);">PDF certificata.</em>
+        </h1>
+        <p class="lede" style="font-size: 17px; margin: 0; max-width: 640px;">
+          Ventuno utility professionali per i tuoi documenti. Cifratura, conversione, sanitizzazione, watermark, redazione.
+          I file passano dal nostro motore in <strong>EU GDPR</strong>, in memoria, mai stoccati su disco.
+        </p>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <div id="sp-status" class="sp-banner" hidden></div>
+
+      <div class="sp-tabs" role="tablist">
+        <button class="sp-tab is-active" data-tab="sicurezza" role="tab" type="button" aria-selected="true">Sicurezza · 14</button>
+        <button class="sp-tab" data-tab="conversione" role="tab" type="button" aria-selected="false">Conversione · 7</button>
+      </div>
+
+      <div id="sp-grid-sicurezza" class="sp-grid" role="tabpanel"></div>
+      <div id="sp-grid-conversione" class="sp-grid" role="tabpanel" hidden></div>
+    </section>
+
+    <section style="margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--rule);">
+      <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin: 0;">
+        Powered by <a href="https://github.com/Stirling-Tools/stirling-pdf" target="_blank" rel="noopener" style="color: var(--ink-3); text-decoration: underline;">Stirling PDF</a> · MIT License · self-hosted by Veylon
+      </p>
+    </section>
+
+  </main>
+
+  <!-- MODAL FORM -->
+  <div id="sp-modal-back" class="sp-modal-back" role="dialog" aria-modal="true" aria-labelledby="sp-modal-title">
+    <div class="sp-modal">
+      <h3 id="sp-modal-title">&mdash;</h3>
+      <p class="sp-modal-desc" id="sp-modal-desc">&mdash;</p>
+      <form id="sp-modal-form" enctype="multipart/form-data">
+        <div id="sp-modal-fields"></div>
+        <div class="sp-progress" id="sp-modal-progress" hidden></div>
+        <div class="sp-result" id="sp-modal-result" hidden></div>
+        <div class="sp-modal-foot">
+          <button type="button" class="sp-btn-ghost" id="sp-modal-close">Chiudi</button>
+          <button type="submit" class="sp-btn-primary" id="sp-modal-submit">Esegui</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase, requireSession } from "./_shared/supabase-client.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const PROXY_PATH = "/functions/v1/pdf-stirling-proxy";
+
+    // ---- Auth gate + sidebar ----
+    document.documentElement.classList.add("veylon-auth-pending");
+    const session = await requireSession("login.html");
+    if (!session) { /* redirige; non eseguire il resto */ throw new Error("redirecting"); }
+    await renderAppShell("strumenti");
+    document.documentElement.classList.remove("veylon-auth-pending");
+
+    // ---- Tool catalog (21) ----
+    // expects: 'pdf' (download .pdf), 'zip', 'image', 'json' (mostra in modale), 'docx', 'csv'
+    const TOOLS = {
+      sicurezza: [
+        { id: "add-password",         tag: "Sicurezza", name: "Aggiungi password", desc: "Cifra il PDF con una password di apertura.",
+          endpoint: "/api/v1/security/add-password", expects: "pdf",
+          fields: [
+            { kind: "file",     name: "fileInput", label: "PDF da cifrare", required: true, accept: "application/pdf" },
+            { kind: "password", name: "password",  label: "Password di apertura", required: true },
+            { kind: "password", name: "ownerPassword", label: "Password proprietario (opzionale)" },
+            { kind: "select",   name: "keyLength", label: "Forza chiave", options: [["256","AES 256 bit"],["128","AES 128 bit"]] },
+          ] },
+        { id: "remove-password",      tag: "Sicurezza", name: "Rimuovi password", desc: "Decifra il PDF se conosci la password.",
+          endpoint: "/api/v1/security/remove-password", expects: "pdf",
+          fields: [
+            { kind: "file",     name: "fileInput", label: "PDF cifrato", required: true, accept: "application/pdf" },
+            { kind: "password", name: "password",  label: "Password attuale", required: true },
+          ] },
+        { id: "change-permissions",   tag: "Sicurezza", name: "Cambia permessi", desc: "Blocca stampa, copia testo, modifiche, annotazioni.",
+          endpoint: "/api/v1/security/change-permissions", expects: "pdf",
+          fields: [
+            { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "checkbox", name: "preventPrinting",            label: "Vieta stampa" },
+            { kind: "checkbox", name: "preventModify",              label: "Vieta modifiche" },
+            { kind: "checkbox", name: "preventAssembly",            label: "Vieta riassemblaggio" },
+            { kind: "checkbox", name: "preventExtractContent",      label: "Vieta estrazione contenuto" },
+            { kind: "checkbox", name: "preventExtractForAccessibility", label: "Vieta estrazione per accessibilita" },
+            { kind: "checkbox", name: "preventFillInForm",          label: "Vieta compilazione moduli" },
+            { kind: "checkbox", name: "preventModifyAnnotations",   label: "Vieta annotazioni" },
+            { kind: "checkbox", name: "preventPrintingFaithful",    label: "Vieta stampa ad alta risoluzione" },
+          ] },
+        { id: "cert-sign",            tag: "Sicurezza", name: "Firma con certificato", desc: "Firma digitale visibile con .p12 o coppia chiave/cert.",
+          endpoint: "/api/v1/security/cert-sign", expects: "pdf",
+          fields: [
+            { kind: "file",     name: "fileInput",     label: "PDF da firmare", required: true, accept: "application/pdf" },
+            { kind: "select",   name: "certType",      label: "Tipo certificato", options: [["PKCS12","PKCS#12 (.p12)"],["PEM","PEM (chiave + cert)"]] },
+            { kind: "file",     name: "p12File",       label: "File .p12 (se PKCS#12)", accept: ".p12,application/x-pkcs12" },
+            { kind: "file",     name: "privateKeyFile",label: "Chiave privata .pem (se PEM)", accept: ".pem,.key" },
+            { kind: "file",     name: "certFile",      label: "Certificato .pem (se PEM)", accept: ".pem,.crt,.cer" },
+            { kind: "password", name: "password",      label: "Password certificato" },
+            { kind: "checkbox", name: "showSignature", label: "Mostra rettangolo firma sulla pagina" },
+            { kind: "text",     name: "reason",        label: "Motivo firma" },
+            { kind: "text",     name: "location",      label: "Luogo firma" },
+            { kind: "text",     name: "name",          label: "Nome firmatario" },
+          ] },
+        { id: "validate-signature",   tag: "Sicurezza", name: "Verifica firma", desc: "Controlla validita delle firme presenti nel PDF.",
+          endpoint: "/api/v1/security/validate-signature", expects: "json",
+          fields: [
+            { kind: "file", name: "fileInput", label: "PDF firmato", required: true, accept: "application/pdf" },
+          ] },
+        { id: "remove-cert-sign",     tag: "Sicurezza", name: "Rimuovi firma", desc: "Toglie firme digitali dal PDF (mantiene contenuto).",
+          endpoint: "/api/v1/security/remove-cert-sign", expects: "pdf",
+          fields: [
+            { kind: "file", name: "fileInput", label: "PDF firmato", required: true, accept: "application/pdf" },
+          ] },
+        { id: "add-watermark",        tag: "Sicurezza", name: "Aggiungi filigrana", desc: "Watermark testuale ripetuto su tutte le pagine.",
+          endpoint: "/api/v1/security/add-watermark", expects: "pdf",
+          fields: [
+            { kind: "file",   name: "fileInput",      label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "text",   name: "watermarkText",  label: "Testo filigrana", required: true, placeholder: "RISERVATO" },
+            { kind: "number", name: "fontSize",       label: "Dimensione font", default: "30" },
+            { kind: "number", name: "rotation",       label: "Rotazione gradi", default: "45" },
+            { kind: "number", name: "opacity",        label: "Opacita 0.0-1.0", default: "0.5", step: "0.1" },
+            { kind: "number", name: "widthSpacer",    label: "Spaziatura larghezza", default: "50" },
+            { kind: "number", name: "heightSpacer",   label: "Spaziatura altezza", default: "50" },
+          ] },
+        { id: "sanitize-pdf",         tag: "Sicurezza", name: "Sanifica PDF", desc: "Rimuove JS, file embedded, metadati. Step automatico Evidence Cloud.",
+          endpoint: "/api/v1/security/sanitize-pdf", expects: "pdf",
+          fields: [
+            { kind: "file", name: "fileInput", label: "PDF da sanificare", required: true, accept: "application/pdf" },
+            { kind: "checkbox", name: "removeJavaScript",   label: "Rimuovi JavaScript", default: true },
+            { kind: "checkbox", name: "removeEmbeddedFiles",label: "Rimuovi file allegati", default: true },
+            { kind: "checkbox", name: "removeMetadata",     label: "Rimuovi metadati" },
+            { kind: "checkbox", name: "removeLinks",        label: "Rimuovi hyperlink" },
+            { kind: "checkbox", name: "removeFonts",        label: "Rimuovi font embedded" },
+          ] },
+        { id: "auto-redact",          tag: "Sicurezza", name: "Redazione automatica", desc: "Oscura parole o regex. Usato per export probatorio GDPR.",
+          endpoint: "/api/v1/security/auto-redact", expects: "pdf",
+          fields: [
+            { kind: "file",     name: "fileInput",       label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "textarea", name: "listOfText",      label: "Parole da oscurare (una per riga)", required: true, rows: 4 },
+            { kind: "checkbox", name: "useRegex",        label: "Le voci sopra sono espressioni regolari" },
+            { kind: "checkbox", name: "wholeWordSearch", label: "Solo parole intere", default: true },
+            { kind: "text",     name: "redactColor",     label: "Colore (hex)", default: "#000000" },
+            { kind: "number",   name: "customPadding",   label: "Padding pixel", default: "0.1", step: "0.1" },
+          ] },
+        { id: "flatten",              tag: "Sicurezza", name: "Appiattisci PDF", desc: "Trasforma moduli compilabili in contenuto fisso.",
+          endpoint: "/api/v1/general/flatten", expects: "pdf",
+          fields: [
+            { kind: "file",     name: "fileInput",       label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "checkbox", name: "flattenOnlyForms",label: "Appiattisci solo i moduli (lascia annotazioni)" },
+          ] },
+        { id: "get-info-on-pdf",      tag: "Sicurezza", name: "Info su PDF", desc: "Metadati, versione, pagine, font, firme, allegati.",
+          endpoint: "/api/v1/general/get-info-on-pdf", expects: "json",
+          fields: [
+            { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          ] },
+        { id: "unlock-pdf-forms",     tag: "Sicurezza", name: "Sblocca moduli", desc: "Rende compilabili i campi dei moduli PDF.",
+          endpoint: "/api/v1/security/unlock-pdf-forms", expects: "pdf",
+          fields: [
+            { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          ] },
+        { id: "add-blank-page",       tag: "Sicurezza", name: "Aggiungi pagina bianca", desc: "Inserisce una pagina vuota in posizione scelta.",
+          endpoint: "/api/v1/security/add-blank-page", expects: "pdf",
+          fields: [
+            { kind: "file",   name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "select", name: "position",  label: "Posizione", options: [["last","Alla fine"],["first","All inizio"],["before","Prima della pagina..."],["after","Dopo la pagina..."]] },
+            { kind: "number", name: "pageNum",   label: "Numero pagina (se before/after)" },
+          ] },
+        { id: "remove-blank-pages",   tag: "Sicurezza", name: "Rimuovi pagine bianche", desc: "Elimina automaticamente le pagine vuote.",
+          endpoint: "/api/v1/security/remove-blank-pages", expects: "pdf",
+          fields: [
+            { kind: "file",   name: "fileInput",      label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "number", name: "threshold",      label: "Soglia rilevamento (px)", default: "10" },
+            { kind: "number", name: "whiteThreshold", label: "Soglia bianco (0-255)", default: "245" },
+          ] },
+      ],
+      conversione: [
+        { id: "img-to-pdf",    tag: "Conversione", name: "Immagine → PDF", desc: "Una o piu immagini in un unico PDF.",
+          endpoint: "/api/v1/convert/img/pdf", expects: "pdf",
+          fields: [
+            { kind: "file",   name: "fileInput",   label: "Immagini (JPG/PNG/HEIC...)", required: true, accept: "image/*", multiple: true },
+            { kind: "select", name: "fitOption",   label: "Adattamento", options: [["fillPage","Riempi pagina"],["maintainAspectRatio","Mantieni proporzioni"],["stretchToFit","Adatta a misura"]] },
+            { kind: "select", name: "colorType",   label: "Colore", options: [["color","Colori"],["greyscale","Scala di grigi"],["blackwhite","Bianco/Nero"]] },
+            { kind: "checkbox", name: "autoRotate",label: "Auto-rotazione" },
+          ] },
+        { id: "pdf-to-word",   tag: "Conversione", name: "PDF → Word", desc: "Converte in .docx, .doc o .odt.",
+          endpoint: "/api/v1/convert/pdf/word", expects: "docx",
+          fields: [
+            { kind: "file",   name: "fileInput",   label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "select", name: "outputFormat",label: "Formato uscita", options: [["docx","Word .docx"],["doc","Word .doc"],["odt","OpenDocument .odt"]] },
+          ] },
+        { id: "pdf-to-img",    tag: "Conversione", name: "PDF → Immagini", desc: "Esporta ogni pagina come PNG/JPEG/WEBP.",
+          endpoint: "/api/v1/convert/pdf/img", expects: "zip",
+          fields: [
+            { kind: "file",   name: "fileInput",        label: "PDF", required: true, accept: "application/pdf" },
+            { kind: "select", name: "imageFormat",      label: "Formato", options: [["png","PNG"],["jpeg","JPEG"],["webp","WEBP"]] },
+            { kind: "select", name: "singleOrMultiple", label: "Output", options: [["multiple","Una immagine per pagina (ZIP)"],["single","Singola immagine lunga"]] },
+            { kind: "select", name: "colorType",        label: "Colore", options: [["color","Colori"],["greyscale","Scala di grigi"],["blackwhite","Bianco/Nero"]] },
+            { kind: "number", name: "dpi",              label: "DPI", default: "300" },
+          ] },
+        { id: "pdf-to-csv",    tag: "Conversione", name: "PDF → CSV", desc: "Estrae tabelle dal PDF in formato CSV.",
+          endpoint: "/api/v1/convert/pdf/csv", expects: "csv",
+          fields: [
+            { kind: "file", name: "fileInput",   label: "PDF con tabelle", required: true, accept: "application/pdf" },
+            { kind: "text", name: "pageNumbers", label: "Pagine (es. 1,3-5 — vuoto = tutte)" },
+          ] },
+        { id: "office-to-pdf", tag: "Conversione", name: "Office → PDF", desc: "Word/Excel/PowerPoint/ODT/RTF/Markdown → PDF.",
+          endpoint: "/api/v1/convert/file/pdf", expects: "pdf",
+          fields: [
+            { kind: "file", name: "fileInput", label: "Documento Office", required: true,
+              accept: ".docx,.doc,.odt,.rtf,.txt,.md,.html,.xlsx,.xls,.ods,.csv,.pptx,.ppt,.odp" },
+          ] },
+        { id: "html-to-pdf",   tag: "Conversione", name: "HTML → PDF", desc: "Pagina HTML statica (o ZIP con asset) → PDF.",
+          endpoint: "/api/v1/convert/html/pdf", expects: "pdf",
+          fields: [
+            { kind: "file", name: "fileInput", label: "File .html oppure .zip", required: true, accept: ".html,.htm,.zip" },
+          ] },
+        { id: "url-to-pdf",    tag: "Conversione", name: "URL → PDF", desc: "Snapshot certificabile di una pagina web pubblica.",
+          endpoint: "/api/v1/convert/url/pdf", expects: "pdf",
+          fields: [
+            { kind: "url", name: "urlInput", label: "URL pubblico", required: true, placeholder: "https://..." },
+          ] },
+      ],
+    };
+
+    // ---- Render grids ----
+    function renderGrid(category) {
+      const grid = document.getElementById("sp-grid-" + category);
+      grid.innerHTML = TOOLS[category].map((t) => `
+        <button class="sp-card" data-tool="${t.id}" data-cat="${category}" type="button">
+          <div class="sp-card-head">
+            <span class="sp-card-tag">${escapeHtml(t.tag)}</span>
+          </div>
+          <div class="sp-card-name">${escapeHtml(t.name)}</div>
+          <div class="sp-card-desc">${escapeHtml(t.desc)}</div>
+        </button>
+      `).join("");
+    }
+    renderGrid("sicurezza");
+    renderGrid("conversione");
+
+    // ---- Tabs ----
+    document.querySelectorAll(".sp-tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".sp-tab").forEach((b) => { b.classList.remove("is-active"); b.setAttribute("aria-selected","false"); });
+        btn.classList.add("is-active"); btn.setAttribute("aria-selected","true");
+        const tab = btn.dataset.tab;
+        document.getElementById("sp-grid-sicurezza").hidden = (tab !== "sicurezza");
+        document.getElementById("sp-grid-conversione").hidden = (tab !== "conversione");
+      });
+    });
+
+    // ---- Click card -> open modal ----
+    document.querySelectorAll(".sp-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const cat = card.dataset.cat;
+        const tool = TOOLS[cat].find((t) => t.id === card.dataset.tool);
+        if (tool) openModal(tool);
+      });
+    });
+
+    // ---- Modal ----
+    const modalBack = document.getElementById("sp-modal-back");
+    const modalForm = document.getElementById("sp-modal-form");
+    const modalFields = document.getElementById("sp-modal-fields");
+    const modalTitle = document.getElementById("sp-modal-title");
+    const modalDesc = document.getElementById("sp-modal-desc");
+    const modalProgress = document.getElementById("sp-modal-progress");
+    const modalResult = document.getElementById("sp-modal-result");
+    const modalSubmit = document.getElementById("sp-modal-submit");
+    let currentTool = null;
+
+    document.getElementById("sp-modal-close").addEventListener("click", closeModal);
+    modalBack.addEventListener("click", (e) => { if (e.target === modalBack) closeModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && modalBack.classList.contains("is-open")) closeModal(); });
+
+    function openModal(tool) {
+      currentTool = tool;
+      modalTitle.textContent = tool.name;
+      modalDesc.textContent = tool.desc;
+      modalFields.innerHTML = tool.fields.map(renderField).join("");
+      modalProgress.hidden = true; modalProgress.textContent = "";
+      modalResult.hidden = true; modalResult.textContent = "";
+      modalSubmit.disabled = false; modalSubmit.textContent = "Esegui";
+      modalBack.classList.add("is-open");
+    }
+    function closeModal() {
+      modalBack.classList.remove("is-open");
+      currentTool = null;
+      modalForm.reset();
+    }
+
+    function renderField(f) {
+      const req = f.required ? "required" : "";
+      const def = f.default ?? "";
+      const ph = f.placeholder ? `placeholder="${escapeHtml(f.placeholder)}"` : "";
+      if (f.kind === "file") {
+        const mult = f.multiple ? "multiple" : "";
+        return `<label for="f-${f.name}">${escapeHtml(f.label)}${f.required ? " *" : ""}</label>
+                <input type="file" id="f-${f.name}" name="${f.name}" accept="${escapeHtml(f.accept||"")}" ${mult} ${req}/>`;
+      }
+      if (f.kind === "text" || f.kind === "url" || f.kind === "password") {
+        return `<label for="f-${f.name}">${escapeHtml(f.label)}${f.required ? " *" : ""}</label>
+                <input type="${f.kind}" id="f-${f.name}" name="${f.name}" value="${escapeHtml(String(def))}" ${ph} ${req}/>`;
+      }
+      if (f.kind === "number") {
+        const step = f.step ? `step="${escapeHtml(f.step)}"` : "";
+        return `<label for="f-${f.name}">${escapeHtml(f.label)}</label>
+                <input type="number" id="f-${f.name}" name="${f.name}" value="${escapeHtml(String(def))}" ${step}/>`;
+      }
+      if (f.kind === "textarea") {
+        const rows = f.rows || 3;
+        return `<label for="f-${f.name}">${escapeHtml(f.label)}${f.required ? " *" : ""}</label>
+                <textarea id="f-${f.name}" name="${f.name}" rows="${rows}" ${req}>${escapeHtml(String(def))}</textarea>`;
+      }
+      if (f.kind === "select") {
+        const opts = f.options.map(([v, l]) => `<option value="${escapeHtml(v)}">${escapeHtml(l)}</option>`).join("");
+        return `<label for="f-${f.name}">${escapeHtml(f.label)}</label>
+                <select id="f-${f.name}" name="${f.name}">${opts}</select>`;
+      }
+      if (f.kind === "checkbox") {
+        const checked = f.default ? "checked" : "";
+        return `<label class="sp-check"><input type="checkbox" id="f-${f.name}" name="${f.name}" value="true" ${checked}/> ${escapeHtml(f.label)}</label>`;
+      }
+      return "";
+    }
+
+    // ---- Submit ----
+    modalForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentTool) return;
+      modalSubmit.disabled = true; modalSubmit.textContent = "Elaborazione...";
+      modalResult.hidden = true; modalResult.textContent = "";
+      modalProgress.hidden = false; modalProgress.textContent = "Invio file al motore PDF...";
+
+      try {
+        const { data: sess } = await supabase.auth.getSession();
+        const accessToken = sess?.session?.access_token;
+        if (!accessToken) throw new Error("Sessione scaduta. Effettua di nuovo login.");
+
+        const fd = new FormData();
+        for (const f of currentTool.fields) {
+          const el = modalForm.elements[f.name];
+          if (!el) continue;
+          if (f.kind === "file") {
+            if (el.files && el.files.length) {
+              for (const file of el.files) fd.append(f.name, file, file.name);
+            }
+          } else if (f.kind === "checkbox") {
+            if (el.checked) fd.append(f.name, "true");
+            else fd.append(f.name, "false");
+          } else {
+            if (el.value !== "" && el.value !== null) fd.append(f.name, el.value);
+          }
+        }
+
+        const proxyUrl = `${SUPABASE_URL}${PROXY_PATH}?endpoint=${encodeURIComponent(currentTool.endpoint)}`;
+        const resp = await fetch(proxyUrl, {
+          method: "POST",
+          headers: { "Authorization": "Bearer " + accessToken },
+          body: fd,
+        });
+
+        if (resp.status === 503) {
+          const j = await safeJson(resp);
+          showStatus("warn", j?.message || "Strumenti PDF in attivazione. Stiamo finalizzando il deploy del motore self-hosted. Riprova fra poco.");
+          showResult("Servizio in attivazione. Il deploy del motore PDF self-hosted sta per essere completato. Riprova fra qualche minuto.");
+          return;
+        }
+        if (resp.status === 429) {
+          showResult("Limite richieste raggiunto (100/h). Riprova fra un'ora.");
+          return;
+        }
+        if (!resp.ok) {
+          const j = await safeJson(resp);
+          showResult(`Errore ${resp.status}: ${j?.error || j?.message || resp.statusText}`);
+          return;
+        }
+
+        const ct = (resp.headers.get("content-type") || "").toLowerCase();
+        if (ct.includes("application/json")) {
+          const j = await resp.json();
+          showResult(JSON.stringify(j, null, 2));
+        } else {
+          // binary -> download
+          const blob = await resp.blob();
+          const fname = filenameFrom(resp.headers.get("content-disposition")) || suggestedFilename(currentTool);
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url; a.download = fname; document.body.appendChild(a); a.click();
+          setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 4000);
+          showResult(`File pronto: ${fname}\nDimensione: ${formatBytes(blob.size)}`);
+          try { if (window.plausible) window.plausible("strumento_pdf_ok", { props: { tool: currentTool.id } }); } catch(_) {}
+        }
+      } catch (err) {
+        console.error("[strumenti-pdf] submit error", err);
+        showResult("Errore: " + (err?.message || String(err)));
+      } finally {
+        modalSubmit.disabled = false; modalSubmit.textContent = "Esegui";
+        modalProgress.hidden = true;
+      }
+    });
+
+    function showResult(text) {
+      modalResult.hidden = false; modalResult.textContent = text;
+    }
+    function showStatus(kind, msg) {
+      const banner = document.getElementById("sp-status");
+      banner.className = "sp-banner is-" + kind;
+      banner.textContent = msg; banner.hidden = false;
+    }
+    async function safeJson(r) { try { return await r.json(); } catch { return null; } }
+    function filenameFrom(disposition) {
+      if (!disposition) return null;
+      const m = /filename\*?=(?:UTF-8''|")?([^;"']+)/i.exec(disposition);
+      return m ? decodeURIComponent(m[1].replace(/"/g,"")) : null;
+    }
+    function suggestedFilename(tool) {
+      const ext = ({ pdf: "pdf", zip: "zip", docx: "docx", csv: "csv", image: "png", json: "json" })[tool.expects] || "bin";
+      const ts = new Date().toISOString().replace(/[:.]/g,"-").slice(0,19);
+      return `veylon-${tool.id}-${ts}.${ext}`;
+    }
+    function formatBytes(b) {
+      if (b < 1024) return `${b} B`;
+      if (b < 1024*1024) return `${(b/1024).toFixed(1)} KB`;
+      return `${(b/1024/1024).toFixed(2)} MB`;
+    }
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+  </script>
+
+</body>
+</html>

@@ -9,7 +9,7 @@ import { getUser, signOut } from "./supabase-client.js";
 // Lista flat — una voce per sezione. Niente sub-items per non incasinare.
 // Le pagine secondarie (cert-emetti, tag-storico, ecc.) si raggiungono
 // navigando DENTRO la sezione principale.
-// Menu fisso 12 voci richiesto Manuel 2026-06-15.
+// Menu fisso 13 voci (12 atti + Strumenti, 2026-06-19).
 // Admin accessibile via URL diretto /admin.html (non in nav).
 const NAV = [
   { key: "dashboard",   label: "Cruscotto",  href: "dashboard.html" },
@@ -22,6 +22,7 @@ const NAV = [
   { key: "tag",         label: "Tag",        href: "tag.html" },
   { key: "cert",        label: "Cert",       href: "cert.html" },
   { key: "archivio",    label: "Archivio",   href: "archivio.html" },
+  { key: "strumenti",   label: "Strumenti",  href: "strumenti-pdf.html" },
   { key: "verifica",    label: "Verifica",   href: "verifica.html" },
   { key: "logout",      label: "Esci",       href: "#",               action: "logout" },
 ];
