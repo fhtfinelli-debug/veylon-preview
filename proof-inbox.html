@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON ProofOS · Proof Inbox</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+</head>
+<body>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">ProofOS</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Proof <em class="serif-italic" style="color: var(--seal);">Inbox.</em>
+        </h1>
+        <p class="lede">Cose da gestire oggi. Le capsule che richiedono la tua attenzione, una coda alla volta.</p>
+      </div>
+    </section>
+
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <div class="mode-strip" role="tablist" id="inbox-tabs">
+          <button class="mode-btn active" data-tab="new" role="tab" aria-selected="true">
+            Nuove capsule <span class="tab-count" data-count="new">·</span>
+          </button>
+          <button class="mode-btn" data-tab="lowtrust" role="tab" aria-selected="false">
+            Trust score basso <span class="tab-count" data-count="lowtrust">·</span>
+          </button>
+          <button class="mode-btn" data-tab="errors" role="tab" aria-selected="false">
+            Errori <span class="tab-count" data-count="errors">·</span>
+          </button>
+          <button class="mode-btn" data-tab="nocase" role="tab" aria-selected="false">
+            Senza fascicolo <span class="tab-count" data-count="nocase">·</span>
+          </button>
+          <button class="mode-btn" data-tab="noatt" role="tab" aria-selected="false">
+            Allegati mancanti <span class="tab-count" data-count="noatt">·</span>
+          </button>
+        </div>
+
+        <div id="state-loading" class="state-msg">Caricamento code&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden>
+          <span></span> <button class="link-seal" id="retry" type="button">Riprova</button>
+        </div>
+
+        <div class="mode-pane active" id="pane-new" role="tabpanel">
+          <p class="pane-intro">Capsule appena catturate, in attesa di verifica o sigillo. Ordinate dalla piu recente.</p>
+          <div class="t-wrap"><table class="t"><thead><tr>
+            <th>Evidence ID</th><th>Oggetto</th><th>Mittente</th><th>Data</th><th>Trust</th><th>Stato</th>
+          </tr></thead><tbody id="rows-new"></tbody></table></div>
+          <div class="empty-q" id="empty-new" hidden>Nessuna capsule in questa coda.</div>
+        </div>
+
+        <div class="mode-pane" id="pane-lowtrust" role="tabpanel">
+          <p class="pane-intro">Capsule con trust score sotto 60. Controlla manualmente prima di usare come prova legale.</p>
+          <div class="t-wrap"><table class="t"><thead><tr>
+            <th>Evidence ID</th><th>Oggetto</th><th>Mittente</th><th>Data</th><th>Trust</th><th>Stato</th>
+          </tr></thead><tbody id="rows-lowtrust"></tbody></table></div>
+          <div class="empty-q" id="empty-lowtrust" hidden>Nessuna capsule in questa coda.</div>
+        </div>
+
+        <div class="mode-pane" id="pane-errors" role="tabpanel">
+          <p class="pane-intro">Capsule che hanno fallito ingest o verifica. Apri per leggere il motivo del fallimento.</p>
+          <div class="t-wrap"><table class="t"><thead><tr>
+            <th>Evidence ID</th><th>Oggetto</th><th>Mittente</th><th>Data</th><th>Trust</th><th>Stato</th>
+          </tr></thead><tbody id="rows-errors"></tbody></table></div>
+          <div class="empty-q" id="empty-errors" hidden>Nessuna capsule in questa coda.</div>
+        </div>
+
+        <div class="mode-pane" id="pane-nocase" role="tabpanel">
+          <p class="pane-intro">Capsule verificate o sigillate negli ultimi 30 giorni che non sono collegate a un fascicolo.</p>
+          <div class="t-wrap"><table class="t"><thead><tr>
+            <th>Evidence ID</th><th>Oggetto</th><th>Mittente</th><th>Data</th><th>Trust</th><th>Stato</th>
+          </tr></thead><tbody id="rows-nocase"></tbody></table></div>
+          <div class="empty-q" id="empty-nocase" hidden>Nessuna capsule in questa coda.</div>
+        </div>
+
+        <div class="mode-pane" id="pane-noatt" role="tabpanel">
+          <p class="pane-intro">Email con zero allegati registrati. Spesso indica un allegato citato nel corpo ma non arrivato.</p>
+          <div class="t-wrap"><table class="t"><thead><tr>
+            <th>Evidence ID</th><th>Oggetto</th><th>Mittente</th><th>Data</th><th>Trust</th><th>Stato</th>
+          </tr></thead><tbody id="rows-noatt"></tbody></table></div>
+          <div class="empty-q" id="empty-noatt" hidden>Nessuna capsule in questa coda.</div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>ProofOS · Archivio</span></div></footer>
+
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .pane-intro { font-family: var(--serif); font-size: 14px; color: var(--ink-2); margin: 8px 0 18px; }
+  .t-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); vertical-align: top; }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .t a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+  .t a:hover { text-decoration-color: var(--seal); color: var(--seal); }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+  .pill.neutro { color: #b07b00; border-color: #d8a536; background: #fffaeb; }
+  .mode-strip { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin-bottom: 24px; flex-wrap: wrap; }
+  .mode-btn { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 12px 18px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; color: var(--ink-2); }
+  .mode-btn.active { color: var(--ink); border-bottom-color: var(--seal); }
+  .mode-pane { display: none; padding: 8px 0; }
+  .mode-pane.active { display: block; }
+  .tab-count { font-size: 10px; color: var(--ink-3); margin-left: 6px; padding: 2px 6px; border: 1px solid var(--rule); }
+  .tab-count.has { color: var(--seal); border-color: var(--seal); }
+  .empty-q { padding: 32px 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-3); }
+  .ev-id { font-family: var(--mono); font-size: 11px; }
+  </style>
+
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
+  import { supabase } from "./_shared/supabase-client.js";
+
+  document.documentElement.classList.add("veylon-auth-pending");
+  try {
+    await protectPage();
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
+  await renderAppShell("archivio");
+
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "—"; }
+  function trunc(s, n) { const v = String(s ?? ""); return v.length > n ? v.slice(0, n - 1) + "…" : v; }
+  function maskSender(s) {
+    const v = String(s ?? "").trim();
+    if (!v) return "—";
+    const at = v.indexOf("@");
+    if (at <= 0) return escapeHtml(v);
+    const local = v.slice(0, at);
+    const domain = v.slice(at + 1);
+    const masked = local.length <= 2 ? local[0] + "*" : local.slice(0, 2) + "***";
+    return escapeHtml(masked + "@" + domain);
+  }
+  function trustPill(score) {
+    if (score === null || score === undefined) {
+      return `<span class="pill">n/d</span>`;
+    }
+    const n = Number(score);
+    if (Number.isNaN(n)) return `<span class="pill">n/d</span>`;
+    if (n < 60) return `<span class="pill warn">${n}</span>`;
+    if (n < 80) return `<span class="pill neutro">${n}</span>`;
+    return `<span class="pill ok">${n}</span>`;
+  }
+  function statusPill(status) {
+    const s = String(status ?? "—");
+    const okSet = ["verified", "sealed"];
+    const warnSet = ["failed", "error"];
+    let cls = "";
+    if (okSet.includes(s)) cls = "ok";
+    else if (warnSet.includes(s)) cls = "warn";
+    else cls = "neutro";
+    return `<span class="pill ${cls}">${escapeHtml(s)}</span>`;
+  }
+
+  // Tabs
+  document.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll(".mode-btn").forEach(x => { x.classList.remove("active"); x.setAttribute("aria-selected","false"); });
+    document.querySelectorAll(".mode-pane").forEach(p => p.classList.remove("active"));
+    b.classList.add("active"); b.setAttribute("aria-selected","true");
+    document.getElementById("pane-" + b.dataset.tab).classList.add("active");
+  }));
+
+  function renderRows(tbodyId, emptyId, rows) {
+    const tbody = document.getElementById(tbodyId);
+    const empty = document.getElementById(emptyId);
+    tbody.innerHTML = "";
+    if (!rows || rows.length === 0) {
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+    rows.forEach(r => {
+      const tr = document.createElement("tr");
+      const evId = r.evidence_id || r.id;
+      const link = `proof-capsule-detail.html?id=${encodeURIComponent(r.id)}`;
+      tr.innerHTML = `
+        <td class="mono"><a href="${link}" class="ev-id">${escapeHtml(evId)}</a></td>
+        <td>${escapeHtml(trunc(r.subject || "—", 60))}</td>
+        <td class="mono">${maskSender(r.sender)}</td>
+        <td>${fmt(r.captured_at)}</td>
+        <td>${trustPill(r.trust_score)}</td>
+        <td>${statusPill(r.status)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function setCount(tab, n) {
+    const el = document.querySelector(`.tab-count[data-count="${tab}"]`);
+    if (!el) return;
+    el.textContent = (n === null || n === undefined) ? "·" : String(n);
+    if (n > 0) el.classList.add("has");
+    else el.classList.remove("has");
+  }
+
+  async function load() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    try {
+      const SELECT = "id, evidence_id, subject, sender, captured_at, trust_score, status, source_type, case_id, attachments_count";
+
+      // 1) Nuove capsule (status='captured')
+      const qNew = supabase.from("proof_capsules")
+        .select(SELECT)
+        .eq("status", "captured")
+        .order("captured_at", { ascending: false })
+        .limit(50);
+
+      // 2) Trust score basso (<60)
+      const qLow = supabase.from("proof_capsules")
+        .select(SELECT)
+        .lt("trust_score", 60)
+        .order("captured_at", { ascending: false })
+        .limit(50);
+
+      // 3) Errori (status='failed')
+      const qErr = supabase.from("proof_capsules")
+        .select(SELECT)
+        .eq("status", "failed")
+        .order("captured_at", { ascending: false })
+        .limit(50);
+
+      // 4) Senza fascicolo (case_id IS NULL, status verified/sealed, ultimi 30gg)
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString();
+      const qNoCase = supabase.from("proof_capsules")
+        .select(SELECT)
+        .is("case_id", null)
+        .in("status", ["verified", "sealed"])
+        .gte("captured_at", thirtyDaysAgo)
+        .order("captured_at", { ascending: false })
+        .limit(50);
+
+      // 5) Allegati mancanti (attachments_count=0 AND source_type IN email-ish)
+      const qNoAtt = supabase.from("proof_capsules")
+        .select(SELECT)
+        .eq("attachments_count", 0)
+        .in("source_type", ["email", "email_bcc", "email_relay", "email_vault"])
+        .order("captured_at", { ascending: false })
+        .limit(50);
+
+      const [resNew, resLow, resErr, resNoCase, resNoAtt] = await Promise.all([qNew, qLow, qErr, qNoCase, qNoAtt]);
+
+      document.getElementById("state-loading").hidden = true;
+
+      const firstErr = [resNew, resLow, resErr, resNoCase, resNoAtt].find(r => r.error);
+      if (firstErr) {
+        const err = document.getElementById("state-error");
+        err.querySelector("span").textContent = "Errore: " + (firstErr.error.message || "query fallita");
+        err.hidden = false;
+        return;
+      }
+
+      renderRows("rows-new", "empty-new", resNew.data);
+      setCount("new", (resNew.data || []).length);
+
+      renderRows("rows-lowtrust", "empty-lowtrust", resLow.data);
+      setCount("lowtrust", (resLow.data || []).length);
+
+      renderRows("rows-errors", "empty-errors", resErr.data);
+      setCount("errors", (resErr.data || []).length);
+
+      renderRows("rows-nocase", "empty-nocase", resNoCase.data);
+      setCount("nocase", (resNoCase.data || []).length);
+
+      renderRows("rows-noatt", "empty-noatt", resNoAtt.data);
+      setCount("noatt", (resNoAtt.data || []).length);
+    } catch (e) {
+      document.getElementById("state-loading").hidden = true;
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      err.hidden = false;
+    }
+  }
+
+  document.getElementById("retry").addEventListener("click", load);
+  load();
+  </script>
+  <script>(function(){const o=window.fetch;if(!o||window.__veylonPlausibleHook)return;window.__veylonPlausibleHook=true;window.fetch=function(...a){return o.apply(this,a).then(r=>{try{const u=(a[0]&&a[0].url)||a[0];if(typeof u==='string'&&u.indexOf('/functions/v1/')>0&&r.status>=200&&r.status<300&&window.plausible){const m=u.match(/\/functions\/v1\/([a-z-]+)/);if(m){const fn=m[1];if(['proof-capsules-search','proof-inbox'].includes(fn))window.plausible('proof_inbox_action',{props:{fn:fn}});}}}catch(_){};return r;});};})();</script>
+</body>
+</html>

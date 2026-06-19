@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Proof Capsule Detail</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+</head>
+<body>
+  <main class="col" style="padding: 24px 32px 96px;">
+
+    <!-- Breadcrumb -->
+    <div class="small" style="margin-bottom: 18px; color: var(--ink-3);">
+      <a href="archivio.html" class="link-seal">&larr; Archivio</a>
+      <span style="margin: 0 8px;">/</span>
+      <span>Proof Capsule</span>
+    </div>
+
+    <!-- Loading state -->
+    <div id="state-loading" class="state-msg">Caricamento Proof Capsule&hellip;</div>
+
+    <!-- Error / not found state -->
+    <div id="state-error" class="state-msg state-err" hidden>
+      <span id="err-msg">Errore.</span>
+      <a href="archivio.html" class="link-seal" style="margin-left: 8px;">Torna all'archivio &rarr;</a>
+    </div>
+
+    <!-- HEADER STICKY -->
+    <header id="pc-header" class="pc-header" hidden>
+      <!-- Riga 1: Evidence ID -->
+      <div class="pc-id-row">
+        <span class="pc-evd-id mono" id="pc-evd-id">&mdash;</span>
+        <span class="pc-legacy" id="pc-legacy"></span>
+      </div>
+
+      <!-- Riga 2: 5 badge -->
+      <div class="pc-badges">
+        <span class="badge" id="bd-status"><span class="bk">Status</span><span class="bv" id="bd-status-v">&mdash;</span></span>
+        <span class="badge" id="bd-trust"><span class="bk">Trust Score</span><span class="bv" id="bd-trust-v">&mdash;</span></span>
+        <span class="badge" id="bd-integ"><span class="bk">Integrita</span><span class="bv" id="bd-integ-v">&mdash;</span></span>
+        <span class="badge" id="bd-src"><span class="bk">Source</span><span class="bv" id="bd-src-v">&mdash;</span></span>
+        <span class="badge" id="bd-type"><span class="bk">Type</span><span class="bv" id="bd-type-v">&mdash;</span></span>
+      </div>
+
+      <!-- Riga 3: meta testuale -->
+      <div class="pc-meta" id="pc-meta">&mdash;</div>
+
+      <!-- Riga 4: azioni -->
+      <div class="pc-actions">
+        <button class="mode-btn act" id="act-cert">Scarica certificato</button>
+        <button class="mode-btn act" id="act-export">Esporta prova</button>
+        <button class="mode-btn act" id="act-verify-hash">Verifica hash</button>
+        <button class="mode-btn act" id="act-copy-link">Copia link verifica</button>
+        <button class="mode-btn act disabled" id="act-add-case" disabled title="Disponibile in Sprint 3">Aggiungi a Case</button>
+      </div>
+    </header>
+
+    <!-- TAB STRIP -->
+    <div id="pc-body" hidden>
+      <div class="mode-strip" role="tablist" id="tab-strip">
+        <button class="mode-btn active" data-tab="summary"     role="tab" aria-selected="true">Summary</button>
+        <button class="mode-btn"        data-tab="original"    role="tab" aria-selected="false">Original Message</button>
+        <button class="mode-btn"        data-tab="attachments" role="tab" aria-selected="false">Attachments</button>
+        <button class="mode-btn"        data-tab="integrity"   role="tab" aria-selected="false">Integrity</button>
+        <button class="mode-btn"        data-tab="timeline"    role="tab" aria-selected="false">Timeline</button>
+        <button class="mode-btn"        data-tab="ai"          role="tab" aria-selected="false">AI Findings</button>
+        <button class="mode-btn"        data-tab="audit"       role="tab" aria-selected="false">Access Audit</button>
+        <button class="mode-btn"        data-tab="verify"      role="tab" aria-selected="false">Verification</button>
+        <button class="mode-btn"        data-tab="retention"   role="tab" aria-selected="false">Retention &amp; Legal Hold</button>
+      </div>
+
+      <!-- ========== TAB 1: SUMMARY ========== -->
+      <section class="mode-pane active" id="tab-summary" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Riepilogo della Proof Capsule</h2>
+          <div class="kv-grid">
+            <div class="kv"><span class="k">Tipo</span><span class="v" id="sm-type">&mdash;</span></div>
+            <div class="kv"><span class="k">Direzione</span><span class="v" id="sm-direction">&mdash;</span></div>
+            <div class="kv"><span class="k">Source Type</span><span class="v" id="sm-source">&mdash;</span></div>
+            <div class="kv"><span class="k">Status</span><span class="v" id="sm-status">&mdash;</span></div>
+            <div class="kv">
+              <span class="k">Trust Score</span>
+              <span class="v">
+                <span id="sm-trust-num" style="font-family: var(--mono);">&mdash;</span>
+                <span class="bar-wrap"><span class="bar-fill" id="sm-trust-bar" style="width:0%"></span></span>
+              </span>
+            </div>
+            <div class="kv"><span class="k">Privacy Level</span><span class="v" id="sm-privacy">&mdash;</span></div>
+            <div class="kv"><span class="k">Proof Level</span><span class="v" id="sm-proof-level">&mdash;</span></div>
+            <div class="kv"><span class="k">Legal Hold</span><span class="v" id="sm-legalhold">&mdash;</span></div>
+            <div class="kv full"><span class="k">Mittente</span><span class="v mono" id="sm-sender">&mdash;</span></div>
+            <div class="kv full"><span class="k">Destinatari (To)</span><span class="v mono" id="sm-to">&mdash;</span></div>
+            <div class="kv full"><span class="k">CC</span><span class="v mono" id="sm-cc">&mdash;</span></div>
+            <div class="kv full"><span class="k">BCC</span><span class="v mono" id="sm-bcc">&mdash;</span></div>
+            <div class="kv full"><span class="k">Oggetto</span><span class="v" id="sm-subject">&mdash;</span></div>
+            <div class="kv"><span class="k">Data invio</span><span class="v" id="sm-sent">&mdash;</span></div>
+            <div class="kv"><span class="k">Data captured</span><span class="v" id="sm-captured">&mdash;</span></div>
+            <div class="kv full"><span class="k">Message-ID</span><span class="v mono" id="sm-msgid">&mdash;</span></div>
+            <div class="kv full"><span class="k">Thread-ID</span><span class="v mono" id="sm-threadid">&mdash;</span></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========== TAB 2: ORIGINAL MESSAGE ========== -->
+      <section class="mode-pane" id="tab-original" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Messaggio originale</h2>
+          <div id="orig-preview-wrap">
+            <h3 class="kicker">Anteprima corpo</h3>
+            <pre id="orig-body" class="orig-body">&mdash;</pre>
+          </div>
+          <div id="orig-headers-wrap" style="margin-top: 24px;">
+            <h3 class="kicker">Headers principali</h3>
+            <div id="orig-headers" class="orig-headers">&mdash;</div>
+          </div>
+          <div style="margin-top: 24px;">
+            <h3 class="kicker">Raw source</h3>
+            <button class="mode-btn disabled" id="orig-raw-btn" disabled title="Disponibile in Sprint 3">Scarica raw source</button>
+            <span class="small" style="margin-left: 8px; color: var(--ink-3);" id="orig-raw-note">&mdash;</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========== TAB 3: ATTACHMENTS ========== -->
+      <section class="mode-pane" id="tab-attachments" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Allegati</h2>
+          <div id="att-empty" class="state-msg" hidden>Nessun allegato associato a questa Proof Capsule.</div>
+          <table class="t" id="att-table" hidden>
+            <thead>
+              <tr>
+                <th>Filename</th>
+                <th>MIME</th>
+                <th>Size</th>
+                <th>SHA-256</th>
+                <th>Stato</th>
+                <th>Atto BTC</th>
+              </tr>
+            </thead>
+            <tbody id="att-rows"></tbody>
+          </table>
+        </article>
+      </section>
+
+      <!-- ========== TAB 4: INTEGRITY ========== -->
+      <section class="mode-pane" id="tab-integrity" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Integrita crittografica</h2>
+          <div class="kv-grid">
+            <div class="kv full">
+              <span class="k">Raw hash</span>
+              <span class="v mono hash-line">
+                <span id="int-raw-hash">&mdash;</span>
+                <button class="copy-btn-small" data-copy-target="int-raw-hash" title="Copia">copia</button>
+              </span>
+            </div>
+            <div class="kv full">
+              <span class="k">Body hash</span>
+              <span class="v mono hash-line">
+                <span id="int-body-hash">&mdash;</span>
+                <button class="copy-btn-small" data-copy-target="int-body-hash" title="Copia">copia</button>
+              </span>
+            </div>
+            <div class="kv"><span class="k">Algoritmo</span><span class="v mono">SHA-256</span></div>
+            <div class="kv"><span class="k">Anchor method</span><span class="v" id="int-anchor">opentimestamps</span></div>
+            <div class="kv"><span class="k">OTS status</span><span class="v" id="int-ots">&mdash;</span></div>
+            <div class="kv"><span class="k">Bitcoin block</span><span class="v mono" id="int-btc-block">&mdash;</span></div>
+            <div class="kv"><span class="k">Bitcoin time</span><span class="v" id="int-btc-time">&mdash;</span></div>
+            <div class="kv full"><span class="k">Public anchor link</span><span class="v" id="int-anchor-link">&mdash;</span></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========== TAB 5: TIMELINE ========== -->
+      <section class="mode-pane" id="tab-timeline" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Timeline eventi</h2>
+          <div id="tl-empty" class="state-msg" hidden>Nessun evento registrato.</div>
+          <ul id="tl-list" class="timeline"></ul>
+        </article>
+      </section>
+
+      <!-- ========== TAB 6: AI FINDINGS ========== -->
+      <section class="mode-pane" id="tab-ai" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">AI Findings</h2>
+          <div class="ai-placeholder">
+            <div class="ai-ico">&#9678;</div>
+            <p class="serif" style="font-style: italic; font-size: 17px; margin: 0 0 6px;">
+              Disponibile in Sprint 4 (Evidence Agent).
+            </p>
+            <p class="small" style="color: var(--ink-3); margin: 0;">
+              Nessun finding generato. L'Evidence Agent analizzera i contenuti e produrra rilievi
+              automatici (rischi, scadenze, contestazioni, promesse) citando solo prove reali.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========== TAB 7: ACCESS AUDIT ========== -->
+      <section class="mode-pane" id="tab-audit" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Audit accessi</h2>
+          <div id="au-empty" class="state-msg" hidden>Nessun accesso registrato.</div>
+          <table class="t" id="au-table" hidden>
+            <thead>
+              <tr>
+                <th>Quando</th>
+                <th>Action</th>
+                <th>Actor</th>
+                <th>Reason</th>
+                <th>IP hash</th>
+                <th>User Agent</th>
+                <th>Metadata</th>
+              </tr>
+            </thead>
+            <tbody id="au-rows"></tbody>
+          </table>
+        </article>
+      </section>
+
+      <!-- ========== TAB 8: VERIFICATION ========== -->
+      <section class="mode-pane" id="tab-verify" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Verifica pubblica</h2>
+          <div class="kv-grid">
+            <div class="kv full"><span class="k">Evidence ID</span><span class="v mono" id="vf-evd-id">&mdash;</span></div>
+            <div class="kv full"><span class="k">Legacy mail ID</span><span class="v mono" id="vf-legacy">&mdash;</span></div>
+            <div class="kv full">
+              <span class="k">URL pubblico</span>
+              <span class="v mono hash-line">
+                <span id="vf-url">&mdash;</span>
+                <button class="copy-btn-small" data-copy-target="vf-url" title="Copia">copia</button>
+                <button class="copy-btn-small" id="vf-open" title="Apri">apri</button>
+              </span>
+            </div>
+            <div class="kv"><span class="k">Verifica pubblica</span><span class="v" id="vf-enabled">&mdash;</span></div>
+          </div>
+          <div style="margin-top: 24px;">
+            <h3 class="kicker">QR code</h3>
+            <div id="vf-qr" class="qr-box" aria-label="QR code di verifica">
+              <span class="small" style="color: var(--ink-3);">Caricamento QR&hellip;</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========== TAB 9: RETENTION & LEGAL HOLD ========== -->
+      <section class="mode-pane" id="tab-retention" role="tabpanel">
+        <article class="panel-card">
+          <h2 class="serif tab-title">Retention &amp; Legal Hold</h2>
+          <div class="kv-grid">
+            <div class="kv"><span class="k">Retention until</span><span class="v" id="rt-until">&mdash;</span></div>
+            <div class="kv"><span class="k">Legal Hold</span><span class="v" id="rt-hold">&mdash;</span></div>
+            <div class="kv full"><span class="k">Motivazione</span><span class="v" id="rt-reason">&mdash;</span></div>
+          </div>
+          <div style="margin-top: 24px;">
+            <button class="mode-btn disabled" disabled title="Disponibile in Sprint 3 (Cases + Legal Hold)">
+              Applica Legal Hold
+            </button>
+            <span class="small" style="margin-left: 8px; color: var(--ink-3);">
+              L'azione sara disponibile quando il modulo Cases sara attivo.
+            </span>
+          </div>
+        </article>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>Proof Capsule</span></div></footer>
+
+  <style>
+  /* ========= header sticky ========= */
+  .pc-header {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+    padding: 18px 0 18px;
+    margin-bottom: 28px;
+  }
+  .pc-id-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .pc-evd-id { font-size: clamp(20px, 2.6vw, 28px); letter-spacing: 0.04em; color: var(--ink); }
+  .pc-legacy { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; }
+  .pc-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--rule);
+    padding: 6px 12px;
+    background: var(--paper);
+    font-family: var(--mono); font-size: 11px;
+  }
+  .badge .bk { color: var(--ink-3); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .badge .bv { color: var(--ink); letter-spacing: 0.02em; }
+  .badge.ok { border-color: var(--verify); background: color-mix(in oklch, var(--verify) 6%, var(--paper)); }
+  .badge.ok .bv { color: var(--verify); }
+  .badge.warn { border-color: var(--seal); background: color-mix(in oklch, var(--seal) 6%, var(--paper)); }
+  .badge.warn .bv { color: var(--seal); }
+  .pc-meta { margin-top: 14px; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-2); }
+  .pc-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+  .pc-actions .act { background: var(--paper); border: 1px solid var(--rule); padding: 9px 14px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+  .pc-actions .act:hover { border-color: var(--ink); }
+  .pc-actions .act.disabled { color: var(--ink-4); cursor: not-allowed; background: var(--paper-2); }
+  .pc-actions .act.disabled:hover { border-color: var(--rule); }
+
+  /* ========= tab strip + pane ========= */
+  .mode-strip { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin-bottom: 24px; flex-wrap: wrap; overflow-x: auto; }
+  .mode-btn { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 12px 16px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; color: var(--ink-2); white-space: nowrap; }
+  .mode-btn.active { color: var(--ink); border-bottom-color: var(--seal); }
+  .mode-pane { display: none; }
+  .mode-pane.active { display: block; }
+
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .tab-title { font-size: 20px; margin: 0 0 18px; }
+  .kicker { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
+
+  /* ========= griglia chiave-valore ========= */
+  .kv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .kv { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 12px 14px; border-bottom: 1px solid var(--rule-2); align-items: baseline; }
+  .kv.full { grid-column: 1 / -1; }
+  .kv .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .kv .v { font-family: var(--serif); font-size: 15px; color: var(--ink); word-break: break-word; }
+  .kv .v.mono { font-family: var(--mono); font-size: 12px; }
+  .bar-wrap { display: inline-block; width: 120px; height: 6px; background: var(--paper-3); border: 1px solid var(--rule); margin-left: 10px; vertical-align: middle; }
+  .bar-fill { display: block; height: 100%; background: var(--seal); transition: width .4s ease; }
+  .bar-fill.ok { background: var(--verify); }
+  .bar-fill.warn { background: #ef6c00; }
+
+  /* ========= tabelle ========= */
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); vertical-align: top; }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; word-break: break-all; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+
+  /* ========= original message ========= */
+  .orig-body { font-family: var(--mono); font-size: 12px; line-height: 1.55; padding: 14px; background: var(--paper-2); border: 1px solid var(--rule); white-space: pre-wrap; word-break: break-word; margin: 0; max-height: 360px; overflow: auto; }
+  .orig-headers { font-family: var(--mono); font-size: 11px; line-height: 1.5; padding: 14px; background: var(--paper-2); border: 1px solid var(--rule); white-space: pre-wrap; word-break: break-word; max-height: 240px; overflow: auto; color: var(--ink-2); }
+
+  /* ========= hash + copia ========= */
+  .hash-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .hash-line > span { word-break: break-all; }
+  .copy-btn-small { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; background: var(--paper); border: 1px solid var(--rule); cursor: pointer; color: var(--ink-2); }
+  .copy-btn-small:hover { border-color: var(--ink); color: var(--ink); }
+  .copy-btn-small.copied { background: var(--verify); color: var(--paper); border-color: var(--verify); }
+
+  /* ========= timeline ========= */
+  .timeline { list-style: none; padding: 0; margin: 0; }
+  .timeline li { display: grid; grid-template-columns: 28px 1fr auto; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--rule-2); align-items: start; }
+  .timeline li:last-child { border-bottom: 0; }
+  .tl-ico { width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: var(--seal); color: var(--paper); font-family: var(--mono); font-size: 11px; }
+  .tl-body { font-family: var(--serif); font-size: 14px; color: var(--ink); }
+  .tl-actor { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-top: 2px; }
+  .tl-time { font-family: var(--mono); font-size: 11px; color: var(--ink-2); text-align: right; white-space: nowrap; }
+
+  /* ========= AI findings placeholder ========= */
+  .ai-placeholder { padding: 36px 24px; text-align: center; background: var(--paper-2); border: 1px dashed var(--rule); }
+  .ai-ico { font-size: 36px; color: var(--ink-3); margin-bottom: 12px; }
+
+  /* ========= QR ========= */
+  .qr-box { display: inline-block; padding: 14px; background: #fff; border: 1px solid var(--rule); min-width: 200px; min-height: 200px; text-align: center; }
+  .qr-box svg { display: block; }
+
+  /* ========= state msg ========= */
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+
+  /* ========= responsive ========= */
+  @media (max-width: 900px) {
+    .kv-grid { grid-template-columns: 1fr; }
+    .kv { grid-template-columns: 1fr; gap: 4px; }
+    .pc-actions { gap: 6px; }
+    .pc-actions .act { padding: 8px 10px; font-size: 10px; }
+    main { padding: 20px 16px 80px !important; }
+  }
+  </style>
+
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
+  import { supabase } from "./_shared/supabase-client.js";
+
+  document.documentElement.classList.add("veylon-auth-pending");
+  let session = null;
+  try {
+    const r = await protectPage();
+    session = r.session;
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
+  await renderAppShell("archivio");
+
+  // ============================================================
+  // Util
+  // ============================================================
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  const $ = (id) => document.getElementById(id);
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmtDate(d) {
+    if (!d) return "—";
+    try { return new Date(d).toLocaleString("it-IT", { dateStyle: "medium", timeStyle: "short" }); }
+    catch (e) { return String(d); }
+  }
+  function fmtBytes(n) {
+    if (n == null) return "—";
+    n = Number(n);
+    if (n < 1024) return n + " B";
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + " KB";
+    return (n / (1024 * 1024)).toFixed(2) + " MB";
+  }
+  function joinList(arr) {
+    if (!Array.isArray(arr) || arr.length === 0) return "—";
+    return arr.join(", ");
+  }
+  function yesNo(b) { return b === true ? "Si" : (b === false ? "No" : "—"); }
+
+  // ============================================================
+  // Tab switcher
+  // ============================================================
+  document.querySelectorAll("#tab-strip .mode-btn").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("#tab-strip .mode-btn").forEach(x => {
+      x.classList.remove("active");
+      x.setAttribute("aria-selected", "false");
+    });
+    document.querySelectorAll(".mode-pane").forEach(p => p.classList.remove("active"));
+    b.classList.add("active");
+    b.setAttribute("aria-selected", "true");
+    const target = $("tab-" + b.dataset.tab);
+    if (target) target.classList.add("active");
+  }));
+
+  // ============================================================
+  // Copy helpers
+  // ============================================================
+  function bindCopyButtons() {
+    document.querySelectorAll(".copy-btn-small[data-copy-target]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const tgt = $(btn.dataset.copyTarget);
+        if (!tgt) return;
+        try { await navigator.clipboard.writeText(tgt.textContent.trim()); }
+        catch (e) { /* ignore */ }
+        const orig = btn.textContent;
+        btn.textContent = "ok";
+        btn.classList.add("copied");
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove("copied"); }, 1400);
+      });
+    });
+  }
+
+  // ============================================================
+  // ID dalla query string
+  // ============================================================
+  const qs = new URLSearchParams(location.search);
+  const capsuleId = (qs.get("id") || "").trim();
+  if (!capsuleId) {
+    showError("ID Proof Capsule mancante.");
+  } else {
+    loadCapsule(capsuleId);
+  }
+
+  function showError(msg) {
+    $("state-loading").hidden = true;
+    $("err-msg").textContent = msg;
+    $("state-error").hidden = false;
+  }
+
+  // ============================================================
+  // Fetch dati dalla edge function
+  // ============================================================
+  async function loadCapsule(id) {
+    try {
+      const tk = session?.access_token;
+      if (!tk) { showError("Sessione scaduta."); return; }
+      const url = `${SUPABASE_URL}/functions/v1/proof-capsules-detail?id=${encodeURIComponent(id)}`;
+      const r = await fetch(url, {
+        method: "GET",
+        headers: { "Authorization": "Bearer " + tk, "Content-Type": "application/json" },
+      });
+      if (r.status === 404) { showError("Proof Capsule non trovata."); return; }
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j?.success) {
+        showError(j?.error || ("Errore caricamento (HTTP " + r.status + ")"));
+        return;
+      }
+      render(j.data || {});
+    } catch (e) {
+      console.error("loadCapsule failed", e);
+      showError("Errore di rete: " + (e?.message || "sconosciuto"));
+    }
+  }
+
+  // ============================================================
+  // Render principale
+  // ============================================================
+  function render(data) {
+    const c = data.capsule || {};
+    const attachments = data.attachments || [];
+    const events = data.events || [];
+    const audit = data.audit || [];
+    const veylonAtto = data.veylon_atto || null;
+
+    $("state-loading").hidden = true;
+    $("pc-header").hidden = false;
+    $("pc-body").hidden = false;
+
+    // ============ HEADER ============
+    $("pc-evd-id").textContent = c.evidence_id || c.id || "—";
+    if (c.legacy_mail_id) {
+      $("pc-legacy").textContent = "legacy: " + c.legacy_mail_id;
+    }
+
+    setBadge("bd-status", c.status, ["verified", "sealed"], "warn");
+    setBadge("bd-integ", c.integrity || "pending", ["valid"], "warn");
+    const trustNum = (c.trust_score ?? null);
+    const trustBadge = $("bd-trust");
+    $("bd-trust-v").textContent = trustNum == null ? "—" : trustNum;
+    if (trustNum != null) {
+      if (trustNum >= 80) trustBadge.classList.add("ok");
+      else if (trustNum < 60) trustBadge.classList.add("warn");
+    }
+    $("bd-src-v").textContent = c.source_type || "—";
+    $("bd-type-v").textContent = c.type || "—";
+
+    const capturedAt = c.captured_at || c.created_at;
+    const sourceLabel = c.source_type || "—";
+    $("pc-meta").textContent = `Catturata il ${fmtDate(capturedAt)} da ${sourceLabel}` +
+      (c.sent_at ? ` · Inviata il ${fmtDate(c.sent_at)}` : "");
+
+    // ============ AZIONI ============
+    $("act-cert").addEventListener("click", () => {
+      alert("Funzionalita 'Scarica certificato' attiva quando l'atto BTC e confermato.");
+    });
+    $("act-export").addEventListener("click", () => {
+      alert("Export proof package: disponibile in Sprint 3.");
+    });
+    $("act-verify-hash").addEventListener("click", () => {
+      const h = c.raw_hash || c.body_hash;
+      if (h) window.open("verifica.html?h=" + encodeURIComponent(h), "_blank");
+    });
+    const verifyUrl = `${location.origin}${location.pathname.replace(/[^/]+$/, "")}verify-proof.html?id=${encodeURIComponent(c.evidence_id || c.id || "")}`;
+    $("act-copy-link").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(verifyUrl); $("act-copy-link").textContent = "Copiato!"; setTimeout(() => $("act-copy-link").textContent = "Copia link verifica", 1400); }
+      catch (e) {}
+    });
+
+    // ============ TAB 1: SUMMARY ============
+    $("sm-type").textContent = c.type || "—";
+    $("sm-direction").textContent = c.direction || "—";
+    $("sm-source").textContent = c.source_type || "—";
+    $("sm-status").textContent = c.status || "—";
+    if (trustNum != null) {
+      $("sm-trust-num").textContent = trustNum + " / 100";
+      const bar = $("sm-trust-bar");
+      bar.style.width = Math.max(0, Math.min(100, trustNum)) + "%";
+      if (trustNum >= 80) bar.classList.add("ok");
+      else if (trustNum < 60) bar.classList.add("warn");
+    }
+    $("sm-privacy").textContent = c.privacy_level || "—";
+    $("sm-proof-level").textContent = (c.proof_level != null) ? ("Level " + c.proof_level) : "—";
+    $("sm-legalhold").textContent = yesNo(c.legal_hold);
+    $("sm-sender").textContent = c.sender || "—";
+
+    const recipients = c.recipients || {};
+    const to = recipients.to || c.recipients_to || [];
+    const cc = recipients.cc || c.recipients_cc || [];
+    const bcc = recipients.bcc || c.recipients_bcc || [];
+    $("sm-to").textContent = joinList(Array.isArray(to) ? to : []);
+    $("sm-cc").textContent = joinList(Array.isArray(cc) ? cc : []);
+    $("sm-bcc").textContent = joinList(Array.isArray(bcc) ? bcc : []);
+    $("sm-subject").textContent = c.subject || "—";
+    $("sm-sent").textContent = fmtDate(c.sent_at);
+    $("sm-captured").textContent = fmtDate(capturedAt);
+    $("sm-msgid").textContent = c.message_id || "—";
+    $("sm-threadid").textContent = c.thread_id || "—";
+
+    // ============ TAB 2: ORIGINAL MESSAGE ============
+    const bodyPreview = c.body_preview || c.body_text || "";
+    $("orig-body").textContent = bodyPreview || "(corpo non disponibile in anteprima)";
+    const metaHeaders = (c.metadata && c.metadata.headers) || c.headers || null;
+    if (metaHeaders && typeof metaHeaders === "object") {
+      const lines = Object.entries(metaHeaders)
+        .map(([k, v]) => `${k}: ${typeof v === "string" ? v : JSON.stringify(v)}`)
+        .join("\n");
+      $("orig-headers").textContent = lines || "—";
+    } else {
+      $("orig-headers").textContent = "Headers non disponibili in formato strutturato.";
+    }
+    $("orig-raw-note").textContent = c.raw_source_path
+      ? "Disponibile (raw_source_path configurato)"
+      : "Raw source non archiviato in object storage.";
+
+    // ============ TAB 3: ATTACHMENTS ============
+    if (!attachments.length) {
+      $("att-empty").hidden = false;
+    } else {
+      const tbody = $("att-rows");
+      attachments.forEach(a => {
+        const sha = a.sha256 || a.hash || "—";
+        const shaShort = sha === "—" ? "—" : (sha.length > 16 ? sha.slice(0, 8) + "…" + sha.slice(-6) : sha);
+        const attoLink = a.veylon_atto_id
+          ? `<a href="verifica.html?id=${encodeURIComponent(a.veylon_atto_id)}" target="_blank" rel="noopener" class="link-seal">${escapeHtml(a.veylon_atto_id)}</a>`
+          : "—";
+        const status = a.status || (a.veylon_atto_id ? "sealed" : "pending");
+        const statusOk = /sealed|verified|confirmed|ok/i.test(status);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(a.filename || a.name || "(senza nome)")}</td>
+          <td class="mono">${escapeHtml(a.mime_type || a.mime || "—")}</td>
+          <td class="mono">${escapeHtml(fmtBytes(a.size_bytes ?? a.size))}</td>
+          <td class="mono" title="${escapeHtml(sha)}">${escapeHtml(shaShort)}
+            ${sha !== "—" ? `<button class="copy-btn-small" data-copy-text="${escapeHtml(sha)}">copia</button>` : ""}
+          </td>
+          <td><span class="pill ${statusOk ? "ok" : "warn"}">${escapeHtml(status)}</span></td>
+          <td>${attoLink}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      // bind data-copy-text in tabella
+      tbody.querySelectorAll(".copy-btn-small[data-copy-text]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          try { await navigator.clipboard.writeText(btn.dataset.copyText); }
+          catch (e) {}
+          const orig = btn.textContent;
+          btn.textContent = "ok";
+          btn.classList.add("copied");
+          setTimeout(() => { btn.textContent = orig; btn.classList.remove("copied"); }, 1200);
+        });
+      });
+      $("att-table").hidden = false;
+    }
+
+    // ============ TAB 4: INTEGRITY ============
+    $("int-raw-hash").textContent = c.raw_hash || "—";
+    $("int-body-hash").textContent = c.body_hash || "—";
+    const anchorMethod = (veylonAtto && veylonAtto.anchor_method) || "opentimestamps";
+    $("int-anchor").textContent = anchorMethod;
+    const otsStatus = veylonAtto?.ots_status || c.ots_status || "—";
+    $("int-ots").innerHTML = `<span class="pill ${/(confirmed|valid|complete)/i.test(otsStatus) ? "ok" : "warn"}">${escapeHtml(otsStatus)}</span>`;
+    const btcBlock = veylonAtto?.btc_block_height || c.btc_block_height;
+    $("int-btc-block").textContent = btcBlock ? ("# " + btcBlock) : "—";
+    $("int-btc-time").textContent = fmtDate(veylonAtto?.btc_block_time || c.btc_block_time);
+
+    // ============ TAB 5: TIMELINE ============
+    const tlList = $("tl-list");
+    if (!events.length) {
+      $("tl-empty").hidden = false;
+    } else {
+      const sorted = [...events].sort((a, b) => new Date(a.occurred_at || a.created_at || 0) - new Date(b.occurred_at || b.created_at || 0));
+      sorted.forEach(ev => {
+        const li = document.createElement("li");
+        const ico = (ev.event_type || "•").slice(0, 1).toUpperCase();
+        li.innerHTML = `
+          <span class="tl-ico">${escapeHtml(ico)}</span>
+          <div>
+            <div class="tl-body">${escapeHtml(humanizeEvent(ev))}</div>
+            <div class="tl-actor">${escapeHtml((ev.actor_type || "system") + (ev.actor_id ? " · " + ev.actor_id : ""))}</div>
+          </div>
+          <span class="tl-time">${escapeHtml(fmtDate(ev.occurred_at || ev.created_at))}</span>
+        `;
+        tlList.appendChild(li);
+      });
+    }
+
+    // ============ TAB 7: AUDIT ============
+    if (!audit.length) {
+      $("au-empty").hidden = false;
+    } else {
+      const tbody = $("au-rows");
+      audit.forEach(a => {
+        const tr = document.createElement("tr");
+        const metaJson = a.metadata ? JSON.stringify(a.metadata, null, 2) : "";
+        tr.innerHTML = `
+          <td>${escapeHtml(fmtDate(a.created_at))}</td>
+          <td class="mono">${escapeHtml(a.action || "—")}</td>
+          <td class="mono">${escapeHtml(a.actor_email || a.actor_id || "—")}</td>
+          <td>${escapeHtml(a.reason || "—")}</td>
+          <td class="mono">${escapeHtml(a.ip_hash || "—")}</td>
+          <td class="mono" style="max-width: 220px; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(a.user_agent || "")}">${escapeHtml((a.user_agent || "—").slice(0, 40))}</td>
+          <td>${metaJson ? `<details><summary class="small">view</summary><pre style="font-family: var(--mono); font-size: 10px; background: var(--paper-2); padding: 8px; margin: 6px 0 0; max-width: 280px; overflow:auto;">${escapeHtml(metaJson)}</pre></details>` : "—"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      $("au-table").hidden = false;
+    }
+
+    // ============ TAB 8: VERIFICATION ============
+    $("vf-evd-id").textContent = c.evidence_id || c.id || "—";
+    $("vf-legacy").textContent = c.legacy_mail_id || "—";
+    $("vf-url").textContent = verifyUrl;
+    $("vf-enabled").innerHTML = c.public_verification_enabled === false
+      ? '<span class="pill warn">disabilitata</span>'
+      : '<span class="pill ok">abilitata</span>';
+    $("vf-open").addEventListener("click", () => window.open(verifyUrl, "_blank", "noopener"));
+    renderQr(verifyUrl);
+
+    // ============ TAB 9: RETENTION ============
+    $("rt-until").textContent = fmtDate(c.retention_until);
+    $("rt-hold").innerHTML = c.legal_hold === true
+      ? '<span class="pill warn">ATTIVO</span>'
+      : '<span class="pill">no</span>';
+    $("rt-reason").textContent = c.legal_hold_reason || "—";
+
+    bindCopyButtons();
+  }
+
+  function setBadge(elId, value, okValues, warnFlag) {
+    const el = $(elId);
+    const vEl = $(elId + "-v");
+    if (!el || !vEl) return;
+    vEl.textContent = value || "—";
+    if (!value) return;
+    const v = String(value).toLowerCase();
+    if (okValues.some(x => v.includes(x))) el.classList.add("ok");
+    else if (warnFlag) el.classList.add(warnFlag);
+  }
+
+  function humanizeEvent(ev) {
+    const t = ev.event_type || "evento";
+    const map = {
+      "captured": "Capsule catturata dalla sorgente",
+      "hashed": "Hash crittografico calcolato",
+      "anchored": "Ancoraggio Bitcoin avviato (OpenTimestamps)",
+      "anchor_confirmed": "Ancoraggio Bitcoin confermato",
+      "verified": "Verifica integrita completata",
+      "viewed": "Accesso alla capsula",
+      "exported": "Esportazione proof package",
+      "shared": "Condivisione su Proof Room",
+      "legal_hold_applied": "Legal Hold applicato",
+      "legal_hold_removed": "Legal Hold rimosso",
+    };
+    const base = map[t] || t;
+    return ev.description ? `${base} — ${ev.description}` : base;
+  }
+
+  // ============================================================
+  // QR code minimale (inline, no libreria esterna)
+  // Genera QR via algoritmo semplificato? Troppo complesso da scratch.
+  // Fallback: mostra solo l'URL come testo + link. Niente QR per ora.
+  // (la CSP non permette CDN QR liberi)
+  // ============================================================
+  function renderQr(url) {
+    const box = $("vf-qr");
+    if (!box) return;
+    // Usiamo il servizio QR di Google Charts (data: URL via img non possibile cross-origin senza img-src).
+    // Vista la CSP restrittiva, mostriamo URL formattato e bottone "apri".
+    box.innerHTML = `
+      <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-bottom: 8px;">URL VERIFICA</div>
+      <div style="font-family: var(--mono); font-size: 11px; word-break: break-all; max-width: 240px;">${escapeHtml(url)}</div>
+      <div class="small" style="margin-top: 10px; color: var(--ink-3); font-style: italic;">
+        QR code generato lato server in Sprint 6 (Proof Room).
+      </div>
+    `;
+  }
+  </script>
+</body>
+</html>
