@@ -25,6 +25,27 @@
       </div>
     </section>
 
+    <!-- ProofOS · accesso rapido alle prove (sotto Mail) -->
+    <section style="margin-top: 32px;">
+      <nav class="proof-strip" aria-label="ProofOS — accesso rapido">
+        <a href="proof-inbox.html" class="proof-card">
+          <span class="proof-card-eyebrow">Mail · Inbox</span>
+          <span class="proof-card-title">Cose da gestire</span>
+          <span class="proof-card-sub">Nuove capsule, trust basso, errori, senza fascicolo.</span>
+        </a>
+        <a href="proof-archive.html" class="proof-card">
+          <span class="proof-card-eyebrow">Mail · Archivio</span>
+          <span class="proof-card-title">Cerca una prova</span>
+          <span class="proof-card-sub">Ricerca per mittente, oggetto, hash, fascicolo, data.</span>
+        </a>
+        <a href="verify-proof.html" class="proof-card" target="_blank" rel="noopener">
+          <span class="proof-card-eyebrow">Verifica pubblica</span>
+          <span class="proof-card-title">Portale di verifica</span>
+          <span class="proof-card-sub">Apri il portale pubblico privacy-safe. Niente login.</span>
+        </a>
+      </nav>
+    </section>
+
     <!-- Empty state hero (mostrato solo se zero attivita, nascosto da JS quando ci sono KPI) -->
     <section id="empty-hero" class="empty-state-hero" style="margin-top: 40px;" hidden>
       <div class="eyebrow seal-c" style="margin-bottom: 12px;">Primi passi</div>
@@ -301,6 +322,13 @@
   .kpi-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; }
   .kpi-num { font-family: var(--serif); font-size: 38px; line-height: 1; }
   .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .proof-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 760px) { .proof-strip { grid-template-columns: 1fr; } }
+  .proof-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; background: var(--paper); border: 1px solid var(--rule); text-decoration: none; color: var(--ink); transition: border-color 120ms ease, transform 120ms ease; }
+  .proof-card:hover { border-color: var(--seal); transform: translateY(-1px); }
+  .proof-card-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); }
+  .proof-card-title { font-family: var(--serif); font-size: 18px; line-height: 1.2; }
+  .proof-card-sub { font-family: var(--serif); font-size: 13px; color: var(--ink-3); line-height: 1.4; }
   .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
   .state-msg.state-err { color: var(--seal); }
   .feed { list-style: none; padding: 0; margin: 0; }
