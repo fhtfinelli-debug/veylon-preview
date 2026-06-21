@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON ProofOS · Dettaglio fascicolo</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+</head>
+<body>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <div id="state-loading" class="state-msg">Caricamento fascicolo&hellip;</div>
+    <div id="state-error" class="state-msg state-err" hidden>
+      <span></span> &nbsp;<a href="proof-cases.html" class="link-seal">Torna ai fascicoli &rarr;</a>
+    </div>
+
+    <article id="case-root" hidden>
+      <section class="head-row">
+        <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;">
+          <a href="proof-cases.html" class="link-seal">&larr; Fascicoli</a> &middot; <span id="h-case-id-mono"></span>
+        </div>
+        <h1 class="serif" id="h-title" style="font-family: var(--mono); font-size: clamp(22px, 2.6vw, 32px); line-height: 1.1; letter-spacing: 0; margin: 0 0 8px;"></h1>
+        <div class="badges" style="display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0;">
+          <span class="pill" id="b-status">—</span>
+          <span class="pill" id="b-lh">—</span>
+          <span class="pill" id="b-capsules">0 capsule</span>
+          <span class="pill" id="b-attachments">0 allegati</span>
+        </div>
+        <div class="lede" id="h-meta" style="font-size: 14px; color: var(--ink-2); margin: 6px 0;"></div>
+        <div class="lede" id="h-description" style="font-size: 15px; margin: 8px 0; font-style: italic; color: var(--ink-2);"></div>
+
+        <div class="actions" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px;">
+          <button class="btn-primary" id="btn-export">Esporta litigation pack</button>
+          <button class="btn-secondary" disabled title="Disponibile in Sprint 7 (Trust Center)">Applica Legal Hold</button>
+          <button class="btn-secondary" disabled title="Disponibile prossimamente">Modifica</button>
+        </div>
+      </section>
+
+      <section style="margin-top: 28px;">
+        <article class="panel-card">
+          <div class="mode-strip" role="tablist">
+            <button class="mode-btn active" data-tab="capsules" role="tab" aria-selected="true">Capsule</button>
+            <button class="mode-btn" data-tab="timeline" role="tab" aria-selected="false">Timeline</button>
+            <button class="mode-btn" data-tab="attachments" role="tab" aria-selected="false">Allegati</button>
+            <button class="mode-btn" data-tab="exports" role="tab" aria-selected="false">Exports</button>
+            <button class="mode-btn" data-tab="ai" role="tab" aria-selected="false">AI Findings</button>
+          </div>
+
+          <!-- CAPSULES -->
+          <div class="mode-pane active" id="pane-capsules" role="tabpanel">
+            <details style="margin: 8px 0 18px;">
+              <summary style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--seal); cursor: pointer;">+ Collega una capsule</summary>
+              <form id="link-form" style="display: grid; gap: 10px; max-width: 720px; margin-top: 14px;">
+                <label class="lbl">Evidence ID o UUID capsule <span class="req">*</span>
+                  <input id="lk-id" type="text" required placeholder="VLN-EVD-2026-... oppure UUID"/>
+                </label>
+                <label class="lbl">Nota (opz)
+                  <input id="lk-note" type="text" maxlength="500"/>
+                </label>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                  <button type="submit" class="btn-primary" id="btn-link">Collega</button>
+                  <span id="link-msg" class="small" style="color: var(--ink-3);"></span>
+                </div>
+              </form>
+            </details>
+
+            <div class="t-wrap"><table class="t"><thead><tr>
+              <th>Evidence ID</th><th>Trust</th><th>Stato</th><th>Tipo</th><th>Source</th><th>Oggetto</th><th>Mittente</th><th>Inviata</th><th>Aggiunta</th><th></th>
+            </tr></thead><tbody id="rows-capsules"></tbody></table></div>
+            <div id="empty-capsules" hidden class="empty-q">Nessuna capsule collegata. Usa il form sopra per collegarne una.</div>
+          </div>
+
+          <!-- TIMELINE -->
+          <div class="mode-pane" id="pane-timeline" role="tabpanel">
+            <div id="timeline-list"></div>
+            <div id="empty-timeline" hidden class="empty-q">Nessun evento.</div>
+          </div>
+
+          <!-- ATTACHMENTS -->
+          <div class="mode-pane" id="pane-attachments" role="tabpanel">
+            <div class="t-wrap"><table class="t"><thead><tr>
+              <th>Nome file</th><th>MIME</th><th>Size</th><th>SHA-256</th><th>Da capsule</th>
+            </tr></thead><tbody id="rows-attachments"></tbody></table></div>
+            <div id="empty-attachments" hidden class="empty-q">Nessun allegato nelle capsule di questo fascicolo.</div>
+          </div>
+
+          <!-- EXPORTS -->
+          <div class="mode-pane" id="pane-exports" role="tabpanel">
+            <div class="t-wrap"><table class="t"><thead><tr>
+              <th>Tipo</th><th>Capsule count</th><th>Manifest SHA-256</th><th>Creato</th>
+            </tr></thead><tbody id="rows-exports"></tbody></table></div>
+            <div id="empty-exports" hidden class="empty-q">Nessun export generato.</div>
+          </div>
+
+          <!-- AI -->
+          <div class="mode-pane" id="pane-ai" role="tabpanel">
+            <div class="empty-q" style="padding: 48px 0;">Disponibile in Sprint 4 (Evidence Agent).<br/>L'AI generera findings/rischi/scadenze/contestazioni citando le capsule reali.</div>
+          </div>
+        </article>
+      </section>
+    </article>
+  </main>
+
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>ProofOS · Fascicolo</span></div></footer>
+
+  <style>
+  .head-row { padding-bottom: 28px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 24px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+  .lbl { display: grid; gap: 6px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .lbl input { font-family: var(--serif); font-size: 14px; padding: 10px 12px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); width: 100%; }
+  .req { color: var(--seal); }
+  .btn-primary { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); padding: 10px 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+  .btn-primary:hover { background: var(--ink); border-color: var(--ink); }
+  .btn-primary[disabled] { opacity: 0.5; cursor: wait; }
+  .btn-secondary { background: var(--paper); color: var(--ink); border: 1px solid var(--ink); padding: 9px 18px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+  .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+  .btn-secondary[disabled] { opacity: 0.4; cursor: not-allowed; background: var(--paper); color: var(--ink-3); }
+  .btn-tiny { background: transparent; border: 1px solid var(--rule); color: var(--ink-2); padding: 4px 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+  .btn-tiny:hover { color: var(--seal); border-color: var(--seal); }
+  .t-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 820px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); vertical-align: top; }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .t a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+  .t a:hover { color: var(--seal); text-decoration-color: var(--seal); }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+  .pill.neutro { color: #b07b00; border-color: #d8a536; background: #fffaeb; }
+  .mode-strip { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin-bottom: 24px; flex-wrap: wrap; }
+  .mode-btn { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 12px 18px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; color: var(--ink-2); }
+  .mode-btn.active { color: var(--ink); border-bottom-color: var(--seal); }
+  .mode-pane { display: none; padding: 8px 0; }
+  .mode-pane.active { display: block; }
+  .empty-q { padding: 32px 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-3); }
+  .timeline-item { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule-2); }
+  .timeline-time { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+  .timeline-body { font-family: var(--serif); font-size: 14px; }
+  .timeline-type { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--seal); margin-right: 8px; }
+  </style>
+
+  <script type="module">
+  import { protectPage } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
+  import { supabase } from "./_shared/supabase-client.js";
+
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { await protectPage(); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  await renderAppShell("mail");
+
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  const params = new URLSearchParams(window.location.search);
+  const idParam = params.get("id");
+
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "—"; }
+  function trunc(s, n) { const v = String(s ?? ""); return v.length > n ? v.slice(0, n - 1) + "…" : v; }
+  function maskSender(s) {
+    const v = String(s ?? "").trim(); if (!v) return "—";
+    const at = v.indexOf("@"); if (at <= 0) return escapeHtml(v);
+    const local = v.slice(0, at), domain = v.slice(at + 1);
+    const masked = local.length <= 2 ? local[0] + "*" : local.slice(0, 2) + "***";
+    return escapeHtml(masked + "@" + domain);
+  }
+  function fmtSize(n) {
+    if (n == null) return "—";
+    if (n < 1024) return n + " B";
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + " KB";
+    return (n / (1024 * 1024)).toFixed(1) + " MB";
+  }
+  function trustPill(n) {
+    if (n == null) return `<span class="pill">n/d</span>`;
+    if (n < 60) return `<span class="pill warn">${n}</span>`;
+    if (n < 80) return `<span class="pill neutro">${n}</span>`;
+    return `<span class="pill ok">${n}</span>`;
+  }
+  function statusPill(s) {
+    const okSet = ["verified","sealed","open"]; const warnSet = ["failed","error"];
+    const cls = okSet.includes(s) ? "ok" : (warnSet.includes(s) ? "warn" : "neutro");
+    return `<span class="pill ${cls}">${escapeHtml(s ?? "—")}</span>`;
+  }
+
+  async function getToken() {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token ?? null;
+  }
+
+  if (!idParam) {
+    document.getElementById("state-loading").hidden = true;
+    const err = document.getElementById("state-error");
+    err.querySelector("span").textContent = "Parametro id mancante.";
+    err.hidden = false;
+  }
+
+  let CASE = null;
+
+  async function loadDetail() {
+    document.getElementById("state-loading").hidden = false;
+    document.getElementById("state-error").hidden = true;
+    document.getElementById("case-root").hidden = true;
+    try {
+      const tk = await getToken();
+      if (!tk) throw new Error("Sessione scaduta. Ricarica.");
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-detail?id=${encodeURIComponent(idParam)}`, {
+        headers: { "Authorization": "Bearer " + tk },
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.success) throw new Error(j?.error || ("http_" + r.status));
+      CASE = j.data;
+      renderHeader(CASE.case);
+      renderCapsules(CASE.items);
+      renderTimeline(CASE.timeline);
+      await renderAttachments(CASE.items);
+      renderExports(CASE.exports);
+      document.getElementById("state-loading").hidden = true;
+      document.getElementById("case-root").hidden = false;
+    } catch (err) {
+      document.getElementById("state-loading").hidden = true;
+      const e = document.getElementById("state-error");
+      e.querySelector("span").textContent = "Errore: " + (err.message || err);
+      e.hidden = false;
+    }
+  }
+
+  function renderHeader(c) {
+    document.getElementById("h-case-id-mono").textContent = c.case_id;
+    document.getElementById("h-title").textContent = c.title;
+    document.getElementById("b-status").textContent = c.status;
+    document.getElementById("b-status").className = "pill " + (c.status === "open" ? "ok" : "neutro");
+    const lh = document.getElementById("b-lh");
+    if (c.legal_hold) { lh.textContent = "LEGAL HOLD"; lh.className = "pill warn"; }
+    else { lh.textContent = "no LH"; lh.className = "pill"; }
+    document.getElementById("b-capsules").textContent = (c.capsules_count ?? 0) + " capsule";
+    document.getElementById("b-attachments").textContent = (c.attachments_count ?? 0) + " allegati";
+
+    const meta = [];
+    if (c.counterparty) meta.push("Controparte: " + escapeHtml(c.counterparty));
+    meta.push("Creato il " + fmt(c.created_at));
+    meta.push("Aggiornato il " + fmt(c.updated_at));
+    document.getElementById("h-meta").innerHTML = meta.join(" &middot; ");
+    document.getElementById("h-description").textContent = c.description || "";
+    document.title = "VEYLON · " + c.case_id;
+  }
+
+  function renderCapsules(items) {
+    const tbody = document.getElementById("rows-capsules");
+    const empty = document.getElementById("empty-capsules");
+    tbody.innerHTML = "";
+    if (!items || items.length === 0) { empty.hidden = false; return; }
+    empty.hidden = true;
+    items.forEach(it => {
+      const c = it.capsule || {};
+      const link = `proof-capsule-detail.html?id=${encodeURIComponent(c.id)}`;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="mono"><a href="${link}">${escapeHtml(c.evidence_id || c.id)}</a></td>
+        <td>${trustPill(c.trust_score)}</td>
+        <td>${statusPill(c.status)}</td>
+        <td>${escapeHtml(c.type || "—")}</td>
+        <td>${escapeHtml(c.source_type || "—")}</td>
+        <td>${escapeHtml(trunc(c.subject || "—", 40))}</td>
+        <td class="mono">${maskSender(c.sender)}</td>
+        <td>${fmt(c.sent_at)}</td>
+        <td>${fmt(it.added_at)}</td>
+        <td><button class="btn-tiny" data-unlink="${escapeHtml(c.id)}">Rimuovi</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll("[data-unlink]").forEach(b => b.addEventListener("click", () => unlinkCapsule(b.dataset.unlink)));
+  }
+
+  async function unlinkCapsule(capsuleUuid) {
+    if (!confirm("Rimuovere la capsule dal fascicolo? Lo storico evento resta nei log.")) return;
+    try {
+      const tk = await getToken();
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-link-capsule`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+        body: JSON.stringify({ case_id: CASE.case.id, proof_capsule_id: capsuleUuid, action: "unlink" }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j?.error || ("http_" + r.status));
+      await loadDetail();
+    } catch (err) {
+      alert("Errore: " + (err.message || err));
+    }
+  }
+
+  function renderTimeline(events) {
+    const list = document.getElementById("timeline-list");
+    const empty = document.getElementById("empty-timeline");
+    list.innerHTML = "";
+    if (!events || events.length === 0) { empty.hidden = false; return; }
+    empty.hidden = true;
+    events.forEach(ev => {
+      const div = document.createElement("div");
+      div.className = "timeline-item";
+      div.innerHTML = `
+        <div class="timeline-time">${fmt(ev.event_timestamp)}<br/><span style="font-size: 10px;">${escapeHtml(ev.actor_type || "system")}</span></div>
+        <div class="timeline-body"><span class="timeline-type">${escapeHtml(ev.event_type)}</span> ${escapeHtml(ev.event_description || "")}</div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  async function renderAttachments(items) {
+    const tbody = document.getElementById("rows-attachments");
+    const empty = document.getElementById("empty-attachments");
+    tbody.innerHTML = "";
+    const capsuleIds = (items || []).map(it => it.capsule?.id).filter(Boolean);
+    if (capsuleIds.length === 0) { empty.hidden = false; return; }
+    try {
+      const { data: atts, error } = await supabase
+        .from("proof_attachments")
+        .select("id, filename, mime_type, size_bytes, sha256_hash, proof_capsule_id")
+        .in("proof_capsule_id", capsuleIds)
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      if (!atts || atts.length === 0) { empty.hidden = false; return; }
+      empty.hidden = true;
+      const capsuleEv = new Map(items.map(it => [it.capsule?.id, it.capsule?.evidence_id]));
+      atts.forEach(a => {
+        const ev = capsuleEv.get(a.proof_capsule_id) || a.proof_capsule_id;
+        const link = `proof-capsule-detail.html?id=${encodeURIComponent(a.proof_capsule_id)}`;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(a.filename)}</td>
+          <td>${escapeHtml(a.mime_type || "—")}</td>
+          <td>${fmtSize(a.size_bytes)}</td>
+          <td class="mono">${escapeHtml(a.sha256_hash.slice(0, 12))}…</td>
+          <td class="mono"><a href="${link}">${escapeHtml(ev)}</a></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (e) {
+      empty.textContent = "Errore caricamento allegati: " + (e.message || e);
+      empty.hidden = false;
+    }
+  }
+
+  function renderExports(exports_) {
+    const tbody = document.getElementById("rows-exports");
+    const empty = document.getElementById("empty-exports");
+    tbody.innerHTML = "";
+    if (!exports_ || exports_.length === 0) { empty.hidden = false; return; }
+    empty.hidden = true;
+    exports_.forEach(x => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${escapeHtml(x.export_type)}</td>
+        <td>${x.capsules_count ?? 0}</td>
+        <td class="mono">${escapeHtml((x.manifest_sha256 || "").slice(0, 16))}…</td>
+        <td>${fmt(x.created_at)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Tabs
+  document.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll(".mode-btn").forEach(x => { x.classList.remove("active"); x.setAttribute("aria-selected","false"); });
+    document.querySelectorAll(".mode-pane").forEach(p => p.classList.remove("active"));
+    b.classList.add("active"); b.setAttribute("aria-selected","true");
+    document.getElementById("pane-" + b.dataset.tab).classList.add("active");
+  }));
+
+  // Link capsule form
+  document.getElementById("link-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("btn-link");
+    const msg = document.getElementById("link-msg");
+    const id = document.getElementById("lk-id").value.trim();
+    const note = document.getElementById("lk-note").value.trim();
+    msg.textContent = "Risoluzione capsule..."; btn.disabled = true;
+    try {
+      // se non e un UUID, cerca per evidence_id via select
+      let capsuleUuid = id;
+      if (!/^[0-9a-f-]{36}$/i.test(id)) {
+        const { data } = await supabase.from("proof_capsules").select("id").eq("evidence_id", id).limit(1);
+        if (!data || data.length === 0) throw new Error("Capsule non trovata o non tua. Verifica Evidence ID.");
+        capsuleUuid = data[0].id;
+      }
+      const tk = await getToken();
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-link-capsule`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+        body: JSON.stringify({ case_id: CASE.case.id, proof_capsule_id: capsuleUuid, note: note || undefined, action: "link" }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j?.error || ("http_" + r.status));
+      msg.textContent = j.linked ? "Collegata." : "Era gia collegata.";
+      document.getElementById("lk-id").value = "";
+      document.getElementById("lk-note").value = "";
+      await loadDetail();
+    } catch (err) {
+      msg.textContent = "Errore: " + (err.message || err);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Export litigation pack
+  document.getElementById("btn-export").addEventListener("click", async () => {
+    const btn = document.getElementById("btn-export");
+    btn.disabled = true;
+    const origText = btn.textContent;
+    btn.textContent = "Generazione...";
+    try {
+      const tk = await getToken();
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-export-litigation-pack`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+        body: JSON.stringify({ case_id: CASE.case.id }),
+      });
+      if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        throw new Error(j?.error || ("http_" + r.status));
+      }
+      const sha = r.headers.get("X-Veylon-Manifest-Sha256");
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${CASE.case.case_id}-litigation-pack.json`;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      btn.textContent = "Scaricato ✓ (sha " + (sha?.slice(0, 8) ?? "") + ")";
+      setTimeout(() => { btn.textContent = origText; btn.disabled = false; }, 3000);
+      // reload tab exports
+      await loadDetail();
+    } catch (err) {
+      alert("Errore export: " + (err.message || err));
+      btn.textContent = origText;
+      btn.disabled = false;
+    }
+  });
+
+  if (idParam) loadDetail();
+  </script>
+</body>
+</html>

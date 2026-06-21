@@ -53,7 +53,7 @@
         <button class="mode-btn act" id="act-export">Esporta prova</button>
         <button class="mode-btn act" id="act-verify-hash">Verifica hash</button>
         <button class="mode-btn act" id="act-copy-link">Copia link verifica</button>
-        <button class="mode-btn act disabled" id="act-add-case" disabled title="Disponibile in Sprint 3">Aggiungi a Case</button>
+        <button class="mode-btn act" id="act-add-case" title="Collega questa capsule a un fascicolo">Aggiungi a Case</button>
       </div>
     </header>
 
@@ -545,6 +545,73 @@
     $("act-copy-link").addEventListener("click", async () => {
       try { await navigator.clipboard.writeText(verifyUrl); $("act-copy-link").textContent = "Copiato!"; setTimeout(() => $("act-copy-link").textContent = "Copia link verifica", 1400); }
       catch (e) {}
+    });
+
+    // ============ Aggiungi a Case ============
+    $("act-add-case").addEventListener("click", async () => {
+      const btn = $("act-add-case");
+      btn.disabled = true;
+      try {
+        const { data: cases, error: e1 } = await supabase
+          .from("proof_cases")
+          .select("id, case_id, title")
+          .order("updated_at", { ascending: false })
+          .limit(50);
+        if (e1) throw e1;
+        let choice;
+        if (!cases || cases.length === 0) {
+          if (!confirm("Non hai ancora fascicoli. Vuoi crearne uno nuovo?")) { btn.disabled = false; return; }
+          choice = "__new__";
+        } else {
+          const list = cases.map((x, i) => `${i + 1}. ${x.case_id} — ${x.title}`).join("\n");
+          const ans = prompt(`Quale fascicolo? Inserisci il numero o "n" per nuovo:\n\n${list}`, "1");
+          if (ans === null) { btn.disabled = false; return; }
+          if (ans.trim().toLowerCase() === "n") choice = "__new__";
+          else {
+            const idx = parseInt(ans, 10) - 1;
+            if (!(idx >= 0 && idx < cases.length)) { alert("Scelta non valida."); btn.disabled = false; return; }
+            choice = cases[idx].id;
+          }
+        }
+
+        if (choice === "__new__") {
+          const t = prompt("Titolo del nuovo fascicolo (3-200 caratteri):", "");
+          if (!t || t.trim().length < 3) { btn.disabled = false; return; }
+          const { data: { session } } = await supabase.auth.getSession();
+          const tk = session?.access_token;
+          const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+          const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-create`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+            body: JSON.stringify({ title: t.trim() }),
+          });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok || !j.success) throw new Error(j?.error || ("http_" + r.status));
+          choice = j.data.id;
+        }
+
+        const note = prompt("Nota sul collegamento (opz):", "") || null;
+        const { data: { session } } = await supabase.auth.getSession();
+        const tk = session?.access_token;
+        const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-link-capsule`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+          body: JSON.stringify({ case_id: choice, proof_capsule_id: c.id, note: note || undefined, action: "link" }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j?.error || ("http_" + r.status));
+        if (j.linked) {
+          alert("Capsule collegata al fascicolo.");
+          window.location.href = `proof-case-detail.html?id=${encodeURIComponent(choice)}`;
+        } else {
+          alert("Era gia collegata.");
+        }
+      } catch (e) {
+        alert("Errore: " + (e.message || e));
+      } finally {
+        btn.disabled = false;
+      }
     });
 
     // ============ TAB 1: SUMMARY ============

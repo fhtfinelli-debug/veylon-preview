@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON ProofOS · Fascicoli</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+</head>
+<body>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">ProofOS</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Fascicoli <em class="serif-italic" style="color: var(--seal);">probatori.</em>
+        </h1>
+        <p class="lede">Raggruppa le tue prove in casi probatori, recupero credito, pratiche legali.</p>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <article class="panel-card">
+        <div class="create-toggle-row">
+          <button type="button" class="btn-primary" id="btn-toggle-create" aria-expanded="false" aria-controls="create-form">
+            <span id="toggle-icon">+</span> Nuovo fascicolo
+          </button>
+          <span class="small" style="color: var(--ink-3);">
+            Crea un fascicolo per raggruppare capsule, contatti e allegati attorno a un caso.
+          </span>
+        </div>
+
+        <form id="create-form" class="create-form" hidden autocomplete="off">
+          <div class="form-row">
+            <label class="form-field">
+              <span class="form-k">Titolo del fascicolo *</span>
+              <input type="text" id="f-title" required minlength="3" maxlength="200" placeholder="es. Recupero credito ACME S.r.l."/>
+              <span class="form-hint">Tra 3 e 200 caratteri.</span>
+            </label>
+          </div>
+          <div class="form-row">
+            <label class="form-field">
+              <span class="form-k">Controparte / Cliente</span>
+              <input type="text" id="f-counterparty" maxlength="200" placeholder="es. ACME S.r.l. — Mario Rossi"/>
+              <span class="form-hint">Opzionale.</span>
+            </label>
+          </div>
+          <div class="form-row">
+            <label class="form-field">
+              <span class="form-k">Descrizione</span>
+              <textarea id="f-description" rows="3" maxlength="2000" placeholder="Note sintetiche sul caso (oggetto, importo, fase)."></textarea>
+              <span class="form-hint">Opzionale. Verra mostrata nell'intestazione del fascicolo.</span>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="btn-create">Crea fascicolo</button>
+            <button type="button" class="btn-secondary" id="btn-cancel-create">Annulla</button>
+            <span class="form-status" id="create-status" hidden></span>
+          </div>
+        </form>
+
+        <hr class="rule" style="margin: 28px 0;"/>
+
+        <form id="search-form" class="search-row" autocomplete="off">
+          <input
+            type="search"
+            id="q-input"
+            class="q-input"
+            placeholder="Cerca titolo o controparte"
+            aria-label="Cerca fascicoli"
+          />
+          <label class="flt" style="min-width: 140px;">
+            <span class="flt-k">Status</span>
+            <select id="flt-status">
+              <option value="">tutti</option>
+              <option value="open">open</option>
+              <option value="in_progress">in_progress</option>
+              <option value="on_hold">on_hold</option>
+              <option value="closed">closed</option>
+              <option value="archived">archived</option>
+            </select>
+          </label>
+          <button type="submit" class="btn-primary" id="btn-search">Cerca</button>
+          <button type="button" class="btn-secondary" id="btn-clear">Pulisci</button>
+        </form>
+
+        <div id="state-loading" class="state-msg" hidden>Caricamento fascicoli&hellip;</div>
+        <div id="state-error" class="state-msg state-err" hidden>
+          <span></span> <button class="link-seal" id="retry" type="button">Riprova</button>
+        </div>
+        <div id="state-empty" class="state-msg" hidden>
+          Nessun fascicolo trovato. Crea il primo cliccando <em>Nuovo fascicolo</em>.
+        </div>
+
+        <div class="results-header" id="results-header" hidden>
+          <span id="results-count" class="results-count"></span>
+          <div class="pager">
+            <button type="button" class="btn-secondary btn-sm" id="btn-prev" disabled>&larr; Precedenti</button>
+            <button type="button" class="btn-secondary btn-sm" id="btn-next" disabled>Successivi &rarr;</button>
+          </div>
+        </div>
+
+        <div class="t-wrap" id="tbl-wrap" hidden>
+          <table class="t">
+            <thead><tr>
+              <th>Case ID</th>
+              <th>Titolo</th>
+              <th>Controparte</th>
+              <th>Status</th>
+              <th>Capsule</th>
+              <th>Allegati</th>
+              <th>Legal hold</th>
+              <th>Aggiornato</th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>ProofOS · Fascicoli</span></div></footer>
+
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
+  .state-msg.state-err { color: var(--seal); }
+
+  .create-toggle-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .create-form { margin-top: 20px; padding: 18px; background: var(--paper-2); border: 1px solid var(--rule); }
+  .form-row { margin-bottom: 14px; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--mono); }
+  .form-k { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .form-field input, .form-field textarea { padding: 10px 12px; border: 1px solid var(--ink); background: var(--paper); font-family: var(--serif); font-size: 14px; }
+  .form-field input:focus, .form-field textarea:focus { outline: 2px solid var(--seal); outline-offset: -1px; }
+  .form-field textarea { resize: vertical; min-height: 64px; font-family: var(--serif); }
+  .form-hint { font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--ink-3); }
+  .form-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  .form-status { font-family: var(--mono); font-size: 11px; padding: 6px 10px; }
+  .form-status.ok { background: #e8f5e9; color: #1b5e20; border-left: 3px solid #2e7d32; }
+  .form-status.err { background: #ffebee; color: #b71c1c; border-left: 3px solid var(--seal); }
+
+  .search-row { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; margin-bottom: 18px; }
+  .q-input { flex: 1 1 320px; min-width: 0; padding: 12px 14px; border: 1px solid var(--ink); background: var(--paper); font-family: var(--mono); font-size: 13px; }
+  .q-input:focus { outline: 2px solid var(--seal); outline-offset: -1px; }
+  .flt { display: flex; flex-direction: column; gap: 4px; font-family: var(--mono); }
+  .flt-k { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .flt select { padding: 9px 10px; border: 1px solid var(--ink); background: var(--paper); font-family: var(--mono); font-size: 12px; }
+
+  .btn-primary { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); padding: 10px 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+  .btn-primary:hover { background: var(--ink); border-color: var(--ink); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary { background: var(--paper); color: var(--ink); border: 1px solid var(--ink); padding: 10px 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+  .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+  .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-sm { padding: 6px 12px; font-size: 10px; }
+
+  .results-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 10px; border-top: 1px solid var(--rule-2); margin-top: 12px; flex-wrap: wrap; gap: 12px; }
+  .results-count { font-family: var(--mono); font-size: 11px; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.12em; }
+  .pager { display: flex; gap: 8px; }
+
+  .t-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); vertical-align: top; }
+  .t td.mono { font-family: var(--mono); font-size: 11.5px; }
+  .t a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+  .t a:hover { text-decoration-color: var(--seal); color: var(--seal); }
+
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; white-space: nowrap; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+  .pill.neutro { color: #b07b00; border-color: #d8a536; background: #fffaeb; }
+  </style>
+
+  <script type="module">
+  import { protectPage, bindLogout } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
+  import { supabase } from "./_shared/supabase-client.js";
+
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  const PAGE_LIMIT = 50;
+
+  document.documentElement.classList.add("veylon-auth-pending");
+  let session = null;
+  try {
+    const r = await protectPage();
+    session = r?.session || null;
+  } finally {
+    document.documentElement.classList.remove("veylon-auth-pending");
+  }
+  await renderAppShell("mail");
+
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "—"; }
+  function trunc(s, n) { const v = String(s ?? ""); return v.length > n ? v.slice(0, n - 1) + "…" : v; }
+
+  function statusPill(status) {
+    const s = String(status || "—");
+    const okSet = ["closed"];
+    const warnSet = ["on_hold"];
+    const neutroSet = ["archived"];
+    let cls = "";
+    if (okSet.includes(s)) cls = "ok";
+    else if (warnSet.includes(s)) cls = "warn";
+    else if (neutroSet.includes(s)) cls = "neutro";
+    return `<span class="pill ${cls}">${escapeHtml(s)}</span>`;
+  }
+
+  async function getToken() {
+    if (session?.access_token) return session.access_token;
+    const { data } = await supabase.auth.getSession();
+    session = data.session;
+    return session?.access_token;
+  }
+
+  // ============================================================
+  // Toggle create form
+  // ============================================================
+  const toggleBtn = document.getElementById("btn-toggle-create");
+  const createForm = document.getElementById("create-form");
+  const toggleIcon = document.getElementById("toggle-icon");
+  toggleBtn.addEventListener("click", () => {
+    const open = !createForm.hidden;
+    createForm.hidden = open;
+    toggleBtn.setAttribute("aria-expanded", String(!open));
+    toggleIcon.textContent = open ? "+" : "−";
+    if (!open) {
+      setTimeout(() => document.getElementById("f-title").focus(), 50);
+    }
+  });
+  document.getElementById("btn-cancel-create").addEventListener("click", () => {
+    createForm.hidden = true;
+    toggleBtn.setAttribute("aria-expanded", "false");
+    toggleIcon.textContent = "+";
+    document.getElementById("create-status").hidden = true;
+  });
+
+  // ============================================================
+  // Create case
+  // ============================================================
+  createForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const title = document.getElementById("f-title").value.trim();
+    const counterparty = document.getElementById("f-counterparty").value.trim();
+    const description = document.getElementById("f-description").value.trim();
+    const status = document.getElementById("create-status");
+    const btn = document.getElementById("btn-create");
+
+    if (title.length < 3 || title.length > 200) {
+      status.hidden = false;
+      status.className = "form-status err";
+      status.textContent = "Il titolo deve essere tra 3 e 200 caratteri.";
+      return;
+    }
+
+    btn.disabled = true;
+    status.hidden = false;
+    status.className = "form-status";
+    status.textContent = "Creazione in corso…";
+
+    try {
+      const tk = await getToken();
+      if (!tk) throw new Error("Sessione scaduta. Ricarica la pagina.");
+
+      const body = { title };
+      if (counterparty) body.counterparty = counterparty;
+      if (description) body.description = description;
+
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+        body: JSON.stringify(body),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.success) {
+        throw new Error(j?.error || ("http_" + r.status));
+      }
+      const newCase = j.data || {};
+      const newId = newCase.id;
+      if (!newId) throw new Error("Risposta senza ID fascicolo.");
+
+      status.className = "form-status ok";
+      status.textContent = "Fascicolo creato. Apertura in corso…";
+      setTimeout(() => {
+        location.href = `proof-case-detail.html?id=${encodeURIComponent(newId)}`;
+      }, 400);
+    } catch (e) {
+      status.className = "form-status err";
+      status.textContent = "Errore: " + (e.message || e);
+      btn.disabled = false;
+    }
+  });
+
+  // ============================================================
+  // Search/list cases
+  // ============================================================
+  let state = { offset: 0, total: 0 };
+
+  function setVisibility({ loading, error, empty, results }) {
+    document.getElementById("state-loading").hidden = !loading;
+    document.getElementById("state-error").hidden = !error;
+    document.getElementById("state-empty").hidden = !empty;
+    document.getElementById("results-header").hidden = !results;
+    document.getElementById("tbl-wrap").hidden = !results;
+  }
+
+  function renderRows(rows) {
+    const tbody = document.getElementById("rows");
+    tbody.innerHTML = "";
+    rows.forEach(c => {
+      const detailLink = `proof-case-detail.html?id=${encodeURIComponent(c.id)}`;
+      const caseLabel = c.case_id || c.id || "—";
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="mono"><a href="${detailLink}">${escapeHtml(caseLabel)}</a></td>
+        <td>${escapeHtml(trunc(c.title || "—", 60))}</td>
+        <td>${escapeHtml(trunc(c.counterparty || "—", 40))}</td>
+        <td>${statusPill(c.status)}</td>
+        <td class="mono">${Number(c.capsule_count ?? c.capsules_count ?? 0)}</td>
+        <td class="mono">${Number(c.attachments_count ?? 0)}</td>
+        <td>${c.legal_hold === true ? '<span class="pill warn">attivo</span>' : '<span class="pill">no</span>'}</td>
+        <td>${fmt(c.updated_at || c.created_at)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function loadCases({ resetOffset = true } = {}) {
+    if (resetOffset) state.offset = 0;
+    setVisibility({ loading: true, error: false, empty: false, results: false });
+
+    try {
+      const tk = await getToken();
+      if (!tk) throw new Error("Sessione scaduta. Ricarica la pagina.");
+
+      const params = new URLSearchParams();
+      const q = document.getElementById("q-input").value.trim();
+      const st = document.getElementById("flt-status").value;
+      if (q) params.set("q", q);
+      if (st) params.set("status", st);
+      params.set("limit", String(PAGE_LIMIT));
+      params.set("offset", String(state.offset));
+
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/cases-list?${params.toString()}`, {
+        method: "GET",
+        headers: { "Authorization": "Bearer " + tk },
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.success === false) {
+        throw new Error(j?.error || ("http_" + r.status));
+      }
+      const rows = j.data || [];
+      const total = Number(j.total ?? rows.length);
+      state.total = total;
+
+      if (rows.length === 0) {
+        setVisibility({ loading: false, error: false, empty: true, results: false });
+        return;
+      }
+
+      renderRows(rows);
+
+      const from = state.offset + 1;
+      const to = state.offset + rows.length;
+      document.getElementById("results-count").textContent = `Fascicoli ${from}–${to} di ${total}`;
+      document.getElementById("btn-prev").disabled = state.offset === 0;
+      document.getElementById("btn-next").disabled = (state.offset + rows.length) >= total;
+
+      setVisibility({ loading: false, error: false, empty: false, results: true });
+    } catch (e) {
+      const err = document.getElementById("state-error");
+      err.querySelector("span").textContent = "Errore: " + (e.message || e);
+      setVisibility({ loading: false, error: true, empty: false, results: false });
+    }
+  }
+
+  document.getElementById("search-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    loadCases({ resetOffset: true });
+  });
+  document.getElementById("btn-clear").addEventListener("click", () => {
+    document.getElementById("q-input").value = "";
+    document.getElementById("flt-status").value = "";
+    loadCases({ resetOffset: true });
+  });
+  document.getElementById("flt-status").addEventListener("change", () => loadCases({ resetOffset: true }));
+  document.getElementById("retry").addEventListener("click", () => loadCases({ resetOffset: false }));
+  document.getElementById("btn-prev").addEventListener("click", () => {
+    if (state.offset === 0) return;
+    state.offset = Math.max(0, state.offset - PAGE_LIMIT);
+    loadCases({ resetOffset: false });
+  });
+  document.getElementById("btn-next").addEventListener("click", () => {
+    state.offset = state.offset + PAGE_LIMIT;
+    loadCases({ resetOffset: false });
+  });
+
+  // Caricamento iniziale
+  loadCases({ resetOffset: true });
+  </script>
+  <script>(function(){const o=window.fetch;if(!o||window.__veylonPlausibleHook)return;window.__veylonPlausibleHook=true;window.fetch=function(...a){return o.apply(this,a).then(r=>{try{const u=(a[0]&&a[0].url)||a[0];if(typeof u==='string'&&u.indexOf('/functions/v1/')>0&&r.status>=200&&r.status<300&&window.plausible){const m=u.match(/\/functions\/v1\/([a-z-]+)/);if(m){const fn=m[1];if(['cases-list'].includes(fn))window.plausible('proof_case_list',{props:{fn:fn}});else if(['cases-create'].includes(fn))window.plausible('proof_case_create',{props:{fn:fn}});}}}catch(_){};return r;});};})();</script>
+</body>
+</html>

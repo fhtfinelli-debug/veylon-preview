@@ -48,6 +48,8 @@ const SECTION_OF = {
   "proof-inbox":          "mail",
   "proof-archive":        "mail",
   "proof-capsule-detail": "mail",
+  "proof-cases":          "mail",
+  "proof-case-detail":    "mail",
 };
 
 export async function renderAppShell(activeKey = "") {
