@@ -99,6 +99,24 @@
     .api-snippet { background: var(--paper-2); border: 1px solid var(--rule); padding: 14px 18px; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; color: var(--ink); overflow-x: auto; margin: 14px 0; }
     .api-snippet .comment { color: var(--ink-3); }
     .api-snippet .string { color: #16482a; }
+
+    /* Template widget */
+    .tpl-widget { display: none; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; margin: 0 0 22px; }
+    .tpl-widget.visible { display: block; }
+    .tpl-widget .tpl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .tpl-widget .tpl-q { font-family: var(--serif); font-size: 14.5px; color: var(--ink); margin: 0; flex: 1 1 240px; }
+    .tpl-widget .tpl-q strong { color: var(--seal); }
+    .tpl-widget select { padding: 8px 12px; font-family: var(--serif); font-size: 13.5px; border: 1px solid var(--ink); background: var(--paper); flex: 1 1 220px; max-width: 360px; }
+    .tpl-widget .btn-skip { padding: 8px 16px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; background: transparent; color: var(--ink-3); border: 1px solid var(--rule); cursor: pointer; }
+    .tpl-widget .btn-skip:hover { color: var(--ink); border-color: var(--ink); }
+    .tpl-banner { background: #e8f5e9; border-left: 3px solid #1e6e3e; padding: 12px 16px; margin: 12px 0 0; font-family: var(--serif); font-size: 13.5px; color: #16482a; }
+    .tpl-microbanner { background: #fff8e6; border-left: 3px solid #c8a13a; padding: 10px 14px; margin: 0 0 18px; font-family: var(--serif); font-style: italic; font-size: 12.5px; color: #5a4310; }
+
+    /* Variant compact per tag-emetti */
+    .tpl-widget.compact { padding: 10px 12px; margin: 12px 0 0; }
+    .tpl-widget.compact .tpl-row { gap: 8px; }
+    .tpl-widget.compact .tpl-q { font-size: 13px; flex: 0 0 auto; }
+    .tpl-widget.compact select { font-size: 13px; padding: 6px 10px; max-width: 280px; }
   </style>
 </head>
 <body>
@@ -173,6 +191,19 @@
 
       <!-- STEP 1: scegli prodotto -->
       <section id="step-1" class="wiz-panel">
+        <!-- Widget template prodotto (Stream B integrazione) -->
+        <div id="tpl-widget" class="tpl-widget" role="region" aria-label="Template prodotto">
+          <div class="tpl-row">
+            <p class="tpl-q">Vuoi partire da un <strong>template prodotto</strong>?</p>
+            <select id="tpl-select" aria-label="Seleziona template prodotto">
+              <option value="">— Seleziona template —</option>
+            </select>
+            <button type="button" id="tpl-skip" class="btn-skip" aria-label="Procedi senza template">Procedi senza</button>
+          </div>
+          <div id="tpl-banner" class="tpl-banner" role="status" hidden></div>
+        </div>
+        <div id="tpl-microbanner" class="tpl-microbanner" role="status" hidden>Template disponibili dopo prossima sync.</div>
+
         <h2>Scegli un prodotto dal tuo catalogo</h2>
         <p class="intro">Seleziona un prodotto gia registrato nel <a href="tag-prodotti.html" style="color: var(--seal);">catalogo prodotti</a>. Tutti i dati del prodotto (brand, P.IVA, filiera, materiali, conformita) verranno usati per il lotto.</p>
 
@@ -597,6 +628,129 @@ curl -X POST https://hanxxxtgxofjkfdjegfe.supabase.co/functions/v1/tag-certifica
     // Pre-seleziona prodotto via query param
     const params = new URLSearchParams(location.search);
     const preProd = params.get("prodotto_id");
+    const preTpl = params.get("template");
+
+    // ============================================================
+    // Widget Template Prodotto (Stream B)
+    // ============================================================
+    const tplWidget = $("tpl-widget");
+    const tplSelect = $("tpl-select");
+    const tplSkip = $("tpl-skip");
+    const tplBanner = $("tpl-banner");
+    const tplMicro = $("tpl-microbanner");
+    let tplCache = []; // template list cached for apply lookups
+
+    async function tplAuthHeaders() {
+      const { data: { session } } = await supabase.auth.getSession();
+      const h = { "Content-Type": "application/json" };
+      if (session?.access_token) h["Authorization"] = "Bearer " + session.access_token;
+      return h;
+    }
+
+    async function tplLoadList() {
+      try {
+        const headers = await tplAuthHeaders();
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-prodotti-template-list?stato=attivo`, { headers });
+        if (res.status === 404) {
+          // Endpoint non deployato ancora (race con Stream E2)
+          tplMicro.hidden = false;
+          return;
+        }
+        if (!res.ok) return; // fallisci silenziosamente, widget resta nascosto
+        const j = await res.json();
+        const list = Array.isArray(j) ? j : (j.templates || j.data || []);
+        if (!list || list.length === 0) return; // 0 template → nascondi (no nag)
+        tplCache = list;
+        tplSelect.innerHTML = '<option value="">— Seleziona template —</option>' +
+          list.map((t) => {
+            const nome = esc(t.nome || t.name || "Senza nome");
+            const cat = esc(t.categoria_dpp || t.categoria_merc || "—");
+            const usi = (t.uso_count ?? t.usage_count ?? t.applied_count ?? 0);
+            const usiLabel = usi > 0 ? `Usato ${usi} volte` : "Mai usato";
+            return `<option value="${esc(t.id)}">${nome} — ${cat} — ${usiLabel}</option>`;
+          }).join("");
+        tplWidget.classList.add("visible");
+      } catch (_) {
+        // Network offline o altro: nascondi gracefully
+      }
+    }
+
+    function applyTemplatePayload(payload) {
+      // Stato wizard: pre-fill prodotto pseudo-virtuale dal template.
+      // Il template diventa "prodotto sintetico" cosi il wizard prosegue normale.
+      state.prodotto = {
+        id: payload.prodotto_id || payload.id || null,
+        nome: payload.nome || payload.nome_prodotto || "",
+        codice_interno: payload.sku_base || payload.codice_interno || "",
+        brand: payload.brand || (payload.brand_obj && payload.brand_obj.nome) || "",
+        brand_vat: payload.brand_vat || (payload.brand_obj && payload.brand_obj.p_iva) || null,
+        categoria_merc: payload.categoria_dpp || payload.categoria_merc || null,
+        paese_origine: payload.paese_origine || (payload.supply_chain && payload.supply_chain.paese_origine) || "IT",
+        modello_fisico_default: payload.applicazione || payload.modello_fisico_default || null,
+        lotti_emessi_count: 0,
+        _template_id: payload.template_id || payload.id || null,
+        _template_payload: payload
+      };
+      // Se l'endpoint restituisce un prodotto reale corrispondente, prova ad evidenziare la card
+      if (state.prodotto.id) {
+        const card = document.querySelector(`.prod-card[data-id="${state.prodotto.id}"]`);
+        if (card) {
+          document.querySelectorAll(".prod-card").forEach((x) => x.classList.remove("selected"));
+          card.classList.add("selected");
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+      $("btn-step1-next").disabled = false;
+      tplBanner.hidden = false;
+      tplBanner.innerHTML = `<strong>&check; Template applicato: ${esc(payload.nome || payload.nome_prodotto || "—")}.</strong> Modifica liberamente i campi prima di emettere il lotto.`;
+    }
+
+    async function tplApply(templateId) {
+      if (!templateId) return;
+      try {
+        const headers = await tplAuthHeaders();
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-prodotti-template-apply`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify({ template_id: templateId })
+        });
+        if (res.status === 404) {
+          tplMicro.hidden = false;
+          return;
+        }
+        if (!res.ok) {
+          const j = await res.json().catch(() => ({}));
+          throw new Error(j.error || ("HTTP " + res.status));
+        }
+        const payload = await res.json();
+        applyTemplatePayload(payload.data || payload);
+      } catch (e) {
+        tplBanner.hidden = false;
+        tplBanner.style.background = "#fde7e4";
+        tplBanner.style.borderLeftColor = "#b00020";
+        tplBanner.style.color = "#5a0a0a";
+        tplBanner.textContent = "Impossibile applicare il template: " + (e.message || e);
+      }
+    }
+
+    tplSelect.addEventListener("change", (e) => {
+      const id = e.target.value;
+      if (id) tplApply(id);
+    });
+    tplSkip.addEventListener("click", () => {
+      tplWidget.classList.remove("visible");
+    });
+
+    // Carica lista template + eventuale deep-link ?template=:id
+    tplLoadList().then(() => {
+      if (preTpl) {
+        // Forza visibilita widget se non lo era (template potrebbe non essere in lista visibile)
+        tplWidget.classList.add("visible");
+        // Sincronizza select se possibile
+        if (tplCache.some((t) => t.id === preTpl)) tplSelect.value = preTpl;
+        tplApply(preTpl);
+      }
+    });
 
     loadProdotti().then(() => {
       if (preProd) {

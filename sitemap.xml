@@ -130,8 +130,25 @@
   <!-- Developers API docs -->
   <url>
     <loc>https://veylon.app/developers.html</loc>
+    <lastmod>2026-06-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <!-- Tag API keys self-service (Dev Portal Atto vi Tag REST v1) -->
+  <url>
+    <loc>https://veylon.app/tag-api-keys.html</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Tag prodotti template wizard (riusabile per emissione lotti/certificati) -->
+  <url>
+    <loc>https://veylon.app/tag-prodotti.html</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- Sicurezza & conformita -->

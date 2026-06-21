@@ -35,6 +35,14 @@
           <div style="margin-top: 18px;">
             <label class="field-label" for="lotto">Lotto / serial</label>
             <input class="field-input mono" type="text" id="lotto"/>
+            <!-- Widget template prodotto compact (Stream B) -->
+            <div id="tpl-widget-c" class="tpl-widget-c" role="region" aria-label="Applica template prodotto">
+              <label for="tpl-select-c">Da template</label>
+              <select id="tpl-select-c" aria-label="Seleziona template prodotto">
+                <option value="">— Seleziona —</option>
+              </select>
+            </div>
+            <div id="tpl-banner-c" class="tpl-banner-c" role="status" hidden>Template applicato.</div>
           </div>
           <div style="margin-top: 18px;">
             <label class="field-label">Applicazione</label>
@@ -65,6 +73,13 @@
   .radio-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--rule); cursor: pointer; font-family: var(--serif); font-size: 14px; }
   .radio-pill:hover { background: var(--paper-2); }
   .radio-pill input { accent-color: var(--seal); }
+
+  /* Template widget compact (Stream B) */
+  .tpl-widget-c { display: none; margin-top: 10px; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .tpl-widget-c.visible { display: flex; }
+  .tpl-widget-c label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .tpl-widget-c select { padding: 6px 10px; font-family: var(--serif); font-size: 13px; border: 1px solid var(--ink); background: var(--paper); max-width: 280px; }
+  .tpl-banner-c { background: #e8f5e9; border-left: 3px solid #1e6e3e; padding: 8px 12px; margin-top: 8px; font-family: var(--serif); font-style: italic; font-size: 12.5px; color: #16482a; }
   </style>
 
   <script type="module">
@@ -77,6 +92,78 @@
   await renderAppShell("tag-emetti");
 
   const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+  const escT = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  // ============================================================
+  // Widget Template Prodotto compact (Stream B)
+  // ============================================================
+  const tplW = document.getElementById("tpl-widget-c");
+  const tplS = document.getElementById("tpl-select-c");
+  const tplB = document.getElementById("tpl-banner-c");
+
+  async function tplLoad() {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-prodotti-template-list?stato=attivo`, {
+        headers: { "Authorization": "Bearer " + session.access_token }
+      });
+      if (res.status === 404) return; // endpoint non deployato, nascondi gracefully
+      if (!res.ok) return;
+      const j = await res.json();
+      const list = Array.isArray(j) ? j : (j.templates || j.data || []);
+      if (!list || list.length === 0) return; // 0 template → nascondi
+      tplS.innerHTML = '<option value="">— Seleziona —</option>' +
+        list.map((t) => {
+          const nome = escT(t.nome || t.name || "Senza nome");
+          const cat = escT(t.categoria_dpp || t.categoria_merc || "—");
+          const usi = (t.uso_count ?? t.usage_count ?? t.applied_count ?? 0);
+          const usiLabel = usi > 0 ? `Usato ${usi}x` : "Mai usato";
+          return `<option value="${escT(t.id)}">${nome} — ${cat} — ${usiLabel}</option>`;
+        }).join("");
+      tplW.classList.add("visible");
+    } catch (_) { /* offline → nascondi */ }
+  }
+
+  async function tplApplySingolo(id) {
+    if (!id) return;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/tag-prodotti-template-apply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+        body: JSON.stringify({ template_id: id })
+      });
+      if (res.status === 404) return;
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error(j.error || ("HTTP " + res.status));
+      }
+      const j = await res.json();
+      const p = j.data || j;
+      // Pre-fill SOLO campi rilevanti per emissione singola:
+      // descrizione (= prod), applicazione (radio).
+      // categoria_dpp / regulatory_compliance / visibility non hanno campo in UI singolo,
+      // vengono ignorati come da spec.
+      const prodEl = document.getElementById("prod");
+      if (p.nome || p.nome_prodotto) prodEl.value = p.nome || p.nome_prodotto;
+      const skuEl = document.getElementById("sku");
+      if (p.sku_base || p.codice_interno) skuEl.value = p.sku_base || p.codice_interno;
+      const app = p.applicazione || p.modello_fisico_default;
+      if (app) {
+        const radio = document.querySelector(`input[name="app"][value="${app}"]`);
+        if (radio) radio.checked = true;
+      }
+      tplB.hidden = false;
+      tplB.textContent = "Template applicato: " + (p.nome || p.nome_prodotto || "—");
+    } catch (e) {
+      tplB.hidden = false;
+      tplB.style.background = "#fde7e4";
+      tplB.style.borderLeftColor = "#b00020";
+      tplB.style.color = "#5a0a0a";
+      tplB.textContent = "Errore template: " + (e.message || e);
+    }
+  }
+
+  tplS.addEventListener("change", (e) => tplApplySingolo(e.target.value));
+  tplLoad();
 
   document.getElementById("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();

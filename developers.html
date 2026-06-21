@@ -81,27 +81,42 @@
     <aside class="dv-toc">
       <h3>Indice</h3>
       <a href="#auth">Autenticazione</a>
+      <a href="#api-keys">API keys self-service</a>
       <a href="#sigillo">POST /v1/sigillo</a>
+      <a href="#tag-emit">POST /v1/tag/emit</a>
+      <a href="#tag-bulk">POST /v1/tag/bulk</a>
       <a href="#verifica">GET /v1/verifica/{sha}</a>
       <a href="#multi-firma">POST /v1/multi-firma</a>
       <a href="#webhook">Webhook outbound</a>
       <a href="#errors">Errori</a>
       <a href="#rate-limit">Rate limit</a>
       <a href="#sla">SLA</a>
+      <a href="../docs/API.md" target="_blank" rel="noopener">Reference completa &rarr;</a>
     </aside>
 
     <div class="dv-content">
 
       <section id="auth">
         <h2>Autenticazione</h2>
-        <p>Tutte le API REST richiedono un'API key generata dal pannello <code>admin.html</code> &rarr; tab <strong>API keys</strong>.
-        Inviare la chiave nell'header <code>Authorization: Bearer veylon_xxx</code>.</p>
+        <p>Tutte le API REST richiedono un'API key nel formato ufficiale <code>vlk_*</code> (32 byte base64url). Inviare nel header <code>Authorization: Bearer vlk_xxxxxxxx</code>.</p>
         <div class="info-strip">
-          <strong>Piano Business richiesto.</strong> Gli utenti Free e Pro hanno accesso alle stesse funzionalita via dashboard ma non via API.
-          Le API key sono attive solo su piano Business (50.000 chiamate/mese inclusi).
+          <strong>Formato legacy non supportato.</strong> Le vecchie chiavi <code>veylon_live_*</code> / <code>veylon_test_*</code> ritornano <code>401 legacy_format_not_supported</code>. Migrare al nuovo formato dal Dev Portal.
         </div>
-        <pre><code>curl -H "Authorization: Bearer veylon_live_a1b2c3..." \
-     https://api.veylon.app/v1/me</code></pre>
+        <pre><code>curl -H "Authorization: Bearer vlk_xxxxxxxx..." \
+     https://api.veylon.app/v1/tag/cert?codice=VLN-TAG-2026-AB23-9KMP</code></pre>
+        <p>Quota mensile per piano: free 10 / pro 1.000 / business 50.000 / enterprise 500.000. Lo scope di lettura non scala quota. Header standard restituiti: <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, <code>X-Veylon-Piano</code>, <code>X-Veylon-Api-Version: v1</code>.</p>
+      </section>
+
+      <section id="api-keys">
+        <h2>API keys self-service</h2>
+        <p>Le API key <code>vlk_*</code> si generano e gestiscono dal Dev Portal interno. Ogni chiave porta uno o piu <strong>scope</strong> granulari: <code>sigillo:create</code>, <code>tag:write</code>, <code>tag:read</code>, <code>tag:read:any</code>, <code>tag:transfer</code>, <code>admin</code>.</p>
+        <p style="margin: 18px 0;">
+          <a href="tag-api-keys.html" style="display: inline-block; background: var(--seal); color: white; padding: 12px 22px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;">Gestisci le tue API key &rarr;</a>
+        </p>
+        <p>Il valore plain della chiave appare <strong>una sola volta</strong>: copiarla subito in un secret manager. Il backend persiste solo lo SHA-256 hex. La revoca e immediata (<code>active=false</code>, propagata su tutte le edge function al successivo lookup).</p>
+        <div class="ok-strip">
+          <strong>Audit log integrato.</strong> Ogni chiamata viene registrata in <code>audit_log</code> con <code>actor_type: api_key</code>, <code>api_key_id</code>, scope richiesti, IP hash, user agent.
+        </div>
       </section>
 
       <section id="sigillo">
@@ -163,6 +178,177 @@ print(r.json()["verifica_url"])</code></pre>
         </div>
       </section>
 
+      <section id="tag-emit">
+        <h2>Tag &middot; Emissione singola</h2>
+        <div class="endpoint">
+          <span class="method POST">POST</span><span class="url">/v1/tag/emit</span>
+          <p class="desc">Emette un singolo certificato Veylon Tag (DPP UE 2024/1781, batteria Annex XIII, EUDR DDS, tessile Prato 2027, pharma GMP, lusso). 1 sigillo per chiamata.</p>
+        </div>
+
+        <h3>Request body (estratto)</h3>
+        <pre><code>{
+  "produttore_id": "uuid",                  // obbligatorio
+  "sha256_dichiarazione": "&lt;64 hex&gt;",       // obbligatorio
+  "codice_prodotto": "BAG-001",             // opzionale, max 200
+  "lotto": "L-2026-04",                     // opzionale
+  "applicazione": "qr_adesivo",             // qr_adesivo | qr_inciso | nfc_ntag424_dna
+  "categoria_dpp": "textile_general",       // opzionale, classifica DPP
+  "gtin": "08001234567890",                 // opzionale, GS1
+  "regulatory_compliance": { "reach": true },
+  "visibility_jsonb": { "public": ["origin"] },
+  "metadata": {}
+}</code></pre>
+
+        <h3>Response 200</h3>
+        <pre><code>{
+  "success": true,
+  "atto_id": "uuid",
+  "certificato_id": "uuid",
+  "codice_pubblico": "VLN-TAG-2026-AB23-9KMP",
+  "qr_url": "https://veylon.app/t/VLN-TAG-2026-AB23-9KMP",
+  "verifica_url": "...",
+  "ots_status": "pending",
+  "quota_used": 124, "quota_remaining": 49876, "quota_monthly": 50000,
+  "piano": "business"
+}</code></pre>
+
+        <h3>Esempi</h3>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tagemit-curl">curl</button>
+          <button class="tab-btn" data-tab="tagemit-js">Node.js</button>
+          <button class="tab-btn" data-tab="tagemit-py">Python</button>
+        </div>
+        <div class="tab-content active" data-tab="tagemit-curl">
+          <pre><code>curl -X POST https://api.veylon.app/v1/tag/emit \
+  -H "Authorization: Bearer $VEYLON_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"produttore_id":"...","sha256_dichiarazione":"a3f5...","codice_prodotto":"BAG-001","lotto":"L-2026-04","applicazione":"qr_adesivo"}'</code></pre>
+        </div>
+        <div class="tab-content" data-tab="tagemit-js">
+          <pre><code>import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+
+const sha = createHash("sha256").update(await readFile("dichiarazione.pdf")).digest("hex");
+const r = await fetch("https://api.veylon.app/v1/tag/emit", {
+  method: "POST",
+  headers: { "Authorization": `Bearer ${process.env.VEYLON_KEY}`, "Content-Type": "application/json" },
+  body: JSON.stringify({
+    produttore_id: process.env.VEYLON_PRODUTTORE_ID,
+    sha256_dichiarazione: sha,
+    codice_prodotto: "BAG-001", lotto: "L-2026-04",
+    applicazione: "qr_adesivo",
+  }),
+});
+const out = await r.json();
+console.log(out.qr_url, "quota rimanente:", out.quota_remaining);</code></pre>
+        </div>
+        <div class="tab-content" data-tab="tagemit-py">
+          <pre><code>import hashlib, os, requests
+
+sha = hashlib.sha256(open("dichiarazione.pdf", "rb").read()).hexdigest()
+r = requests.post(
+    "https://api.veylon.app/v1/tag/emit",
+    headers={"Authorization": f"Bearer {os.environ['VEYLON_KEY']}"},
+    json={
+        "produttore_id": os.environ["VEYLON_PRODUTTORE_ID"],
+        "sha256_dichiarazione": sha,
+        "codice_prodotto": "BAG-001", "lotto": "L-2026-04",
+        "applicazione": "qr_adesivo",
+    },
+    timeout=15,
+)
+print(r.json()["qr_url"])</code></pre>
+        </div>
+      </section>
+
+      <section id="tag-bulk">
+        <h2>Tag &middot; Bulk asincrono</h2>
+        <div class="endpoint">
+          <span class="method POST">POST</span><span class="url">/v1/tag/bulk</span>
+          <p class="desc">Enqueue di un lotto fino a 100.000 righe per call (lotti grandi fino a 10M con worker dedicato, contattare <a href="mailto:enterprise@veylon.app">enterprise@veylon.app</a>). Risposta HTTP 202 + <code>job_id</code>. Polling con <code>GET /v1/tag/job-status?job_id=...</code>. Header <code>Idempotency-Key</code> supportato (replay 24h).</p>
+        </div>
+
+        <h3>Request body</h3>
+        <pre><code>{
+  "produttore_id": "uuid",
+  "codice_lotto": "LOT-2026-04",
+  "webhook_url": "https://acme.example.com/hooks/veylon",
+  "righe": [
+    { "sha256_dichiarazione": "...", "codice_prodotto": "BAG-001", "lotto": "LOT-2026-04", "applicazione": "qr_adesivo" }
+    // ...fino a 100000 oggetti
+  ]
+}</code></pre>
+
+        <h3>Response 202</h3>
+        <pre><code>{
+  "success": true,
+  "job_id": "uuid",
+  "status": "queued",
+  "righe_richieste": 4523,
+  "codice_lotto": "LOT-2026-04",
+  "polling_url": "https://veylon.app/functions/v1/api-v1-tag-job-status?job_id=...",
+  "eta_sec_stimato": 7,
+  "idempotency_key": "lotto-2026-04-retry-1"
+}</code></pre>
+
+        <h3>Esempi</h3>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tagbulk-curl">curl</button>
+          <button class="tab-btn" data-tab="tagbulk-js">Node.js</button>
+          <button class="tab-btn" data-tab="tagbulk-py">Python</button>
+        </div>
+        <div class="tab-content active" data-tab="tagbulk-curl">
+          <pre><code>curl -X POST https://api.veylon.app/v1/tag/bulk \
+  -H "Authorization: Bearer $VEYLON_KEY" \
+  -H "Idempotency-Key: lotto-2026-04-retry-1" \
+  -H "Content-Type: application/json" \
+  -d @lotto-2026-04.json</code></pre>
+        </div>
+        <div class="tab-content" data-tab="tagbulk-js">
+          <pre><code>const r = await fetch("https://api.veylon.app/v1/tag/bulk", {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${process.env.VEYLON_KEY}`,
+    "Idempotency-Key": "lotto-2026-04-retry-1",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    produttore_id: process.env.VEYLON_PRODUTTORE_ID,
+    codice_lotto: "LOT-2026-04",
+    webhook_url: "https://acme.example.com/hooks/veylon",
+    righe: items.map((it) =&gt; ({
+      sha256_dichiarazione: it.sha,
+      codice_prodotto: it.sku,
+      lotto: "LOT-2026-04",
+      applicazione: "qr_adesivo",
+    })),
+  }),
+});
+const job = await r.json();
+console.log("job", job.job_id, "ETA", job.eta_sec_stimato, "s");</code></pre>
+        </div>
+        <div class="tab-content" data-tab="tagbulk-py">
+          <pre><code>import os, requests
+
+r = requests.post(
+    "https://api.veylon.app/v1/tag/bulk",
+    headers={
+        "Authorization": f"Bearer {os.environ['VEYLON_KEY']}",
+        "Idempotency-Key": "lotto-2026-04-retry-1",
+    },
+    json={
+        "produttore_id": os.environ["VEYLON_PRODUTTORE_ID"],
+        "codice_lotto": "LOT-2026-04",
+        "webhook_url": "https://acme.example.com/hooks/veylon",
+        "righe": righe,
+    },
+    timeout=60,
+)
+print("job", r.json()["job_id"])</code></pre>
+        </div>
+        <div class="ok-strip"><strong>OTS Merkle aggregato.</strong> I lotti bulk usano un'unica radice Merkle ancorata a Bitcoin via OpenTimestamps invece di N submit separate (vedi <code>_shared/merkle.ts</code> + <code>tag-ots-merkle-finalize-cron</code>). Il certificato di lotto ritorna comunque <code>ots_status</code> per ogni riga, derivato dalla prova Merkle.</div>
+      </section>
+
       <section id="verifica">
         <h2>Verifica</h2>
         <div class="endpoint">
@@ -211,7 +397,11 @@ atto.confermato        // OTS Bitcoin block confirmation
 firma.completata       // singola firma OTP
 multi_firma.completata // tutti firmatari hanno firmato
 cert.emesso            // certificato istituzionale rilasciato
-tag.trasferito         // proprieta tag prodotto cambiata</code></pre>
+tag.trasferito         // proprieta tag prodotto cambiata
+tag.bulk.completed     // job bulk REST v1 terminato (manifest ZIP signed_url)
+tag.bulk.failed        // job bulk REST v1 fallito
+tag.cert.transferred   // /v1/tag/transfer chiuso o pending
+tag.cert.revoked       // /v1/tag/revoke emesso</code></pre>
 
         <h3>Payload</h3>
         <pre><code>{
@@ -246,11 +436,29 @@ tag.trasferito         // proprieta tag prodotto cambiata</code></pre>
       </section>
 
       <section id="rate-limit">
-        <h2>Rate limit</h2>
-        <p>Per piano Business: <strong>50.000 sigilli/mese inclusi</strong>, oltre quota a 0.01&euro;/sigillo. Burst: 30 req/secondo, ritorno <code>429</code> con header <code>Retry-After</code>.</p>
-        <pre><code>X-RateLimit-Limit: 30
-X-RateLimit-Remaining: 27
-X-RateLimit-Reset: 1718568000</code></pre>
+        <h2>Rate limit + Quota</h2>
+        <p>Quota mensile applicata SOLO agli scope di scrittura (<code>*:write</code>, <code>*:transfer</code>, <code>sigillo:create</code>). Gli scope di lettura non scalano quota.</p>
+        <table style="width:100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; margin: 12px 0;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <th style="text-align:left; padding: 8px 12px;">Piano</th>
+              <th style="text-align:right; padding: 8px 12px;">Quota / mese</th>
+              <th style="text-align:left; padding: 8px 12px;">SLA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding: 6px 12px;">free</td><td style="text-align:right; padding: 6px 12px;">10</td><td style="padding: 6px 12px;">—</td></tr>
+            <tr><td style="padding: 6px 12px;">pro</td><td style="text-align:right; padding: 6px 12px;">1.000</td><td style="padding: 6px 12px;">99,5%</td></tr>
+            <tr><td style="padding: 6px 12px;">business</td><td style="text-align:right; padding: 6px 12px;">50.000</td><td style="padding: 6px 12px;">99,9%</td></tr>
+            <tr><td style="padding: 6px 12px;">enterprise</td><td style="text-align:right; padding: 6px 12px;">500.000</td><td style="padding: 6px 12px;">99,95%</td></tr>
+          </tbody>
+        </table>
+        <p>Quota esaurita &rarr; <code>402 Payment Required</code> con <code>upgrade_url</code> nella risposta. Reset al primo hit del nuovo mese UTC (CAS atomic, vedi <code>_shared/api-bearer.ts</code>).</p>
+        <pre><code>X-RateLimit-Limit: 50000
+X-RateLimit-Remaining: 49876
+X-Veylon-Piano: business
+X-Veylon-Api-Version: v1</code></pre>
+        <p>Header speciale su replay idempotente del bulk: <code>X-Veylon-Idempotent-Replay: 1</code>.</p>
       </section>
 
       <section id="sla">
