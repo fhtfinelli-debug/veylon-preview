@@ -626,6 +626,551 @@
       white-space: nowrap;
     }
 
+    /* ============================== ANALYTICS ============================== */
+    #analytics-root { margin-bottom: 36px; }
+    .analytics-hero {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 14px;
+      align-items: center;
+      padding: 18px 22px;
+      background: var(--paper-2);
+      border: 1px solid var(--rule);
+      margin-bottom: 18px;
+    }
+    .analytics-hero h2 {
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.4vw, 30px);
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .analytics-hero h2 em { font-style: italic; color: var(--seal); }
+    .analytics-hero p {
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink-2);
+      margin: 4px 0 0;
+    }
+    .analytics-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .analytics-select,
+    .analytics-period-btn {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      color: var(--ink-2);
+      cursor: pointer;
+    }
+    .analytics-period-btn.is-active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+    .analytics-period-btn:focus-visible,
+    .analytics-select:focus-visible,
+    .analytics-alert-btn:focus-visible,
+    .analytics-export-btn:focus-visible {
+      outline: 2px solid var(--seal);
+      outline-offset: 2px;
+    }
+    .analytics-freshness {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .analytics-freshness-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--verify);
+      transition: background 0.2s;
+    }
+    .analytics-freshness-dot.is-stale { background: var(--amber); }
+    @media (max-width: 720px) {
+      .analytics-hero { grid-template-columns: 1fr; }
+    }
+
+    /* KPI strip analytics */
+    .analytics-kpi {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border: 1px solid var(--rule);
+      margin-bottom: 24px;
+    }
+    .analytics-kpi-cell {
+      padding: 18px 18px;
+      border-right: 1px solid var(--rule-2);
+      background: var(--paper);
+    }
+    .analytics-kpi-cell:last-child { border-right: 0; }
+    @media (max-width: 1100px) {
+      .analytics-kpi { grid-template-columns: repeat(3, 1fr); }
+      .analytics-kpi-cell:nth-child(3) { border-right: 0; }
+    }
+    @media (max-width: 600px) {
+      .analytics-kpi { grid-template-columns: repeat(2, 1fr); }
+      .analytics-kpi-cell { border-right: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule-2); }
+      .analytics-kpi-cell:nth-child(even) { border-right: 0; }
+      .analytics-kpi-cell:nth-last-child(-n+2) { border-bottom: 0; }
+    }
+    .analytics-kpi-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 10px;
+    }
+    .analytics-kpi-num {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .analytics-kpi-trend {
+      font-family: var(--mono);
+      font-size: 10px;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+      color: var(--ink-3);
+    }
+    .analytics-kpi-trend.is-up    { color: var(--verify); }
+    .analytics-kpi-trend.is-down  { color: var(--seal); }
+    .analytics-kpi-trend.is-flat  { color: var(--ink-3); }
+
+    /* Two-column block: mappa + top lotti */
+    .analytics-2col {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .analytics-2col { grid-template-columns: 1fr; }
+    }
+    .analytics-panel {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
+    }
+    .analytics-panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--rule-2);
+      gap: 8px;
+    }
+    .analytics-panel-head h3 {
+      font-family: var(--serif);
+      font-size: 17px;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .analytics-panel-head h3 em { font-style: italic; color: var(--seal); }
+    .analytics-panel-head .panel-action {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--seal);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: 0;
+      padding: 0;
+    }
+    .analytics-panel-head .panel-action:hover { text-decoration: underline; }
+    .analytics-filter-eyebrow {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--seal);
+      margin: 0 0 4px;
+    }
+
+    /* Mappa */
+    .analytics-map {
+      min-height: 320px;
+      background: var(--paper-2);
+      border: 1px solid var(--rule-2);
+      position: relative;
+      overflow: hidden;
+    }
+    .analytics-map-svg {
+      width: 100%;
+      height: 320px;
+      display: block;
+    }
+    .analytics-map-caption {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      pointer-events: none;
+      font-family: var(--serif);
+      color: var(--ink-3);
+      font-size: 13px;
+    }
+    .analytics-map-legend {
+      display: flex;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .analytics-map-legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--seal);
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: middle;
+      opacity: 0.55;
+    }
+
+    /* Top lotti ranked */
+    .analytics-rank {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .analytics-rank-row {
+      display: grid;
+      grid-template-columns: 22px 1fr auto 80px;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule-2);
+      align-items: center;
+    }
+    .analytics-rank-row:last-child { border-bottom: 0; }
+    .analytics-rank-pos {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--seal);
+    }
+    .analytics-rank-main { min-width: 0; }
+    .analytics-rank-title {
+      font-family: var(--serif);
+      font-size: 13.5px;
+      color: var(--ink);
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+    }
+    .analytics-rank-title:hover { color: var(--seal); }
+    .analytics-rank-meta {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      color: var(--ink-3);
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+    .analytics-rank-count {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--ink);
+      text-align: right;
+    }
+    .analytics-rank-spark {
+      width: 80px;
+      height: 28px;
+      display: block;
+    }
+
+    /* Alert frode */
+    .analytics-alerts {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 18px 18px;
+      margin-bottom: 24px;
+    }
+    .analytics-alerts-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--rule-2);
+      margin-bottom: 14px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .analytics-alerts-head h3 {
+      font-family: var(--serif);
+      font-size: 17px;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .analytics-alerts-head h3 em { font-style: italic; color: var(--seal); }
+    .analytics-alerts-filter {
+      display: inline-flex;
+      gap: 4px;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .analytics-alerts-filter button {
+      background: none;
+      border: 0;
+      padding: 4px 8px;
+      cursor: pointer;
+      color: var(--ink-3);
+      font: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+    }
+    .analytics-alerts-filter button.is-active {
+      color: var(--seal);
+      border-bottom: 1px solid var(--seal);
+    }
+    .analytics-alert-row {
+      display: grid;
+      grid-template-columns: 6px 1fr auto;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--rule-2);
+      align-items: center;
+    }
+    .analytics-alert-row:last-child { border-bottom: 0; }
+    .analytics-alert-bar {
+      align-self: stretch;
+      background: var(--ink-3);
+      min-height: 32px;
+    }
+    .analytics-alert-row.sev-critical .analytics-alert-bar { background: var(--seal); }
+    .analytics-alert-row.sev-warning  .analytics-alert-bar { background: var(--amber); }
+    .analytics-alert-row.sev-info     .analytics-alert-bar { background: var(--ink-3); }
+    .analytics-alert-main { min-width: 0; }
+    .analytics-alert-title {
+      font-family: var(--serif);
+      font-size: 14.5px;
+      color: var(--ink);
+      margin: 0 0 4px;
+    }
+    .analytics-alert-context {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-3);
+      letter-spacing: 0.04em;
+    }
+    .analytics-alert-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .analytics-alert-btn {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 7px 11px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      color: var(--ink-2);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .analytics-alert-btn:hover { color: var(--ink); border-color: var(--ink); }
+    .analytics-alert-btn.is-investigate {
+      background: var(--seal);
+      border-color: var(--seal);
+      color: var(--paper);
+    }
+    .analytics-alert-btn.is-investigate:hover {
+      background: var(--seal-2);
+      color: var(--paper);
+    }
+    @media (max-width: 720px) {
+      .analytics-alert-row { grid-template-columns: 6px 1fr; }
+      .analytics-alert-actions { grid-column: 2; justify-content: flex-start; }
+    }
+
+    /* Trend chart */
+    .analytics-trend {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 18px 18px;
+      margin-bottom: 24px;
+    }
+    .analytics-trend-svg {
+      width: 100%;
+      height: 220px;
+      display: block;
+    }
+    .analytics-trend-legend {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      display: flex;
+      gap: 14px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .view-switcher {
+      display: inline-flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .view-switcher button {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      padding: 6px 10px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      color: var(--ink-3);
+      cursor: pointer;
+    }
+    .view-switcher button.is-active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    /* Donut + Export bottom row */
+    .analytics-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .analytics-bottom { grid-template-columns: 1fr; }
+    }
+    .analytics-donut-svg {
+      width: 200px; height: 200px;
+      margin: 0 auto;
+      display: block;
+    }
+    .analytics-donut-legend {
+      list-style: none; padding: 0; margin: 14px 0 0;
+    }
+    .analytics-donut-legend li {
+      display: grid;
+      grid-template-columns: 14px 1fr auto;
+      gap: 10px;
+      padding: 6px 0;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.04em;
+      color: var(--ink-2);
+      cursor: pointer;
+      align-items: center;
+    }
+    .analytics-donut-legend li.is-active {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .analytics-donut-legend li:hover { color: var(--ink); }
+    .analytics-donut-swatch {
+      width: 12px; height: 12px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .analytics-donut-hint {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--seal);
+      margin: 0 0 10px;
+    }
+
+    /* Export */
+    .analytics-export-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .analytics-export-btn {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      border: 1px solid var(--seal);
+      background: var(--paper);
+      color: var(--seal);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .analytics-export-btn:hover { background: var(--seal-50); }
+    .analytics-export-btn.is-primary {
+      background: var(--seal); color: var(--paper);
+    }
+    .analytics-export-btn.is-primary:hover { background: var(--seal-2); }
+    .analytics-export-btn[disabled],
+    .analytics-export-btn.is-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .analytics-export-foot {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin: 14px 0 0;
+    }
+    .analytics-export-sub {
+      font-family: var(--serif);
+      font-size: 13.5px;
+      color: var(--ink-2);
+      margin: 0 0 14px;
+    }
+
+    /* Skeleton + soft notice */
+    .analytics-soft-notice {
+      padding: 14px 16px;
+      background: var(--paper-2);
+      border: 1px dashed var(--rule);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      text-align: center;
+    }
+
     .sr-only {
       position: absolute;
       width: 1px; height: 1px;
@@ -668,6 +1213,7 @@
       <div class="crm-aside-section">Bacheca</div>
       <ul class="crm-aside-list" role="list">
         <li><a href="tag-crm.html" class="crm-aside-link is-active">Bacheca</a></li>
+        <li><a href="tag-crm.html#analytics-root" class="crm-aside-link">Polso del campo</a></li>
       </ul>
 
       <div class="crm-aside-section">Azienda</div>
@@ -775,6 +1321,175 @@
             <div class="crm-kpi-num" id="kpi-bulk">—</div>
             <div class="crm-kpi-sub" id="kpi-bulk-sub">in lavorazione</div>
           </div>
+        </section>
+
+        <!-- ANALYTICS — POLSO DEL CAMPO ======================================== -->
+        <section class="crm-card is-wide" id="analytics-root" aria-labelledby="analytics-h2">
+
+          <!-- HERO: titolo + selettore brand + filtri periodo + freshness -->
+          <div class="analytics-hero">
+            <div>
+              <h2 id="analytics-h2">Polso del <em>campo</em></h2>
+              <p>Scansioni, alert frode e trend sui certificati che hai emesso.</p>
+            </div>
+            <div class="analytics-controls" role="group" aria-label="Filtri analytics">
+              <label class="sr-only" for="analytics-brand-select">Brand</label>
+              <select id="analytics-brand-select" class="analytics-select" aria-label="Seleziona brand">
+                <option value="all">Tutti i brand</option>
+              </select>
+              <button type="button" class="analytics-period-btn" data-period="7" aria-label="Ultimi 7 giorni">7 giorni</button>
+              <button type="button" class="analytics-period-btn is-active" data-period="30" aria-label="Ultimi 30 giorni" aria-pressed="true">30 giorni</button>
+              <button type="button" class="analytics-period-btn" data-period="90" aria-label="Ultimi 90 giorni">90 giorni</button>
+            </div>
+            <div class="analytics-freshness" title="Ultimo refresh dei dati di scansione. Si aggiorna ogni 5 minuti automaticamente.">
+              <span class="analytics-freshness-dot" id="analytics-freshness-dot" aria-hidden="true"></span>
+              <span id="analytics-freshness-label">in caricamento…</span>
+            </div>
+          </div>
+
+          <!-- KPI strip analytics (6 card) -->
+          <section class="analytics-kpi" aria-label="Indicatori del periodo">
+            <div class="analytics-kpi-cell">
+              <div class="analytics-kpi-label">Scansioni totali</div>
+              <div class="analytics-kpi-num" id="anl-scan-tot">—</div>
+              <div class="analytics-kpi-trend" id="anl-scan-tot-trend">caricamento…</div>
+            </div>
+            <div class="analytics-kpi-cell">
+              <div class="analytics-kpi-label" title="Conta gli IP distinti che hanno scansionato. Stima del numero reale di persone che hanno controllato il prodotto.">Scansioni uniche</div>
+              <div class="analytics-kpi-num" id="anl-scan-uniq">—</div>
+              <div class="analytics-kpi-trend" id="anl-scan-uniq-trend">caricamento…</div>
+            </div>
+            <div class="analytics-kpi-cell">
+              <div class="analytics-kpi-label">Paesi raggiunti</div>
+              <div class="analytics-kpi-num" id="anl-paesi">—</div>
+              <div class="analytics-kpi-trend" id="anl-paesi-trend">caricamento…</div>
+            </div>
+            <div class="analytics-kpi-cell">
+              <div class="analytics-kpi-label">Trasferimenti completati</div>
+              <div class="analytics-kpi-num" id="anl-transf">—</div>
+              <div class="analytics-kpi-trend" id="anl-transf-trend">caricamento…</div>
+            </div>
+            <div class="analytics-kpi-cell">
+              <div class="analytics-kpi-label">Alert frode aperti</div>
+              <div class="analytics-kpi-num" id="anl-alert">—</div>
+              <div class="analytics-kpi-trend" id="anl-alert-trend">caricamento…</div>
+            </div>
+            <div class="analytics-kpi-cell">
+              <div class="analytics-kpi-label" title="Lotti dove uno dei controlli automatici ha rilevato qualcosa di insolito. Vai alla sezione Alert frode sotto per investigare.">Lotti con anomalia</div>
+              <div class="analytics-kpi-num" id="anl-lotti-anom">—</div>
+              <div class="analytics-kpi-trend" id="anl-lotti-anom-trend">caricamento…</div>
+            </div>
+          </section>
+
+          <!-- 2-COL: mappa + top lotti -->
+          <div class="analytics-2col">
+
+            <article class="analytics-panel" aria-labelledby="map-h3">
+              <header class="analytics-panel-head">
+                <h3 id="map-h3">Dove ti <em>scansionano</em></h3>
+                <button type="button" class="panel-action" id="map-reset" hidden>azzera filtro paese</button>
+              </header>
+              <p class="analytics-filter-eyebrow" id="map-filter-eyebrow" hidden></p>
+              <div class="analytics-map" id="analytics-map" role="img" aria-label="Mappa mondiale scansioni per paese">
+                <!-- SVG iniettato runtime -->
+                <div class="analytics-map-caption" id="analytics-map-caption">Caricamento mappa scansioni…</div>
+              </div>
+              <div class="analytics-map-legend" aria-hidden="true">
+                <span><span class="analytics-map-legend-dot" style="opacity:0.25"></span>poche scansioni</span>
+                <span><span class="analytics-map-legend-dot" style="opacity:0.55"></span>medie</span>
+                <span><span class="analytics-map-legend-dot" style="opacity:0.9"></span>molte</span>
+              </div>
+            </article>
+
+            <article class="analytics-panel" aria-labelledby="rank-h3">
+              <header class="analytics-panel-head">
+                <h3 id="rank-h3">Top <em>10 lotti</em> scansionati</h3>
+                <a class="panel-action" href="tag-storico.html">vedi tutti i lotti →</a>
+              </header>
+              <div id="top-lotti-wrap">
+                <div class="crm-loading" id="top-lotti-loading">Caricamento top lotti…</div>
+                <ol class="analytics-rank" id="top-lotti-list" hidden></ol>
+                <div class="crm-empty" id="top-lotti-empty" hidden>
+                  <div class="crm-empty-roman">i</div>
+                  <div class="crm-empty-title">Nessun lotto scansionato</div>
+                  <div class="crm-empty-sub">Quando i tuoi certificati cominceranno a essere controllati la' fuori, qui vedrai la classifica dei lotti piu' visti.</div>
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+          <!-- ALERT FRODE -->
+          <section class="analytics-alerts" aria-labelledby="alerts-h3">
+            <header class="analytics-alerts-head">
+              <h3 id="alerts-h3">
+                Alert <em>frode</em>
+                <span class="crm-pill is-wait" id="alerts-count" style="margin-left: 8px;">— aperti</span>
+              </h3>
+              <div class="analytics-alerts-filter" role="tablist" aria-label="Filtra alert">
+                <button type="button" class="is-active" data-alert-filter="open" role="tab" aria-selected="true">aperti</button>
+                <span aria-hidden="true">|</span>
+                <button type="button" data-alert-filter="all" role="tab">tutti</button>
+                <span aria-hidden="true">|</span>
+                <button type="button" data-alert-filter="closed" role="tab">chiusi</button>
+              </div>
+            </header>
+            <div id="alerts-list" aria-live="polite">
+              <div class="crm-loading">Caricamento alert frode…</div>
+            </div>
+          </section>
+
+          <!-- TREND -->
+          <section class="analytics-trend" aria-labelledby="trend-h3">
+            <header class="analytics-panel-head" style="padding-bottom: 10px;">
+              <h3 id="trend-h3">Scansioni nel <em>tempo</em></h3>
+              <div class="view-switcher" role="tablist" aria-label="Dimensione trend">
+                <button type="button" class="is-active" data-dim="total" role="tab" aria-selected="true">totale</button>
+                <button type="button" data-dim="paese" role="tab">per paese</button>
+                <button type="button" data-dim="lotto" role="tab">per lotto</button>
+                <button type="button" data-dim="applicazione" role="tab">per applicazione</button>
+              </div>
+            </header>
+            <svg class="analytics-trend-svg" id="analytics-trend-svg" viewBox="0 0 800 220" role="img" aria-label="Grafico trend scansioni" preserveAspectRatio="none">
+              <line x1="0" y1="200" x2="800" y2="200" stroke="var(--rule-2)" stroke-width="1"/>
+              <text x="400" y="110" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--ink-3)" letter-spacing="1.5">CARICAMENTO TREND…</text>
+            </svg>
+            <div class="analytics-trend-legend" id="trend-legend"></div>
+          </section>
+
+          <!-- DONUT + EXPORT -->
+          <section class="analytics-bottom">
+            <article class="analytics-panel" aria-labelledby="donut-h3">
+              <header class="analytics-panel-head">
+                <h3 id="donut-h3">Per <em>applicazione</em> fisica</h3>
+                <button type="button" class="panel-action" id="donut-reset" hidden>azzera filtro applicazione</button>
+              </header>
+              <p class="analytics-donut-hint" id="donut-hint" hidden></p>
+              <svg class="analytics-donut-svg" id="analytics-donut-svg" viewBox="0 0 100 100" role="img" aria-label="Distribuzione scansioni per applicazione fisica">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--rule-2)" stroke-width="18"/>
+              </svg>
+              <ul class="analytics-donut-legend" id="donut-legend" role="list">
+                <li class="analytics-soft-notice" style="grid-template-columns: 1fr;">Caricamento distribuzione…</li>
+              </ul>
+            </article>
+
+            <article class="analytics-panel" aria-labelledby="export-h3">
+              <header class="analytics-panel-head">
+                <h3 id="export-h3">Porta i dati <em>fuori</em></h3>
+              </header>
+              <p class="analytics-export-sub">
+                Esporta le scansioni del periodo selezionato o ricevi un report PDF
+                riassuntivo per i tuoi referenti interni.
+              </p>
+              <div class="analytics-export-btns">
+                <button type="button" class="analytics-export-btn" data-export="csv">↓ CSV scansioni periodo</button>
+                <button type="button" class="analytics-export-btn" data-export="pdf">↓ PDF report analytics</button>
+                <button type="button" class="analytics-export-btn is-primary" data-export="schedule">Programma report email settimanale</button>
+              </div>
+              <p class="analytics-export-foot">File generati in tempo reale. CSV max 100k righe.</p>
+            </article>
+          </section>
+
         </section>
 
         <!-- 3-COLUMN GRID ====================================================== -->
@@ -1222,6 +1937,836 @@
       loadLotti(),
       loadBulkJobs(),
     ]);
+
+    // ============================================================
+    // ANALYTICS — POLSO DEL CAMPO
+    // Backend RPC non ancora attivo (Stream E). Tutte le chiamate
+    // sono fault-tolerant: se la RPC non esiste, mostriamo soft notice
+    // "Funzione in attivazione" invece di rumore errore.
+    // ============================================================
+
+    // ---------- Stato locale ----------
+    const analyticsState = {
+      brand: "all",
+      period: 30,
+      paese: null,
+      applicazione: null,
+      alertFilter: "open",
+      trendDim: "total",
+      lastRefresh: null,
+    };
+
+    // ---------- Util analytics ----------
+    function periodToRange(periodDays) {
+      const to = new Date();
+      const from = new Date(Date.now() - Number(periodDays) * 24 * 60 * 60 * 1000);
+      return { from: from.toISOString(), to: to.toISOString() };
+    }
+    function toRoman(n) {
+      // i, ii, iii, iv, v, vi, vii, viii, ix, x
+      const map = ["", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x"];
+      return map[n] || String(n);
+    }
+    function formatFreshness(date) {
+      if (!date) return "in caricamento…";
+      const diff = Date.now() - date.getTime();
+      const sec = Math.floor(diff / 1000);
+      if (sec < 30) return "aggiornato ora";
+      const min = Math.floor(sec / 60);
+      if (min < 1) return "aggiornato ora";
+      if (min === 1) return "aggiornato 1 minuto fa";
+      if (min < 60) return `aggiornato ${min} minuti fa`;
+      const h = Math.floor(min / 60);
+      if (h === 1) return "aggiornato 1 ora fa";
+      if (h < 24) return `aggiornato ${h} ore fa`;
+      return "aggiornato ieri";
+    }
+    function updateFreshnessLabel() {
+      const el = document.getElementById("analytics-freshness-label");
+      if (el) el.textContent = formatFreshness(analyticsState.lastRefresh);
+    }
+    function markFresh() {
+      analyticsState.lastRefresh = new Date();
+      const dot = document.getElementById("analytics-freshness-dot");
+      if (dot) dot.classList.remove("is-stale");
+      updateFreshnessLabel();
+    }
+    function softNotice(target, text) {
+      const el = typeof target === "string" ? document.getElementById(target) : target;
+      if (!el) return;
+      el.innerHTML = `<div class="analytics-soft-notice">${escapeHtml(text)}</div>`;
+    }
+    function trendClass(value, higherIsBetter = true) {
+      if (value == null || !Number.isFinite(value)) return "is-flat";
+      if (Math.abs(value) < 2) return "is-flat";
+      const positive = value > 0;
+      if (higherIsBetter) return positive ? "is-up" : "is-down";
+      return positive ? "is-down" : "is-up";
+    }
+    function formatTrend(value, suffix = "vs periodo precedente") {
+      if (value == null || !Number.isFinite(value)) return "—";
+      if (Math.abs(value) < 2) return "stabile";
+      const sign = value > 0 ? "+" : "";
+      return `${sign}${Math.round(value)}% ${suffix}`;
+    }
+
+    // ---------- 1. SELETTORE BRAND ----------
+    async function loadAnalyticsBrandList() {
+      const sel = document.getElementById("analytics-brand-select");
+      if (!sel) return;
+      try {
+        const { data, error } = await supabase
+          .from("brands")
+          .select("id, nome")
+          .eq("attivo", true)
+          .order("nome", { ascending: true });
+        if (error) throw error;
+        const opts = ['<option value="all">Tutti i brand</option>']
+          .concat((data ?? []).map(b => `<option value="${escapeHtml(b.id)}">${escapeHtml(b.nome ?? "Brand senza nome")}</option>`));
+        sel.innerHTML = opts.join("");
+        if (!data || data.length === 0) {
+          sel.disabled = true;
+          sel.innerHTML = '<option value="all">Nessun brand registrato</option>';
+        }
+      } catch (e) {
+        sel.innerHTML = '<option value="all">Tutti i brand</option>';
+      }
+    }
+
+    // ---------- 2. KPI STRIP analytics ----------
+    async function loadAnalyticsKpi() {
+      const { from, to } = periodToRange(analyticsState.period);
+      const brandParam = analyticsState.brand === "all" ? null : analyticsState.brand;
+      try {
+        const { data, error } = await supabase.rpc("analytics_kpi_periodo", {
+          p_brand_id: brandParam,
+          p_from: from,
+          p_to: to,
+        });
+        if (error) throw error;
+        const row = Array.isArray(data) ? data[0] : data;
+        if (!row) throw new Error("no kpi data");
+
+        const trendRes = await supabase.rpc("analytics_kpi_periodo_trend", {
+          p_brand_id: brandParam,
+          p_from: from,
+          p_to: to,
+        }).catch(() => ({ data: null }));
+        const trendRow = Array.isArray(trendRes?.data) ? trendRes.data[0] : trendRes?.data;
+
+        function deltaPct(now, prev) {
+          if (prev == null || prev === 0) return null;
+          return ((Number(now) - Number(prev)) / Number(prev)) * 100;
+        }
+
+        const scanTot = Number(row.scansioni_totali ?? 0);
+        const scanUniq = Number(row.scansioni_uniche ?? 0);
+        const paesi = Number(row.paesi_distinti ?? 0);
+        const transf = Number(row.trasferimenti_completati ?? 0);
+        const alert = Number(row.alert_aperti ?? 0);
+        const lottiAnom = Number(row.lotti_con_anomalia ?? 0);
+
+        document.getElementById("anl-scan-tot").textContent = fmtNum(scanTot);
+        document.getElementById("anl-scan-uniq").textContent = fmtNum(scanUniq);
+        document.getElementById("anl-paesi").textContent = fmtNum(paesi);
+        document.getElementById("anl-transf").textContent = fmtNum(transf);
+        document.getElementById("anl-alert").textContent = fmtNum(alert);
+        document.getElementById("anl-lotti-anom").textContent = fmtNum(lottiAnom);
+
+        const dScan = trendRow ? deltaPct(scanTot, trendRow.scansioni_totali) : null;
+        const dUniq = trendRow ? deltaPct(scanUniq, trendRow.scansioni_uniche) : null;
+        const dTransf = trendRow ? deltaPct(transf, trendRow.trasferimenti_completati) : null;
+        const dPaesi = trendRow ? Number(paesi) - Number(trendRow.paesi_distinti ?? 0) : null;
+        const dAlert = trendRow ? Number(alert) - Number(trendRow.alert_aperti ?? 0) : null;
+        const dAnom = trendRow ? Number(lottiAnom) - Number(trendRow.lotti_con_anomalia ?? 0) : null;
+
+        setKpiTrend("anl-scan-tot-trend", formatTrend(dScan), trendClass(dScan, true));
+        setKpiTrend("anl-scan-uniq-trend", formatTrend(dUniq), trendClass(dUniq, true));
+        setKpiTrend("anl-paesi-trend", dPaesi == null ? "—" : (dPaesi === 0 ? "stabile" : `${dPaesi > 0 ? "+" : ""}${dPaesi} ${dPaesi === 1 || dPaesi === -1 ? "paese" : "paesi"}`), dPaesi > 0 ? "is-up" : (dPaesi < 0 ? "is-down" : "is-flat"));
+        setKpiTrend("anl-transf-trend", formatTrend(dTransf), trendClass(dTransf, true));
+        const alertLabel = analyticsState.period === 7
+          ? (dAlert == null ? "—" : (dAlert === 0 ? "stabile" : `${dAlert > 0 ? "+" : ""}${dAlert} questa settimana`))
+          : (dAlert == null ? "—" : (dAlert === 0 ? "stabile" : `${dAlert > 0 ? "+" : ""}${dAlert} nel periodo`));
+        setKpiTrend("anl-alert-trend", alertLabel, dAlert > 0 ? "is-down" : (dAlert < 0 ? "is-up" : "is-flat"));
+        setKpiTrend("anl-lotti-anom-trend", lottiAnom === 0 ? "nessuna anomalia" : (dAnom === 0 ? "stabile" : `${dAnom > 0 ? "+" : ""}${dAnom}`), dAnom > 0 ? "is-down" : (dAnom < 0 ? "is-up" : "is-flat"));
+
+        markFresh();
+      } catch (e) {
+        // Backend non ancora pronto: degrade gracefully
+        ["anl-scan-tot","anl-scan-uniq","anl-paesi","anl-transf","anl-alert","anl-lotti-anom"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = "—";
+        });
+        ["anl-scan-tot-trend","anl-scan-uniq-trend","anl-paesi-trend","anl-transf-trend","anl-alert-trend","anl-lotti-anom-trend"].forEach(id => {
+          setKpiTrend(id, "dati in arrivo", "is-flat");
+        });
+      }
+    }
+    function setKpiTrend(id, text, cls) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text;
+      el.classList.remove("is-up", "is-down", "is-flat");
+      if (cls) el.classList.add(cls);
+    }
+
+    // ---------- 3. MAPPA scansioni (SVG inline self-hosted) ----------
+    // Mappa semplificata: 15 paesi rilevanti come rettangoli/forme molto basic
+    // in un viewBox 1000x500 (proiezione equirettangolare approssimata).
+    // Centroide: x = (lng + 180) / 360 * 1000, y = (90 - lat) / 180 * 500.
+    const COUNTRY_CENTROIDS = {
+      // ISO2: { name, lat, lng }
+      IT: { name: "Italia", lat: 42.5, lng: 12.5 },
+      FR: { name: "Francia", lat: 46.2, lng: 2.2 },
+      DE: { name: "Germania", lat: 51.0, lng: 10.4 },
+      ES: { name: "Spagna", lat: 40.4, lng: -3.7 },
+      GB: { name: "Regno Unito", lat: 55.3, lng: -3.4 },
+      US: { name: "Stati Uniti", lat: 39.8, lng: -98.5 },
+      CN: { name: "Cina", lat: 35.8, lng: 104.1 },
+      JP: { name: "Giappone", lat: 36.2, lng: 138.2 },
+      BR: { name: "Brasile", lat: -14.2, lng: -51.9 },
+      IN: { name: "India", lat: 20.5, lng: 78.9 },
+      ZA: { name: "Sudafrica", lat: -30.5, lng: 22.9 },
+      RU: { name: "Russia", lat: 61.5, lng: 105.3 },
+      AU: { name: "Australia", lat: -25.2, lng: 133.7 },
+      CA: { name: "Canada", lat: 56.1, lng: -106.3 },
+      MX: { name: "Messico", lat: 23.6, lng: -102.5 },
+      AR: { name: "Argentina", lat: -38.4, lng: -63.6 },
+      VN: { name: "Vietnam", lat: 14.0, lng: 108.2 },
+      TR: { name: "Turchia", lat: 38.9, lng: 35.2 },
+      EG: { name: "Egitto", lat: 26.8, lng: 30.8 },
+      NG: { name: "Nigeria", lat: 9.0, lng: 8.6 },
+    };
+    function lngLatToXY(lng, lat) {
+      const x = ((Number(lng) + 180) / 360) * 1000;
+      const y = ((90 - Number(lat)) / 180) * 500;
+      return { x, y };
+    }
+    function renderBaseMap() {
+      // Continenti molto semplificati come paths chiari
+      return `
+        <svg viewBox="0 0 1000 500" class="analytics-map-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <!-- background ocean -->
+          <rect x="0" y="0" width="1000" height="500" fill="var(--paper-2)"/>
+          <!-- continenti silhouette super semplici -->
+          <g fill="var(--paper-3)" stroke="var(--rule-2)" stroke-width="0.5" opacity="0.85">
+            <!-- North America -->
+            <path d="M 130,90 L 290,100 L 310,180 L 270,260 L 200,290 L 150,250 L 110,160 Z"/>
+            <!-- South America -->
+            <path d="M 270,290 L 330,290 L 350,400 L 300,470 L 260,420 L 250,330 Z"/>
+            <!-- Europe -->
+            <path d="M 460,90 L 560,90 L 580,180 L 510,210 L 470,160 Z"/>
+            <!-- Africa -->
+            <path d="M 480,210 L 590,220 L 620,360 L 540,440 L 490,380 L 470,290 Z"/>
+            <!-- Asia -->
+            <path d="M 580,80 L 880,90 L 900,260 L 820,300 L 700,260 L 620,200 L 580,150 Z"/>
+            <!-- Oceania -->
+            <path d="M 800,340 L 920,340 L 940,420 L 850,440 L 800,400 Z"/>
+          </g>
+          <!-- bubble layer -->
+          <g id="analytics-map-bubbles"></g>
+        </svg>
+      `;
+    }
+    async function loadAnalyticsMappa() {
+      const mapEl = document.getElementById("analytics-map");
+      const captionEl = document.getElementById("analytics-map-caption");
+      if (!mapEl) return;
+      const { from, to } = periodToRange(analyticsState.period);
+      const brandParam = analyticsState.brand === "all" ? null : analyticsState.brand;
+
+      // Inietta base map se non gia presente
+      if (!mapEl.querySelector("svg")) {
+        const captionHTML = captionEl ? captionEl.outerHTML : "";
+        mapEl.innerHTML = renderBaseMap() + captionHTML;
+      }
+
+      try {
+        const { data, error } = await supabase.rpc("analytics_scansioni_per_paese", {
+          p_brand_id: brandParam,
+          p_from: from,
+          p_to: to,
+        });
+        if (error) throw error;
+        const rows = (data ?? []).filter(r => COUNTRY_CENTROIDS[r.paese_iso2]);
+        const bubbleLayer = mapEl.querySelector("#analytics-map-bubbles");
+        const captionRef = mapEl.querySelector(".analytics-map-caption");
+
+        if (!rows.length) {
+          if (bubbleLayer) bubbleLayer.innerHTML = "";
+          if (captionRef) {
+            captionRef.style.display = "flex";
+            captionRef.textContent = "Nessuna scansione nel periodo selezionato.";
+          }
+          return;
+        }
+        if (captionRef) captionRef.style.display = "none";
+
+        const maxCount = Math.max(...rows.map(r => Number(r.count ?? 0)));
+        const bubbles = rows.map(r => {
+          const c = COUNTRY_CENTROIDS[r.paese_iso2];
+          const { x, y } = lngLatToXY(c.lng, c.lat);
+          const count = Number(r.count ?? 0);
+          const r_radius = Math.max(4, Math.min(28, Math.sqrt(count) * 2.5));
+          const opacity = (0.25 + Math.min(0.65, count / maxCount * 0.65)).toFixed(2);
+          const uniche = Number(r.uniche ?? 0);
+          const label = `${c.name} · ${fmtNum(count)} scansioni · ${fmtNum(uniche)} uniche`;
+          const isActive = analyticsState.paese === r.paese_iso2;
+          const stroke = isActive ? `stroke="var(--ink)" stroke-width="2"` : "";
+          return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r_radius.toFixed(1)}" fill="var(--seal)" fill-opacity="${opacity}" ${stroke} data-iso="${escapeHtml(r.paese_iso2)}" style="cursor:pointer;"><title>${escapeHtml(label)}</title></circle>`;
+        }).join("");
+
+        if (bubbleLayer) {
+          bubbleLayer.innerHTML = bubbles;
+          // wire click
+          bubbleLayer.querySelectorAll("circle").forEach(c => {
+            c.addEventListener("click", () => {
+              const iso = c.getAttribute("data-iso");
+              setPaeseFilter(iso);
+            });
+          });
+        }
+      } catch (e) {
+        const captionRef = mapEl.querySelector(".analytics-map-caption");
+        const bubbleLayer = mapEl.querySelector("#analytics-map-bubbles");
+        if (bubbleLayer) bubbleLayer.innerHTML = "";
+        if (captionRef) {
+          captionRef.style.display = "flex";
+          captionRef.textContent = "Dati in arrivo nei prossimi giorni.";
+        }
+      }
+    }
+    function setPaeseFilter(iso) {
+      analyticsState.paese = iso || null;
+      const resetBtn = document.getElementById("map-reset");
+      const eyebrow = document.getElementById("map-filter-eyebrow");
+      if (iso) {
+        const name = COUNTRY_CENTROIDS[iso]?.name || iso;
+        if (resetBtn) resetBtn.hidden = false;
+        if (eyebrow) {
+          eyebrow.hidden = false;
+          eyebrow.textContent = `Filtrato per ${name}`;
+        }
+      } else {
+        if (resetBtn) resetBtn.hidden = true;
+        if (eyebrow) eyebrow.hidden = true;
+      }
+      reloadAnalyticsDependent();
+    }
+
+    // ---------- 4. TOP 10 LOTTI ----------
+    async function loadAnalyticsTopLotti() {
+      const listEl = document.getElementById("top-lotti-list");
+      const emptyEl = document.getElementById("top-lotti-empty");
+      const loadEl = document.getElementById("top-lotti-loading");
+      const { from, to } = periodToRange(analyticsState.period);
+      const brandParam = analyticsState.brand === "all" ? null : analyticsState.brand;
+      try {
+        const { data, error } = await supabase.rpc("analytics_top_lotti", {
+          p_brand_id: brandParam,
+          p_from: from,
+          p_to: to,
+          p_limit: 10,
+        });
+        if (error) throw error;
+        if (loadEl) loadEl.hidden = true;
+        if (!data || data.length === 0) {
+          if (emptyEl) emptyEl.hidden = false;
+          return;
+        }
+        listEl.innerHTML = data.map((r, idx) => {
+          const pos = idx + 1;
+          const codice = escapeHtml(r.codice ?? "—");
+          const prodotto = r.prodotto_nome ? ` — ${escapeHtml(String(r.prodotto_nome).slice(0, 40))}` : "";
+          const meta = `${fmtNum(r.n_certificati ?? 0)} certificati · ultima scansione ${relativeTime(r.ultima_scansione)}`;
+          const scans = fmtNum(r.scansioni ?? 0);
+          const sparkData = Array.isArray(r.sparkline_jsonb) ? r.sparkline_jsonb : [];
+          const sparkPath = sparkData.length > 0 ? renderSparkline(sparkData) : "";
+          return `
+            <li class="analytics-rank-row">
+              <span class="analytics-rank-pos">${toRoman(pos)}</span>
+              <div class="analytics-rank-main">
+                <a class="analytics-rank-title" href="tag-storico.html?lotto=${encodeURIComponent(r.codice ?? "")}">${codice}${prodotto}</a>
+                <div class="analytics-rank-meta">${meta}</div>
+              </div>
+              <div class="analytics-rank-count">${scans}</div>
+              <svg class="analytics-rank-spark" viewBox="0 0 80 28" preserveAspectRatio="none" aria-label="Trend ultimi 30 giorni">
+                <title>Trend ultimi 30 giorni</title>
+                ${sparkPath}
+              </svg>
+            </li>
+          `;
+        }).join("");
+        listEl.hidden = false;
+      } catch (e) {
+        if (loadEl) loadEl.hidden = true;
+        if (emptyEl) {
+          emptyEl.hidden = false;
+          // Sostituisci la copy empty con soft notice quando backend manca
+          emptyEl.innerHTML = `
+            <div class="crm-empty-roman">i</div>
+            <div class="crm-empty-title">Funzione in attivazione</div>
+            <div class="crm-empty-sub">La classifica dei lotti piu scansionati sara' disponibile a breve.</div>
+          `;
+        }
+      }
+    }
+    function renderSparkline(points) {
+      if (!points.length) return "";
+      const vals = points.map(p => Number(p.c ?? p.count ?? 0));
+      const max = Math.max(...vals, 1);
+      const stepX = 80 / Math.max(points.length - 1, 1);
+      const coords = vals.map((v, i) => {
+        const x = (i * stepX).toFixed(1);
+        const y = (28 - (v / max) * 26).toFixed(1);
+        return `${x},${y}`;
+      }).join(" ");
+      return `<polyline points="${coords}" fill="none" stroke="var(--seal)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    }
+
+    // ---------- 5. ALERT FRODE ----------
+    async function loadAnalyticsAlerts() {
+      const listEl = document.getElementById("alerts-list");
+      const countEl = document.getElementById("alerts-count");
+      if (!listEl) return;
+      listEl.innerHTML = '<div class="crm-loading">Caricamento alert frode…</div>';
+      try {
+        const { data, error } = await supabase.rpc("tag_alerts_list", {
+          p_stato: analyticsState.alertFilter,
+          p_limit: 20,
+        });
+        if (error) throw error;
+        const alerts = data ?? [];
+        const open = alerts.filter(a => (a.stato ?? "open") === "open").length;
+        if (countEl) {
+          countEl.textContent = open === 0 ? "nessuno aperto" : `${open} ${open === 1 ? "aperto" : "aperti"}`;
+          countEl.classList.remove("is-wait", "is-running", "is-ok");
+          countEl.classList.add(open === 0 ? "is-ok" : "is-running");
+        }
+        if (alerts.length === 0) {
+          listEl.innerHTML = `
+            <div class="crm-empty">
+              <div class="crm-empty-roman">iv</div>
+              <div class="crm-empty-title">Tutto tranquillo</div>
+              <div class="crm-empty-sub">Nessun alert frode aperto. Tutti i tuoi lotti si comportano in modo normale. I controlli automatici girano ogni 15 minuti.</div>
+            </div>
+          `;
+          return;
+        }
+        listEl.innerHTML = alerts.map(a => {
+          const sev = (a.severity || "info").toLowerCase();
+          const sevClass = sev === "critical" ? "sev-critical" : sev === "warning" ? "sev-warning" : "sev-info";
+          const titolo = escapeHtml(a.titolo_it ?? "Alert");
+          const cert = a.cert_codice ? `Cert ${escapeHtml(a.cert_codice)}` : null;
+          const lotto = a.lotto_codice ? `Lotto ${escapeHtml(a.lotto_codice)}` : null;
+          const rilevato = `rilevato ${relativeTime(a.rilevato_at)}`;
+          const ctx = [cert, lotto, rilevato].filter(Boolean).join(" · ");
+          const certLink = a.cert_codice ? `cert.html?codice=${encodeURIComponent(a.cert_codice)}` : "#";
+          return `
+            <div class="analytics-alert-row ${sevClass}" data-alert-id="${escapeHtml(a.id ?? "")}">
+              <div class="analytics-alert-bar" aria-hidden="true"></div>
+              <div class="analytics-alert-main">
+                <p class="analytics-alert-title">${titolo}</p>
+                <span class="analytics-alert-context">${ctx}</span>
+              </div>
+              <div class="analytics-alert-actions">
+                <a class="analytics-alert-btn is-investigate" href="${certLink}" title="Apri il certificato e vedi tutta la storia: chi l'ha scansionato, dove, quando.">Investiga</a>
+                <button type="button" class="analytics-alert-btn" data-action="dismiss" data-alert-id="${escapeHtml(a.id ?? "")}" title="Chiudi l'alert. Lo usiamo per migliorare i controlli automatici nel tempo.">Marca falso positivo</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+        // wire dismiss
+        listEl.querySelectorAll("[data-action='dismiss']").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-alert-id");
+            if (!id) return;
+            if (!confirm("Sicuro? L'alert verra' archiviato.")) return;
+            await dismissAlert(id);
+          });
+        });
+      } catch (e) {
+        if (countEl) {
+          countEl.textContent = "—";
+          countEl.classList.remove("is-running", "is-ok");
+          countEl.classList.add("is-wait");
+        }
+        listEl.innerHTML = `
+          <div class="crm-empty">
+            <div class="crm-empty-roman">iv</div>
+            <div class="crm-empty-title">Funzione in attivazione</div>
+            <div class="crm-empty-sub">I controlli automatici antifrode saranno attivi nei prossimi giorni.</div>
+          </div>
+        `;
+      }
+    }
+    async function dismissAlert(id) {
+      try {
+        const { error } = await supabase.rpc("tag_alerts_dismiss", {
+          p_alert_id: id,
+          p_motivo: "Marcato come falso positivo dall'utente.",
+        });
+        if (error) throw error;
+        const row = document.querySelector(`.analytics-alert-row[data-alert-id="${id}"]`);
+        if (row) {
+          row.style.transition = "opacity 0.3s, max-height 0.3s";
+          row.style.opacity = "0";
+          setTimeout(() => loadAnalyticsAlerts(), 350);
+        } else {
+          loadAnalyticsAlerts();
+        }
+      } catch (e) {
+        alert("Errore archiviazione alert. Riprova.");
+      }
+    }
+
+    // ---------- 6. TREND chart ----------
+    async function loadAnalyticsTrend() {
+      const svg = document.getElementById("analytics-trend-svg");
+      const legend = document.getElementById("trend-legend");
+      if (!svg) return;
+      const { from, to } = periodToRange(analyticsState.period);
+      const brandParam = analyticsState.brand === "all" ? null : analyticsState.brand;
+      try {
+        const { data, error } = await supabase.rpc("analytics_trend_giornaliero", {
+          p_brand_id: brandParam,
+          p_from: from,
+          p_to: to,
+          p_dimensione: analyticsState.trendDim,
+        });
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          svg.innerHTML = `
+            <line x1="0" y1="200" x2="800" y2="200" stroke="var(--rule-2)" stroke-width="1"/>
+            <text x="400" y="110" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--ink-3)" letter-spacing="1.5">ANCORA POCHI DATI PER IL TREND. SERVONO ALMENO 5 GIORNI DI SCANSIONI.</text>
+          `;
+          if (legend) legend.innerHTML = "";
+          return;
+        }
+        renderTrendChart(svg, legend, data);
+      } catch (e) {
+        svg.innerHTML = `
+          <line x1="0" y1="200" x2="800" y2="200" stroke="var(--rule-2)" stroke-width="1"/>
+          <text x="400" y="110" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--ink-3)" letter-spacing="1.5">DATI IN ARRIVO NEI PROSSIMI GIORNI</text>
+        `;
+        if (legend) legend.innerHTML = "";
+      }
+    }
+    function renderTrendChart(svg, legend, rows) {
+      // Group by dimensione_chiave; if total, single series
+      const groups = new Map();
+      for (const r of rows) {
+        const key = r.dimensione_chiave ?? "total";
+        const label = r.dimensione_label ?? "Totale";
+        if (!groups.has(key)) groups.set(key, { label, points: [] });
+        groups.get(key).points.push({ day: r.giorno, n: Number(r.scansioni ?? 0) });
+      }
+      // sort points by day asc inside each group
+      for (const g of groups.values()) {
+        g.points.sort((a, b) => String(a.day).localeCompare(String(b.day)));
+      }
+      // axes
+      const allDays = Array.from(new Set(rows.map(r => r.giorno))).sort();
+      if (allDays.length === 0) return;
+      const allVals = rows.map(r => Number(r.scansioni ?? 0));
+      const maxVal = Math.max(...allVals, 1);
+      const W = 800, H = 220, padL = 40, padR = 10, padT = 10, padB = 30;
+      const innerW = W - padL - padR, innerH = H - padT - padB;
+      const stepX = allDays.length > 1 ? innerW / (allDays.length - 1) : 0;
+      const xFor = i => padL + i * stepX;
+      const yFor = v => padT + innerH - (v / maxVal) * innerH;
+      const dayIndex = new Map(allDays.map((d, i) => [d, i]));
+
+      const COLORS = ["var(--seal)", "var(--ink)", "var(--amber)", "var(--verify)", "oklch(45% 0.12 200)", "var(--ink-3)"];
+      let i = 0;
+      const series = Array.from(groups.values()).map(g => {
+        const color = COLORS[i % COLORS.length];
+        i++;
+        const path = g.points.map((p, idx) => {
+          const x = xFor(dayIndex.get(p.day) ?? idx);
+          const y = yFor(p.n);
+          return `${idx === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`;
+        }).join(" ");
+        const areaPath = `${path} L ${xFor(dayIndex.get(g.points[g.points.length-1].day) ?? 0).toFixed(1)} ${(padT + innerH).toFixed(1)} L ${xFor(dayIndex.get(g.points[0].day) ?? 0).toFixed(1)} ${(padT + innerH).toFixed(1)} Z`;
+        const tooltipTitles = g.points.map(p => `<title>${formatDayLong(p.day)} · ${fmtNum(p.n)} scansioni</title>`).join("");
+        return { label: g.label, color, path, areaPath, tooltipTitles };
+      });
+
+      // baseline + grid
+      const gridY = [0, 0.5, 1].map(t => {
+        const y = padT + innerH * (1 - t);
+        return `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="var(--rule-2)" stroke-width="0.5"/>`;
+      }).join("");
+      const yLabels = [0, 0.5, 1].map(t => {
+        const y = padT + innerH * (1 - t);
+        const val = Math.round(maxVal * t);
+        return `<text x="${padL - 6}" y="${y + 3}" text-anchor="end" font-family="var(--mono)" font-size="9" fill="var(--ink-3)">${fmtNum(val)}</text>`;
+      }).join("");
+      // x labels: first, middle, last
+      const xLabels = [0, Math.floor(allDays.length / 2), allDays.length - 1].filter((v, i, a) => a.indexOf(v) === i).map(idx => {
+        const day = allDays[idx];
+        const x = xFor(idx);
+        return `<text x="${x}" y="${H - 8}" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ink-3)">${formatDayShort(day)}</text>`;
+      }).join("");
+
+      // Render: aree solo per single series (totale), per multi-serie solo linee
+      const isSingle = series.length === 1;
+      const seriesSVG = series.map(s => {
+        const area = isSingle ? `<path d="${s.areaPath}" fill="var(--seal-50, oklch(95% 0.05 25))" opacity="0.5"/>` : "";
+        return `${area}<path d="${s.path}" fill="none" stroke="${s.color}" stroke-width="1.5" stroke-linejoin="round">${s.tooltipTitles}</path>`;
+      }).join("");
+
+      svg.innerHTML = gridY + yLabels + xLabels + seriesSVG;
+
+      // legend
+      if (legend) {
+        if (isSingle) {
+          legend.innerHTML = `<span><span style="display:inline-block;width:10px;height:10px;background:${series[0].color};vertical-align:middle;margin-right:5px;"></span>${escapeHtml(series[0].label)}</span>`;
+        } else {
+          legend.innerHTML = series.map(s => `<span><span style="display:inline-block;width:10px;height:10px;background:${s.color};vertical-align:middle;margin-right:5px;"></span>${escapeHtml(s.label)}</span>`).join("");
+        }
+      }
+    }
+    function formatDayShort(iso) {
+      try {
+        const d = new Date(iso);
+        return new Intl.DateTimeFormat("it-IT", { day: "numeric", month: "short" }).format(d);
+      } catch { return String(iso); }
+    }
+    function formatDayLong(iso) {
+      try {
+        const d = new Date(iso);
+        return new Intl.DateTimeFormat("it-IT", { day: "numeric", month: "long", year: "numeric" }).format(d);
+      } catch { return String(iso); }
+    }
+
+    // ---------- 7. DONUT applicazione fisica ----------
+    const APP_COLORS = {
+      qr_adesivo: "var(--seal)",
+      qr_inciso: "var(--ink)",
+      nfc_ntag_424: "oklch(45% 0.12 200)",
+      nfc_ntag_basic: "oklch(60% 0.10 200)",
+      rfid_uhf: "var(--amber)",
+      altro: "var(--ink-3)",
+    };
+    const APP_LABELS = {
+      qr_adesivo: "QR adesivo",
+      qr_inciso: "QR inciso",
+      nfc_ntag_424: "NFC NTAG 424",
+      nfc_ntag_basic: "NFC NTAG 213/215/216",
+      rfid_uhf: "RFID UHF",
+      altro: "altro",
+    };
+    async function loadAnalyticsDonut() {
+      const svg = document.getElementById("analytics-donut-svg");
+      const legend = document.getElementById("donut-legend");
+      const hint = document.getElementById("donut-hint");
+      const { from, to } = periodToRange(analyticsState.period);
+      const brandParam = analyticsState.brand === "all" ? null : analyticsState.brand;
+      try {
+        const { data, error } = await supabase.rpc("analytics_distribuzione_applicazione", {
+          p_brand_id: brandParam,
+          p_from: from,
+          p_to: to,
+        });
+        if (error) throw error;
+        const rows = data ?? [];
+        if (rows.length === 0) {
+          svg.innerHTML = `<circle cx="50" cy="50" r="40" fill="none" stroke="var(--rule-2)" stroke-width="18"/>`;
+          if (legend) legend.innerHTML = `<li class="analytics-soft-notice" style="grid-template-columns:1fr;">Nessuna applicazione registrata.</li>`;
+          if (hint) hint.hidden = true;
+          return;
+        }
+        // Render arcs
+        let cumulative = 0;
+        const total = rows.reduce((s, r) => s + Number(r.scansioni ?? 0), 0) || 1;
+        const arcs = rows.map(r => {
+          const value = Number(r.scansioni ?? 0);
+          const pct = value / total;
+          const start = cumulative;
+          cumulative += pct;
+          const startAngle = start * 2 * Math.PI - Math.PI / 2;
+          const endAngle = cumulative * 2 * Math.PI - Math.PI / 2;
+          const r_radius = 40;
+          const x1 = 50 + r_radius * Math.cos(startAngle);
+          const y1 = 50 + r_radius * Math.sin(startAngle);
+          const x2 = 50 + r_radius * Math.cos(endAngle);
+          const y2 = 50 + r_radius * Math.sin(endAngle);
+          const largeArc = pct > 0.5 ? 1 : 0;
+          const path = `M 50 50 L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r_radius} ${r_radius} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
+          const color = APP_COLORS[r.applicazione] || "var(--ink-3)";
+          return `<path d="${path}" fill="${color}" data-app="${escapeHtml(r.applicazione)}"><title>${escapeHtml(APP_LABELS[r.applicazione] || r.applicazione)} · ${fmtNum(value)} scansioni · ${(pct * 100).toFixed(0)}%</title></path>`;
+        }).join("");
+        // Inner hole per donut effect
+        svg.innerHTML = arcs + `<circle cx="50" cy="50" r="22" fill="var(--paper)"/>`;
+        // Legend
+        if (legend) {
+          legend.innerHTML = rows.map(r => {
+            const value = Number(r.scansioni ?? 0);
+            const pct = ((value / total) * 100).toFixed(0);
+            const color = APP_COLORS[r.applicazione] || "var(--ink-3)";
+            const label = APP_LABELS[r.applicazione] || r.applicazione;
+            const active = analyticsState.applicazione === r.applicazione ? "is-active" : "";
+            return `<li class="${active}" data-app="${escapeHtml(r.applicazione)}">
+              <span class="analytics-donut-swatch" style="background:${color};"></span>
+              <span>${escapeHtml(label)}</span>
+              <span>${pct}%</span>
+            </li>`;
+          }).join("");
+          legend.querySelectorAll("li[data-app]").forEach(li => {
+            li.addEventListener("click", () => setApplicazioneFilter(li.getAttribute("data-app")));
+          });
+        }
+        // Hint single category
+        if (hint) {
+          const top = rows.reduce((a, b) => Number(a.scansioni) > Number(b.scansioni) ? a : b, rows[0]);
+          const topPct = Number(top.scansioni) / total;
+          if (topPct > 0.9) {
+            hint.hidden = false;
+            hint.textContent = `${Math.round(topPct * 100)}% delle tue scansioni arriva da ${APP_LABELS[top.applicazione] || top.applicazione}. Diversificare riduce il rischio clonazione.`;
+          } else {
+            hint.hidden = true;
+          }
+        }
+      } catch (e) {
+        svg.innerHTML = `<circle cx="50" cy="50" r="40" fill="none" stroke="var(--rule-2)" stroke-width="18"/>`;
+        if (legend) legend.innerHTML = `<li class="analytics-soft-notice" style="grid-template-columns:1fr;">Funzione in attivazione</li>`;
+        if (hint) hint.hidden = true;
+      }
+    }
+    function setApplicazioneFilter(app) {
+      if (analyticsState.applicazione === app) {
+        analyticsState.applicazione = null;
+      } else {
+        analyticsState.applicazione = app;
+      }
+      const resetBtn = document.getElementById("donut-reset");
+      if (resetBtn) resetBtn.hidden = !analyticsState.applicazione;
+      reloadAnalyticsDependent();
+    }
+
+    // ---------- 8. EXPORT ----------
+    function setupExportButtons() {
+      document.querySelectorAll("[data-export]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const kind = btn.getAttribute("data-export");
+          const originalText = btn.textContent;
+          if (kind === "csv" || kind === "pdf") {
+            btn.classList.add("is-disabled");
+            btn.textContent = kind === "csv" ? "Preparazione CSV…" : "Preparazione PDF…";
+            try {
+              const { from, to } = periodToRange(analyticsState.period);
+              const brand = analyticsState.brand === "all" ? "" : `&brand=${encodeURIComponent(analyticsState.brand)}`;
+              const fn = kind === "csv" ? "tag-analytics-export-csv" : "tag-analytics-export-pdf";
+              const url = `${supabase.functionsUrl ?? ""}/${fn}?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}${brand}`;
+              // Fallback minimo: la edge function non esiste ancora, mostriamo notice
+              alert("Funzione in attivazione. L'export sara' disponibile nei prossimi giorni.");
+            } catch (e) {
+              alert("Errore export. Riprova.");
+            } finally {
+              btn.classList.remove("is-disabled");
+              btn.textContent = originalText;
+            }
+          } else if (kind === "schedule") {
+            // TODO: modale schedule report (richiede tabella tag_analytics_scheduled_reports)
+            alert("Programmazione report ricorrente: funzione in attivazione. Sara' disponibile nei prossimi giorni.");
+          }
+        });
+      });
+    }
+
+    // ---------- Wiring controls ----------
+    function setupAnalyticsControls() {
+      // Brand select
+      const brandSel = document.getElementById("analytics-brand-select");
+      brandSel?.addEventListener("change", () => {
+        analyticsState.brand = brandSel.value;
+        reloadAnalytics();
+      });
+      // Periodo buttons
+      document.querySelectorAll(".analytics-period-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".analytics-period-btn").forEach(b => {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-pressed", "false");
+          });
+          btn.classList.add("is-active");
+          btn.setAttribute("aria-pressed", "true");
+          analyticsState.period = Number(btn.getAttribute("data-period"));
+          reloadAnalytics();
+        });
+      });
+      // Alert filter
+      document.querySelectorAll("[data-alert-filter]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll("[data-alert-filter]").forEach(b => {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-selected", "false");
+          });
+          btn.classList.add("is-active");
+          btn.setAttribute("aria-selected", "true");
+          analyticsState.alertFilter = btn.getAttribute("data-alert-filter");
+          loadAnalyticsAlerts();
+        });
+      });
+      // Trend dim
+      document.querySelectorAll("[data-dim]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll("[data-dim]").forEach(b => {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-selected", "false");
+          });
+          btn.classList.add("is-active");
+          btn.setAttribute("aria-selected", "true");
+          analyticsState.trendDim = btn.getAttribute("data-dim");
+          loadAnalyticsTrend();
+        });
+      });
+      // Map reset
+      document.getElementById("map-reset")?.addEventListener("click", () => setPaeseFilter(null));
+      // Donut reset
+      document.getElementById("donut-reset")?.addEventListener("click", () => setApplicazioneFilter(null));
+      // Export
+      setupExportButtons();
+
+      // Auto-refresh ogni 5 minuti: solo KPI + alert (mappa/trend/donut costosi)
+      setInterval(() => {
+        const dot = document.getElementById("analytics-freshness-dot");
+        if (dot) dot.classList.add("is-stale");
+        Promise.allSettled([loadAnalyticsKpi(), loadAnalyticsAlerts()]).then(() => {
+          if (dot) dot.classList.remove("is-stale");
+        });
+      }, 5 * 60 * 1000);
+
+      // Freshness label tick
+      setInterval(updateFreshnessLabel, 60 * 1000);
+    }
+
+    function reloadAnalytics() {
+      Promise.allSettled([
+        loadAnalyticsKpi(),
+        loadAnalyticsMappa(),
+        loadAnalyticsTopLotti(),
+        loadAnalyticsAlerts(),
+        loadAnalyticsTrend(),
+        loadAnalyticsDonut(),
+      ]);
+    }
+    function reloadAnalyticsDependent() {
+      // Quando cambia un filtro client-side (paese/applicazione), ricaricare tutto
+      // tranne mappa/donut che gia hanno la propria rappresentazione del filtro.
+      Promise.allSettled([
+        loadAnalyticsKpi(),
+        loadAnalyticsTopLotti(),
+        loadAnalyticsAlerts(),
+        loadAnalyticsTrend(),
+      ]);
+    }
+
+    // Kick-off analytics dopo il primo render della pagina
+    await loadAnalyticsBrandList();
+    setupAnalyticsControls();
+    reloadAnalytics();
   </script>
 </body>
 </html>

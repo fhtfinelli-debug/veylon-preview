@@ -1,0 +1,1849 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON · Le tue chiavi API</title>
+  <meta name="description" content="Genera, gestisci e revoca le tue chiavi API Veylon. Crea chiavi vlk_* con scope dedicati per integrare Veylon nel tuo backend."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer data-domain="veylon.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    html.veylon-auth-pending body { visibility: hidden; }
+
+    /* ============================== PAGE LAYOUT ============================ */
+    body { margin: 0; background: var(--paper); color: var(--ink); }
+
+    .ak-wrap {
+      max-width: 1400px;
+      width: 100%;
+      padding: 28px clamp(20px, 4vw, 48px) 96px;
+      box-sizing: border-box;
+    }
+
+    .ak-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+      gap: 36px;
+      align-items: start;
+    }
+    @media (max-width: 1279px) {
+      .ak-grid { grid-template-columns: 1fr; gap: 28px; }
+      .ak-side { position: static !important; }
+    }
+
+    /* ============================== PAGE HEADER ============================ */
+    .ak-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 32px;
+    }
+    .ak-header h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(26px, 3.6vw, 34px);
+      letter-spacing: -0.015em;
+      margin: 0 0 10px;
+    }
+    .ak-header .ak-lede {
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--ink-2);
+      max-width: 64ch;
+      margin: 0;
+    }
+    .ak-header-meta {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-top: 12px;
+    }
+    .ak-header-meta strong { color: var(--ink); font-weight: 500; }
+
+    .ak-header-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 720px) {
+      .ak-header { flex-direction: column; align-items: stretch; }
+      .ak-header-actions { width: 100%; align-items: stretch; }
+    }
+
+    /* ============================== BUTTONS =============================== */
+    .ak-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 22px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid var(--ink);
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .ak-btn:hover { background: var(--paper-2); }
+    .ak-btn-primary {
+      background: var(--seal);
+      color: var(--paper);
+      border-color: var(--seal);
+    }
+    .ak-btn-primary:hover { background: var(--seal-2); border-color: var(--seal-2); }
+    .ak-btn-primary[aria-disabled="true"],
+    .ak-btn[disabled],
+    .ak-btn-primary[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .ak-btn-danger {
+      border-color: #b00020;
+      color: #b00020;
+      background: var(--paper);
+    }
+    .ak-btn-danger:hover { background: #b00020; color: var(--paper); }
+    .ak-btn-small {
+      padding: 7px 14px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+    }
+    .ak-btn-large {
+      padding: 14px 30px;
+      font-size: 12px;
+    }
+    @media (max-width: 720px) {
+      .ak-btn-fullw-mobile { width: 100%; }
+    }
+
+    /* ============================== BANNERS =============================== */
+    .ak-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      font-family: var(--serif);
+      font-size: 14px;
+      line-height: 1.5;
+      border-left: 4px solid var(--ink);
+    }
+    .ak-banner-icon { flex-shrink: 0; font-family: var(--mono); font-weight: 600; }
+    .ak-banner-body { flex: 1; min-width: 0; }
+    .ak-banner-body a { color: inherit; text-decoration: underline; font-weight: 500; }
+    .ak-banner-warn   { background: #fff3e0; border-color: #ef6c00; color: #6b3a00; }
+    .ak-banner-err    { background: #fdecea; border-color: #b00020; color: #6b1010; }
+    .ak-banner-info   { background: var(--seal-50); border-color: var(--seal); color: var(--ink); }
+
+    /* ============================== TABLE (desktop) ======================= */
+    .ak-table-wrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--paper); }
+    table.ak-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.ak-table th, table.ak-table td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--rule-2);
+      font-family: var(--mono);
+      vertical-align: middle;
+    }
+    table.ak-table tr:last-child td { border-bottom: 0; }
+    table.ak-table th {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+      font-weight: 500;
+      background: var(--paper-2);
+    }
+    table.ak-table td.col-name { font-family: var(--serif); font-size: 14px; color: var(--ink); }
+    table.ak-table td.col-prefix code {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-2);
+      background: var(--paper-2);
+      padding: 2px 6px;
+    }
+    table.ak-table tr.is-inactive td { opacity: 0.6; }
+    table.ak-table tr:hover { background: var(--paper-2); }
+
+    .ak-scope-cell { display: flex; flex-wrap: wrap; gap: 4px; max-width: 280px; }
+
+    /* ============================== PILLS ================================= */
+    .ak-pill {
+      display: inline-block;
+      padding: 3px 8px;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--rule);
+      color: var(--ink-2);
+      background: var(--paper);
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    .ak-pill-ok    { color: var(--verify); border-color: var(--verify); }
+    .ak-pill-warn  { color: #b15c00; border-color: #ef6c00; background: #fff3e0; }
+    .ak-pill-err   { color: #b00020; border-color: #b00020; background: #fdecea; }
+    .ak-pill-muted { color: var(--ink-3); border-color: var(--ink-4); }
+
+    .ak-pill-scope {
+      display: inline-block;
+      padding: 2px 7px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--seal);
+      background: var(--seal-50);
+      border: 1px solid var(--seal);
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    /* ============================== USAGE BAR ============================== */
+    .ak-usage { display: flex; flex-direction: column; gap: 4px; min-width: 130px; }
+    .ak-usage-val { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+    .ak-usage-bar { height: 4px; background: var(--rule); position: relative; }
+    .ak-usage-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--seal); transition: width 0.3s ease-out; }
+    .ak-usage-fill.is-danger { background: #b00020; }
+
+    /* ============================== MOBILE CARDS ========================== */
+    .ak-cards { display: none; flex-direction: column; gap: 14px; }
+    .ak-card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ak-card.is-inactive { opacity: 0.65; }
+    .ak-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .ak-card-name { font-family: var(--serif); font-size: 16px; color: var(--ink); margin: 0; }
+    .ak-card-rows { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 12px; }
+    .ak-card-rows .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); align-self: center; }
+    .ak-card-rows .val { font-family: var(--mono); font-size: 12px; color: var(--ink-2); word-break: break-all; }
+    .ak-card-action { width: 100%; }
+
+    @media (max-width: 800px) {
+      .ak-table-wrap { display: none; }
+      .ak-cards { display: flex; }
+    }
+
+    /* ============================== EMPTY STATE =========================== */
+    .ak-empty {
+      border: 1px dashed var(--rule);
+      background: var(--paper);
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .ak-empty-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 18px;
+      color: var(--ink-3);
+    }
+    .ak-empty h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 22px;
+      margin: 0 0 16px;
+    }
+    .ak-empty p {
+      font-family: var(--serif);
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink-2);
+      max-width: 480px;
+      margin: 0 auto 12px;
+    }
+    .ak-empty p:last-of-type { margin-bottom: 24px; }
+
+    /* ============================== LOADING SKELETON ====================== */
+    .ak-skeleton { display: flex; flex-direction: column; gap: 8px; padding: 16px; }
+    .ak-skeleton-row {
+      height: 48px;
+      background: linear-gradient(90deg, var(--paper-2) 0%, var(--paper-3) 50%, var(--paper-2) 100%);
+      background-size: 200% 100%;
+      animation: ak-shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes ak-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ============================== RIGHT SIDEBAR ========================= */
+    .ak-side {
+      position: sticky;
+      top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .ak-side-card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 20px;
+    }
+    .ak-side-card h3 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin: 0 0 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule-2);
+      font-weight: 500;
+    }
+
+    /* ============================== CODE TABS ============================= */
+    .ak-tabs { display: flex; gap: 0; margin-bottom: 14px; border-bottom: 1px solid var(--rule-2); }
+    .ak-tab {
+      padding: 9px 16px;
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink-3);
+      margin-bottom: -1px;
+    }
+    .ak-tab.is-active { color: var(--ink); border-bottom-color: var(--seal); }
+    .ak-tab-panel { display: none; }
+    .ak-tab-panel.is-active { display: block; }
+
+    .ak-code {
+      background: var(--paper-2);
+      border: 1px solid var(--rule);
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: var(--ink);
+      white-space: pre;
+      overflow-x: auto;
+      margin: 0;
+    }
+
+    .ak-side-link {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--seal);
+      text-decoration: none;
+    }
+    .ak-side-link:hover { text-decoration: underline; }
+
+    /* ============================== SCOPES LIST =========================== */
+    .ak-scope-group { margin-bottom: 14px; }
+    .ak-scope-group:last-child { margin-bottom: 0; }
+    .ak-scope-group-title {
+      font-family: var(--serif);
+      font-size: 13.5px;
+      color: var(--ink);
+      margin: 0 0 6px;
+    }
+    .ak-scope-list { list-style: none; padding: 0; margin: 0; }
+    .ak-scope-list li {
+      padding: 4px 0;
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink-2);
+      line-height: 1.45;
+    }
+    .ak-scope-list code {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--seal);
+      background: var(--seal-50);
+      padding: 1px 5px;
+      border-radius: 2px;
+    }
+
+    /* on mobile: scope list becomes accordion */
+    @media (max-width: 1279px) {
+      details.ak-scope-acc { border: 1px solid var(--rule-2); margin-bottom: 6px; }
+      details.ak-scope-acc summary {
+        padding: 10px 14px;
+        font-family: var(--serif);
+        font-size: 14px;
+        color: var(--ink);
+        cursor: pointer;
+        list-style: none;
+      }
+      details.ak-scope-acc summary::-webkit-details-marker { display: none; }
+      details.ak-scope-acc summary::after { content: " ▾"; color: var(--ink-3); font-size: 11px; }
+      details.ak-scope-acc[open] summary::after { content: " ▴"; }
+      details.ak-scope-acc .ak-scope-list { padding: 0 14px 12px; }
+    }
+
+    /* ============================== MODAL ================================= */
+    .ak-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: oklch(0 0 0 / 0.45);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 1000;
+      padding: 24px 16px;
+      overflow-y: auto;
+    }
+    .ak-modal-backdrop.is-open { display: flex; }
+    .ak-modal {
+      background: var(--paper);
+      border: 1px solid var(--ink);
+      width: 100%;
+      max-width: 560px;
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px oklch(0 0 0 / 0.25);
+      margin: auto;
+    }
+    .ak-modal-lg { max-width: 640px; }
+    .ak-modal-sm { max-width: 440px; }
+    .ak-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--rule);
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .ak-modal-head h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 20px;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .ak-modal-close {
+      background: transparent;
+      border: 0;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--ink-2);
+      line-height: 1;
+    }
+    .ak-modal-close:hover { color: var(--ink); }
+    .ak-modal-body {
+      padding: 22px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .ak-modal-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 22px;
+      border-top: 1px solid var(--rule);
+      background: var(--paper-2);
+      flex-shrink: 0;
+    }
+
+    /* ============================== FORM ================================== */
+    .ak-field { margin-bottom: 22px; }
+    .ak-field:last-child { margin-bottom: 0; }
+    .ak-field label.ak-label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-bottom: 8px;
+    }
+    .ak-field input[type="text"],
+    .ak-field input[type="date"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: var(--mono);
+      font-size: 13px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      color: var(--ink);
+      box-sizing: border-box;
+    }
+    .ak-field input:focus { outline: 2px solid var(--seal); outline-offset: -1px; }
+    .ak-field input[aria-invalid="true"] { border-color: #b00020; }
+    .ak-helper {
+      font-family: var(--serif);
+      font-size: 12.5px;
+      color: var(--ink-3);
+      margin-top: 6px;
+      line-height: 1.45;
+    }
+    .ak-error {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #b00020;
+      margin-top: 6px;
+    }
+
+    .ak-scope-section { margin-top: 4px; }
+    .ak-scope-section-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding-top: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--rule-2);
+      margin-bottom: 8px;
+    }
+    .ak-scope-section:first-child .ak-scope-section-title { padding-top: 0; }
+    .ak-scope-option {
+      display: flex;
+      gap: 10px;
+      padding: 6px 0;
+      cursor: pointer;
+      align-items: flex-start;
+    }
+    .ak-scope-option input { margin-top: 3px; flex-shrink: 0; }
+    .ak-scope-option-text { min-width: 0; }
+    .ak-scope-option code {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--seal);
+      background: var(--seal-50);
+      padding: 1px 6px;
+      border-radius: 2px;
+      margin-right: 6px;
+    }
+    .ak-scope-option-desc {
+      display: block;
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink-2);
+      margin-top: 2px;
+    }
+
+    .ak-expiry-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .ak-expiry-row input[type="date"] { flex: 1; min-width: 180px; }
+    .ak-expiry-preview {
+      font-family: var(--serif);
+      font-size: 12.5px;
+      color: var(--ink-2);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ============================== KEY-GENERATED MODAL =================== */
+    .ak-keygen-banner {
+      background: #fff3e0;
+      border-left: 4px solid #ef6c00;
+      padding: 16px 18px;
+      font-family: var(--serif);
+      font-size: 15px;
+      color: #6b3a00;
+      line-height: 1.4;
+    }
+    .ak-keygen-banner strong { font-family: var(--serif); font-weight: 600; }
+    .ak-keygen-desc {
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.55;
+      margin: 18px 0 14px;
+    }
+    .ak-keygen-box {
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--ink);
+      background: var(--paper-2);
+      border: 2px solid var(--seal);
+      padding: 16px;
+      word-break: break-all;
+      user-select: all;
+      -webkit-user-select: all;
+    }
+    .ak-keygen-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ak-keygen-meta {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: var(--ink-2);
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--rule-2);
+    }
+    .ak-keygen-meta-row { display: flex; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+    .ak-keygen-meta-row .lbl { color: var(--ink-3); min-width: 130px; }
+
+    .ak-keygen-sample {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--rule-2);
+    }
+    .ak-keygen-sample h4 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin: 0 0 8px;
+      font-weight: 500;
+    }
+    .ak-keygen-sample pre {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      line-height: 1.5;
+      background: var(--paper-2);
+      border: 1px solid var(--rule);
+      padding: 12px 14px;
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: var(--ink);
+    }
+
+    /* ============================== REVOKE META =========================== */
+    .ak-revoke-meta {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      line-height: 1.7;
+      color: var(--ink-2);
+      background: var(--paper-2);
+      border: 1px solid var(--rule-2);
+      padding: 12px 14px;
+      margin-top: 12px;
+    }
+    .ak-revoke-meta-row { display: flex; gap: 12px; }
+    .ak-revoke-meta-row .lbl { color: var(--ink-3); min-width: 100px; }
+
+    /* ============================== TOAST ================================= */
+    .ak-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 14px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      z-index: 2000;
+      max-width: 360px;
+      box-shadow: 0 8px 24px oklch(0 0 0 / 0.2);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+    .ak-toast.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    .ak-inline-spinner {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border: 2px solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: ak-spin 0.7s linear infinite;
+      margin-right: 4px;
+      vertical-align: -1px;
+    }
+    @keyframes ak-spin { to { transform: rotate(360deg); } }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Hide all modal-tagged elements by default; JS toggles .is-open */
+  </style>
+</head>
+<body>
+  <!-- VEYLON auth guard + sidebar (same pattern usato da admin.html) -->
+  <script type="module">
+    document.documentElement.classList.add("veylon-auth-pending");
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { renderAppShell } from "./_shared/app-shell.js";
+    try {
+      await protectPage();
+      // app-shell non ha una voce dedicata "API keys": evidenziamo la
+      // sezione "tag" da cui questa pagina e' raggiungibile.
+      await renderAppShell("tag");
+    } finally {
+      document.documentElement.classList.remove("veylon-auth-pending");
+    }
+  </script>
+
+  <div class="ak-wrap">
+
+    <!-- ============================ BANNERS ============================ -->
+    <div id="ak-banner-quota" hidden></div>
+    <div id="ak-banner-limit" hidden></div>
+    <div id="ak-banner-plan"  hidden></div>
+    <div id="ak-banner-error" hidden></div>
+
+    <!-- ============================ HEADER ============================ -->
+    <header class="ak-header">
+      <div>
+        <h1>Le tue chiavi API</h1>
+        <p class="ak-lede">Genera chiavi <code style="font-family:var(--mono);font-size:0.9em;color:var(--seal);background:var(--seal-50);padding:1px 5px;">vlk_*</code> per integrare Veylon nel tuo backend. Ogni chiave ha scope dedicati e puoi revocarla in qualsiasi momento.</p>
+        <div class="ak-header-meta" id="ak-counter" hidden>
+          <span><strong id="ak-counter-active">0</strong>/<span id="ak-counter-max">10</span> chiavi attive</span>
+        </div>
+      </div>
+      <div class="ak-header-actions">
+        <button
+          type="button"
+          class="ak-btn ak-btn-primary ak-btn-fullw-mobile"
+          id="ak-btn-create"
+          aria-label="Crea nuova chiave API">
+          + Crea nuova chiave
+        </button>
+      </div>
+    </header>
+
+    <!-- ============================ MAIN GRID ============================ -->
+    <div class="ak-grid">
+
+      <!-- ----------- COLONNA SX: lista chiavi ----------- -->
+      <section aria-labelledby="ak-keys-heading">
+        <h2 id="ak-keys-heading" class="sr-only">Lista delle tue chiavi API</h2>
+
+        <!-- Loading skeleton -->
+        <div class="ak-table-wrap" id="ak-loading">
+          <div class="ak-skeleton">
+            <div class="ak-skeleton-row"></div>
+            <div class="ak-skeleton-row"></div>
+            <div class="ak-skeleton-row"></div>
+          </div>
+        </div>
+
+        <!-- Empty state -->
+        <div class="ak-empty" id="ak-empty" hidden>
+          <svg class="ak-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <circle cx="8" cy="15" r="4"/>
+            <path d="M10.85 12.15 19 4"/>
+            <path d="M18 5l3 3"/>
+            <path d="M15 8l3 3"/>
+          </svg>
+          <h2>Non hai ancora chiavi API</h2>
+          <p>Le chiavi API ti permettono di chiamare Veylon dal tuo backend: crei un tag, emetti un certificato, invii una mail certificata, tutto via REST.</p>
+          <p>Genera la prima chiave, scegli gli scope (cosa puo' fare) e copiala in un posto sicuro: la vedrai una sola volta.</p>
+          <button type="button" class="ak-btn ak-btn-primary ak-btn-large" id="ak-btn-create-empty">
+            + Crea la tua prima chiave
+          </button>
+        </div>
+
+        <!-- Table (desktop) -->
+        <div class="ak-table-wrap" id="ak-table-wrap" hidden>
+          <table class="ak-table" id="ak-table">
+            <caption class="sr-only">Elenco delle chiavi API attive e revocate.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Prefisso</th>
+                <th scope="col">Scope</th>
+                <th scope="col">Stato</th>
+                <th scope="col">Ultimo uso</th>
+                <th scope="col">Usage</th>
+                <th scope="col"><span class="sr-only">Azioni</span></th>
+              </tr>
+            </thead>
+            <tbody id="ak-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Card stack (mobile) -->
+        <div class="ak-cards" id="ak-cards" hidden></div>
+      </section>
+
+      <!-- ----------- COLONNA DX: esempi codice + listino scope ----------- -->
+      <aside class="ak-side" aria-labelledby="ak-side-heading">
+        <h2 id="ak-side-heading" class="sr-only">Risorse sviluppatore</h2>
+
+        <!-- Esempi di codice -->
+        <div class="ak-side-card">
+          <h3>Esempi di codice</h3>
+          <div class="ak-tabs" role="tablist" aria-label="Linguaggio esempio">
+            <button type="button" class="ak-tab is-active" data-tab="node"   role="tab" aria-selected="true"  aria-controls="ak-tabp-node">Node.js</button>
+            <button type="button" class="ak-tab"             data-tab="python" role="tab" aria-selected="false" aria-controls="ak-tabp-python">Python</button>
+            <button type="button" class="ak-tab"             data-tab="curl"   role="tab" aria-selected="false" aria-controls="ak-tabp-curl">curl</button>
+          </div>
+
+          <div class="ak-tab-panel is-active" id="ak-tabp-node" role="tabpanel">
+<pre class="ak-code">// Test connessione
+const r = await fetch(
+  "https://api.veylon.app/v1/me",
+  {
+    headers: {
+      Authorization: `Bearer ${VEYLON_KEY}`
+    }
+  }
+);
+console.log(await r.json());</pre>
+          </div>
+
+          <div class="ak-tab-panel" id="ak-tabp-python" role="tabpanel">
+<pre class="ak-code">import os, requests
+
+key = os.environ["VEYLON_KEY"]
+r = requests.get(
+  "https://api.veylon.app/v1/me",
+  headers={"Authorization": f"Bearer {key}"},
+)
+print(r.json())</pre>
+          </div>
+
+          <div class="ak-tab-panel" id="ak-tabp-curl" role="tabpanel">
+<pre class="ak-code">curl -H "Authorization: Bearer vlk_YOUR_KEY_HERE" \
+     https://api.veylon.app/v1/me</pre>
+          </div>
+
+          <a class="ak-side-link" href="developers.html">Vedi documentazione completa →</a>
+        </div>
+
+        <!-- Listino scope -->
+        <div class="ak-side-card">
+          <h3>Tutti gli scope disponibili</h3>
+          <div id="ak-scope-listing">
+            <!-- popolato da JS: desktop = lista, mobile = accordion -->
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ============================ MODALE CREA ============================ -->
+  <div class="ak-modal-backdrop" id="ak-modal-create" role="dialog" aria-modal="true" aria-labelledby="ak-modal-create-title" aria-hidden="true">
+    <div class="ak-modal">
+      <header class="ak-modal-head">
+        <h2 id="ak-modal-create-title">Crea una nuova chiave API</h2>
+        <button type="button" class="ak-modal-close" id="ak-modal-create-close" aria-label="Chiudi">×</button>
+      </header>
+      <div class="ak-modal-body">
+        <div id="ak-create-banner" class="ak-banner ak-banner-err" hidden role="alert"></div>
+
+        <form id="ak-create-form" novalidate>
+          <!-- Nome -->
+          <div class="ak-field">
+            <label class="ak-label" for="ak-name">Nome della chiave</label>
+            <input
+              type="text"
+              id="ak-name"
+              name="name"
+              placeholder="Backend produzione"
+              maxlength="120"
+              minlength="3"
+              autocomplete="off"
+              aria-describedby="ak-name-helper ak-name-error"/>
+            <div class="ak-helper" id="ak-name-helper">Dalle un nome che ti aiuti a riconoscerla. 3-120 caratteri.</div>
+            <div class="ak-error" id="ak-name-error" hidden></div>
+          </div>
+
+          <!-- Scope -->
+          <div class="ak-field">
+            <label class="ak-label" id="ak-scopes-label">Scope (cosa puo' fare questa chiave)</label>
+            <div class="ak-scope-section" id="ak-scope-grid" role="group" aria-labelledby="ak-scopes-label" aria-describedby="ak-scopes-error">
+              <!-- popolato da JS (raggruppato) -->
+            </div>
+            <div class="ak-error" id="ak-scopes-error" hidden>⚠ Seleziona almeno uno scope.</div>
+          </div>
+
+          <!-- Scadenza -->
+          <div class="ak-field">
+            <label class="ak-label" for="ak-expires">Scadenza (opzionale)</label>
+            <div class="ak-expiry-row">
+              <input type="date" id="ak-expires" name="expires_at" aria-describedby="ak-expires-helper ak-expires-preview"/>
+              <button type="button" class="ak-btn ak-btn-small" id="ak-expires-clear">Lascia in bianco</button>
+            </div>
+            <div class="ak-helper" id="ak-expires-helper">Lascia vuoto se vuoi che la chiave non scada mai. Consigliamo di impostare una scadenza per le chiavi di test.</div>
+            <div class="ak-expiry-preview" id="ak-expires-preview" hidden></div>
+            <div class="ak-error" id="ak-expires-error" hidden></div>
+          </div>
+        </form>
+      </div>
+      <footer class="ak-modal-foot">
+        <button type="button" class="ak-btn" id="ak-create-cancel">Annulla</button>
+        <button type="button" class="ak-btn ak-btn-primary" id="ak-create-submit">Genera chiave</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============================ MODALE KEY GENERATA ============================ -->
+  <div class="ak-modal-backdrop" id="ak-modal-keygen" role="dialog" aria-modal="true" aria-labelledby="ak-modal-keygen-title" aria-hidden="true">
+    <div class="ak-modal ak-modal-lg">
+      <div class="ak-modal-body" style="padding: 0;">
+        <div class="ak-keygen-banner" id="ak-modal-keygen-title">
+          <strong>⚠ Salva questa chiave ORA. Non sara' piu' visibile.</strong>
+        </div>
+        <div style="padding: 22px;">
+          <p class="ak-keygen-desc">Questa e' l'unica volta che Veylon ti mostra la chiave in chiaro. Copiala adesso e mettila in un password manager o in una variabile d'ambiente del tuo server.</p>
+
+          <div class="ak-keygen-box" id="ak-keygen-value" aria-live="polite" aria-atomic="true">—</div>
+          <div class="ak-keygen-actions">
+            <button type="button" class="ak-btn ak-btn-primary" id="ak-keygen-copy" aria-live="polite">📋 Copia</button>
+          </div>
+
+          <div class="ak-keygen-meta" id="ak-keygen-meta"></div>
+
+          <div class="ak-keygen-sample">
+            <h4>Esempio d'uso (cURL)</h4>
+            <pre id="ak-keygen-sample-pre">curl -H "Authorization: Bearer vlk_..." https://api.veylon.app/v1/me</pre>
+          </div>
+        </div>
+      </div>
+      <footer class="ak-modal-foot" style="justify-content: center;">
+        <button type="button" class="ak-btn ak-btn-primary ak-btn-large" id="ak-keygen-done">Ho copiato, chiudi</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============================ MODALE REVOCA ============================ -->
+  <div class="ak-modal-backdrop" id="ak-modal-revoke" role="dialog" aria-modal="true" aria-labelledby="ak-modal-revoke-title" aria-hidden="true">
+    <div class="ak-modal ak-modal-sm">
+      <header class="ak-modal-head">
+        <h2 id="ak-modal-revoke-title">Revocare la chiave?</h2>
+        <button type="button" class="ak-modal-close" id="ak-modal-revoke-close" aria-label="Chiudi">×</button>
+      </header>
+      <div class="ak-modal-body">
+        <div id="ak-revoke-banner" class="ak-banner ak-banner-err" hidden role="alert"></div>
+        <p style="font-family: var(--serif); font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0;">
+          Le integrazioni che usano questa chiave smetteranno di funzionare immediatamente.
+          La revoca e' definitiva: la chiave non potra' essere riattivata.
+        </p>
+        <div class="ak-revoke-meta" id="ak-revoke-meta"></div>
+      </div>
+      <footer class="ak-modal-foot">
+        <button type="button" class="ak-btn" id="ak-revoke-cancel">Annulla</button>
+        <button type="button" class="ak-btn ak-btn-danger" id="ak-revoke-submit">Revoca definitivamente</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============================ TOAST ============================ -->
+  <div class="ak-toast" id="ak-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ============================ APP JS ============================ -->
+  <script type="module">
+    import { supabase } from "./_shared/supabase-client.js";
+
+    // ---------------------------------------------------------------------
+    // Costanti
+    // ---------------------------------------------------------------------
+    const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+    const API_BASE     = "https://api.veylon.app/v1";
+    const MAX_KEYS     = 10;
+    const MAX_DAYS     = 365;
+    const QUOTA_LIMIT_DEFAULT = 50000; // soglia "questo mese" mostrata in tabella
+
+    // ---------------------------------------------------------------------
+    // Scope catalog
+    // ---------------------------------------------------------------------
+    // NOTA: il backend api-keys-create accetta SOLO i 13 scope in VALID_SCOPES.
+    // Il wireframe menziona scope aggiuntivi (tag:write, tag:transfer,
+    // tag:read:any, mail:read [ok], webhook:read, ecc.). Mostriamo solo quelli
+    // realmente accettati dal backend; gli altri sono documentati nel listino
+    // ma marcati come "non disponibili in MVP" tramite .is-coming-soon (omessi
+    // da modale crea per non confondere).
+    //
+    // Inoltre tag:read:any e' previsto nel wireframe come visibile SOLO ai
+    // regolatori (flag is_regulator). Il flag non esiste ancora nel codebase
+    // Veylon — TODO: quando is_regulator sara' aggiunto a auth.users.
+    // user_metadata o a una tabella regulator_profiles, riabilitare la
+    // checkbox per quegli utenti. Per ora completamente nascosto.
+    const SCOPE_GROUPS = [
+      {
+        key: "tag",
+        label: "Tag prodotto",
+        scopes: [
+          { code: "tag:read",   short: "Leggere tag e prodotti",         long: "Legge informazioni di tag e prodotti che hai creato." },
+          { code: "tag:create", short: "Creare nuovi tag",               long: "Emette nuovi tag e supporti per i tuoi prodotti." },
+        ],
+      },
+      {
+        key: "cert",
+        label: "Certificati",
+        scopes: [
+          { code: "cert:emit",   short: "Emettere certificati",           long: "Emette nuovi certificati istituzionali (es. dichiarazioni di conformita)." },
+          { code: "cert:read",   short: "Leggere certificati",            long: "Legge i certificati che hai emesso o che ti sono stati emessi." },
+          { code: "cert:revoke", short: "Revocare certificati",           long: "Revoca certificati gia emessi (operazione tracciata)." },
+        ],
+      },
+      {
+        key: "sigillo",
+        label: "Sigillo Bitcoin",
+        scopes: [
+          { code: "sigillo:create", short: "Creare sigilli Bitcoin (OTS)", long: "Crea sigilli OpenTimestamps su Bitcoin a partire da un hash SHA-256." },
+          { code: "sigillo:read",   short: "Leggere sigilli emessi",       long: "Legge lo stato dei sigilli (pending, confirmed) e i metadati Bitcoin." },
+        ],
+      },
+      {
+        key: "mail",
+        label: "Mail certificata",
+        scopes: [
+          { code: "mail:send", short: "Inviare mail certificate", long: "Invia mail con prova di invio sigillata su Bitcoin." },
+          { code: "mail:read", short: "Leggere stato consegna",   long: "Legge lo stato di consegna, apertura e click delle mail certificate." },
+        ],
+      },
+      {
+        key: "send",
+        label: "Send (consegna documenti)",
+        scopes: [
+          { code: "send:create", short: "Creare invii certificati", long: "Crea pacchetti di consegna documenti con prova di ricezione." },
+          { code: "send:read",   short: "Leggere stato invii",      long: "Legge lo stato dei tuoi invii certificati." },
+        ],
+      },
+      {
+        key: "other",
+        label: "Altri",
+        scopes: [
+          { code: "audit:export", short: "Esportare log di audit", long: "Esporta in CSV/JSON tutte le operazioni della tua organizzazione." },
+          { code: "admin:read",   short: "Lettura amministrativa", long: "Accesso in sola lettura a metadati amministrativi dell'organizzazione (utenti, piano, quote)." },
+        ],
+      },
+    ];
+
+    // ---------------------------------------------------------------------
+    // Stato
+    // ---------------------------------------------------------------------
+    let session       = null;
+    let allKeys       = [];                // ultima risposta api-keys-list
+    let lastGenerated = null;              // {value, name, scopes, expires_at} — wiped on modal close
+    let pendingRevoke = null;              // {id, name, ...}
+    let codeTab       = "node";
+
+    // ---------------------------------------------------------------------
+    // Utils
+    // ---------------------------------------------------------------------
+    function escapeHtml(s) {
+      return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
+    }
+    function $(sel) { return document.querySelector(sel); }
+    function $$(sel) { return Array.from(document.querySelectorAll(sel)); }
+
+    function fmtDateLong(iso) {
+      if (!iso) return "—";
+      try {
+        return new Intl.DateTimeFormat("it-IT", { dateStyle: "long" }).format(new Date(iso));
+      } catch { return iso; }
+    }
+    function relativeTime(iso) {
+      if (!iso) return "Mai usata";
+      const t = new Date(iso).getTime();
+      if (!Number.isFinite(t)) return "—";
+      const sec = Math.floor((Date.now() - t) / 1000);
+      if (sec < 60) return "ora";
+      const min = Math.floor(sec / 60);
+      if (min < 60) return `${min} min fa`;
+      const h = Math.floor(min / 60);
+      if (h < 24) return `${h} ore fa`;
+      const d = Math.floor(h / 24);
+      if (d === 1) return "1 giorno fa";
+      if (d < 30) return `${d} giorni fa`;
+      const mo = Math.floor(d / 30);
+      if (mo === 1) return "1 mese fa";
+      if (mo < 12) return `${mo} mesi fa`;
+      const y = Math.floor(d / 365);
+      return y === 1 ? "1 anno fa" : `${y} anni fa`;
+    }
+    function fmtNum(n) {
+      if (n == null || !Number.isFinite(Number(n))) return "0";
+      return new Intl.NumberFormat("it-IT").format(Number(n));
+    }
+    function daysFromToday(isoDate) {
+      const d = new Date(isoDate).getTime();
+      return Math.round((d - Date.now()) / 86400000);
+    }
+
+    function isoTodayPlus(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function trackEvent(name, props) {
+      try {
+        if (typeof window.plausible === "function") {
+          window.plausible(name, props ? { props } : undefined);
+        }
+      } catch (e) { /* analytics never breaks the app */ }
+    }
+
+    function showToast(msg, ms = 3000) {
+      const el = $("#ak-toast");
+      el.textContent = msg;
+      el.classList.add("is-visible");
+      window.clearTimeout(showToast._t);
+      showToast._t = window.setTimeout(() => el.classList.remove("is-visible"), ms);
+    }
+
+    async function authHeaders() {
+      const { data } = await supabase.auth.getSession();
+      session = data?.session ?? session;
+      return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + (session?.access_token ?? ""),
+      };
+    }
+
+    // ---------------------------------------------------------------------
+    // Banner helpers
+    // ---------------------------------------------------------------------
+    function showBanner(id, kind, html, ctaHtml = "") {
+      const el = document.getElementById(id);
+      const iconMap = { warn: "⚠", err: "✕", info: "ℹ" };
+      el.className = `ak-banner ak-banner-${kind}`;
+      el.innerHTML = `
+        <span class="ak-banner-icon" aria-hidden="true">${iconMap[kind] ?? "ℹ"}</span>
+        <div class="ak-banner-body">${html}${ctaHtml ? ` ${ctaHtml}` : ""}</div>
+      `;
+      el.hidden = false;
+    }
+    function hideBanner(id) {
+      const el = document.getElementById(id);
+      el.hidden = true;
+      el.innerHTML = "";
+    }
+
+    // ---------------------------------------------------------------------
+    // Right-side scopes listing
+    // ---------------------------------------------------------------------
+    function renderScopeListing() {
+      const isCompact = window.matchMedia("(max-width: 1279px)").matches;
+      const root = $("#ak-scope-listing");
+      root.innerHTML = SCOPE_GROUPS.map((g) => {
+        const items = g.scopes.map((s) => `
+          <li><code>${escapeHtml(s.code)}</code> — ${escapeHtml(s.short)}</li>
+        `).join("");
+        if (isCompact) {
+          return `
+            <details class="ak-scope-acc">
+              <summary>${escapeHtml(g.label)}</summary>
+              <ul class="ak-scope-list">${items}</ul>
+            </details>`;
+        }
+        return `
+          <div class="ak-scope-group">
+            <h4 class="ak-scope-group-title">${escapeHtml(g.label)}</h4>
+            <ul class="ak-scope-list">${items}</ul>
+          </div>`;
+      }).join("");
+    }
+
+    // ---------------------------------------------------------------------
+    // CODE TABS
+    // ---------------------------------------------------------------------
+    function initCodeTabs() {
+      try {
+        const saved = localStorage.getItem("veylon_api_code_tab");
+        if (saved && ["node", "python", "curl"].includes(saved)) codeTab = saved;
+      } catch (e) { /* ignore */ }
+      activateTab(codeTab);
+      $$(".ak-tab").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activateTab(btn.dataset.tab);
+        });
+        btn.addEventListener("keydown", (e) => {
+          if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+          e.preventDefault();
+          const tabs = $$(".ak-tab");
+          const i = tabs.indexOf(btn);
+          const next = e.key === "ArrowLeft" ? tabs[(i - 1 + tabs.length) % tabs.length] : tabs[(i + 1) % tabs.length];
+          next.focus();
+          activateTab(next.dataset.tab);
+        });
+      });
+    }
+    function activateTab(name) {
+      codeTab = name;
+      $$(".ak-tab").forEach((btn) => {
+        const on = btn.dataset.tab === name;
+        btn.classList.toggle("is-active", on);
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      $$(".ak-tab-panel").forEach((p) => {
+        p.classList.toggle("is-active", p.id === `ak-tabp-${name}`);
+      });
+      try { localStorage.setItem("veylon_api_code_tab", name); } catch (e) { /* ignore */ }
+    }
+
+    // ---------------------------------------------------------------------
+    // LOAD KEYS
+    // ---------------------------------------------------------------------
+    async function loadKeys() {
+      hideBanner("ak-banner-error");
+      $("#ak-loading").hidden = false;
+      $("#ak-table-wrap").hidden = true;
+      $("#ak-cards").hidden = true;
+      $("#ak-empty").hidden = true;
+      $("#ak-counter").hidden = true;
+
+      try {
+        const headers = await authHeaders();
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/api-keys-list`, {
+          method: "GET",
+          headers: { "Authorization": headers.Authorization, "apikey": "" },
+        });
+        const j = await res.json().catch(() => ({ success: false, error: "invalid_json" }));
+        if (!res.ok || !j.success) {
+          throw new Error(j?.error || `HTTP ${res.status}`);
+        }
+        allKeys = Array.isArray(j.keys) ? j.keys : [];
+        renderKeys();
+      } catch (e) {
+        console.error("loadKeys_failed", e);
+        $("#ak-loading").hidden = true;
+        showBanner(
+          "ak-banner-error",
+          "err",
+          "Impossibile caricare le chiavi. Riprova tra qualche secondo.",
+          `<button type="button" class="ak-btn ak-btn-small" id="ak-banner-retry" style="margin-left:8px;">Riprova ora</button>`,
+        );
+        $("#ak-banner-retry")?.addEventListener("click", loadKeys);
+      }
+    }
+
+    function renderKeys() {
+      $("#ak-loading").hidden = true;
+      if (allKeys.length === 0) {
+        $("#ak-empty").hidden = false;
+        return;
+      }
+
+      // Ordering: attive (per last_used desc) -> mai usate -> scadute -> revocate
+      const sorted = [...allKeys].sort(sortKeys);
+
+      const activeCount = sorted.filter((k) => keyStatus(k) === "active").length;
+      $("#ak-counter").hidden = false;
+      $("#ak-counter-active").textContent = activeCount;
+      $("#ak-counter-max").textContent = MAX_KEYS;
+
+      // Check limite 10
+      if (activeCount >= MAX_KEYS) {
+        showBanner(
+          "ak-banner-limit",
+          "warn",
+          `<strong>Hai raggiunto il limite di ${MAX_KEYS} chiavi attive.</strong> Per crearne una nuova, revoca prima una chiave esistente.`,
+        );
+        setCreateDisabled(true, `Limite di ${MAX_KEYS} chiavi raggiunto`);
+      } else {
+        hideBanner("ak-banner-limit");
+        setCreateDisabled(false);
+      }
+
+      // Desktop table
+      const tbody = $("#ak-tbody");
+      tbody.innerHTML = sorted.map(renderRow).join("");
+      $("#ak-table-wrap").hidden = false;
+      $("#ak-cards").hidden = false;
+      $("#ak-cards").innerHTML = sorted.map(renderCard).join("");
+
+      // Wire revoke buttons
+      $$("[data-revoke-id]").forEach((btn) => {
+        btn.addEventListener("click", () => openRevokeModal(btn.dataset.revokeId));
+      });
+    }
+
+    function setCreateDisabled(disabled, reason = "") {
+      ["#ak-btn-create", "#ak-btn-create-empty"].forEach((sel) => {
+        const b = $(sel);
+        if (!b) return;
+        if (disabled) {
+          b.setAttribute("aria-disabled", "true");
+          b.setAttribute("disabled", "disabled");
+          if (reason) b.setAttribute("title", reason);
+        } else {
+          b.removeAttribute("aria-disabled");
+          b.removeAttribute("disabled");
+          b.removeAttribute("title");
+        }
+      });
+    }
+
+    function keyStatus(k) {
+      if (!k.active || k.revoked_at) return "revoked";
+      if (k.expires_at && new Date(k.expires_at).getTime() < Date.now()) return "expired";
+      if (!k.last_used_at) return "never_used";
+      return "active";
+    }
+
+    function sortKeys(a, b) {
+      const order = { active: 0, never_used: 1, expired: 2, revoked: 3 };
+      const sa = keyStatus(a);
+      const sb = keyStatus(b);
+      if (order[sa] !== order[sb]) return order[sa] - order[sb];
+      // tiebreaker: last_used_at desc then created_at desc
+      const la = a.last_used_at ? new Date(a.last_used_at).getTime() : 0;
+      const lb = b.last_used_at ? new Date(b.last_used_at).getTime() : 0;
+      if (la !== lb) return lb - la;
+      const ca = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const cb = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return cb - ca;
+    }
+
+    function statusPill(k) {
+      const s = keyStatus(k);
+      if (s === "active")    return '<span class="ak-pill ak-pill-ok"   aria-label="Stato: attiva">attiva</span>';
+      if (s === "never_used")return '<span class="ak-pill ak-pill-muted" aria-label="Stato: mai usata">mai usata</span>';
+      if (s === "expired") {
+        const dStr = k.expires_at ? fmtDateLong(k.expires_at) : "";
+        return `<span class="ak-pill ak-pill-warn" aria-label="Stato: scaduta"${dStr ? ` title="Scaduta il ${escapeHtml(dStr)}."` : ""}>scaduta</span>`;
+      }
+      return '<span class="ak-pill ak-pill-err" aria-label="Stato: revocata">revocata</span>';
+    }
+
+    function scopeCellHtml(scopes) {
+      const arr = Array.isArray(scopes) ? scopes : [];
+      if (arr.length === 0) return '<span class="ak-pill ak-pill-muted">nessuno</span>';
+      const shown = arr.slice(0, 3).map((s) => `<span class="ak-pill-scope">${escapeHtml(s)}</span>`).join("");
+      const rest = arr.length > 3 ? `<span class="ak-pill ak-pill-muted">+${arr.length - 3} ancora</span>` : "";
+      return `<div class="ak-scope-cell">${shown}${rest}</div>`;
+    }
+
+    function usageHtml(k) {
+      // Backend non espone ancora "chiamate mese": uso 0 come placeholder mantenuto in UI come da wireframe.
+      // TODO: quando api-keys-list ritornera' usage_30d, leggere da k.usage_30d.
+      const used  = Number(k.usage_30d ?? 0);
+      const limit = Number(k.rate_limit_override ?? QUOTA_LIMIT_DEFAULT);
+      const pct   = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+      const danger = pct >= 80;
+      return `
+        <div class="ak-usage" aria-label="Utilizzo: ${fmtNum(used)} chiamate su ${fmtNum(limit)}">
+          <div class="ak-usage-val">${fmtNum(used)} / ${fmtNum(limit)}</div>
+          <div class="ak-usage-bar"><div class="ak-usage-fill${danger ? " is-danger" : ""}" style="width:${pct}%"></div></div>
+        </div>`;
+    }
+
+    function revokeBtnHtml(k) {
+      if (keyStatus(k) === "revoked") return "—";
+      return `<button type="button" class="ak-btn ak-btn-danger ak-btn-small" data-revoke-id="${escapeHtml(k.id)}" aria-label="Revoca chiave ${escapeHtml(k.name || "")}">Revoca</button>`;
+    }
+
+    function renderRow(k) {
+      const s = keyStatus(k);
+      const inactive = (s === "revoked" || s === "expired") ? " is-inactive" : "";
+      return `
+        <tr class="${inactive.trim()}">
+          <td class="col-name">${escapeHtml(k.name || "—")}</td>
+          <td class="col-prefix"><code>${escapeHtml(k.key_prefix || "—")}…</code></td>
+          <td>${scopeCellHtml(k.scopes)}</td>
+          <td>${statusPill(k)}</td>
+          <td>${k.last_used_at ? escapeHtml(relativeTime(k.last_used_at)) : "—"}</td>
+          <td>${usageHtml(k)}</td>
+          <td>${revokeBtnHtml(k)}</td>
+        </tr>`;
+    }
+
+    function renderCard(k) {
+      const s = keyStatus(k);
+      const inactiveCls = (s === "revoked" || s === "expired") ? " is-inactive" : "";
+      const revokeMobile = keyStatus(k) === "revoked"
+        ? ""
+        : `<button type="button" class="ak-btn ak-btn-danger ak-card-action" data-revoke-id="${escapeHtml(k.id)}" aria-label="Revoca chiave ${escapeHtml(k.name || "")}">Revoca chiave</button>`;
+      return `
+        <article class="ak-card${inactiveCls}">
+          <div class="ak-card-head">
+            <h3 class="ak-card-name">${escapeHtml(k.name || "—")}</h3>
+            ${statusPill(k)}
+          </div>
+          <div class="ak-card-rows">
+            <span class="lbl">Prefisso</span><span class="val"><code>${escapeHtml(k.key_prefix || "—")}…</code></span>
+            <span class="lbl">Scope</span><span class="val">${scopeCellHtml(k.scopes)}</span>
+            <span class="lbl">Ultimo uso</span><span class="val">${k.last_used_at ? escapeHtml(relativeTime(k.last_used_at)) : "—"}</span>
+            <span class="lbl">Usage</span><span class="val">${usageHtml(k)}</span>
+          </div>
+          ${revokeMobile}
+        </article>`;
+    }
+
+    // ---------------------------------------------------------------------
+    // CREATE MODAL
+    // ---------------------------------------------------------------------
+    let lastFocus = null;
+
+    function renderCreateForm() {
+      const grid = $("#ak-scope-grid");
+      grid.innerHTML = SCOPE_GROUPS.map((g) => `
+        <div class="ak-scope-section">
+          <div class="ak-scope-section-title">${escapeHtml(g.label)}</div>
+          ${g.scopes.map((s) => `
+            <label class="ak-scope-option">
+              <input type="checkbox" name="scope" value="${escapeHtml(s.code)}"/>
+              <span class="ak-scope-option-text">
+                <code>${escapeHtml(s.code)}</code>
+                <span class="ak-scope-option-desc">${escapeHtml(s.short)}</span>
+              </span>
+            </label>`).join("")}
+        </div>`).join("");
+
+      // expiry constraints
+      const exp = $("#ak-expires");
+      exp.min = isoTodayPlus(1);
+      exp.max = isoTodayPlus(MAX_DAYS);
+    }
+
+    function openCreateModal() {
+      if ($("#ak-btn-create").hasAttribute("disabled")) {
+        const banner = $("#ak-banner-limit");
+        if (!banner.hidden) banner.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      lastFocus = document.activeElement;
+      const modal = $("#ak-modal-create");
+      resetCreateForm();
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      window.setTimeout(() => $("#ak-name").focus(), 30);
+      trapFocus(modal);
+    }
+
+    function closeCreateModal(confirm = true) {
+      const name = $("#ak-name").value.trim();
+      const anyScope = $$('input[name="scope"]:checked').length > 0;
+      const expFilled = !!$("#ak-expires").value;
+      if (confirm && (name || anyScope || expFilled)) {
+        if (!window.confirm("Annullare la creazione? Perderai cio' che hai inserito.")) return;
+      }
+      const modal = $("#ak-modal-create");
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      releaseFocusTrap();
+      if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    }
+
+    function resetCreateForm() {
+      $("#ak-create-form").reset();
+      hideError("ak-name-error");
+      hideError("ak-scopes-error");
+      hideError("ak-expires-error");
+      $("#ak-name").removeAttribute("aria-invalid");
+      hidePreview();
+      const banner = $("#ak-create-banner");
+      banner.hidden = true; banner.innerHTML = "";
+      setCreateSubmitting(false);
+    }
+
+    function setCreateSubmitting(on) {
+      const btn = $("#ak-create-submit");
+      btn.disabled = on;
+      btn.innerHTML = on ? '<span class="ak-inline-spinner" aria-hidden="true"></span>Generazione in corso…' : "Genera chiave";
+      $$("#ak-create-form input").forEach((el) => {
+        el.disabled = on;
+        if (on) el.setAttribute("aria-busy", "true"); else el.removeAttribute("aria-busy");
+      });
+      $("#ak-modal-create").querySelector(".ak-modal-body").style.opacity = on ? "0.6" : "1";
+    }
+
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.hidden = false;
+    }
+    function hideError(id) {
+      const el = document.getElementById(id);
+      el.hidden = true;
+      el.textContent = "";
+    }
+    function hidePreview() {
+      const el = $("#ak-expires-preview");
+      el.hidden = true; el.textContent = "";
+    }
+    function showPreview(isoDate) {
+      const el = $("#ak-expires-preview");
+      const days = daysFromToday(isoDate);
+      el.textContent = `La chiave scadra il ${fmtDateLong(isoDate)} (tra ${days} giorni).`;
+      el.hidden = false;
+    }
+
+    function validateCreate() {
+      let ok = true;
+      const name = $("#ak-name").value.trim();
+      const scopes = $$('input[name="scope"]:checked').map((el) => el.value);
+      const exp = $("#ak-expires").value;
+
+      if (name.length < 3) {
+        showError("ak-name-error", "Inserisci un nome di almeno 3 caratteri.");
+        $("#ak-name").setAttribute("aria-invalid", "true");
+        ok = false;
+      } else if (name.length > 120) {
+        showError("ak-name-error", "Il nome non puo' superare 120 caratteri.");
+        $("#ak-name").setAttribute("aria-invalid", "true");
+        ok = false;
+      } else {
+        hideError("ak-name-error");
+        $("#ak-name").removeAttribute("aria-invalid");
+      }
+
+      if (scopes.length === 0) {
+        showError("ak-scopes-error", "⚠ Seleziona almeno uno scope.");
+        ok = false;
+      } else hideError("ak-scopes-error");
+
+      if (exp) {
+        const d = new Date(exp).getTime();
+        if (!Number.isFinite(d) || d <= Date.now()) {
+          showError("ak-expires-error", "La scadenza deve essere nel futuro.");
+          ok = false;
+        } else hideError("ak-expires-error");
+      } else hideError("ak-expires-error");
+
+      return { ok, name, scopes, exp: exp || null };
+    }
+
+    async function submitCreate() {
+      const v = validateCreate();
+      if (!v.ok) return;
+
+      setCreateSubmitting(true);
+      const banner = $("#ak-create-banner");
+      banner.hidden = true; banner.innerHTML = "";
+
+      const payload = { name: v.name, scopes: v.scopes };
+      if (v.exp) payload.expires_at = new Date(v.exp + "T23:59:59").toISOString();
+
+      // 15s timeout
+      const ctl = new AbortController();
+      const tid = window.setTimeout(() => ctl.abort(), 15000);
+
+      try {
+        const headers = await authHeaders();
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/api-keys-create`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(payload),
+          signal: ctl.signal,
+        });
+        const j = await res.json().catch(() => ({ success: false, error: "invalid_json" }));
+        if (!res.ok || !j.success) {
+          banner.textContent = `Errore: ${j?.error || "sconosciuto"}. Riprova o contatta supporto.`;
+          banner.hidden = false;
+          setCreateSubmitting(false);
+          return;
+        }
+        // Success
+        trackEvent("api_key_created", { scopes_count: v.scopes.length });
+        lastGenerated = {
+          value: j.key,
+          name: j.name || v.name,
+          scopes: j.scopes || v.scopes,
+          expires_at: j.expires_at || payload.expires_at || null,
+        };
+        // chiudi modale crea SENZA conferma (form valid + appena submittato OK)
+        closeCreateModal(false);
+        openKeygenModal();
+        // reload lista in background
+        loadKeys().catch((e) => console.error(e));
+      } catch (e) {
+        const msg = e.name === "AbortError"
+          ? "La creazione sta impiegando troppo tempo. Verifica la lista chiavi prima di riprovare per evitare duplicati."
+          : `Errore: ${e.message || "sconosciuto"}. Riprova o contatta supporto.`;
+        banner.textContent = msg;
+        banner.hidden = false;
+        setCreateSubmitting(false);
+      } finally {
+        window.clearTimeout(tid);
+      }
+    }
+
+    // ---------------------------------------------------------------------
+    // KEYGEN MODAL (visibile UNA sola volta, anti-fuga)
+    // ---------------------------------------------------------------------
+    function openKeygenModal() {
+      if (!lastGenerated) return;
+      const modal = $("#ak-modal-keygen");
+      $("#ak-keygen-value").textContent = lastGenerated.value;
+      const sampleKey = (lastGenerated.value || "vlk_...").slice(0, 18) + "...";
+      $("#ak-keygen-sample-pre").textContent =
+        `curl -H "Authorization: Bearer ${sampleKey}" \\\n     https://api.veylon.app/v1/me`;
+
+      const meta = [
+        { lbl: "Nome chiave:",     val: lastGenerated.name },
+        { lbl: "Scope assegnati:", val: (lastGenerated.scopes || []).map((s) => `<span class="ak-pill-scope">${escapeHtml(s)}</span>`).join(" ") || "—" },
+        { lbl: "Scadenza:",        val: lastGenerated.expires_at ? fmtDateLong(lastGenerated.expires_at) : "nessuna scadenza" },
+      ];
+      $("#ak-keygen-meta").innerHTML = meta.map((m) => `
+        <div class="ak-keygen-meta-row">
+          <span class="lbl">${escapeHtml(m.lbl)}</span>
+          <span>${m.val}</span>
+        </div>`).join("");
+
+      // reset copy button
+      const cp = $("#ak-keygen-copy");
+      cp.textContent = "📋 Copia";
+      cp.disabled = false;
+
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      window.setTimeout(() => $("#ak-keygen-done").focus(), 30);
+      trapFocus(modal, { allowEsc: false });
+
+      // beforeunload guard
+      window.addEventListener("beforeunload", beforeUnloadGuard);
+    }
+
+    function closeKeygenModal() {
+      const modal = $("#ak-modal-keygen");
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      // Cancella la chiave dal DOM e dalla memoria
+      const name = lastGenerated?.name || "";
+      $("#ak-keygen-value").textContent = "—";
+      $("#ak-keygen-meta").innerHTML = "";
+      $("#ak-keygen-sample-pre").textContent = `curl -H "Authorization: Bearer vlk_..." https://api.veylon.app/v1/me`;
+      lastGenerated = null;
+      releaseFocusTrap();
+      window.removeEventListener("beforeunload", beforeUnloadGuard);
+      if (name) showToast(`Chiave "${name}" creata.`);
+      loadKeys().catch((e) => console.error(e));
+    }
+
+    function beforeUnloadGuard(e) {
+      // I browser moderni ignorano returnValue custom ma serve per attivare il prompt.
+      e.preventDefault();
+      e.returnValue = "Hai gia copiato la chiave? Non potrai piu' vederla.";
+      return e.returnValue;
+    }
+
+    async function copyKey() {
+      const val = lastGenerated?.value;
+      if (!val) return;
+      const btn = $("#ak-keygen-copy");
+      let copied = false;
+      try {
+        await navigator.clipboard.writeText(val);
+        copied = true;
+      } catch (e) {
+        // Fallback execCommand
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = val;
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          copied = document.execCommand("copy");
+          document.body.removeChild(ta);
+        } catch (e2) { copied = false; }
+      }
+      if (copied) {
+        trackEvent("api_key_copied", {});
+        btn.textContent = "✓ Copiata!";
+        window.setTimeout(() => { if (lastGenerated) btn.textContent = "📋 Copia"; }, 2000);
+      } else {
+        window.alert("Il tuo browser blocca la copia automatica. Seleziona la chiave manualmente e premi Ctrl+C (Cmd+C su Mac).");
+      }
+    }
+
+    // ---------------------------------------------------------------------
+    // REVOKE MODAL
+    // ---------------------------------------------------------------------
+    function openRevokeModal(id) {
+      const k = allKeys.find((x) => x.id === id);
+      if (!k) return;
+      pendingRevoke = k;
+      lastFocus = document.activeElement;
+      const modal = $("#ak-modal-revoke");
+      $("#ak-modal-revoke-title").textContent = `Revocare la chiave "${k.name || ""}"?`;
+      $("#ak-revoke-meta").innerHTML = `
+        <div class="ak-revoke-meta-row"><span class="lbl">Prefisso:</span><span><code>${escapeHtml(k.key_prefix || "—")}…</code></span></div>
+        <div class="ak-revoke-meta-row"><span class="lbl">Creata il:</span><span>${escapeHtml(fmtDateLong(k.created_at))}</span></div>
+        <div class="ak-revoke-meta-row"><span class="lbl">Ultimo uso:</span><span>${k.last_used_at ? escapeHtml(relativeTime(k.last_used_at)) : "Mai usata"}</span></div>
+        <div class="ak-revoke-meta-row"><span class="lbl">Usage 30gg:</span><span>${fmtNum(k.usage_30d ?? 0)} chiamate</span></div>
+      `;
+      $("#ak-revoke-banner").hidden = true; $("#ak-revoke-banner").innerHTML = "";
+      setRevokeSubmitting(false);
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      window.setTimeout(() => $("#ak-revoke-cancel").focus(), 30);
+      trapFocus(modal);
+    }
+
+    function closeRevokeModal() {
+      const modal = $("#ak-modal-revoke");
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      pendingRevoke = null;
+      releaseFocusTrap();
+      if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    }
+
+    function setRevokeSubmitting(on) {
+      const btn = $("#ak-revoke-submit");
+      btn.disabled = on;
+      btn.innerHTML = on ? '<span class="ak-inline-spinner" aria-hidden="true"></span>Revoca in corso…' : "Revoca definitivamente";
+      $("#ak-revoke-cancel").disabled = on;
+    }
+
+    async function submitRevoke() {
+      if (!pendingRevoke) return;
+      setRevokeSubmitting(true);
+      const banner = $("#ak-revoke-banner");
+      banner.hidden = true; banner.innerHTML = "";
+      try {
+        const headers = await authHeaders();
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/api-keys-revoke`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify({ id: pendingRevoke.id }),
+        });
+        const j = await res.json().catch(() => ({ success: false, error: "invalid_json" }));
+        if (!res.ok || !j.success) {
+          banner.textContent = `Errore: ${j?.error || "sconosciuto"}. Riprova o contatta supporto.`;
+          banner.hidden = false;
+          setRevokeSubmitting(false);
+          return;
+        }
+        trackEvent("api_key_revoked", {});
+        const name = pendingRevoke.name || "";
+        closeRevokeModal();
+        showToast(`Chiave "${name}" revocata.`);
+        await loadKeys();
+      } catch (e) {
+        banner.textContent = `Errore: ${e.message || "sconosciuto"}. Riprova o contatta supporto.`;
+        banner.hidden = false;
+        setRevokeSubmitting(false);
+      }
+    }
+
+    // ---------------------------------------------------------------------
+    // Focus trap helper (riusato da tutte le modali)
+    // ---------------------------------------------------------------------
+    let trapListener = null;
+    function trapFocus(modalEl, opts = { allowEsc: true }) {
+      releaseFocusTrap();
+      trapListener = (e) => {
+        if (e.key === "Tab") {
+          const focusable = modalEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          const visible = Array.from(focusable).filter((el) => !el.disabled && el.offsetParent !== null);
+          if (visible.length === 0) return;
+          const first = visible[0];
+          const last = visible[visible.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault(); last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault(); first.focus();
+          }
+        } else if (e.key === "Escape" && opts.allowEsc) {
+          if (modalEl.id === "ak-modal-create") closeCreateModal();
+          else if (modalEl.id === "ak-modal-revoke") closeRevokeModal();
+          // keygen NON chiudibile via ESC (allowEsc: false)
+        }
+      };
+      document.addEventListener("keydown", trapListener);
+    }
+    function releaseFocusTrap() {
+      if (trapListener) document.removeEventListener("keydown", trapListener);
+      trapListener = null;
+    }
+
+    // ---------------------------------------------------------------------
+    // Wire-up
+    // ---------------------------------------------------------------------
+    function wire() {
+      // header CTA
+      $("#ak-btn-create").addEventListener("click", openCreateModal);
+      $("#ak-btn-create-empty").addEventListener("click", openCreateModal);
+
+      // modale crea
+      $("#ak-modal-create-close").addEventListener("click", () => closeCreateModal());
+      $("#ak-create-cancel").addEventListener("click", () => closeCreateModal());
+      $("#ak-create-submit").addEventListener("click", submitCreate);
+      $("#ak-modal-create").addEventListener("click", (e) => {
+        if (e.target.id === "ak-modal-create") closeCreateModal();
+      });
+
+      // scadenza
+      $("#ak-expires").addEventListener("change", (e) => {
+        const v = e.target.value;
+        if (!v) { hidePreview(); return; }
+        if (daysFromToday(v) < 1) {
+          showError("ak-expires-error", "La scadenza deve essere nel futuro.");
+          hidePreview();
+        } else {
+          hideError("ak-expires-error");
+          showPreview(v);
+        }
+      });
+      $("#ak-expires-clear").addEventListener("click", () => {
+        $("#ak-expires").value = "";
+        hidePreview();
+        hideError("ak-expires-error");
+      });
+
+      // modale keygen — solo bottone esplicito + copy. Niente backdrop/ESC.
+      $("#ak-keygen-copy").addEventListener("click", copyKey);
+      $("#ak-keygen-done").addEventListener("click", closeKeygenModal);
+
+      // modale revoca
+      $("#ak-modal-revoke-close").addEventListener("click", closeRevokeModal);
+      $("#ak-revoke-cancel").addEventListener("click", closeRevokeModal);
+      $("#ak-revoke-submit").addEventListener("click", submitRevoke);
+      $("#ak-modal-revoke").addEventListener("click", (e) => {
+        if (e.target.id === "ak-modal-revoke") closeRevokeModal();
+      });
+
+      // ri-render listing scope a cambio media query (mobile/desktop)
+      try {
+        const mq = window.matchMedia("(max-width: 1279px)");
+        if (mq.addEventListener) mq.addEventListener("change", renderScopeListing);
+        else if (mq.addListener) mq.addListener(renderScopeListing);
+      } catch (e) { /* ignore */ }
+    }
+
+    // ---------------------------------------------------------------------
+    // INIT
+    // ---------------------------------------------------------------------
+    async function init() {
+      try {
+        const { data } = await supabase.auth.getSession();
+        session = data?.session ?? null;
+      } catch (e) {
+        console.error("init_session_failed", e);
+      }
+      renderCreateForm();
+      renderScopeListing();
+      initCodeTabs();
+      wire();
+      await loadKeys();
+    }
+
+    init().catch((e) => {
+      console.error("init_failed", e);
+      showBanner("ak-banner-error", "err", "Errore inatteso. Ricarica la pagina.");
+    });
+  </script>
+</body>
+</html>
