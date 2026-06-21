@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON ProofOS · Evidence Agent</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>html.veylon-auth-pending body { visibility: hidden; }</style>
+</head>
+<body>
+  <main class="col" style="padding: 40px 32px 96px;">
+    <section class="head-row">
+      <div>
+        <span class="section-num">ProofOS · Mail</span>
+        <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
+          Evidence <em class="serif-italic" style="color: var(--seal);">Agent.</em>
+        </h1>
+        <p class="lede">Fai una domanda. L'AI risponde citando solo le Proof Capsule reali del tuo archivio. Mai inventa.</p>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <article class="panel-card">
+        <form id="q-form" style="display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: stretch;">
+          <textarea id="q-input" rows="3" maxlength="2000" placeholder="es. Abbiamo inviato la fattura 238/2026 a Mooney? · Quali email arrivate prima della diffida? · Riassumi il fascicolo MIAN."></textarea>
+          <button type="submit" class="btn-primary" id="btn-ask">Chiedi</button>
+        </form>
+
+        <details style="margin-top: 12px;">
+          <summary style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); cursor: pointer;">Opzioni</summary>
+          <div style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 720px;">
+            <label class="lbl">Fascicolo (opz)
+              <input id="o-case" type="text" placeholder="VLN-CASE-2026-... oppure UUID"/>
+            </label>
+            <label class="lbl">Modello
+              <select id="o-model">
+                <option value="gpt-4o-mini" selected>gpt-4o-mini (default, economico)</option>
+                <option value="gpt-4o">gpt-4o (ragionamento profondo)</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <div id="status-line" class="status-line" hidden>
+          <span class="status-dot warn"></span><span id="status-text">Generazione...</span>
+        </div>
+      </article>
+    </section>
+
+    <section id="answer-section" style="margin-top: 32px;" hidden>
+      <article class="panel-card">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 14px;">
+          <h2 class="serif" style="font-size: 22px; margin: 0;">Risposta</h2>
+          <div class="small" style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--ink-3); text-transform: uppercase;">
+            <span id="a-model"></span> &middot; <span id="a-duration"></span> &middot; conf <span id="a-confidence"></span>
+          </div>
+        </div>
+        <p id="a-text" style="font-family: var(--serif); font-size: 16px; line-height: 1.55; white-space: pre-wrap;"></p>
+
+        <div id="insufficient-banner" class="info-strip warn" hidden>
+          <strong>Evidenze insufficienti</strong> — la risposta non e dimostrabile dalle Proof Capsule attuali. Aggiungi prove al tuo archivio o restringi a un fascicolo specifico.
+        </div>
+
+        <h3 class="serif" style="font-size: 16px; margin: 24px 0 10px;">Prove citate</h3>
+        <div id="refs-list"></div>
+        <div id="refs-empty" class="empty-q" hidden>Nessuna Proof Capsule citata.</div>
+      </article>
+    </section>
+
+    <section style="margin-top: 40px;">
+      <article class="panel-card">
+        <h2 class="serif" style="font-size: 18px; margin: 0 0 6px;">Storico domande</h2>
+        <p class="small" style="margin: 0 0 14px; color: var(--ink-3); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;">
+          Ultime 20 query — audit Answer with Proof
+        </p>
+        <div class="t-wrap"><table class="t" id="hist-tbl"><thead><tr>
+          <th>Data</th><th>Domanda</th><th>Risposta (estratto)</th><th>Prove</th><th>Modello</th><th>Stato</th>
+        </tr></thead><tbody id="hist-rows"></tbody></table></div>
+        <div id="hist-empty" class="empty-q" hidden>Nessuna query precedente.</div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-base"><span>© MMXXVI · Veylon S.r.l.</span><span>ProofOS · Evidence Agent</span></div></footer>
+
+  <style>
+  .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
+  .lbl { display: grid; gap: 6px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .lbl input, .lbl select, textarea { font-family: var(--serif); font-size: 14px; padding: 10px 12px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); width: 100%; }
+  .btn-primary { background: var(--seal); color: var(--paper); border: 1px solid var(--seal); padding: 10px 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+  .btn-primary[disabled] { opacity: 0.5; cursor: wait; }
+  .status-line { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: var(--ink-3); }
+  .status-dot.warn { background: #ef6c00; animation: pulse 1.2s ease-in-out infinite; }
+  .status-dot.ok { background: var(--verify, #2e7d32); }
+  .status-dot.err { background: var(--seal, #c62828); }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .4 } }
+  .info-strip { padding: 12px 16px; font-family: var(--serif); font-size: 14px; margin: 16px 0; }
+  .info-strip.warn { background: #fff3e0; border-left: 4px solid #ef6c00; color: #6b3a00; }
+  .ref-card { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 14px 18px; border: 1px solid var(--rule); margin-bottom: 10px; background: var(--paper); }
+  .ref-card:hover { border-color: var(--seal); }
+  .ref-eid { font-family: var(--mono); font-size: 12px; color: var(--seal); margin-bottom: 4px; }
+  .ref-subject { font-family: var(--serif); font-size: 15px; }
+  .ref-meta { font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-top: 4px; }
+  .ref-actions { display: flex; align-items: center; gap: 8px; }
+  .pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; }
+  .pill.ok { color: var(--verify); border-color: var(--verify); }
+  .pill.warn { color: var(--seal); border-color: var(--seal); }
+  .pill.neutro { color: #b07b00; border-color: #d8a536; background: #fffaeb; }
+  .t-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .t { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 760px; }
+  .t th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .t td { padding: 12px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); vertical-align: top; }
+  .empty-q { padding: 24px 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-3); }
+  </style>
+
+  <script type="module">
+  import { protectPage } from "./_shared/auth-guard.js";
+  import { renderAppShell } from "./_shared/app-shell.js";
+  import { supabase } from "./_shared/supabase-client.js";
+
+  document.documentElement.classList.add("veylon-auth-pending");
+  try { await protectPage(); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+  await renderAppShell("mail");
+
+  const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
+
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+  function fmt(d) { return d ? new Date(d).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" }) : "—"; }
+  function trunc(s, n) { const v = String(s ?? ""); return v.length > n ? v.slice(0, n - 1) + "…" : v; }
+  function maskSender(s) {
+    const v = String(s ?? "").trim(); if (!v) return "—";
+    const at = v.indexOf("@"); if (at <= 0) return escapeHtml(v);
+    return escapeHtml((v.slice(0, 2) + "***@" + v.slice(at + 1)));
+  }
+  function trustPill(n) {
+    if (n == null) return `<span class="pill">n/d</span>`;
+    if (n < 60) return `<span class="pill warn">${n}</span>`;
+    if (n < 80) return `<span class="pill neutro">${n}</span>`;
+    return `<span class="pill ok">${n}</span>`;
+  }
+
+  async function getToken() {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token ?? null;
+  }
+
+  function setStatus(visible, text, dotClass) {
+    const line = document.getElementById("status-line");
+    const dot = line.querySelector(".status-dot");
+    line.hidden = !visible;
+    if (visible) {
+      document.getElementById("status-text").textContent = text || "";
+      dot.classList.remove("warn","ok","err");
+      if (dotClass) dot.classList.add(dotClass);
+    }
+  }
+
+  document.getElementById("q-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const question = document.getElementById("q-input").value.trim();
+    const caseId = document.getElementById("o-case").value.trim();
+    const model = document.getElementById("o-model").value;
+    if (question.length < 3) return;
+
+    const btn = document.getElementById("btn-ask");
+    btn.disabled = true;
+    setStatus(true, "Sto cercando le prove e ragionando...", "warn");
+    document.getElementById("answer-section").hidden = true;
+    document.getElementById("insufficient-banner").hidden = true;
+
+    try {
+      const tk = await getToken();
+      if (!tk) throw new Error("Sessione scaduta.");
+      const body = { question, model };
+      if (caseId) body.case_id = caseId;
+
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/evidence-agent-query`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+        body: JSON.stringify(body),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.success) throw new Error(j?.error || ("http_" + r.status));
+
+      const a = j.data;
+      document.getElementById("a-text").textContent = a.answer || "(nessuna risposta)";
+      document.getElementById("a-model").textContent = a.model || "—";
+      document.getElementById("a-duration").textContent = a.duration_ms ? (a.duration_ms + "ms") : "—";
+      document.getElementById("a-confidence").textContent = (a.confidence != null) ? a.confidence.toFixed(2) : "n/d";
+      document.getElementById("insufficient-banner").hidden = !a.insufficient_evidence;
+
+      const refsList = document.getElementById("refs-list");
+      refsList.innerHTML = "";
+      const refsEmpty = document.getElementById("refs-empty");
+      if (!a.evidence_refs_detail || a.evidence_refs_detail.length === 0) {
+        refsEmpty.hidden = false;
+      } else {
+        refsEmpty.hidden = true;
+        a.evidence_refs_detail.forEach(r => {
+          const link = `proof-capsule-detail.html?id=${encodeURIComponent(r.capsule_id || r.evidence_id)}`;
+          const card = document.createElement("a");
+          card.href = link;
+          card.className = "ref-card";
+          card.style.textDecoration = "none";
+          card.style.color = "var(--ink)";
+          card.innerHTML = `
+            <div>
+              <div class="ref-eid">${escapeHtml(r.evidence_id)}</div>
+              <div class="ref-subject">${escapeHtml(trunc(r.subject || "—", 80))}</div>
+              <div class="ref-meta">Da ${maskSender(r.sender)} · ${fmt(r.captured_at)}</div>
+            </div>
+            <div class="ref-actions">${trustPill(r.trust_score)}</div>
+          `;
+          refsList.appendChild(card);
+        });
+      }
+
+      document.getElementById("answer-section").hidden = false;
+      setStatus(true, `Risposta pronta (${a.context_capsules} capsule analizzate)`, "ok");
+      setTimeout(() => setStatus(false), 4000);
+      await loadHistory();
+    } catch (err) {
+      setStatus(true, "Errore: " + (err.message || err), "err");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  async function loadHistory() {
+    try {
+      const { data } = await supabase
+        .from("proof_agent_queries")
+        .select("id, question, answer, evidence_refs, model, insufficient_evidence, duration_ms, created_at")
+        .order("created_at", { ascending: false })
+        .limit(20);
+      const tbody = document.getElementById("hist-rows");
+      const empty = document.getElementById("hist-empty");
+      tbody.innerHTML = "";
+      if (!data || data.length === 0) { empty.hidden = false; return; }
+      empty.hidden = true;
+      data.forEach(q => {
+        const refs = Array.isArray(q.evidence_refs) ? q.evidence_refs.length : 0;
+        const stato = q.insufficient_evidence ? `<span class="pill warn">insufficient</span>` : `<span class="pill ok">ok</span>`;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${fmt(q.created_at)}</td>
+          <td>${escapeHtml(trunc(q.question, 60))}</td>
+          <td>${escapeHtml(trunc(q.answer || "—", 80))}</td>
+          <td>${refs}</td>
+          <td>${escapeHtml(q.model || "—")}</td>
+          <td>${stato}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (e) { /* silent */ }
+  }
+
+  loadHistory();
+  </script>
+</body>
+</html>

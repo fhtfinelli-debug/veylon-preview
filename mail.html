@@ -37,6 +37,11 @@
           <span class="proof-card-title">Casi probatori</span>
           <span class="proof-card-sub">Raggruppa prove e genera litigation pack.</span>
         </a>
+        <a href="proof-agent.html" class="proof-card">
+          <span class="proof-card-eyebrow">Evidence Agent</span>
+          <span class="proof-card-title">Chiedi all'AI</span>
+          <span class="proof-card-sub">Risposte con citazione delle prove reali. Answer with Proof.</span>
+        </a>
         <a href="verify-proof.html" class="proof-card" target="_blank" rel="noopener">
           <span class="proof-card-eyebrow">Verifica pubblica</span>
           <span class="proof-card-title">Portale di verifica</span>
@@ -230,9 +235,10 @@
   .cred-box { padding: 16px; background: var(--paper-2); border: 1px solid var(--rule); margin: 12px 0; font-family: var(--mono); font-size: 12px; display: grid; grid-template-columns: 100px 1fr; gap: 8px 16px; align-items: center; }
   .cred-box .k { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
   .cred-box code { background: var(--paper); padding: 2px 6px; border: 1px solid var(--rule); }
-  .proof-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  @media (max-width: 1024px) { .proof-strip { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px)  { .proof-strip { grid-template-columns: 1fr; } }
+  .proof-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  @media (max-width: 1200px) { .proof-strip { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 760px)  { .proof-strip { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px)  { .proof-strip { grid-template-columns: 1fr; } }
   .proof-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; background: var(--paper); border: 1px solid var(--rule); text-decoration: none; color: var(--ink); transition: border-color 120ms ease, transform 120ms ease; }
   .proof-card:hover { border-color: var(--seal); transform: translateY(-1px); }
   .proof-card-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--seal); }

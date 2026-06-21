@@ -185,15 +185,20 @@
       <!-- ========== TAB 6: AI FINDINGS ========== -->
       <section class="mode-pane" id="tab-ai" role="tabpanel">
         <article class="panel-card">
-          <h2 class="serif tab-title">AI Findings</h2>
-          <div class="ai-placeholder">
-            <div class="ai-ico">&#9678;</div>
-            <p class="serif" style="font-style: italic; font-size: 17px; margin: 0 0 6px;">
-              Disponibile in Sprint 4 (Evidence Agent).
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 12px;">
+            <h2 class="serif tab-title" style="margin: 0;">AI Findings</h2>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span id="ai-status-msg" class="small" style="color: var(--ink-3); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;"></span>
+              <button class="mode-btn act" id="btn-ai-generate">Genera sintesi AI</button>
+            </div>
+          </div>
+          <div id="ai-findings-list"></div>
+          <div id="ai-findings-empty" class="ai-placeholder" hidden>
+            <p class="serif" style="font-style: italic; font-size: 16px; margin: 0 0 6px;">
+              Nessun finding ancora.
             </p>
             <p class="small" style="color: var(--ink-3); margin: 0;">
-              Nessun finding generato. L'Evidence Agent analizzera i contenuti e produrra rilievi
-              automatici (rischi, scadenze, contestazioni, promesse) citando solo prove reali.
+              Clicca "Genera sintesi AI" per produrre summary + rilievi (rischi, scadenze, contestazioni, promesse) citando questa capsule.
             </p>
           </div>
         </article>
@@ -529,6 +534,69 @@
     const sourceLabel = c.source_type || "—";
     $("pc-meta").textContent = `Catturata il ${fmtDate(capturedAt)} da ${sourceLabel}` +
       (c.sent_at ? ` · Inviata il ${fmtDate(c.sent_at)}` : "");
+
+    // ============ AI FINDINGS ============
+    async function loadAiFindings() {
+      const list = $("ai-findings-list");
+      const empty = $("ai-findings-empty");
+      list.innerHTML = "";
+      try {
+        const { data, error } = await supabase
+          .from("proof_ai_findings")
+          .select("id, finding_type, severity, title, description, confidence, created_at, model")
+          .eq("proof_capsule_id", c.id)
+          .order("created_at", { ascending: true });
+        if (error) throw error;
+        if (!data || data.length === 0) { empty.hidden = false; return; }
+        empty.hidden = true;
+        const sevCls = { info: "", low: "neutro", medium: "neutro", high: "warn", critical: "warn" };
+        const typeIcon = { summary: "✎", risk: "!", deadline: "◷", dispute: "‡", promise: "✓", obligation: "§", sentiment: "♡" };
+        data.forEach(f => {
+          const div = document.createElement("div");
+          div.style.cssText = "padding: 14px 0; border-bottom: 1px solid var(--rule-2);";
+          const sev = sevCls[f.severity] ?? "";
+          const conf = f.confidence != null ? `<span class="small" style="color: var(--ink-3); font-family: var(--mono); font-size: 10px;">conf ${Number(f.confidence).toFixed(2)}</span>` : "";
+          div.innerHTML = `
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 6px;">
+              <span style="font-family: var(--mono); font-size: 14px; color: var(--seal); width: 20px; text-align: center;">${typeIcon[f.finding_type] || "•"}</span>
+              <span class="pill ${sev}">${f.finding_type}</span>
+              <span class="pill" style="text-transform: lowercase;">${f.severity}</span>
+              ${conf}
+            </div>
+            <div style="font-family: var(--serif); font-size: 15px; font-weight: 600; margin-bottom: 4px;">${(f.title || "").replace(/</g,"&lt;")}</div>
+            <div style="font-family: var(--serif); font-size: 14px; color: var(--ink-2); white-space: pre-wrap;">${(f.description || "").replace(/</g,"&lt;")}</div>
+          `;
+          list.appendChild(div);
+        });
+      } catch (e) {
+        empty.hidden = false;
+        empty.querySelector("p").textContent = "Errore caricamento findings: " + (e.message || e);
+      }
+    }
+    loadAiFindings();
+
+    $("btn-ai-generate").addEventListener("click", async () => {
+      const btn = $("btn-ai-generate");
+      const status = $("ai-status-msg");
+      btn.disabled = true; status.textContent = "Generazione in corso...";
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const tk = session?.access_token;
+        const r = await fetch(`https://hanxxxtgxofjkfdjegfe.supabase.co/functions/v1/proof-capsule-ai-summary`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + tk },
+          body: JSON.stringify({ proof_capsule_id: c.id, force: true }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok || !j.success) throw new Error(j?.error || ("http_" + r.status));
+        status.textContent = `Generata sintesi (${j.data?.usage?.total_tokens ?? "?"} token, ${j.data?.duration_ms}ms)`;
+        await loadAiFindings();
+      } catch (e) {
+        status.textContent = "Errore: " + (e.message || e);
+      } finally {
+        btn.disabled = false;
+      }
+    });
 
     // ============ AZIONI ============
     $("act-cert").addEventListener("click", () => {

@@ -50,6 +50,7 @@ const SECTION_OF = {
   "proof-capsule-detail": "mail",
   "proof-cases":          "mail",
   "proof-case-detail":    "mail",
+  "proof-agent":          "mail",
 };
 
 export async function renderAppShell(activeKey = "") {
