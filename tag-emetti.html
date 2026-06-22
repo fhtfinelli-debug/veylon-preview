@@ -25,6 +25,9 @@
         <h2 class="serif" style="font-size: 22px; margin: 0 0 18px;">Nuovo tag</h2>
         <form id="form" novalidate>
           <div>
+            <div id="brand-picker-emetti"></div>
+          </div>
+          <div style="margin-top: 18px;">
             <label class="field-label" for="prod">Denominazione prodotto</label>
             <input class="field-input" type="text" id="prod" required/>
           </div>
@@ -86,10 +89,26 @@
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { renderAppShell } from "./_shared/app-shell.js";
   import { supabase } from "./_shared/supabase-client.js";
+  import { mountBrandPicker } from "./_shared/brand-picker.js";
   let session;
   document.documentElement.classList.add("veylon-auth-pending");
   try { ({ session } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
   await renderAppShell("tag-emetti");
+
+  // Brand picker (Stream BRAND): selezionabile da anagrafica registrata, no input text liberi.
+  let selectedBrand = null;
+  let brandPickerHandle = null;
+  try {
+    brandPickerHandle = await mountBrandPicker("#brand-picker-emetti", {
+      supabase,
+      required: true,
+      allowCreate: true,
+      label: "Casa / brand",
+      onChange: (b) => { selectedBrand = b; },
+    });
+  } catch (e) {
+    console.warn("brand-picker mount failed:", e?.message || e);
+  }
 
   const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
   const escT = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -172,8 +191,16 @@
       codice_prodotto: document.getElementById("sku").value.trim() || null,
       lotto: document.getElementById("lotto").value.trim() || null,
       applicazione: document.querySelector('input[name="app"]:checked').value,
+      // Stream BRAND: brand selezionato da anagrafica (no input text liberi).
+      brand_id: selectedBrand?.id || null,
+      brand: selectedBrand?.nome || null,
+      brand_vat: selectedBrand?.partita_iva || null,
     };
     if (!payload.descrizione) { alert("Inserisci la descrizione del prodotto."); return; }
+    if (!selectedBrand || !selectedBrand.nome) {
+      alert("Seleziona un brand dal menu. Se non ce l'hai, clicca '+ Nuovo brand' per crearlo.");
+      return;
+    }
     const btn = document.getElementById("submit");
     btn.disabled = true;
     const original = btn.querySelector(".btn-label").textContent;

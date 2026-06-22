@@ -288,6 +288,51 @@
             </div>
           </div>
 
+          <div class="section-title">Anagrafica fiscale</div>
+          <div class="form-grid">
+            <div class="field is-wide">
+              <label for="bf-partita_iva">Partita IVA / VAT</label>
+              <input id="bf-partita_iva" name="partita_iva" type="text" maxlength="40" placeholder="Es. IT01234567890 (11 cifre IT) o CHE-123.456.789" autocomplete="off" inputmode="text"/>
+              <span class="field-help">Inserita una volta sola, sara' selezionabile in tutti i form di emissione (onboarding, emetti, nuovo lotto, prodotti).</span>
+            </div>
+            <div class="field">
+              <label for="bf-vat_internazionale">VAT internazionale</label>
+              <input id="bf-vat_internazionale" name="vat_internazionale" type="text" maxlength="40" placeholder="Es. GB123456789 (solo se diverso da P.IVA)"/>
+              <span class="field-help">Opzionale, solo se il brand opera fuori UE con VAT diverso.</span>
+            </div>
+            <div class="field">
+              <label for="bf-paese">Paese</label>
+              <select id="bf-paese" name="paese">
+                <option value="">— seleziona —</option>
+                <option value="IT">Italia (IT)</option>
+                <option value="FR">Francia (FR)</option>
+                <option value="DE">Germania (DE)</option>
+                <option value="ES">Spagna (ES)</option>
+                <option value="GB">Regno Unito (GB)</option>
+                <option value="CH">Svizzera (CH)</option>
+                <option value="AT">Austria (AT)</option>
+                <option value="NL">Paesi Bassi (NL)</option>
+                <option value="BE">Belgio (BE)</option>
+                <option value="PT">Portogallo (PT)</option>
+                <option value="US">Stati Uniti (US)</option>
+                <option value="CN">Cina (CN)</option>
+                <option value="JP">Giappone (JP)</option>
+                <option value="KR">Corea del Sud (KR)</option>
+                <option value="AE">Emirati Arabi (AE)</option>
+                <option value="BR">Brasile (BR)</option>
+                <option value="CA">Canada (CA)</option>
+                <option value="AU">Australia (AU)</option>
+                <option value="IN">India (IN)</option>
+                <option value="MX">Messico (MX)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="bf-eori_code">Codice EORI</label>
+              <input id="bf-eori_code" name="eori_code" type="text" maxlength="40" placeholder="Es. IT12345678901"/>
+              <span class="field-help">Operatori economici autorizzati (import/export UE).</span>
+            </div>
+          </div>
+
           <div class="section-title">Origine e trademark</div>
           <div class="form-grid">
             <div class="field">
@@ -501,7 +546,7 @@
       const filtersEl = document.getElementById("filters-bar");
       try {
         const { data, error } = await supabase
-          .from("brands")
+          .from("tag_brands")
           .select("*")
           .order("in_evidenza", { ascending: false })
           .order("created_at", { ascending: false });
@@ -544,6 +589,7 @@
           : escapeHtml(inits);
         const payoff = b.payoff ? escapeHtml(b.payoff) : '<span style="color: var(--ink-3);">Nessun payoff registrato.</span>';
         const meta = [
+          b.partita_iva ? `<span><strong>P.IVA:</strong> ${escapeHtml(b.partita_iva)}</span>` : null,
           b.anno_fondazione ? `<span><strong>Anno:</strong> ${escapeHtml(String(b.anno_fondazione))}</span>` : null,
           b.paese_origine ? `<span><strong>Origine:</strong> ${escapeHtml(b.paese_origine)}</span>` : null,
           b.trademark_registrato === "si" ? `<span><strong>™:</strong> registrato</span>` : null,
@@ -610,7 +656,7 @@
       if (!brand) return;
       const newVal = !(brand.in_evidenza === true);
       try {
-        const { error } = await supabase.from("brands").update({ in_evidenza: newVal }).eq("id", id);
+        const { error } = await supabase.from("tag_brands").update({ in_evidenza: newVal }).eq("id", id);
         if (error) throw error;
         brand.in_evidenza = newVal;
         toast(newVal ? "Brand portato in evidenza." : "Brand rimosso dall'evidenza.");
@@ -641,7 +687,7 @@
         if (!b) return;
         modalTitle.innerHTML = `Modifica <em>brand</em>`;
         btnDelete.hidden = false;
-        const FIELDS = ["nome", "slug", "payoff", "storia", "logo_url", "sito_web", "anno_fondazione", "paese_origine", "trademark_registrato", "trademark_paese", "instagram", "linkedin", "categoria_principale", "modello_fisico_default"];
+        const FIELDS = ["nome", "slug", "payoff", "storia", "logo_url", "sito_web", "partita_iva", "vat_internazionale", "paese", "eori_code", "anno_fondazione", "paese_origine", "trademark_registrato", "trademark_paese", "instagram", "linkedin", "categoria_principale", "modello_fisico_default"];
         for (const k of FIELDS) {
           const el = document.getElementById(`bf-${k}`);
           if (el && b[k] != null) el.value = b[k];
@@ -743,7 +789,7 @@
         if (!payload.categoria_principale) throw new Error("La categoria principale e obbligatoria.");
 
         if (editingId) {
-          const { error } = await supabase.from("brands").update(payload).eq("id", editingId);
+          const { error } = await supabase.from("tag_brands").update(payload).eq("id", editingId);
           if (error) throw error;
           toast(`Brand "${payload.nome}" aggiornato.`);
         } else {
@@ -753,7 +799,7 @@
             .maybeSingle();
           if (orgErr) throw orgErr;
           payload.organization_id = orgRow?.id ?? null;
-          const { error } = await supabase.from("brands").insert(payload);
+          const { error } = await supabase.from("tag_brands").insert(payload);
           if (error) throw error;
           toast(`Brand "${payload.nome}" creato.`);
         }
@@ -774,7 +820,7 @@
       const ok = window.confirm(`Eliminare definitivamente il brand "${brand?.nome || ''}"?\n\nI prodotti e i certificati gia emessi NON verranno cancellati. Il brand sara solo rimosso dal portfolio.`);
       if (!ok) return;
       try {
-        const { error } = await supabase.from("brands").delete().eq("id", editingId);
+        const { error } = await supabase.from("tag_brands").delete().eq("id", editingId);
         if (error) throw error;
         toast("Brand eliminato.");
         closeModal();

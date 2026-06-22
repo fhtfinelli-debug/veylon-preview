@@ -1553,10 +1553,11 @@
     }
 
     // ----- STEP 1 -----
-    function renderStep1() {
-      const brandOptions = `<option value="">— Seleziona brand —</option>` +
-        wizardBrands.map(b => `<option value="${escapeHtml(b.id)}" ${b.id === wizardState.brand_id ? "selected" : ""}>${escapeHtml(b.nome)}</option>`).join("");
+    // Stream BRAND: il vecchio <select id="tpl-brand"> viene sostituito dal componente
+    // mountBrandPicker (shared) che integra creazione inline + P.IVA + VAT.
+    let _brandPickerHandle = null;
 
+    function renderStep1() {
       const catGroups = {};
       CATEGORIE.forEach(c => { (catGroups[c.group] ||= []).push(c); });
       const catOptions = `<option value="">— Seleziona categoria —</option>` +
@@ -1566,10 +1567,6 @@
 
       const appOptions = `<option value="">— Decidi al momento dell'emissione —</option>` +
         APPLICAZIONI.map(a => `<option value="${escapeHtml(a.value)}" ${a.value === wizardState.applicazione_default ? "selected" : ""}>${escapeHtml(a.label)}</option>`).join("");
-
-      const noBrandWarn = wizardBrands.length === 0
-        ? `<p class="helper" style="color: var(--seal);">Non hai ancora brand registrati. <a href="tag-brands.html" style="color: var(--seal);">Creane uno</a> e poi torna qui.</p>`
-        : "";
 
       return `
         <div class="wiz-card" data-step="1">
@@ -1598,10 +1595,8 @@
               <p class="helper">Prefisso del tuo codice interno. Es. "BRUN-MNT-" diventera' "BRUN-MNT-2020-001", "BRUN-MNT-2020-002"…</p>
             </div>
             <div class="wiz-field" data-field="brand_id">
-              <label for="tpl-brand">Brand <span class="req" aria-hidden="true">*</span></label>
-              <select id="tpl-brand" required aria-required="true">${brandOptions}</select>
+              <div id="tpl-brand-picker"></div>
               <p class="helper">Il brand sotto cui questo prodotto e' commercializzato.</p>
-              ${noBrandWarn}
             </div>
           </div>
 
@@ -1646,15 +1641,37 @@
         wizardState.nome = root.querySelector("#tpl-nome").value.trim();
         wizardState.descrizione = root.querySelector("#tpl-desc").value;
         wizardState.sku_base = root.querySelector("#tpl-sku").value.trim().toUpperCase();
-        wizardState.brand_id = root.querySelector("#tpl-brand").value;
         wizardState.categoria_dpp = root.querySelector("#tpl-cat-dpp").value;
         wizardState.applicazione_default = root.querySelector("#tpl-app").value;
         wizardState.gtin = root.querySelector("#tpl-gtin").value.trim();
         persistDraftDebounced();
       };
-      ["#tpl-nome", "#tpl-desc", "#tpl-sku", "#tpl-brand", "#tpl-cat-dpp", "#tpl-app", "#tpl-gtin"].forEach(sel => {
+      ["#tpl-nome", "#tpl-desc", "#tpl-sku", "#tpl-cat-dpp", "#tpl-app", "#tpl-gtin"].forEach(sel => {
         root.querySelector(sel)?.addEventListener("input", sync);
         root.querySelector(sel)?.addEventListener("change", sync);
+      });
+
+      // Stream BRAND: monta il picker shared (auto-create inline)
+      import("./_shared/brand-picker.js").then(async (mod) => {
+        try {
+          _brandPickerHandle = await mod.mountBrandPicker("#tpl-brand-picker", {
+            supabase,
+            required: true,
+            allowCreate: true,
+            label: "Brand",
+            initialBrandId: wizardState.brand_id || null,
+            onChange: (b) => {
+              wizardState.brand_id = b?.id || "";
+              // Tieni la cache wizardBrands aggiornata per i render successivi (es. recap step 6)
+              if (b && b.id && !wizardBrands.some(x => x.id === b.id)) {
+                wizardBrands.push({ id: b.id, nome: b.nome });
+              }
+              persistDraftDebounced();
+            },
+          });
+        } catch (e) {
+          console.warn("brand-picker mount failed:", e?.message || e);
+        }
       });
       root.querySelector('[data-act="next"]').addEventListener("click", () => goToStep(2));
       root.querySelector('[data-act="save-draft"]').addEventListener("click", () => handleSaveDraft());

@@ -1736,7 +1736,7 @@
     async function loadKpiBrands() {
       try {
         const { count } = await supabase
-          .from("brands")
+          .from("tag_brands")
           .select("id", { count: "exact", head: true })
           .eq("attivo", true);
         setKpi("kpi-brands", fmtNum(count ?? 0), count ? "portfolio attivo" : "nessun brand attivo");
@@ -1795,7 +1795,7 @@
       const ctaRow = document.getElementById("brands-cta-row");
       try {
         const { data, error } = await supabase
-          .from("brands")
+          .from("tag_brands")
           .select("id, nome, slug, payoff, anno_fondazione, paese_origine, logo_url, prodotti_count, certificati_emessi_count, in_evidenza")
           .eq("attivo", true)
           .order("in_evidenza", { ascending: false })
@@ -2016,7 +2016,7 @@
       if (!sel) return;
       try {
         const { data, error } = await supabase
-          .from("brands")
+          .from("tag_brands")
           .select("id, nome")
           .eq("attivo", true)
           .order("nome", { ascending: true });

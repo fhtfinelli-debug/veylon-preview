@@ -52,7 +52,7 @@
           Suite <em class="serif-italic" style="color: var(--seal);">PDF certificata.</em>
         </h1>
         <p class="lede" style="font-size: 17px; margin: 0; max-width: 640px;">
-          Ventuno utility professionali per i tuoi documenti. Cifratura, conversione, sanitizzazione, watermark, redazione.
+          La suite PDF completa Veylon. <strong>98 utility professionali</strong> per cifrare, convertire, sanificare, organizzare, modificare e analizzare i tuoi documenti.
           I file passano dal nostro motore in <strong>EU GDPR</strong>, in memoria, mai stoccati su disco.
         </p>
       </div>
@@ -61,13 +61,23 @@
     <section style="margin-top: 32px;">
       <div id="sp-status" class="sp-banner" hidden></div>
 
-      <div class="sp-tabs" role="tablist">
-        <button class="sp-tab is-active" data-tab="sicurezza" role="tab" type="button" aria-selected="true">Sicurezza · 14</button>
-        <button class="sp-tab" data-tab="conversione" role="tab" type="button" aria-selected="false">Conversione · 7</button>
+      <div class="sp-tabs" role="tablist" style="flex-wrap: wrap;">
+        <button class="sp-tab is-active" data-tab="sicurezza"    role="tab" type="button" aria-selected="true">Sicurezza · 11</button>
+        <button class="sp-tab"            data-tab="conversione" role="tab" type="button" aria-selected="false">Conversione · 24</button>
+        <button class="sp-tab"            data-tab="pagine"      role="tab" type="button" aria-selected="false">Organizza pagine · 19</button>
+        <button class="sp-tab"            data-tab="modifica"    role="tab" type="button" aria-selected="false">Modifica &amp; ritocco · 24</button>
+        <button class="sp-tab"            data-tab="analisi"     role="tab" type="button" aria-selected="false">Analisi · 8</button>
+        <button class="sp-tab"            data-tab="moduli"      role="tab" type="button" aria-selected="false">Moduli · 6</button>
+        <button class="sp-tab"            data-tab="filtri"      role="tab" type="button" aria-selected="false">Filtri · 6</button>
       </div>
 
-      <div id="sp-grid-sicurezza" class="sp-grid" role="tabpanel"></div>
+      <div id="sp-grid-sicurezza"    class="sp-grid" role="tabpanel"></div>
       <div id="sp-grid-conversione" class="sp-grid" role="tabpanel" hidden></div>
+      <div id="sp-grid-pagine"      class="sp-grid" role="tabpanel" hidden></div>
+      <div id="sp-grid-modifica"    class="sp-grid" role="tabpanel" hidden></div>
+      <div id="sp-grid-analisi"     class="sp-grid" role="tabpanel" hidden></div>
+      <div id="sp-grid-moduli"      class="sp-grid" role="tabpanel" hidden></div>
+      <div id="sp-grid-filtri"      class="sp-grid" role="tabpanel" hidden></div>
     </section>
 
     <section style="margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--rule);">
@@ -109,162 +119,305 @@
     await renderAppShell("strumenti");
     document.documentElement.classList.remove("veylon-auth-pending");
 
-    // ---- Tool catalog (21) ----
-    // expects: 'pdf' (download .pdf), 'zip', 'image', 'json' (mostra in modale), 'docx', 'csv'
+    // ---- Tool catalog (98 tool MIT Stirling) ----
+    // expects: 'pdf' (download .pdf) | 'zip' | 'image' | 'json' | 'docx' | 'csv' | 'txt' | 'html' | 'xml' | 'xlsx' | 'epub' | 'pptx'
+    const CATS = ["sicurezza","conversione","pagine","modifica","analisi","moduli","filtri"];
+    // helper per tool semplice (solo fileInput)
+    const _f = (accept="application/pdf") => [{ kind:"file", name:"fileInput", label:"File", required:true, accept }];
+    const S = (id, tag, name, desc, endpoint, expects="pdf", fields=null, accept="application/pdf") => ({
+      id, tag, name, desc, endpoint, expects, fields: fields || _f(accept)
+    });
+
     const TOOLS = {
       sicurezza: [
-        { id: "add-password",         tag: "Sicurezza", name: "Aggiungi password", desc: "Cifra il PDF con una password di apertura.",
-          endpoint: "/api/v1/security/add-password", expects: "pdf",
-          fields: [
-            { kind: "file",     name: "fileInput", label: "PDF da cifrare", required: true, accept: "application/pdf" },
-            { kind: "password", name: "password",  label: "Password di apertura", required: true },
-            { kind: "password", name: "ownerPassword", label: "Password proprietario (opzionale)" },
-            { kind: "select",   name: "keyLength", label: "Forza chiave", options: [["256","AES 256 bit"],["128","AES 128 bit"]] },
-          ] },
-        { id: "remove-password",      tag: "Sicurezza", name: "Rimuovi password", desc: "Decifra il PDF se conosci la password.",
-          endpoint: "/api/v1/security/remove-password", expects: "pdf",
-          fields: [
-            { kind: "file",     name: "fileInput", label: "PDF cifrato", required: true, accept: "application/pdf" },
-            { kind: "password", name: "password",  label: "Password attuale", required: true },
-          ] },
-        { id: "verify-pdf",           tag: "Sicurezza", name: "Verifica integrità", desc: "Controlla che il PDF non sia corrotto o manomesso.",
-          endpoint: "/api/v1/security/verify-pdf", expects: "json",
-          fields: [
-            { kind: "file", name: "fileInput", label: "PDF da verificare", required: true, accept: "application/pdf" },
-          ] },
-        { id: "cert-sign",            tag: "Sicurezza", name: "Firma con certificato", desc: "Firma digitale visibile con .p12 o coppia chiave/cert.",
-          endpoint: "/api/v1/security/cert-sign", expects: "pdf",
-          fields: [
-            { kind: "file",     name: "fileInput",     label: "PDF da firmare", required: true, accept: "application/pdf" },
-            { kind: "select",   name: "certType",      label: "Tipo certificato", options: [["PKCS12","PKCS#12 (.p12)"],["PEM","PEM (chiave + cert)"]] },
-            { kind: "file",     name: "p12File",       label: "File .p12 (se PKCS#12)", accept: ".p12,application/x-pkcs12" },
-            { kind: "file",     name: "privateKeyFile",label: "Chiave privata .pem (se PEM)", accept: ".pem,.key" },
-            { kind: "file",     name: "certFile",      label: "Certificato .pem (se PEM)", accept: ".pem,.crt,.cer" },
-            { kind: "password", name: "password",      label: "Password certificato" },
-            { kind: "checkbox", name: "showSignature", label: "Mostra rettangolo firma sulla pagina" },
-            { kind: "text",     name: "reason",        label: "Motivo firma" },
-            { kind: "text",     name: "location",      label: "Luogo firma" },
-            { kind: "text",     name: "name",          label: "Nome firmatario" },
-          ] },
-        { id: "validate-signature",   tag: "Sicurezza", name: "Verifica firma", desc: "Controlla validita delle firme presenti nel PDF.",
-          endpoint: "/api/v1/security/validate-signature", expects: "json",
-          fields: [
-            { kind: "file", name: "fileInput", label: "PDF firmato", required: true, accept: "application/pdf" },
-          ] },
-        { id: "remove-cert-sign",     tag: "Sicurezza", name: "Rimuovi firma", desc: "Toglie firme digitali dal PDF (mantiene contenuto).",
-          endpoint: "/api/v1/security/remove-cert-sign", expects: "pdf",
-          fields: [
-            { kind: "file", name: "fileInput", label: "PDF firmato", required: true, accept: "application/pdf" },
-          ] },
-        { id: "add-watermark",        tag: "Sicurezza", name: "Aggiungi filigrana", desc: "Watermark testuale ripetuto su tutte le pagine.",
-          endpoint: "/api/v1/security/add-watermark", expects: "pdf",
-          fields: [
-            { kind: "file",   name: "fileInput",      label: "PDF", required: true, accept: "application/pdf" },
-            { kind: "text",   name: "watermarkText",  label: "Testo filigrana", required: true, placeholder: "RISERVATO" },
-            { kind: "number", name: "fontSize",       label: "Dimensione font", default: "30" },
-            { kind: "number", name: "rotation",       label: "Rotazione gradi", default: "45" },
-            { kind: "number", name: "opacity",        label: "Opacita 0.0-1.0", default: "0.5", step: "0.1" },
-            { kind: "number", name: "widthSpacer",    label: "Spaziatura larghezza", default: "50" },
-            { kind: "number", name: "heightSpacer",   label: "Spaziatura altezza", default: "50" },
-          ] },
-        { id: "sanitize-pdf",         tag: "Sicurezza", name: "Sanifica PDF", desc: "Rimuove JS, file embedded, metadati. Step automatico Evidence Cloud.",
-          endpoint: "/api/v1/security/sanitize-pdf", expects: "pdf",
-          fields: [
-            { kind: "file", name: "fileInput", label: "PDF da sanificare", required: true, accept: "application/pdf" },
-            { kind: "checkbox", name: "removeJavaScript",   label: "Rimuovi JavaScript", default: true },
-            { kind: "checkbox", name: "removeEmbeddedFiles",label: "Rimuovi file allegati", default: true },
-            { kind: "checkbox", name: "removeMetadata",     label: "Rimuovi metadati" },
-            { kind: "checkbox", name: "removeLinks",        label: "Rimuovi hyperlink" },
-            { kind: "checkbox", name: "removeFonts",        label: "Rimuovi font embedded" },
-          ] },
-        { id: "redact",               tag: "Sicurezza", name: "Redazione automatica", desc: "Oscura parole o regex. Usato per export probatorio GDPR.",
-          endpoint: "/api/v1/security/redact", expects: "pdf",
-          fields: [
-            { kind: "file",     name: "fileInput",       label: "PDF", required: true, accept: "application/pdf" },
-            { kind: "textarea", name: "listOfText",      label: "Parole da oscurare (una per riga)", required: true, rows: 4 },
-            { kind: "checkbox", name: "useRegex",        label: "Le voci sopra sono espressioni regolari" },
-            { kind: "checkbox", name: "wholeWordSearch", label: "Solo parole intere", default: true },
-            { kind: "text",     name: "redactColor",     label: "Colore (hex)", default: "#000000" },
-            { kind: "number",   name: "customPadding",   label: "Padding pixel", default: "0.1", step: "0.1" },
-          ] },
-        { id: "flatten",              tag: "Sicurezza", name: "Appiattisci PDF", desc: "Trasforma moduli compilabili in contenuto fisso.",
-          endpoint: "/api/v1/misc/flatten", expects: "pdf",
-          fields: [
-            { kind: "file",     name: "fileInput",       label: "PDF", required: true, accept: "application/pdf" },
-            { kind: "checkbox", name: "flattenOnlyForms",label: "Appiattisci solo i moduli (lascia annotazioni)" },
-          ] },
-        { id: "get-info-on-pdf",      tag: "Sicurezza", name: "Info su PDF", desc: "Metadati, versione, pagine, font, firme, allegati.",
-          endpoint: "/api/v1/security/get-info-on-pdf", expects: "json",
-          fields: [
-            { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
-          ] },
-        { id: "unlock-pdf-forms",     tag: "Sicurezza", name: "Sblocca moduli", desc: "Rende compilabili i campi dei moduli PDF.",
-          endpoint: "/api/v1/misc/unlock-pdf-forms", expects: "pdf",
-          fields: [
-            { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
-          ] },
-        { id: "compress-pdf",         tag: "Sicurezza", name: "Comprimi PDF", desc: "Riduce dimensione file (utile per email e archiviazione).",
-          endpoint: "/api/v1/misc/compress-pdf", expects: "pdf",
-          fields: [
-            { kind: "file",   name: "fileInput",        label: "PDF da comprimere", required: true, accept: "application/pdf" },
-            { kind: "select", name: "optimizeLevel",    label: "Livello compressione", options: [["3","Medio (raccomandato)"],["1","Leggero"],["2","Bilanciato"],["4","Aggressivo"],["5","Massima riduzione"]] },
-            { kind: "select", name: "expectedOutputSize", label: "Dimensione target (opzionale)", options: [["","-- nessuna --"],["10MB","10 MB"],["25MB","25 MB"],["50MB","50 MB"]] },
-            { kind: "checkbox", name: "convertToGrayscale", label: "Converti in scala di grigi (riduce molto)" },
-          ] },
-        { id: "remove-blanks",        tag: "Sicurezza", name: "Rimuovi pagine bianche", desc: "Elimina automaticamente le pagine vuote dal PDF.",
-          endpoint: "/api/v1/misc/remove-blanks", expects: "pdf",
-          fields: [
-            { kind: "file",   name: "fileInput",      label: "PDF", required: true, accept: "application/pdf" },
-            { kind: "number", name: "threshold",      label: "Soglia rilevamento (px)", default: "10" },
-            { kind: "number", name: "whitePercent",   label: "Soglia bianco (% pixel)", default: "99.9", step: "0.1" },
-          ] },
+        S("add-password","Sicurezza","Aggiungi password","Cifra il PDF con una password di apertura.","/api/v1/security/add-password","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF da cifrare", required: true, accept: "application/pdf" },
+          { kind: "password", name: "password", label: "Password di apertura", required: true },
+          { kind: "password", name: "ownerPassword", label: "Password proprietario (opzionale)" },
+          { kind: "select", name: "keyLength", label: "Forza chiave", options: [["256","AES 256 bit"],["128","AES 128 bit"]] },
+        ]),
+        S("remove-password","Sicurezza","Rimuovi password","Decifra il PDF se conosci la password.","/api/v1/security/remove-password","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF cifrato", required: true, accept: "application/pdf" },
+          { kind: "password", name: "password", label: "Password attuale", required: true },
+        ]),
+        S("verify-pdf","Sicurezza","Verifica integrità","Controlla che il PDF non sia corrotto o manomesso.","/api/v1/security/verify-pdf","json"),
+        S("cert-sign","Sicurezza","Firma con certificato","Firma digitale visibile con .p12 o coppia chiave/cert.","/api/v1/security/cert-sign","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF da firmare", required: true, accept: "application/pdf" },
+          { kind: "select", name: "certType", label: "Tipo certificato", options: [["PKCS12","PKCS#12 (.p12)"],["PEM","PEM (chiave + cert)"]] },
+          { kind: "file", name: "p12File", label: "File .p12 (se PKCS#12)", accept: ".p12,application/x-pkcs12" },
+          { kind: "file", name: "privateKeyFile", label: "Chiave privata .pem (se PEM)", accept: ".pem,.key" },
+          { kind: "file", name: "certFile", label: "Certificato .pem (se PEM)", accept: ".pem,.crt,.cer" },
+          { kind: "password", name: "password", label: "Password certificato" },
+          { kind: "checkbox", name: "showSignature", label: "Mostra rettangolo firma sulla pagina" },
+          { kind: "text", name: "reason", label: "Motivo firma" },
+          { kind: "text", name: "location", label: "Luogo firma" },
+          { kind: "text", name: "name", label: "Nome firmatario" },
+        ]),
+        S("validate-signature","Sicurezza","Verifica firma","Controlla validita delle firme presenti nel PDF.","/api/v1/security/validate-signature","json"),
+        S("remove-cert-sign","Sicurezza","Rimuovi firma","Toglie firme digitali dal PDF (mantiene contenuto).","/api/v1/security/remove-cert-sign","pdf"),
+        S("add-watermark","Sicurezza","Aggiungi filigrana","Watermark testuale ripetuto su tutte le pagine.","/api/v1/security/add-watermark","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "watermarkText", label: "Testo filigrana", required: true, placeholder: "RISERVATO" },
+          { kind: "number", name: "fontSize", label: "Dimensione font", default: "30" },
+          { kind: "number", name: "rotation", label: "Rotazione gradi", default: "45" },
+          { kind: "number", name: "opacity", label: "Opacita 0.0-1.0", default: "0.5", step: "0.1" },
+          { kind: "number", name: "widthSpacer", label: "Spaziatura larghezza", default: "50" },
+          { kind: "number", name: "heightSpacer", label: "Spaziatura altezza", default: "50" },
+        ]),
+        S("sanitize-pdf","Sicurezza","Sanifica PDF","Rimuove JS, file embedded, metadati. Step automatico Evidence Cloud.","/api/v1/security/sanitize-pdf","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF da sanificare", required: true, accept: "application/pdf" },
+          { kind: "checkbox", name: "removeJavaScript", label: "Rimuovi JavaScript", default: true },
+          { kind: "checkbox", name: "removeEmbeddedFiles", label: "Rimuovi file allegati", default: true },
+          { kind: "checkbox", name: "removeMetadata", label: "Rimuovi metadati" },
+          { kind: "checkbox", name: "removeLinks", label: "Rimuovi hyperlink" },
+          { kind: "checkbox", name: "removeFonts", label: "Rimuovi font embedded" },
+        ]),
+        S("redact","Sicurezza","Redazione automatica","Oscura parole o regex. Usato per export probatorio GDPR.","/api/v1/security/redact","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "textarea", name: "listOfText", label: "Parole da oscurare (una per riga)", required: true, rows: 4 },
+          { kind: "checkbox", name: "useRegex", label: "Le voci sopra sono espressioni regolari" },
+          { kind: "checkbox", name: "wholeWordSearch", label: "Solo parole intere", default: true },
+          { kind: "text", name: "redactColor", label: "Colore (hex)", default: "#000000" },
+          { kind: "number", name: "customPadding", label: "Padding pixel", default: "0.1", step: "0.1" },
+        ]),
+        S("auto-redact","Sicurezza","Auto-redazione","Versione automatica della redazione (Stirling auto-redact).","/api/v1/security/auto-redact","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "textarea", name: "listOfText", label: "Parole/regex (una per riga)", required: true, rows: 4 },
+          { kind: "checkbox", name: "useRegex", label: "Espressioni regolari" },
+          { kind: "checkbox", name: "wholeWordSearch", label: "Solo parole intere", default: true },
+          { kind: "text", name: "redactColor", label: "Colore (hex)", default: "#000000" },
+        ]),
+        S("get-info-on-pdf","Sicurezza","Info su PDF","Metadati, versione, pagine, font, firme, allegati.","/api/v1/security/get-info-on-pdf","json"),
       ],
       conversione: [
-        { id: "img-to-pdf",    tag: "Conversione", name: "Immagine → PDF", desc: "Una o piu immagini in un unico PDF.",
-          endpoint: "/api/v1/convert/img/pdf", expects: "pdf",
-          fields: [
-            { kind: "file",   name: "fileInput",   label: "Immagini (JPG/PNG/HEIC...)", required: true, accept: "image/*", multiple: true },
-            { kind: "select", name: "fitOption",   label: "Adattamento", options: [["fillPage","Riempi pagina"],["maintainAspectRatio","Mantieni proporzioni"],["stretchToFit","Adatta a misura"]] },
-            { kind: "select", name: "colorType",   label: "Colore", options: [["color","Colori"],["greyscale","Scala di grigi"],["blackwhite","Bianco/Nero"]] },
-            { kind: "checkbox", name: "autoRotate",label: "Auto-rotazione" },
-          ] },
-        { id: "pdf-to-word",   tag: "Conversione", name: "PDF → Word", desc: "Converte in .docx, .doc o .odt.",
-          endpoint: "/api/v1/convert/pdf/word", expects: "docx",
-          fields: [
-            { kind: "file",   name: "fileInput",   label: "PDF", required: true, accept: "application/pdf" },
-            { kind: "select", name: "outputFormat",label: "Formato uscita", options: [["docx","Word .docx"],["doc","Word .doc"],["odt","OpenDocument .odt"]] },
-          ] },
-        { id: "pdf-to-img",    tag: "Conversione", name: "PDF → Immagini", desc: "Esporta ogni pagina come PNG/JPEG/WEBP.",
-          endpoint: "/api/v1/convert/pdf/img", expects: "zip",
-          fields: [
-            { kind: "file",   name: "fileInput",        label: "PDF", required: true, accept: "application/pdf" },
-            { kind: "select", name: "imageFormat",      label: "Formato", options: [["png","PNG"],["jpeg","JPEG"],["webp","WEBP"]] },
-            { kind: "select", name: "singleOrMultiple", label: "Output", options: [["multiple","Una immagine per pagina (ZIP)"],["single","Singola immagine lunga"]] },
-            { kind: "select", name: "colorType",        label: "Colore", options: [["color","Colori"],["greyscale","Scala di grigi"],["blackwhite","Bianco/Nero"]] },
-            { kind: "number", name: "dpi",              label: "DPI", default: "300" },
-          ] },
-        { id: "pdf-to-csv",    tag: "Conversione", name: "PDF → CSV", desc: "Estrae tabelle dal PDF in formato CSV.",
-          endpoint: "/api/v1/convert/pdf/csv", expects: "csv",
-          fields: [
-            { kind: "file", name: "fileInput",   label: "PDF con tabelle", required: true, accept: "application/pdf" },
-            { kind: "text", name: "pageNumbers", label: "Pagine (es. 1,3-5 — vuoto = tutte)" },
-          ] },
-        { id: "office-to-pdf", tag: "Conversione", name: "Office → PDF", desc: "Word/Excel/PowerPoint/ODT/RTF/Markdown → PDF.",
-          endpoint: "/api/v1/convert/file/pdf", expects: "pdf",
-          fields: [
-            { kind: "file", name: "fileInput", label: "Documento Office", required: true,
-              accept: ".docx,.doc,.odt,.rtf,.txt,.md,.html,.xlsx,.xls,.ods,.csv,.pptx,.ppt,.odp" },
-          ] },
-        { id: "html-to-pdf",   tag: "Conversione", name: "HTML → PDF", desc: "Pagina HTML statica (o ZIP con asset) → PDF.",
-          endpoint: "/api/v1/convert/html/pdf", expects: "pdf",
-          fields: [
-            { kind: "file", name: "fileInput", label: "File .html oppure .zip", required: true, accept: ".html,.htm,.zip" },
-          ] },
-        { id: "md-to-pdf",     tag: "Conversione", name: "Markdown → PDF", desc: "Converte testo Markdown formattato in PDF.",
-          endpoint: "/api/v1/convert/markdown/pdf", expects: "pdf",
-          fields: [
-            { kind: "file", name: "fileInput", label: "File .md", required: true, accept: ".md,.markdown,text/markdown" },
-          ] },
+        // Verso PDF (10)
+        S("img-to-pdf","Conversione","Immagine → PDF","Una o piu immagini in un unico PDF.","/api/v1/convert/img/pdf","pdf",[
+          { kind: "file", name: "fileInput", label: "Immagini (JPG/PNG/HEIC...)", required: true, accept: "image/*", multiple: true },
+          { kind: "select", name: "fitOption", label: "Adattamento", options: [["fillPage","Riempi pagina"],["maintainAspectRatio","Mantieni proporzioni"],["stretchToFit","Adatta a misura"]] },
+          { kind: "select", name: "colorType", label: "Colore", options: [["color","Colori"],["greyscale","Scala di grigi"],["blackwhite","Bianco/Nero"]] },
+          { kind: "checkbox", name: "autoRotate", label: "Auto-rotazione" },
+        ]),
+        S("file-to-pdf","Conversione","Office → PDF","Word/Excel/PowerPoint/ODT/RTF/TXT → PDF.","/api/v1/convert/file/pdf","pdf",null,".docx,.doc,.odt,.rtf,.txt,.html,.xlsx,.xls,.ods,.csv,.pptx,.ppt,.odp"),
+        S("html-to-pdf","Conversione","HTML → PDF","Pagina HTML statica (o ZIP con asset) → PDF.","/api/v1/convert/html/pdf","pdf",null,".html,.htm,.zip"),
+        S("md-to-pdf","Conversione","Markdown → PDF","Converte testo Markdown formattato in PDF.","/api/v1/convert/markdown/pdf","pdf",null,".md,.markdown,text/markdown"),
+        S("eml-to-pdf","Conversione","Email .eml → PDF","Converte email salvate .eml in PDF.","/api/v1/convert/eml/pdf","pdf",null,".eml,message/rfc822"),
+        S("ebook-to-pdf","Conversione","Ebook → PDF","EPUB/MOBI/AZW → PDF.","/api/v1/convert/ebook/pdf","pdf",null,".epub,.mobi,.azw,.azw3,.fb2"),
+        S("svg-to-pdf","Conversione","SVG → PDF","Grafica vettoriale SVG → PDF.","/api/v1/convert/svg/pdf","pdf",null,".svg,image/svg+xml"),
+        S("vector-to-pdf","Conversione","Vector (AI/EPS) → PDF","File vettoriali Adobe Illustrator/EPS → PDF.","/api/v1/convert/vector/pdf","pdf",null,".ai,.eps,.ps"),
+        S("cbr-to-pdf","Conversione","Fumetto CBR → PDF","Archivio fumetti RAR → PDF.","/api/v1/convert/cbr/pdf","pdf",null,".cbr"),
+        S("cbz-to-pdf","Conversione","Fumetto CBZ → PDF","Archivio fumetti ZIP → PDF.","/api/v1/convert/cbz/pdf","pdf",null,".cbz"),
+
+        // Da PDF (14)
+        S("pdf-to-word","Conversione","PDF → Word","Converte in .docx, .doc o .odt.","/api/v1/convert/pdf/word","docx",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "outputFormat", label: "Formato uscita", options: [["docx","Word .docx"],["doc","Word .doc"],["odt","OpenDocument .odt"]] },
+        ]),
+        S("pdf-to-img","Conversione","PDF → Immagini","Esporta ogni pagina come PNG/JPEG/WEBP.","/api/v1/convert/pdf/img","zip",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "imageFormat", label: "Formato", options: [["png","PNG"],["jpeg","JPEG"],["webp","WEBP"]] },
+          { kind: "select", name: "singleOrMultiple", label: "Output", options: [["multiple","Una immagine per pagina (ZIP)"],["single","Singola immagine lunga"]] },
+          { kind: "select", name: "colorType", label: "Colore", options: [["color","Colori"],["greyscale","Scala di grigi"],["blackwhite","Bianco/Nero"]] },
+          { kind: "number", name: "dpi", label: "DPI", default: "300" },
+        ]),
+        S("pdf-to-text","Conversione","PDF → Testo","Estrai tutto il testo del PDF.","/api/v1/convert/pdf/text","txt"),
+        S("pdf-to-html","Conversione","PDF → HTML","Converte PDF in HTML navigabile.","/api/v1/convert/pdf/html","html"),
+        S("pdf-to-markdown","Conversione","PDF → Markdown","Converte PDF in Markdown.","/api/v1/convert/pdf/markdown","txt"),
+        S("pdf-to-csv","Conversione","PDF → CSV","Estrae tabelle dal PDF in formato CSV.","/api/v1/convert/pdf/csv","csv",[
+          { kind: "file", name: "fileInput", label: "PDF con tabelle", required: true, accept: "application/pdf" },
+          { kind: "text", name: "pageNumbers", label: "Pagine (es. 1,3-5 — vuoto = tutte)" },
+        ]),
+        S("pdf-to-xlsx","Conversione","PDF → Excel","Converte tabelle in foglio Excel .xlsx.","/api/v1/convert/pdf/xlsx","xlsx"),
+        S("pdf-to-xml","Conversione","PDF → XML","Struttura PDF in XML.","/api/v1/convert/pdf/xml","xml"),
+        S("pdf-to-pdfa","Conversione","PDF → PDF/A","Archiviazione a lungo termine ISO 19005.","/api/v1/convert/pdf/pdfa","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "outputFormat", label: "Variante", options: [["pdfa","PDF/A-1b"],["pdfa-1","PDF/A-1a"],["pdfa-2","PDF/A-2b"],["pdfa-3","PDF/A-3b"]] },
+        ]),
+        S("pdf-to-presentation","Conversione","PDF → PowerPoint","Converte PDF in presentazione .pptx.","/api/v1/convert/pdf/presentation","pptx"),
+        S("pdf-to-vector","Conversione","PDF → SVG/Vector","Estrai grafica vettoriale dal PDF.","/api/v1/convert/pdf/vector","zip"),
+        S("pdf-to-epub","Conversione","PDF → EPUB","Converte PDF in ebook EPUB.","/api/v1/convert/pdf/epub","epub"),
+        S("pdf-to-cbr","Conversione","PDF → Fumetto CBR","PDF in archivio fumetto RAR.","/api/v1/convert/pdf/cbr","zip"),
+        S("pdf-to-cbz","Conversione","PDF → Fumetto CBZ","PDF in archivio fumetto ZIP.","/api/v1/convert/pdf/cbz","zip"),
+      ],
+      pagine: [
+        S("merge-pdfs","Pagine","Unisci PDF","Combina piu PDF in un unico file.","/api/v1/general/merge-pdfs","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF da unire (selezione multipla)", required: true, accept: "application/pdf", multiple: true },
+          { kind: "select", name: "sortType", label: "Ordine", options: [["orderProvided","Ordine selezione"],["byFileName","Per nome"],["byDateModified","Per data"]] },
+        ]),
+        S("split-pages","Pagine","Dividi per pagine","Splitta il PDF in N file per intervalli di pagine.","/api/v1/general/split-pages","zip",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "pageNumbers", label: "Intervalli (es. 1-3,5,7-9)", required: true },
+        ]),
+        S("split-by-size-or-count","Pagine","Dividi per dimensione/numero","Splitta automaticamente per peso o numero pagine.","/api/v1/general/split-by-size-or-count","zip",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "splitType", label: "Tipo split", options: [["0","Per dimensione"],["1","Per numero pagine"],["2","Per numero documenti"]] },
+          { kind: "text", name: "splitValue", label: "Valore (es. 10MB o 5 pagine)", required: true },
+        ]),
+        S("split-pdf-by-chapters","Pagine","Dividi per capitoli","Usa i bookmark del PDF per dividere in capitoli.","/api/v1/general/split-pdf-by-chapters","zip"),
+        S("split-pdf-by-sections","Pagine","Dividi per sezioni","Splitta il PDF in sezioni logiche.","/api/v1/general/split-pdf-by-sections","zip"),
+        S("split-for-poster-print","Pagine","Dividi per poster","Divide ogni pagina in tile per stampa poster.","/api/v1/general/split-for-poster-print","pdf"),
+        S("rotate-pdf","Pagine","Ruota PDF","Ruota tutte le pagine di 90/180/270 gradi.","/api/v1/general/rotate-pdf","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "angle", label: "Angolo", options: [["90","90°"],["180","180°"],["270","270°"]] },
+        ]),
+        S("remove-pages","Pagine","Rimuovi pagine","Elimina pagine specifiche dal PDF.","/api/v1/general/remove-pages","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "pageNumbers", label: "Pagine da rimuovere (es. 1,3-5)", required: true },
+        ]),
+        S("rearrange-pages","Pagine","Riordina pagine","Riordina pagine PDF secondo schema personalizzato.","/api/v1/general/rearrange-pages","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "pageNumbers", label: "Nuovo ordine (es. 3,1,2,4)", required: true },
+        ]),
+        S("crop","Pagine","Ritaglia pagine","Ritaglia margini delle pagine PDF.","/api/v1/general/crop","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "number", name: "x", label: "X" , default: "0" },
+          { kind: "number", name: "y", label: "Y" , default: "0" },
+          { kind: "number", name: "width", label: "Larghezza", default: "595" },
+          { kind: "number", name: "height", label: "Altezza", default: "842" },
+        ]),
+        S("scale-pages","Pagine","Scala pagine","Ridimensiona tutte le pagine a un formato.","/api/v1/general/scale-pages","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "pageSize", label: "Formato", options: [["A4","A4"],["A3","A3"],["A5","A5"],["LETTER","Letter"],["LEGAL","Legal"]] },
+          { kind: "number", name: "scaleFactor", label: "Fattore scala", default: "1.0", step: "0.1" },
+        ]),
+        S("pdf-to-single-page","Pagine","Unisci in pagina singola","Combina tutte le pagine in una sola lunga.","/api/v1/general/pdf-to-single-page","pdf"),
+        S("multi-page-layout","Pagine","Layout multipagina","2/4/6/9 pagine per foglio.","/api/v1/general/multi-page-layout","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "pagesPerSheet", label: "Pagine per foglio", options: [["2","2"],["3","3"],["4","4"],["6","6"],["8","8"],["9","9"]] },
+        ]),
+        S("booklet-imposition","Pagine","Imposizione opuscolo","Riordina per stampa fronte-retro a libretto.","/api/v1/general/booklet-imposition","pdf"),
+        S("overlay-pdfs","Pagine","Sovrapponi PDF","Sovrapponi un PDF a un altro (es. timbro).","/api/v1/general/overlay-pdfs","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF base", required: true, accept: "application/pdf" },
+          { kind: "file", name: "overlayFiles", label: "PDF da sovrapporre", required: true, accept: "application/pdf", multiple: true },
+        ]),
+        S("remove-image-pdf","Pagine","Rimuovi immagini","Toglie tutte le immagini dal PDF (mantiene testo).","/api/v1/general/remove-image-pdf","pdf"),
+        S("edit-table-of-contents","Pagine","Modifica indice/TOC","Edita indice (table of contents) del PDF.","/api/v1/general/edit-table-of-contents","pdf"),
+        S("edit-text","Pagine","Modifica testo","Sostituisci testo nel PDF (editor base).","/api/v1/general/edit-text","pdf"),
+        S("extract-bookmarks","Pagine","Estrai bookmark","Estrai bookmark/segnalibri come elenco.","/api/v1/general/extract-bookmarks","json"),
+      ],
+      modifica: [
+        S("compress-pdf","Modifica","Comprimi PDF","Riduce dimensione file (utile per email e archiviazione).","/api/v1/misc/compress-pdf","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF da comprimere", required: true, accept: "application/pdf" },
+          { kind: "select", name: "optimizeLevel", label: "Livello compressione", options: [["3","Medio (raccomandato)"],["1","Leggero"],["2","Bilanciato"],["4","Aggressivo"],["5","Massima riduzione"]] },
+          { kind: "checkbox", name: "convertToGrayscale", label: "Converti in scala di grigi (riduce molto)" },
+        ]),
+        S("decompress-pdf","Modifica","Decomprimi PDF","Decomprime stream PDF (debug).","/api/v1/misc/decompress-pdf","pdf"),
+        S("ocr-pdf","Modifica","OCR (riconoscimento testo)","Rende ricercabile un PDF scansionato.","/api/v1/misc/ocr-pdf","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF scansionato", required: true, accept: "application/pdf" },
+          { kind: "text", name: "languages", label: "Lingue OCR (es. ita,eng)", default: "ita,eng" },
+          { kind: "checkbox", name: "sidecar", label: "Salva anche file .txt", default: false },
+        ]),
+        S("add-page-numbers","Modifica","Aggiungi numeri pagina","Inserisce numerazione automatica.","/api/v1/misc/add-page-numbers","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "position", label: "Posizione", options: [["1","Basso destra"],["2","Basso centro"],["3","Basso sinistra"],["4","Alto destra"],["5","Alto centro"],["6","Alto sinistra"]] },
+          { kind: "number", name: "startingNumber", label: "Numero iniziale", default: "1" },
+          { kind: "number", name: "fontSize", label: "Dimensione font", default: "12" },
+        ]),
+        S("add-image","Modifica","Aggiungi immagine","Inserisce un'immagine nel PDF a coordinate.","/api/v1/misc/add-image","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "file", name: "imageFile", label: "Immagine", required: true, accept: "image/*" },
+          { kind: "number", name: "x", label: "X", default: "100" },
+          { kind: "number", name: "y", label: "Y", default: "100" },
+          { kind: "number", name: "everyPage", label: "Pagina (1) o tutte (0)", default: "1" },
+        ]),
+        S("add-stamp","Modifica","Aggiungi timbro","Applica timbro immagine o testo su tutte le pagine.","/api/v1/misc/add-stamp","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "stampText", label: "Testo timbro", placeholder: "APPROVATO" },
+          { kind: "number", name: "fontSize", label: "Dimensione font", default: "30" },
+          { kind: "number", name: "rotation", label: "Rotazione", default: "0" },
+          { kind: "number", name: "opacity", label: "Opacita 0-1", default: "0.5", step: "0.1" },
+        ]),
+        S("add-comments","Modifica","Aggiungi commenti","Inserisce commenti/annotazioni.","/api/v1/misc/add-comments","pdf"),
+        S("flatten","Modifica","Appiattisci PDF","Trasforma moduli compilabili in contenuto fisso.","/api/v1/misc/flatten","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "checkbox", name: "flattenOnlyForms", label: "Appiattisci solo i moduli (lascia annotazioni)" },
+        ]),
+        S("remove-blanks","Modifica","Rimuovi pagine bianche","Elimina automaticamente le pagine vuote.","/api/v1/misc/remove-blanks","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "number", name: "threshold", label: "Soglia rilevamento (px)", default: "10" },
+          { kind: "number", name: "whitePercent", label: "Soglia bianco (% pixel)", default: "99.9", step: "0.1" },
+        ]),
+        S("unlock-pdf-forms","Modifica","Sblocca moduli","Rende compilabili i campi dei moduli PDF.","/api/v1/misc/unlock-pdf-forms","pdf"),
+        S("repair","Modifica","Ripara PDF","Tenta riparazione PDF corrotti.","/api/v1/misc/repair","pdf"),
+        S("auto-rename","Modifica","Rinomina automatica","Rinomina file in base al titolo/contenuto.","/api/v1/misc/auto-rename","pdf"),
+        S("auto-split-pdf","Modifica","Auto-dividi PDF","Splitta automaticamente al riconoscimento di marker.","/api/v1/misc/auto-split-pdf","zip"),
+        S("scanner-effect","Modifica","Effetto scansione","Aggiunge effetto fotocopia/scansione al PDF.","/api/v1/misc/scanner-effect","pdf"),
+        S("replace-invert-pdf","Modifica","Inverti colori","Inverte colori (utile per modalita scura).","/api/v1/misc/replace-invert-pdf","pdf"),
+        S("update-metadata","Modifica","Modifica metadati","Aggiorna titolo, autore, soggetto, parole chiave.","/api/v1/misc/update-metadata","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "title", label: "Titolo" },
+          { kind: "text", name: "author", label: "Autore" },
+          { kind: "text", name: "subject", label: "Soggetto" },
+          { kind: "text", name: "keywords", label: "Parole chiave" },
+        ]),
+        S("extract-images","Modifica","Estrai immagini","Estrai tutte le immagini dal PDF.","/api/v1/misc/extract-images","zip",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "format", label: "Formato", options: [["png","PNG"],["jpeg","JPEG"]] },
+        ]),
+        S("extract-image-scans","Modifica","Estrai scansioni","Estrai pagine scansionate come immagini.","/api/v1/misc/extract-image-scans","zip"),
+        S("add-attachments","Modifica","Aggiungi allegati","Allega file al PDF (PDF/A-3).","/api/v1/misc/add-attachments","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "file", name: "attachments", label: "File da allegare", required: true, multiple: true },
+        ]),
+        S("extract-attachments","Modifica","Estrai allegati","Estrai tutti gli allegati embedded.","/api/v1/misc/extract-attachments","zip"),
+        S("list-attachments","Modifica","Elenca allegati","Lista degli allegati embedded.","/api/v1/misc/list-attachments","json"),
+        S("delete-attachment","Modifica","Cancella allegato","Rimuovi un allegato per nome.","/api/v1/misc/delete-attachment","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "attachmentName", label: "Nome allegato da rimuovere", required: true },
+        ]),
+        S("rename-attachment","Modifica","Rinomina allegato","Cambia nome a un allegato esistente.","/api/v1/misc/rename-attachment","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "oldName", label: "Nome attuale", required: true },
+          { kind: "text", name: "newName", label: "Nuovo nome", required: true },
+        ]),
+        S("show-javascript","Modifica","Mostra JavaScript","Estrai JavaScript embedded nel PDF.","/api/v1/misc/show-javascript","json"),
+      ],
+      analisi: [
+        S("basic-info","Analisi","Info base","Pagine, dimensione, conteggio parole.","/api/v1/analysis/basic-info","json"),
+        S("document-properties","Analisi","Proprieta documento","Titolo, autore, data creazione, versione PDF.","/api/v1/analysis/document-properties","json"),
+        S("page-count","Analisi","Conta pagine","Numero pagine del PDF.","/api/v1/analysis/page-count","json"),
+        S("page-dimensions","Analisi","Dimensioni pagina","Dimensioni in mm/punti di ogni pagina.","/api/v1/analysis/page-dimensions","json"),
+        S("font-info","Analisi","Info font","Font usati nel PDF (embedded e referenziati).","/api/v1/analysis/font-info","json"),
+        S("annotation-info","Analisi","Info annotazioni","Commenti, evidenziazioni, note.","/api/v1/analysis/annotation-info","json"),
+        S("security-info","Analisi","Info sicurezza","Cifratura, permessi, password, firme.","/api/v1/analysis/security-info","json"),
+        S("form-fields-info","Analisi","Info moduli","Campi modulo presenti nel PDF.","/api/v1/analysis/form-fields","json"),
+      ],
+      moduli: [
+        S("form-fields","Moduli","Elenca campi","Estrai lista campi modulo del PDF.","/api/v1/form/fields","json"),
+        S("form-fill","Moduli","Compila moduli","Compila i campi del modulo da JSON.","/api/v1/form/fill","pdf",[
+          { kind: "file", name: "fileInput", label: "PDF modulo", required: true, accept: "application/pdf" },
+          { kind: "textarea", name: "formData", label: 'Dati JSON (es. {"campo1":"valore"})', required: true, rows: 6 },
+        ]),
+        S("form-delete-fields","Moduli","Cancella campi","Rimuovi campi modulo dal PDF.","/api/v1/form/delete-fields","pdf"),
+        S("form-modify-fields","Moduli","Modifica campi","Modifica proprieta dei campi.","/api/v1/form/modify-fields","pdf"),
+        S("form-extract-csv","Moduli","Esporta moduli CSV","Esporta valori campi come CSV.","/api/v1/form/extract-csv","csv"),
+        S("form-extract-xlsx","Moduli","Esporta moduli Excel","Esporta valori campi come .xlsx.","/api/v1/form/extract-xlsx","xlsx"),
+      ],
+      filtri: [
+        S("filter-page-count","Filtri","Filtro per numero pagine","Accetta PDF con N pagine (richiama 200/204).","/api/v1/filter/filter-page-count","json",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "number", name: "pageCount", label: "Numero pagine atteso", required: true },
+          { kind: "select", name: "comparator", label: "Confronto", options: [["Equal","="],["Greater","≥"],["Less","≤"]] },
+        ]),
+        S("filter-page-size","Filtri","Filtro per dimensione pagina","Filtra in base alla dimensione pagina (A4/A3).","/api/v1/filter/filter-page-size","json",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "select", name: "standardPageSize", label: "Formato", options: [["A4","A4"],["A3","A3"],["LETTER","Letter"],["LEGAL","Legal"]] },
+          { kind: "select", name: "comparator", label: "Confronto", options: [["Equal","="],["Greater","≥"],["Less","≤"]] },
+        ]),
+        S("filter-file-size","Filtri","Filtro per peso file","Accetta PDF entro N byte.","/api/v1/filter/filter-file-size","json",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "number", name: "fileSize", label: "Dimensione max bytes", required: true, default: "10485760" },
+          { kind: "select", name: "comparator", label: "Confronto", options: [["Less","≤"],["Greater","≥"],["Equal","="]] },
+        ]),
+        S("filter-page-rotation","Filtri","Filtro per rotazione","Filtra PDF per orientamento pagina.","/api/v1/filter/filter-page-rotation","json",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "number", name: "rotation", label: "Rotazione (0/90/180/270)", default: "0" },
+        ]),
+        S("filter-contains-text","Filtri","Contiene testo","Verifica se il PDF contiene una stringa.","/api/v1/filter/filter-contains-text","json",[
+          { kind: "file", name: "fileInput", label: "PDF", required: true, accept: "application/pdf" },
+          { kind: "text", name: "text", label: "Testo da cercare", required: true },
+          { kind: "text", name: "pageNumbers", label: "Pagine (vuoto = tutte)" },
+        ]),
+        S("filter-contains-image","Filtri","Contiene immagini","Verifica se il PDF contiene immagini.","/api/v1/filter/filter-contains-image","json"),
       ],
     };
 
@@ -281,8 +434,7 @@
         </button>
       `).join("");
     }
-    renderGrid("sicurezza");
-    renderGrid("conversione");
+    CATS.forEach((c) => renderGrid(c));
 
     // ---- Tabs ----
     document.querySelectorAll(".sp-tab").forEach((btn) => {
@@ -290,8 +442,9 @@
         document.querySelectorAll(".sp-tab").forEach((b) => { b.classList.remove("is-active"); b.setAttribute("aria-selected","false"); });
         btn.classList.add("is-active"); btn.setAttribute("aria-selected","true");
         const tab = btn.dataset.tab;
-        document.getElementById("sp-grid-sicurezza").hidden = (tab !== "sicurezza");
-        document.getElementById("sp-grid-conversione").hidden = (tab !== "conversione");
+        CATS.forEach((c) => {
+          document.getElementById("sp-grid-" + c).hidden = (c !== tab);
+        });
       });
     });
 

@@ -66,6 +66,13 @@
             tutta l'Unione.
           </p>
         </div>
+        <div style="margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--rule);">
+          <span class="section-num" style="display: block; margin-bottom: 8px;">Brand commerciale (opzionale)</span>
+          <p class="small" style="color: var(--ink-3); line-height: 1.4; margin: 0 0 14px;">
+            Se commercializzi sotto un brand diverso dalla ragione sociale (es. ragione sociale "Rossi S.r.l." con brand "Bottega Rossi"), registralo qui. Sara' poi selezionabile in tutti i form di emissione (emetti, nuovo lotto, prodotti) senza doverlo reinserire.
+          </p>
+          <div id="brand-picker-onboarding"></div>
+        </div>
         <button type="submit" class="btn seal lg" id="submit" style="margin-top: 24px;">
           <span class="btn-label">Salva profilo</span>
         </button>
@@ -85,6 +92,7 @@
   import { protectPage, bindLogout } from "./_shared/auth-guard.js";
   import { renderAppShell } from "./_shared/app-shell.js";
   import { supabase } from "./_shared/supabase-client.js";
+  import { mountBrandPicker } from "./_shared/brand-picker.js";
   let user;
   document.documentElement.classList.add("veylon-auth-pending");
   try { ({ user } = await protectPage()); } finally { document.documentElement.classList.remove("veylon-auth-pending"); }
@@ -154,6 +162,20 @@
     }
   });
   load();
+
+  // Brand picker opzionale (no required) per associare brand commerciale al produttore
+  let brandPicker = null;
+  try {
+    brandPicker = await mountBrandPicker("#brand-picker-onboarding", {
+      supabase,
+      required: false,
+      allowCreate: true,
+      label: "Brand commerciale (opzionale)",
+      onChange: () => {},
+    });
+  } catch (e) {
+    console.warn("brand-picker mount failed:", e?.message || e);
+  }
   </script>
 </body>
 </html>
