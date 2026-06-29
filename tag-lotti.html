@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VEYLON Tag CRM · Lotti emessi</title>
+  <meta name="description" content="Lotti certificati emessi. Filtra per brand, stato OTS Bitcoin, categoria merceologica e data. Apri il dettaglio del lotto per scaricare bundle, esportare CSV o trasferire pezzi ai destinatari."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.skypack.dev https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://hanxxxtgxofjkfdjegfe.supabase.co; connect-src 'self' https://hanxxxtgxofjkfdjegfe.supabase.co https://plausible.io; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    html.veylon-auth-pending body { visibility: hidden; }
+
+    /* ============================== LAYOUT BASE ============================== */
+    body.crm-layout { margin: 0; background: var(--paper); color: var(--ink); }
+    .crm-grid { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+    .crm-main { padding: 0 0 96px; max-width: 100%; min-width: 0; }
+    .crm-main-inner { padding: 24px clamp(20px, 4vw, 40px) 0; max-width: 1640px; width: 100%; }
+
+    /* ============================== SIDEBAR ================================ */
+    .crm-aside { background: var(--paper-2); border-right: 1px solid var(--rule); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; padding: 24px 18px; overflow-y: auto; }
+    .crm-aside-brand { padding-bottom: 18px; border-bottom: 1px solid var(--rule-2); margin-bottom: 18px; }
+    .crm-aside-brand-name { display: block; font-family: var(--serif); font-size: 22px; letter-spacing: 0.04em; color: var(--ink); font-weight: 600; }
+    .crm-aside-brand-tag { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin-top: 4px; }
+    .crm-aside-section { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); padding: 14px 10px 8px; }
+    .crm-aside-list { list-style: none; padding: 0; margin: 0 0 8px; }
+    .crm-aside-link { display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-family: var(--serif); font-size: 14.5px; color: var(--ink-2); text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .crm-aside-link:hover { background: var(--paper); color: var(--ink); }
+    .crm-aside-link.is-active { color: var(--seal); background: var(--paper); border-left-color: var(--seal); font-weight: 600; }
+    .crm-aside-user { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--rule-2); }
+    .crm-aside-user-card { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px; background: transparent; border: 1px solid var(--rule-2); cursor: pointer; text-align: left; font: inherit; color: inherit; }
+    .crm-aside-user-card:hover { background: var(--paper); }
+    .crm-aside-avatar { width: 32px; height: 32px; background: var(--seal); color: var(--paper); border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; }
+    .crm-aside-user-meta { display: flex; flex-direction: column; min-width: 0; }
+    .crm-aside-user-email { font-family: var(--mono); font-size: 11px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+    .crm-aside-user-action { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--seal); margin-top: 2px; }
+    .crm-drawer-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 60; background: var(--paper); border: 1px solid var(--rule); padding: 8px 10px; cursor: pointer; }
+    .crm-drawer-backdrop { display: none; position: fixed; inset: 0; background: oklch(0 0 0 / 0.32); z-index: 40; }
+    @media (max-width: 800px) {
+      .crm-grid { grid-template-columns: 1fr; }
+      .crm-aside { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; z-index: 50; transform: translateX(-100%); transition: transform 0.22s ease-out; }
+      .crm-aside.is-open { transform: translateX(0); }
+      .crm-drawer-toggle { display: inline-flex; align-items: center; gap: 8px; }
+      .crm-drawer-backdrop.is-open { display: block; }
+      .crm-main-inner { padding-top: 72px; }
+    }
+
+    /* ============================== BREADCRUMB ================================ */
+    .crm-breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; flex-wrap: wrap; }
+    .crm-breadcrumb a { color: var(--ink-2); text-decoration: none; }
+    .crm-breadcrumb a:hover { color: var(--seal); }
+    .crm-breadcrumb span.sep { color: var(--ink-3); opacity: 0.5; }
+
+    /* ============================== PAGE HEAD ================================ */
+    .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; flex-wrap: wrap; }
+    .page-head h1 { font-family: var(--serif); font-size: clamp(28px, 4vw, 42px); line-height: 1.05; letter-spacing: -0.02em; margin: 6px 0 10px; }
+    .page-head h1 em { font-style: italic; color: var(--seal); }
+    .page-head .counter { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); }
+    .page-head .counter strong { color: var(--ink); font-weight: 500; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; background: var(--ink); color: var(--paper); border: 1px solid var(--ink); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .btn-primary:hover { background: var(--seal); border-color: var(--seal); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; background: var(--paper); color: var(--ink); border: 1px solid var(--ink); font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .btn-secondary:hover { background: var(--paper-2); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; background: transparent; color: var(--ink-2); border: 1px solid var(--rule); font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .btn-ghost:hover { background: var(--paper-2); color: var(--ink); border-color: var(--ink-3); }
+
+    /* ============================== TOOLBAR ============================== */
+    .toolbar { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: var(--paper-2); border: 1px solid var(--rule-2); margin-bottom: 18px; flex-wrap: wrap; }
+    .toolbar input[type="search"], .toolbar input[type="date"], .toolbar select { padding: 8px 12px; border: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; background: var(--paper); color: var(--ink); border-radius: 0; }
+    .toolbar input[type="search"] { flex: 1; min-width: 220px; }
+    .toolbar select { min-width: 140px; }
+    .toolbar .group { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+    .toolbar .group-divider { width: 1px; height: 22px; background: var(--rule); }
+
+    /* ============================== SPLIT LAYOUT ============================== */
+    .split-layout { display: grid; grid-template-columns: 1fr 0; gap: 0; transition: grid-template-columns 0.2s ease-out; min-width: 0; }
+    .split-layout.has-detail { grid-template-columns: 1fr 420px; }
+    .split-main { min-width: 0; }
+    .split-detail { background: var(--paper-2); border-left: 1px solid var(--rule); padding: 0; overflow-y: auto; max-height: calc(100vh - 100px); position: sticky; top: 80px; min-width: 0; }
+    .split-detail.empty { display: none; }
+    @media (max-width: 1100px) {
+      .split-layout.has-detail { grid-template-columns: 1fr; }
+      .split-detail { position: fixed; top: 0; right: 0; width: min(420px, 100%); height: 100vh; z-index: 70; max-height: 100vh; box-shadow: -8px 0 32px oklch(0 0 0 / 0.18); border-left: 1px solid var(--rule); }
+      .split-detail-backdrop { display: none; position: fixed; inset: 0; background: oklch(0 0 0 / 0.4); z-index: 65; }
+      .split-detail-backdrop.is-open { display: block; }
+    }
+    .split-detail-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--rule); position: sticky; top: 0; background: var(--paper-2); }
+    .split-detail-head h2 { margin: 0; font-family: var(--serif); font-size: 17px; letter-spacing: -0.01em; }
+    .split-detail-head em { font-style: italic; color: var(--seal); }
+    .split-detail-close { background: transparent; border: 0; font-size: 22px; cursor: pointer; color: var(--ink-2); padding: 0 6px; line-height: 1; }
+    .split-detail-close:hover { color: var(--seal); }
+    .split-detail-body { padding: 18px 20px; }
+
+    /* ============================== DATA TABLE ============================== */
+    .data-table-wrap { background: var(--paper); border: 1px solid var(--rule); overflow: auto; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 980px; }
+    .data-table thead th { text-align: left; padding: 12px 14px; background: var(--paper-2); border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; position: sticky; top: 0; z-index: 2; }
+    .data-table thead th.sortable { cursor: pointer; user-select: none; }
+    .data-table thead th.sortable:hover { color: var(--ink); }
+    .data-table thead th .sort-ind { display: inline-block; width: 10px; opacity: 0.6; margin-left: 4px; }
+    .data-table tbody tr { cursor: pointer; transition: background 0.12s; }
+    .data-table tbody tr:nth-child(even) { background: var(--paper-2); }
+    .data-table tbody tr:hover { background: var(--seal-50); }
+    .data-table tbody tr.is-selected { background: var(--seal-50); outline: 1px solid var(--seal); outline-offset: -1px; }
+    .data-table tbody td { padding: 12px 14px; border-bottom: 1px solid var(--rule-2); font-family: var(--serif); color: var(--ink); vertical-align: middle; }
+    .data-table tbody td.mono { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+    .data-table tbody td.num { text-align: right; font-family: var(--mono); font-size: 12px; }
+    .data-table input[type="checkbox"] { cursor: pointer; }
+
+    /* ============================== STATUS PILLS ============================== */
+    .pill { display: inline-block; padding: 3px 9px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--rule); color: var(--ink-2); white-space: nowrap; }
+    .pill.is-ok { color: var(--verify); border-color: var(--verify); }
+    .pill.is-pending { color: var(--amber); border-color: var(--amber); }
+    .pill.is-failed { color: var(--seal); border-color: var(--seal); }
+    .pill.is-mixed { color: var(--ink-2); border-color: var(--ink-3); }
+
+    /* ============================== DETAIL PANE CARDS ============================== */
+    .detail-card { padding: 14px 0; border-bottom: 1px solid var(--rule-2); }
+    .detail-card:last-child { border-bottom: 0; }
+    .detail-card-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+    .detail-row { display: grid; grid-template-columns: 110px 1fr; gap: 6px 14px; padding: 4px 0; }
+    .detail-row dt { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.06em; padding-top: 2px; }
+    .detail-row dd { font-family: var(--serif); font-size: 13.5px; color: var(--ink); margin: 0; word-break: break-word; }
+    .detail-stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .detail-stat { padding: 12px 14px; border: 1px solid var(--rule-2); background: var(--paper); }
+    .detail-stat .lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .detail-stat .num { font-family: var(--serif); font-style: italic; font-size: 24px; color: var(--ink); margin-top: 4px; line-height: 1; }
+    .detail-stat.is-ok .num { color: var(--verify); }
+    .detail-stat.is-pending .num { color: var(--amber); }
+    .detail-stat.is-failed .num { color: var(--seal); }
+    .detail-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+
+    /* ============================== PAGINATION ============================== */
+    .pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-top: 1px solid var(--rule); background: var(--paper-2); flex-wrap: wrap; gap: 12px; }
+    .pagination .pp { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.06em; }
+    .pagination select { padding: 5px 8px; border: 1px solid var(--rule); font-family: var(--mono); font-size: 11px; background: var(--paper); }
+    .pagination .pgr { display: flex; align-items: center; gap: 6px; }
+    .pagination .pgr button { padding: 6px 12px; border: 1px solid var(--rule); background: var(--paper); cursor: pointer; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+    .pagination .pgr button:hover:not(:disabled) { background: var(--seal-50); border-color: var(--seal); color: var(--seal); }
+    .pagination .pgr button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pagination .pgr .pageinfo { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); padding: 0 8px; }
+
+    /* ============================== EMPTY / LOADING / SKELETON ============================== */
+    .crm-loading { padding: 60px 24px; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; text-transform: uppercase; }
+    .empty-state { padding: 80px 32px; text-align: center; border: 1px dashed var(--rule); background: var(--paper-2); }
+    .empty-state-roman { font-family: var(--serif); font-style: italic; color: var(--seal); font-size: 38px; line-height: 1; }
+    .empty-state-title { font-family: var(--serif); font-size: 24px; margin: 14px 0 10px; letter-spacing: -0.01em; }
+    .empty-state-sub { font-family: var(--serif); color: var(--ink-2); font-size: 14.5px; max-width: 50ch; margin: 0 auto 18px; line-height: 1.55; }
+    .skeleton-row { animation: pulse 1.4s ease-in-out infinite; background: var(--paper-2); }
+    .skeleton-cell { display: inline-block; height: 12px; background: var(--rule); border-radius: 2px; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+    /* ============================== TOAST ============================== */
+    .toast { position: fixed; top: 20px; right: 20px; padding: 14px 18px; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 11.5px; z-index: 200; max-width: 360px; box-shadow: 0 6px 20px oklch(0 0 0 / 0.18); transform: translateX(120%); transition: transform 0.28s ease-out; }
+    .toast.is-visible { transform: translateX(0); }
+    .toast.is-error { background: var(--seal); }
+    .toast.is-ok { background: var(--verify); }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body class="crm-layout">
+
+  <button class="crm-drawer-toggle" id="crm-drawer-toggle" type="button" aria-label="Apri menu" aria-controls="crm-aside" aria-expanded="false">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <span class="sr-only">Menu</span>
+  </button>
+  <div class="crm-drawer-backdrop" id="crm-drawer-backdrop" aria-hidden="true"></div>
+
+  <div class="crm-grid">
+
+    <aside class="crm-aside" id="crm-aside" aria-label="Navigazione CRM Veylon Tag">
+      <div class="crm-aside-brand">
+        <a href="tag-crm.html" style="text-decoration:none;">
+          <span class="crm-aside-brand-name">VEYLON</span>
+          <span class="crm-aside-brand-tag">Tag CRM Enterprise</span>
+        </a>
+      </div>
+      <div class="crm-aside-section">Bacheca</div>
+      <ul class="crm-aside-list" role="list"><li><a href="tag-crm.html" class="crm-aside-link">Dashboard</a></li></ul>
+      <div class="crm-aside-section">Azienda</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-profilo.html" class="crm-aside-link">Profilo societa</a></li>
+        <li><a href="tag-brands.html" class="crm-aside-link">Brand</a></li>
+      </ul>
+      <div class="crm-aside-section">Catalogo</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-prodotti.html" class="crm-aside-link">Prodotti</a></li>
+        <li><a href="tag-supporti.html" class="crm-aside-link">Supporti Veylon</a></li>
+      </ul>
+      <div class="crm-aside-section">Produzione</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-nuovo-lotto.html" class="crm-aside-link">+ Emetti lotto</a></li>
+        <li><a href="tag-lotti.html" class="crm-aside-link is-active">Lotti emessi</a></li>
+        <li><a href="tag-bulk-jobs.html" class="crm-aside-link">Bulk jobs async</a></li>
+      </ul>
+      <div class="crm-aside-section">Distribuzione</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="tag-destinatari.html" class="crm-aside-link">Destinatari</a></li>
+      </ul>
+      <div class="crm-aside-section">Sistema</div>
+      <ul class="crm-aside-list" role="list">
+        <li><a href="developers.html" class="crm-aside-link">API &amp; webhook</a></li>
+        <li><a href="tag-enterprise.html" class="crm-aside-link">Accreditamento</a></li>
+        <li><a href="dashboard.html" class="crm-aside-link">Cruscotto generale</a></li>
+      </ul>
+      <div class="crm-aside-user">
+        <button class="crm-aside-user-card" id="crm-logout" type="button" aria-label="Esci dall'account">
+          <span class="crm-aside-avatar" id="crm-avatar" aria-hidden="true">VL</span>
+          <span class="crm-aside-user-meta">
+            <span class="crm-aside-user-email" id="crm-user-email">—</span>
+            <span class="crm-aside-user-action">Esci</span>
+          </span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="crm-main">
+      <div class="crm-main-inner">
+
+        <nav class="crm-breadcrumb" aria-label="Breadcrumb">
+          <a href="tag-crm.html">Veylon Tag CRM</a>
+          <span class="sep">/</span>
+          <span>Lotti emessi</span>
+        </nav>
+
+        <section class="page-head">
+          <div>
+            <h1>Lotti <em>emessi</em>.</h1>
+            <p class="counter" id="page-counter">Caricamento lotti…</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <a class="btn-secondary" href="tag-bulk-jobs.html">Bulk jobs</a>
+            <a class="btn-primary" href="tag-nuovo-lotto.html">+ Emetti lotto</a>
+          </div>
+        </section>
+
+        <!-- TOOLBAR -->
+        <div class="toolbar" role="search" aria-label="Filtri lotti">
+          <input id="search-input" type="search" placeholder="Cerca codice lotto, prodotto, descrizione…" aria-label="Cerca lotti"/>
+          <span class="group-divider"></span>
+          <select id="filter-brand" aria-label="Filtra per brand">
+            <option value="">Tutti i brand</option>
+          </select>
+          <select id="filter-ots" aria-label="Filtra per stato OTS Bitcoin">
+            <option value="">Tutti gli stati OTS</option>
+            <option value="confirmed">Confermato Bitcoin</option>
+            <option value="pending">In attesa</option>
+            <option value="failed">Errore OTS</option>
+          </select>
+          <select id="filter-categoria" aria-label="Filtra per categoria">
+            <option value="">Tutte le categorie</option>
+            <option value="luxury.watch">Orologi di lusso</option>
+            <option value="luxury.jewel">Gioielli</option>
+            <option value="luxury.fashion">Fashion / moda</option>
+            <option value="pharma.drug">Pharma · farmaco</option>
+            <option value="pharma.device">Pharma · device</option>
+            <option value="wine.dop">Vino DOP</option>
+            <option value="oil.dop">Olio DOP</option>
+            <option value="food.bio">Alimentare bio</option>
+            <option value="industry.oem">Industriale OEM</option>
+            <option value="art.edition">Arte / edizioni</option>
+          </select>
+          <span class="group-divider"></span>
+          <input id="filter-date-from" type="date" aria-label="Data dal"/>
+          <input id="filter-date-to" type="date" aria-label="Data al"/>
+          <span class="group-divider"></span>
+          <select id="sort-by" aria-label="Ordina">
+            <option value="recent">Piu recenti</option>
+            <option value="oldest">Piu vecchi</option>
+            <option value="pezzi_desc">Pezzi (maggiore)</option>
+            <option value="pezzi_asc">Pezzi (minore)</option>
+            <option value="codice">Codice lotto A-Z</option>
+          </select>
+          <button class="btn-ghost" id="btn-reset-filters" type="button">Pulisci</button>
+        </div>
+
+        <!-- SPLIT LAYOUT -->
+        <div class="split-detail-backdrop" id="split-detail-backdrop" aria-hidden="true"></div>
+        <div class="split-layout" id="split-layout">
+          <div class="split-main">
+
+            <!-- LOADING -->
+            <div id="lotti-loading" class="crm-loading">Caricamento lotti emessi…</div>
+
+            <!-- EMPTY STATE -->
+            <div class="empty-state" id="empty-state" hidden>
+              <div class="empty-state-roman">i</div>
+              <h2 class="empty-state-title">Non hai ancora emesso lotti.</h2>
+              <p class="empty-state-sub">Quando emetti un lotto, ogni pezzo riceve un certificato Veylon univoco con ancoraggio Bitcoin. Da qui potrai poi scaricare il bundle CSV, le etichette QR/NFC e trasferire pezzi ai destinatari.</p>
+              <a class="btn-primary" href="tag-nuovo-lotto.html">+ Emetti il primo lotto</a>
+            </div>
+
+            <!-- TABLE -->
+            <div class="data-table-wrap" id="table-wrap" hidden>
+              <table class="data-table" aria-label="Lista lotti emessi">
+                <thead>
+                  <tr>
+                    <th style="width: 36px;"><input type="checkbox" id="sel-all" aria-label="Seleziona tutti"/></th>
+                    <th class="sortable" data-sort="codice">Codice lotto<span class="sort-ind"></span></th>
+                    <th>Brand</th>
+                    <th>Prodotto</th>
+                    <th>Supporto fisico</th>
+                    <th class="num">Pezzi</th>
+                    <th>Stato OTS</th>
+                    <th class="sortable" data-sort="recent">Data emissione<span class="sort-ind">↓</span></th>
+                    <th style="text-align: right;">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody id="lotti-tbody"></tbody>
+              </table>
+              <div class="pagination">
+                <div class="pp">
+                  <span>Mostra</span>
+                  <select id="page-size">
+                    <option value="25">25</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                  </select>
+                  <span>per pagina</span>
+                </div>
+                <div class="pgr">
+                  <button id="btn-prev" type="button">‹ Precedente</button>
+                  <span class="pageinfo" id="page-info">—</span>
+                  <button id="btn-next" type="button">Successiva ›</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <aside class="split-detail empty" id="split-detail" aria-label="Dettaglio lotto">
+            <div class="split-detail-head">
+              <h2>Dettaglio <em id="dt-codice">lotto</em></h2>
+              <button class="split-detail-close" id="split-detail-close" type="button" aria-label="Chiudi pannello">×</button>
+            </div>
+            <div class="split-detail-body" id="split-detail-body"></div>
+          </aside>
+        </div>
+
+        <footer class="footer" style="margin-top: 56px;">
+          <div class="footer-base">
+            <span>© MMXXVI · Veylon S.r.l.</span>
+            <span>Tag CRM Enterprise · Lotti emessi</span>
+          </div>
+        </footer>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module">
+    import { protectPage } from "./_shared/auth-guard.js";
+    import { supabase, getUser, signOut } from "./_shared/supabase-client.js";
+
+    document.documentElement.classList.add("veylon-auth-pending");
+    try { await protectPage(); }
+    finally { document.documentElement.classList.remove("veylon-auth-pending"); }
+
+    const user = await getUser();
+    const email = user?.email ?? "";
+    const initials = (email.split("@")[0] || "VL").slice(0, 2).toUpperCase();
+    document.getElementById("crm-user-email").textContent = email || "—";
+    document.getElementById("crm-avatar").textContent = initials;
+    document.getElementById("crm-logout").addEventListener("click", async (e) => { e.preventDefault(); await signOut(); });
+
+    // ----- Drawer mobile -----
+    const toggleBtn = document.getElementById("crm-drawer-toggle");
+    const sidebar = document.getElementById("crm-aside");
+    const backdrop = document.getElementById("crm-drawer-backdrop");
+    function closeDrawer() { sidebar?.classList.remove("is-open"); backdrop?.classList.remove("is-open"); toggleBtn?.setAttribute("aria-expanded", "false"); }
+    function openDrawer() { sidebar?.classList.add("is-open"); backdrop?.classList.add("is-open"); toggleBtn?.setAttribute("aria-expanded", "true"); }
+    toggleBtn?.addEventListener("click", () => sidebar?.classList.contains("is-open") ? closeDrawer() : openDrawer());
+    backdrop?.addEventListener("click", closeDrawer);
+    sidebar?.querySelectorAll(".crm-aside-link").forEach((a) => a.addEventListener("click", closeDrawer));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+
+    // ----- Utils -----
+    function fmtNum(n) { if (n == null || !Number.isFinite(Number(n))) return "0"; return new Intl.NumberFormat("it-IT").format(Number(n)); }
+    function fmtDate(iso) { if (!iso) return "—"; const d = new Date(iso); if (!Number.isFinite(d.getTime())) return "—"; return d.toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" }); }
+    function fmtDateTime(iso) { if (!iso) return "—"; const d = new Date(iso); if (!Number.isFinite(d.getTime())) return "—"; return d.toLocaleString("it-IT", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }); }
+    function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c])); }
+    function debounce(fn, ms = 280) { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; }
+
+    function showToast(msg, kind = "ok", ms = 3200) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.remove("is-error", "is-ok");
+      t.classList.add(kind === "error" ? "is-error" : "is-ok");
+      t.classList.add("is-visible");
+      setTimeout(() => t.classList.remove("is-visible"), ms);
+    }
+
+    // ----- State -----
+    const state = {
+      lotti: [],
+      filtered: [],
+      brands: new Map(),
+      page: 1,
+      pageSize: 50,
+      sort: "recent",
+      filters: { q: "", brand: "", ots: "", categoria: "", from: "", to: "" },
+      selected: null,
+    };
+
+    // ----- Load brands per filter -----
+    async function loadBrands() {
+      try {
+        const { data, error } = await supabase
+          .from("tag_brands")
+          .select("id, nome, slug")
+          .eq("attivo", true)
+          .order("nome", { ascending: true });
+        if (error) throw error;
+        const sel = document.getElementById("filter-brand");
+        for (const b of (data ?? [])) {
+          state.brands.set(String(b.id), b.nome || b.slug || b.id);
+          const opt = document.createElement("option");
+          opt.value = b.id;
+          opt.textContent = b.nome || b.slug;
+          sel.appendChild(opt);
+        }
+      } catch (e) {
+        console.error("[lotti] loadBrands error", e);
+      }
+    }
+
+    // ----- Aggregation: ottiene lotti distinti partendo da tag_certificati -----
+    async function loadLotti() {
+      const loadingEl = document.getElementById("lotti-loading");
+      const tableWrap = document.getElementById("table-wrap");
+      const emptyEl = document.getElementById("empty-state");
+      try {
+        const { data, error } = await supabase
+          .from("tag_certificati")
+          .select("codice_lotto, descrizione, modello_fisico, categoria_merc, brand, ots_status, created_at, dpp_passport_id")
+          .not("codice_lotto", "is", null)
+          .order("created_at", { ascending: false })
+          .limit(10000);
+        if (error) throw error;
+
+        const agg = new Map();
+        for (const row of (data ?? [])) {
+          const key = row.codice_lotto;
+          if (!agg.has(key)) {
+            agg.set(key, {
+              codice_lotto: key,
+              descrizione: row.descrizione,
+              modello_fisico: row.modello_fisico,
+              categoria_merc: row.categoria_merc,
+              brand: row.brand,
+              created_at: row.created_at,
+              first_at: row.created_at,
+              pezzi: 0,
+              ots_confirmed: 0,
+              ots_pending: 0,
+              ots_failed: 0,
+            });
+          }
+          const a = agg.get(key);
+          a.pezzi += 1;
+          if (row.ots_status === "confirmed") a.ots_confirmed += 1;
+          else if (row.ots_status === "failed") a.ots_failed += 1;
+          else a.ots_pending += 1;
+          if (row.created_at && row.created_at > a.created_at) a.created_at = row.created_at;
+          if (row.created_at && row.created_at < a.first_at) a.first_at = row.created_at;
+        }
+        state.lotti = Array.from(agg.values());
+        loadingEl.hidden = true;
+
+        if (state.lotti.length === 0) {
+          emptyEl.hidden = false;
+          updateCounter(0);
+          return;
+        }
+        applyFilters();
+        tableWrap.hidden = false;
+      } catch (e) {
+        console.error("[lotti] loadLotti error", e);
+        loadingEl.hidden = true;
+        emptyEl.hidden = false;
+        showToast("Errore nel caricamento dei lotti", "error");
+      }
+    }
+
+    // ----- Filtri + sort + paginazione -----
+    function applyFilters() {
+      const { q, brand, ots, categoria, from, to } = state.filters;
+      const brandName = brand ? state.brands.get(String(brand)) : null;
+      let list = state.lotti.slice();
+      if (q) {
+        const needle = q.toLowerCase();
+        list = list.filter((l) =>
+          (l.codice_lotto && l.codice_lotto.toLowerCase().includes(needle)) ||
+          (l.descrizione && l.descrizione.toLowerCase().includes(needle)) ||
+          (l.brand && l.brand.toLowerCase().includes(needle))
+        );
+      }
+      if (brandName) {
+        list = list.filter((l) => l.brand && l.brand.toLowerCase() === brandName.toLowerCase());
+      }
+      if (categoria) {
+        list = list.filter((l) => l.categoria_merc === categoria);
+      }
+      if (ots) {
+        list = list.filter((l) => {
+          if (ots === "confirmed") return l.ots_confirmed > 0 && l.ots_pending === 0 && l.ots_failed === 0;
+          if (ots === "pending") return l.ots_pending > 0;
+          if (ots === "failed") return l.ots_failed > 0;
+          return true;
+        });
+      }
+      if (from) {
+        const fromT = new Date(from).getTime();
+        list = list.filter((l) => new Date(l.created_at).getTime() >= fromT);
+      }
+      if (to) {
+        const toT = new Date(to).getTime() + 86400000;
+        list = list.filter((l) => new Date(l.created_at).getTime() < toT);
+      }
+
+      switch (state.sort) {
+        case "oldest": list.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)); break;
+        case "pezzi_desc": list.sort((a, b) => b.pezzi - a.pezzi); break;
+        case "pezzi_asc": list.sort((a, b) => a.pezzi - b.pezzi); break;
+        case "codice": list.sort((a, b) => String(a.codice_lotto).localeCompare(String(b.codice_lotto))); break;
+        default: list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      }
+      state.filtered = list;
+      state.page = 1;
+      render();
+    }
+
+    function updateCounter(n) {
+      document.getElementById("page-counter").innerHTML = `<strong>${fmtNum(n)}</strong> ${n === 1 ? "lotto" : "lotti"} ${n > 0 && (state.filters.q || state.filters.brand || state.filters.ots || state.filters.categoria || state.filters.from || state.filters.to) ? "(filtrati)" : "totali"}`;
+    }
+
+    function render() {
+      const tbody = document.getElementById("lotti-tbody");
+      const total = state.filtered.length;
+      updateCounter(total);
+      if (total === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 42px; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.12em; text-transform: uppercase;">Nessun lotto corrisponde ai filtri</td></tr>`;
+        document.getElementById("page-info").textContent = "0 / 0";
+        document.getElementById("btn-prev").disabled = true;
+        document.getElementById("btn-next").disabled = true;
+        return;
+      }
+      const totalPages = Math.max(1, Math.ceil(total / state.pageSize));
+      if (state.page > totalPages) state.page = totalPages;
+      const start = (state.page - 1) * state.pageSize;
+      const slice = state.filtered.slice(start, start + state.pageSize);
+
+      tbody.innerHTML = slice.map((l) => {
+        const otsPill = otsPillFor(l);
+        const desc = l.descrizione ? escapeHtml(String(l.descrizione).slice(0, 48)) : '<span style="color: var(--ink-3);">—</span>';
+        const brand = l.brand ? escapeHtml(l.brand) : '<span style="color: var(--ink-3);">—</span>';
+        const mf = l.modello_fisico ? escapeHtml(String(l.modello_fisico).replace(/_/g, " ")) : '<span style="color: var(--ink-3);">—</span>';
+        const isSelected = state.selected === l.codice_lotto ? "is-selected" : "";
+        return `
+          <tr data-codice="${encodeURIComponent(l.codice_lotto)}" class="${isSelected}">
+            <td><input type="checkbox" class="row-check" data-codice="${encodeURIComponent(l.codice_lotto)}" aria-label="Seleziona ${escapeHtml(l.codice_lotto)}"/></td>
+            <td class="mono"><strong style="color: var(--ink);">${escapeHtml(l.codice_lotto)}</strong></td>
+            <td>${brand}</td>
+            <td>${desc}</td>
+            <td class="mono">${mf}</td>
+            <td class="num">${fmtNum(l.pezzi)}</td>
+            <td>${otsPill}</td>
+            <td class="mono">${fmtDate(l.created_at)}</td>
+            <td style="text-align: right;">
+              <a class="btn-ghost" href="tag-lotto-detail.html?codice=${encodeURIComponent(l.codice_lotto)}">Apri</a>
+            </td>
+          </tr>`;
+      }).join("");
+
+      tbody.querySelectorAll("tr[data-codice]").forEach((tr) => {
+        tr.addEventListener("click", (ev) => {
+          if (ev.target.closest("input, a, button")) return;
+          const cod = decodeURIComponent(tr.dataset.codice);
+          openDetail(cod);
+        });
+      });
+
+      document.getElementById("page-info").textContent = `Pagina ${state.page} di ${totalPages} · ${fmtNum(start + 1)}–${fmtNum(Math.min(start + state.pageSize, total))} di ${fmtNum(total)}`;
+      document.getElementById("btn-prev").disabled = state.page <= 1;
+      document.getElementById("btn-next").disabled = state.page >= totalPages;
+    }
+
+    function otsPillFor(l) {
+      if (l.ots_confirmed > 0 && l.ots_pending === 0 && l.ots_failed === 0) return '<span class="pill is-ok">Confermato</span>';
+      if (l.ots_failed > 0) return '<span class="pill is-failed">Errore</span>';
+      if (l.ots_pending > 0 && l.ots_confirmed === 0) return '<span class="pill is-pending">In attesa</span>';
+      return '<span class="pill is-mixed">Misto</span>';
+    }
+
+    // ----- Detail pane -----
+    function openDetail(codice) {
+      const l = state.filtered.find((x) => x.codice_lotto === codice);
+      if (!l) return;
+      state.selected = codice;
+      document.getElementById("dt-codice").textContent = codice;
+      document.getElementById("split-detail-body").innerHTML = `
+        <div class="detail-card">
+          <div class="detail-card-title">Identita lotto</div>
+          <dl class="detail-row"><dt>Codice</dt><dd style="font-family: var(--mono); font-size: 13px;">${escapeHtml(codice)}</dd></dl>
+          <dl class="detail-row"><dt>Prodotto</dt><dd>${escapeHtml(l.descrizione || "—")}</dd></dl>
+          <dl class="detail-row"><dt>Brand</dt><dd>${escapeHtml(l.brand || "—")}</dd></dl>
+          <dl class="detail-row"><dt>Categoria</dt><dd style="font-family: var(--mono); font-size: 12px;">${escapeHtml(l.categoria_merc || "—")}</dd></dl>
+          <dl class="detail-row"><dt>Supporto</dt><dd style="font-family: var(--mono); font-size: 12px;">${escapeHtml(String(l.modello_fisico || "—").replace(/_/g, " "))}</dd></dl>
+          <dl class="detail-row"><dt>Primo pezzo</dt><dd>${fmtDateTime(l.first_at)}</dd></dl>
+          <dl class="detail-row"><dt>Ultimo pezzo</dt><dd>${fmtDateTime(l.created_at)}</dd></dl>
+        </div>
+        <div class="detail-card">
+          <div class="detail-card-title">Sigillo Bitcoin (OpenTimestamps)</div>
+          <div class="detail-stat-grid">
+            <div class="detail-stat"><div class="lbl">Pezzi totali</div><div class="num">${fmtNum(l.pezzi)}</div></div>
+            <div class="detail-stat is-ok"><div class="lbl">Confermati</div><div class="num">${fmtNum(l.ots_confirmed)}</div></div>
+            <div class="detail-stat is-pending"><div class="lbl">In attesa</div><div class="num">${fmtNum(l.ots_pending)}</div></div>
+            <div class="detail-stat is-failed"><div class="lbl">Errore</div><div class="num">${fmtNum(l.ots_failed)}</div></div>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-card-title">Azioni rapide</div>
+          <div class="detail-actions">
+            <a class="btn-primary" href="tag-lotto-detail.html?codice=${encodeURIComponent(codice)}" style="justify-content:center;">Apri dettaglio completo</a>
+            <button class="btn-secondary" type="button" id="btn-bundle" style="justify-content:center;">Scarica bundle ZIP</button>
+            <button class="btn-secondary" type="button" id="btn-csv" style="justify-content:center;">Esporta CSV pezzi</button>
+            <a class="btn-ghost" href="tag-storico.html?lotto=${encodeURIComponent(codice)}" style="justify-content:center;">Vedi pezzi del lotto</a>
+            <a class="btn-ghost" href="tag-trasferisci.html?lotto=${encodeURIComponent(codice)}" style="justify-content:center;">Trasferisci a destinatario</a>
+          </div>
+        </div>`;
+
+      document.getElementById("split-layout").classList.add("has-detail");
+      document.getElementById("split-detail").classList.remove("empty");
+      document.getElementById("split-detail-backdrop")?.classList.add("is-open");
+
+      document.getElementById("btn-bundle").addEventListener("click", () => triggerBundleDownload(codice));
+      document.getElementById("btn-csv").addEventListener("click", () => triggerCsvDownload(codice));
+
+      // Highlight riga
+      document.querySelectorAll("#lotti-tbody tr").forEach((tr) => tr.classList.remove("is-selected"));
+      const row = document.querySelector(`#lotti-tbody tr[data-codice="${encodeURIComponent(codice)}"]`);
+      row?.classList.add("is-selected");
+    }
+
+    function closeDetail() {
+      state.selected = null;
+      document.getElementById("split-layout").classList.remove("has-detail");
+      document.getElementById("split-detail").classList.add("empty");
+      document.getElementById("split-detail-backdrop")?.classList.remove("is-open");
+      document.querySelectorAll("#lotti-tbody tr").forEach((tr) => tr.classList.remove("is-selected"));
+    }
+
+    document.getElementById("split-detail-close").addEventListener("click", closeDetail);
+    document.getElementById("split-detail-backdrop").addEventListener("click", closeDetail);
+
+    async function triggerBundleDownload(codice) {
+      try {
+        showToast("Generazione bundle ZIP in corso…", "ok");
+        const { data: { session } } = await supabase.auth.getSession();
+        const url = `https://hanxxxtgxofjkfdjegfe.supabase.co/functions/v1/tag-lotto-export-zip?codice_lotto=${encodeURIComponent(codice)}`;
+        const resp = await fetch(url, { headers: { "Authorization": `Bearer ${session?.access_token}` } });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const blob = await resp.blob();
+        const dl = document.createElement("a");
+        dl.href = URL.createObjectURL(blob);
+        dl.download = `lotto_${codice}_bundle.zip`;
+        document.body.appendChild(dl);
+        dl.click();
+        dl.remove();
+        showToast("Bundle scaricato", "ok");
+      } catch (e) {
+        console.error("[lotti] bundle error", e);
+        showToast("Errore nel download del bundle", "error");
+      }
+    }
+
+    async function triggerCsvDownload(codice) {
+      try {
+        const { data, error } = await supabase
+          .from("tag_certificati")
+          .select("codice_pubblico, numero_serie, descrizione, modello_fisico, ots_status, created_at")
+          .eq("codice_lotto", codice)
+          .order("numero_serie", { ascending: true });
+        if (error) throw error;
+        const rows = data ?? [];
+        const head = ["codice_pubblico", "numero_serie", "descrizione", "supporto_fisico", "stato_ots", "data_emissione"];
+        const csv = [head.join(",")].concat(rows.map((r) => head.map((h) => {
+          const map = { codice_pubblico: r.codice_pubblico, numero_serie: r.numero_serie, descrizione: r.descrizione, supporto_fisico: r.modello_fisico, stato_ots: r.ots_status, data_emissione: r.created_at };
+          const v = map[h] ?? "";
+          return `"${String(v).replace(/"/g, '""')}"`;
+        }).join(","))).join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const dl = document.createElement("a");
+        dl.href = URL.createObjectURL(blob);
+        dl.download = `lotto_${codice}_pezzi.csv`;
+        document.body.appendChild(dl);
+        dl.click();
+        dl.remove();
+        showToast(`CSV esportato (${rows.length} pezzi)`, "ok");
+      } catch (e) {
+        console.error("[lotti] csv error", e);
+        showToast("Errore nell'esportazione CSV", "error");
+      }
+    }
+
+    // ----- Filter wiring -----
+    const sIn = document.getElementById("search-input");
+    sIn.addEventListener("input", debounce(() => { state.filters.q = sIn.value.trim(); applyFilters(); }));
+    document.getElementById("filter-brand").addEventListener("change", (e) => { state.filters.brand = e.target.value; applyFilters(); });
+    document.getElementById("filter-ots").addEventListener("change", (e) => { state.filters.ots = e.target.value; applyFilters(); });
+    document.getElementById("filter-categoria").addEventListener("change", (e) => { state.filters.categoria = e.target.value; applyFilters(); });
+    document.getElementById("filter-date-from").addEventListener("change", (e) => { state.filters.from = e.target.value; applyFilters(); });
+    document.getElementById("filter-date-to").addEventListener("change", (e) => { state.filters.to = e.target.value; applyFilters(); });
+    document.getElementById("sort-by").addEventListener("change", (e) => { state.sort = e.target.value; applyFilters(); });
+    document.getElementById("page-size").addEventListener("change", (e) => { state.pageSize = Number(e.target.value) || 50; state.page = 1; render(); });
+    document.getElementById("btn-prev").addEventListener("click", () => { if (state.page > 1) { state.page -= 1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); } });
+    document.getElementById("btn-next").addEventListener("click", () => { state.page += 1; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+    document.getElementById("btn-reset-filters").addEventListener("click", () => {
+      sIn.value = "";
+      ["filter-brand", "filter-ots", "filter-categoria", "filter-date-from", "filter-date-to"].forEach((id) => { document.getElementById(id).value = ""; });
+      document.getElementById("sort-by").value = "recent";
+      state.filters = { q: "", brand: "", ots: "", categoria: "", from: "", to: "" };
+      state.sort = "recent";
+      applyFilters();
+    });
+
+    // Sortable header columns
+    document.querySelectorAll("th.sortable").forEach((th) => {
+      th.addEventListener("click", () => {
+        const k = th.dataset.sort;
+        if (k === "codice") state.sort = state.sort === "codice" ? "recent" : "codice";
+        else if (k === "recent") state.sort = state.sort === "recent" ? "oldest" : "recent";
+        document.getElementById("sort-by").value = state.sort;
+        applyFilters();
+      });
+    });
+
+    // Bulk select
+    document.getElementById("sel-all")?.addEventListener("change", (e) => {
+      document.querySelectorAll(".row-check").forEach((c) => { c.checked = e.target.checked; });
+    });
+
+    // ----- Run -----
+    await Promise.allSettled([loadBrands(), loadLotti()]);
+  </script>
+</body>
+</html>

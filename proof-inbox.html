@@ -12,15 +12,62 @@
   <main class="col" style="padding: 40px 32px 96px;">
     <section class="head-row">
       <div>
-        <span class="section-num">ProofOS</span>
+        <span class="section-num">Mail</span>
         <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
-          Proof <em class="serif-italic" style="color: var(--seal);">Inbox.</em>
+          La tua <em class="serif-italic" style="color: var(--seal);">giornata.</em>
         </h1>
-        <p class="lede">Cose da gestire oggi. Le capsule che richiedono la tua attenzione, una coda alla volta.</p>
+        <p class="lede">Le cose da controllare oggi. Apri solo cio che richiede attenzione e archivia il resto in un attimo.</p>
       </div>
     </section>
 
-    <section style="margin-top: 40px;">
+    <section style="margin-top: 28px;">
+      <article class="panel-card howto">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 12px;">Come funziona questa pagina</h2>
+        <p style="font-family: var(--serif); font-size: 15px; line-height: 1.55; margin: 0 0 18px;">
+          Veylon ti mostra qui le email che meritano un occhio. Ogni email che certifichi (anche solo mandando una copia nascosta a <code class="kbd">stamp@mg.veylon.app</code>) finisce in cinque code separate, cosi sai subito cosa toccare per primo.
+        </p>
+
+        <div class="how-grid">
+          <div class="how-step">
+            <span class="how-step-num">1</span>
+            <strong>Nuove arrivate.</strong> Le email appena registrate, da etichettare o assegnare a una pratica.
+          </div>
+          <div class="how-step">
+            <span class="how-step-num">2</span>
+            <strong>Punteggio basso.</strong> Mancano dati per dimostrare bene l'autenticita. Apri e vedi cosa manca.
+          </div>
+          <div class="how-step">
+            <span class="how-step-num">3</span>
+            <strong>Errori.</strong> Email che non sono state registrate correttamente (allegato troppo grande, server irraggiungibile).
+          </div>
+          <div class="how-step">
+            <span class="how-step-num">4</span>
+            <strong>Senza pratica.</strong> Email importanti degli ultimi 30 giorni che non hai ancora collegato a un cliente/caso.
+          </div>
+          <div class="how-step">
+            <span class="how-step-num">5</span>
+            <strong>Allegati mancanti.</strong> Email in cui qualcuno cita un allegato ma il file non e arrivato.
+          </div>
+        </div>
+
+        <h3 class="serif" style="font-size: 16px; margin: 22px 0 8px;">Esempi reali d'uso</h3>
+        <ul style="font-family: var(--serif); font-size: 14px; line-height: 1.6; padding-left: 18px; margin: 0 0 14px;">
+          <li><em>"Stamattina vedo subito che ieri sera mi e arrivato un sollecito da un cliente e non l'ho ancora messo nella sua pratica."</em></li>
+          <li><em>"Il punteggio basso mi avvisa che una email e arrivata senza certi dati tecnici: la apro, vedo che e un finto messaggio."</em></li>
+          <li><em>"In Errori trovo che ieri il server di Mailgun aveva un problema e una email non e stata registrata. La rimando in BCC."</em></li>
+        </ul>
+
+        <h3 class="serif" style="font-size: 16px; margin: 18px 0 8px;">Cosa fare</h3>
+        <ol style="font-family: var(--serif); font-size: 14px; line-height: 1.6; padding-left: 22px; margin: 0;">
+          <li>Clicca su una delle cinque schede sotto.</li>
+          <li>Clicca sul codice (la sigla grigia tipo <code class="kbd">VLN-EVD-2026-...</code>) per aprire l'email.</li>
+          <li>Da li puoi: collegarla a una pratica, scaricare il certificato, condividerla.</li>
+          <li>Quando una coda e vuota, hai finito per oggi su quel fronte.</li>
+        </ol>
+      </article>
+    </section>
+
+    <section style="margin-top: 28px;">
       <article class="panel-card">
         <div class="mode-strip" role="tablist" id="inbox-tabs">
           <button class="mode-btn active" data-tab="new" role="tab" aria-selected="true">
@@ -116,6 +163,12 @@
   .tab-count.has { color: var(--seal); border-color: var(--seal); }
   .empty-q { padding: 32px 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-3); }
   .ev-id { font-family: var(--mono); font-size: 11px; }
+  .howto { background: var(--paper-2, #faf7f0); border-left: 4px solid var(--seal); }
+  .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 4px 0 8px; }
+  .how-step { padding: 14px 16px; background: var(--paper); border: 1px solid var(--rule); font-family: var(--serif); font-size: 14px; line-height: 1.5; }
+  .how-step strong { display: block; margin-top: 4px; }
+  .how-step-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--seal); color: var(--paper); border-radius: 50%; font-family: var(--mono); font-size: 11px; }
+  .kbd { font-family: var(--mono); font-size: 12px; padding: 2px 6px; background: var(--paper); border: 1px solid var(--rule); }
   </style>
 
   <script type="module">

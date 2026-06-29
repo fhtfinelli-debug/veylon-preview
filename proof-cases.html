@@ -12,15 +12,52 @@
   <main class="col" style="padding: 40px 32px 96px;">
     <section class="head-row">
       <div>
-        <span class="section-num">ProofOS</span>
+        <span class="section-num">Mail</span>
         <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
-          Fascicoli <em class="serif-italic" style="color: var(--seal);">probatori.</em>
+          Metti insieme una <em class="serif-italic" style="color: var(--seal);">pratica.</em>
         </h1>
-        <p class="lede">Raggruppa le tue prove in casi probatori, recupero credito, pratiche legali.</p>
+        <p class="lede">Raccogli tutte le email di un cliente o di un caso in un solo posto. Quando serve, scarichi un pacchetto unico con dentro tutto.</p>
       </div>
     </section>
 
-    <section style="margin-top: 32px;">
+    <section style="margin-top: 28px;">
+      <article class="panel-card howto">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 12px;">A cosa serve una pratica</h2>
+        <p style="font-family: var(--serif); font-size: 15px; line-height: 1.55; margin: 0 0 18px;">
+          Una <strong>pratica</strong> e una cartella dove metti tutte le email che riguardano lo stesso cliente, lo stesso contratto, lo stesso problema. Cosi quando ti chiedono "mi mandi tutto quello che e successo con Mooney?" hai in un click un unico pacchetto con dentro: email, allegati, date, tutto firmato e certificato.
+        </p>
+
+        <h3 class="serif" style="font-size: 16px; margin: 6px 0 10px;">Esempi tipici</h3>
+        <div class="how-grid">
+          <div class="how-step">
+            <strong>Recupero credito</strong>
+            "Mooney non ha pagato la fattura 238": metti dentro fattura, sollecito, diffida. Esporti per l'avvocato.
+          </div>
+          <div class="how-step">
+            <strong>Trattativa cliente</strong>
+            "Trattativa con Aquila Film": tutte le email, dal primo preventivo al contratto firmato.
+          </div>
+          <div class="how-step">
+            <strong>Contestazione</strong>
+            "Lavoro non riconosciuto da X": email che dimostrano cosa era stato concordato.
+          </div>
+          <div class="how-step">
+            <strong>Audit / controlli</strong>
+            "Documenti da mostrare al revisore Marzo-Giugno": metti tutto qui, pacchetto pronto.
+          </div>
+        </div>
+
+        <h3 class="serif" style="font-size: 16px; margin: 22px 0 8px;">Come si fa, passo per passo</h3>
+        <ol style="font-family: var(--serif); font-size: 14px; line-height: 1.6; padding-left: 22px; margin: 0;">
+          <li>Clicca <strong>+ Nuovo fascicolo</strong> qui sotto, dai un nome (es. "Mooney - Recupero credito 2026") e indica la controparte.</li>
+          <li>Apri la pratica appena creata. Nella scheda "Email collegate" trovi il modulo <strong>Collega un'email</strong>: incolla il codice di un'email (lo trovi nella sezione Cerca) e clicca Collega.</li>
+          <li>Ripeti per tutte le email che riguardano quel caso. Puoi aggiungerle anche dalla pagina di una singola email (bottone "Aggiungi a Case").</li>
+          <li>Quando ti serve mandare tutto a qualcuno (avvocato, commercialista, cliente), clicca <strong>Esporta litigation pack</strong>. Scarichi un file unico con dentro l'elenco delle email, le date, gli allegati, i certificati.</li>
+        </ol>
+      </article>
+    </section>
+
+    <section style="margin-top: 28px;">
       <article class="panel-card">
         <div class="create-toggle-row">
           <button type="button" class="btn-primary" id="btn-toggle-create" aria-expanded="false" aria-controls="create-form">
@@ -124,6 +161,11 @@
 
   <style>
   .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .howto { background: var(--paper-2, #faf7f0); border-left: 4px solid var(--seal); }
+  .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 4px 0 8px; }
+  .how-step { padding: 14px 16px; background: var(--paper); border: 1px solid var(--rule); font-family: var(--serif); font-size: 14px; line-height: 1.5; }
+  .how-step strong { display: block; margin-bottom: 4px; }
+  .kbd { font-family: var(--mono); font-size: 12px; padding: 2px 6px; background: var(--paper); border: 1px solid var(--rule); }
   .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
   .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
   .state-msg.state-err { color: var(--seal); }

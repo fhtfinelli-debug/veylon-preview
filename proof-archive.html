@@ -10,17 +10,63 @@
 </head>
 <body>
   <main class="col" style="padding: 40px 32px 96px;">
-    <section class="head-row">
+    <section class="head-row" id="hero-row">
       <div>
-        <span class="section-num">ProofOS</span>
+        <span class="section-num">Mail</span>
         <h1 class="serif" style="font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 18px;">
-          Proof Capsules <em class="serif-italic" style="color: var(--seal);">Archivio.</em>
+          Trova un' <em class="serif-italic" style="color: var(--seal);">email.</em>
         </h1>
-        <p class="lede">Cerca tra tutte le capsule certificate. Sintassi semplice, risultati immediati.</p>
+        <p class="lede">Cerca qualunque email certificata: per mittente, oggetto, allegato, data o codice. La trovi in pochi secondi.</p>
       </div>
     </section>
 
-    <section style="margin-top: 40px;">
+    <section style="margin-top: 28px;">
+      <article class="panel-card howto">
+        <h2 class="serif" style="font-size: 22px; margin: 0 0 12px;">Come funziona la ricerca</h2>
+        <p style="font-family: var(--serif); font-size: 15px; line-height: 1.55; margin: 0 0 18px;">
+          Scrivi quello che ricordi nella barra: il nome del cliente, una parola dell'oggetto, una data. Veylon ti mostra tutte le email che corrispondono. Se vuoi essere piu preciso, puoi usare le "etichette" qui sotto.
+        </p>
+
+        <h3 class="serif" style="font-size: 16px; margin: 6px 0 10px;">Esempi pratici</h3>
+        <div class="how-grid">
+          <div class="how-step">
+            <strong>"diffida"</strong>
+            Trova tutte le email che parlano di diffida nell'oggetto o nel corpo.
+          </div>
+          <div class="how-step">
+            <strong><code class="kbd">from:mooney.it</code></strong>
+            Solo le email arrivate dal dominio mooney.it.
+          </div>
+          <div class="how-step">
+            <strong><code class="kbd">date:&gt;2026-06-01</code></strong>
+            Solo le email registrate dal 1° giugno 2026 in poi.
+          </div>
+          <div class="how-step">
+            <strong><code class="kbd">subject:fattura</code> mooney</strong>
+            Email con "fattura" nell'oggetto E "mooney" da qualche parte.
+          </div>
+        </div>
+
+        <h3 class="serif" style="font-size: 16px; margin: 22px 0 8px;">Etichette disponibili</h3>
+        <ul style="font-family: var(--serif); font-size: 14px; line-height: 1.6; padding-left: 18px; margin: 0;">
+          <li><code class="kbd">id:</code> codice intero dell'email (es. <code class="kbd">id:VLN-EVD-2026-00000001</code>)</li>
+          <li><code class="kbd">from:</code> mittente · <code class="kbd">to:</code> destinatario · <code class="kbd">subject:</code> oggetto</li>
+          <li><code class="kbd">hash:</code> impronta digitale del contenuto (utile per provare che e identica a un'altra)</li>
+          <li><code class="kbd">date:&gt;</code> o <code class="kbd">date:&lt;</code> per filtrare per data</li>
+          <li><code class="kbd">trust:&lt;70</code> per vedere solo quelle con punteggio di affidabilita basso</li>
+        </ul>
+
+        <h3 class="serif" style="font-size: 16px; margin: 22px 0 8px;">Come si usa, passo per passo</h3>
+        <ol style="font-family: var(--serif); font-size: 14px; line-height: 1.6; padding-left: 22px; margin: 0;">
+          <li>Scrivi quello che ricordi nella barra (puoi mischiare parole libere ed etichette).</li>
+          <li>Premi Invio o clicca <strong>Cerca</strong>.</li>
+          <li>Vedi i risultati in tabella. Clicca sul codice per aprire l'email completa.</li>
+          <li>Quando hai trovato quella giusta, puoi: collegarla a una pratica, scaricare il certificato PDF, generare un link da inviare a chi deve verificarla.</li>
+        </ol>
+      </article>
+    </section>
+
+    <section style="margin-top: 28px;">
       <article class="panel-card">
         <form id="search-form" class="search-row" autocomplete="off">
           <input
@@ -120,6 +166,11 @@
 
   <style>
   .head-row { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .howto { background: var(--paper-2, #faf7f0); border-left: 4px solid var(--seal); }
+  .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 4px 0 8px; }
+  .how-step { padding: 14px 16px; background: var(--paper); border: 1px solid var(--rule); font-family: var(--serif); font-size: 14px; line-height: 1.5; }
+  .how-step strong { display: block; margin-bottom: 4px; }
+  .kbd { font-family: var(--mono); font-size: 12px; padding: 2px 6px; background: var(--paper); border: 1px solid var(--rule); }
   .panel-card { background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; }
   .state-msg { padding: 18px 0; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 15px; }
   .state-msg.state-err { color: var(--seal); }
