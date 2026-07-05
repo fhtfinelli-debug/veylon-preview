@@ -1,40 +1,55 @@
 /* =========================================================
    VEYLON — Sistema di design
-   Estetica: editoriale-archivistica × crittografica
+   Look Mantine 2026-07-05: palette veylon-gold + veylon-ink,
+   font Lora headings + Inter body + JetBrains Mono, radius soft
    ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
   /* Carta & inchiostro ---------------------------------- */
-  --paper:    oklch(0.970 0.008 75);     /* fondo crema */
-  --paper-2:  oklch(0.945 0.012 75);     /* card / pannelli */
-  --paper-3:  oklch(0.920 0.014 75);     /* zone più scure */
-  --ink:      oklch(0.180 0.015 50);     /* nero caldo */
-  --ink-2:    oklch(0.420 0.018 55);     /* testo secondario */
-  --ink-3:    oklch(0.620 0.015 60);     /* didascalie */
-  --ink-4:    oklch(0.760 0.012 65);     /* placeholder */
-  --rule:     oklch(0.820 0.015 65);     /* hairline forte */
-  --rule-2:   oklch(0.900 0.013 65);     /* hairline tenue */
+  /* Look Mantine: bianco puro con leggero accento gold sui pannelli */
+  --paper:    #ffffff;                    /* fondo bianco puro */
+  --paper-2:  #fbf6ec;                    /* card / pannelli (veylon-gold-0) */
+  --paper-3:  #f4e8d0;                    /* zone piu scure (veylon-gold-1) */
+  --ink:      #1a1a1a;                    /* nero (veylon-ink-7) */
+  --ink-2:    #494949;                    /* testo secondario (veylon-ink-5) */
+  --ink-3:    #727272;                    /* didascalie (veylon-ink-4) */
+  --ink-4:    #a0a0a0;                    /* placeholder (veylon-ink-3) */
+  --rule:     #c8c8c8;                    /* hairline forte (veylon-ink-2) */
+  --rule-2:   #e5e5e5;                    /* hairline tenue (veylon-ink-1) */
 
   /* Accenti --------------------------------------------- */
-  --seal:     oklch(0.420 0.135 25);     /* ceralacca */
-  --seal-2:   oklch(0.340 0.120 25);     /* ceralacca pressata */
-  --seal-50:  oklch(0.945 0.025 30);     /* fondo tenue */
-  --verify:   oklch(0.430 0.075 145);    /* verde istituzionale */
-  --gold:     oklch(0.640 0.090 80);     /* oro nastro */
-  --amber:    oklch(0.700 0.135 80);     /* attesa */
+  /* Sostituzione: rosso ceralacca -> gold Mantine (identita nuova) */
+  --seal:     #b8995e;                    /* gold-5 primary */
+  --seal-2:   #a07f4a;                    /* gold-6 pressed */
+  --seal-50:  #fbf6ec;                    /* gold-0 fondo tenue */
+  --verify:   #16a34a;                    /* verde Tailwind-500 */
+  --gold:     #b8995e;                    /* gold nastro (= seal) */
+  --amber:    #d97706;                    /* amber-600 attesa */
 
   /* Tipografia ------------------------------------------ */
-  --serif:    "Instrument Serif", "Times New Roman", serif;
-  --sans:     "IBM Plex Sans", system-ui, sans-serif;
-  --mono:     "IBM Plex Mono", ui-monospace, monospace;
+  --serif:    "Lora", "Times New Roman", serif;
+  --sans:     "Inter", system-ui, -apple-system, sans-serif;
+  --mono:     "JetBrains Mono", ui-monospace, monospace;
 
   /* Geometria ------------------------------------------- */
   --hairline: 1px solid var(--rule-2);
   --hairline-strong: 1px solid var(--rule);
   --col:      1180px;
   --col-narrow: 760px;
+
+  /* Radius Mantine (nuovo) ------------------------------ */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+
+  /* Ombre Mantine (nuovo) ------------------------------- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
 }
 
 /* Reset ------------------------------------------------- */
@@ -1532,6 +1547,198 @@ body.app .masthead { display: none !important; }
   font-size: 12.5px;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   OVERRIDE MANTINE STYLE (2026-07-05)
+   Trasforma il look delle 97 HTML esistenti al design Mantine
+   della SPA apps/web senza toccare markup o logica JS.
+   ========================================================= */
+
+/* Card e pannelli con angoli morbidi + ombra soft */
+.panel-card, article.panel-card, .card, .svc, .qa, .kpi9, .hero-kpi,
+.proof-card, .empty-state-hero, .empty-state-action {
+  border-radius: var(--radius-md) !important;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease !important;
+}
+
+/* Panel primari con ombra leggera */
+.panel-card, article.panel-card, .card,
+.empty-state-hero {
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--rule-2) !important;
+}
+
+/* Hover eleva */
+.svc:hover, .qa:hover, .kpi9:hover, .proof-card:hover, .hero-kpi:hover,
+.empty-state-action:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--seal) !important;
+}
+
+/* Grid con radius */
+.svc-grid, .quick-actions, .kpis, .hero-kpis, .kpi9-grid {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--rule-2) !important;
+}
+
+/* Bottoni Mantine style */
+.btn, button.btn, a.btn,
+.btn-primary, .btn-secondary, .btn-ghost, .btn-outline,
+button[type="submit"], input[type="submit"] {
+  border-radius: var(--radius-sm) !important;
+  font-family: var(--sans);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: background 150ms ease, border-color 150ms ease, transform 100ms ease, box-shadow 150ms ease !important;
+  cursor: pointer;
+}
+
+.btn-primary, button[type="submit"], input[type="submit"] {
+  background: var(--seal);
+  color: var(--paper);
+  border: 1px solid var(--seal);
+  padding: 10px 18px;
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover, button[type="submit"]:hover, input[type="submit"]:hover {
+  background: var(--seal-2);
+  border-color: var(--seal-2);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  padding: 10px 18px;
+}
+.btn-secondary:hover {
+  background: var(--paper-2);
+  border-color: var(--seal);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid transparent;
+  padding: 8px 14px;
+}
+.btn-ghost:hover {
+  background: var(--paper-2);
+  color: var(--seal);
+}
+
+/* Input, textarea, select */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+textarea, select {
+  border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--rule) !important;
+  padding: 10px 12px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  transition: border-color 150ms ease, box-shadow 150ms ease !important;
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):focus,
+textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--seal) !important;
+  box-shadow: 0 0 0 3px rgba(184, 153, 94, 0.18);
+}
+
+/* Pill Mantine style */
+.pill {
+  border-radius: var(--radius-lg) !important;
+  padding: 3px 10px !important;
+  font-weight: 500;
+}
+
+/* Masthead ombra sottile */
+.masthead {
+  box-shadow: var(--shadow-sm);
+  background: var(--paper);
+}
+
+/* Sidebar Mantine style */
+.appside, .app-sidebar {
+  background: var(--paper);
+  border-right: 1px solid var(--rule-2) !important;
+}
+.appside-link, .app-sidebar-link, .app-sidebar a {
+  border-radius: var(--radius-sm) !important;
+  transition: background 150ms ease, color 150ms ease !important;
+}
+.appside-link:hover, .app-sidebar-link:hover, .app-sidebar a:hover {
+  background: var(--paper-2);
+  color: var(--seal);
+}
+.appside-link.active, .app-sidebar-link.active, .app-sidebar a.active {
+  background: var(--seal-50);
+  color: var(--seal-2);
+  font-weight: 600;
+}
+
+/* Section num piu' Mantine (uppercase mono con tracking piu' aperto) */
+.section-num {
+  letter-spacing: 0.18em;
+  font-weight: 500;
+}
+
+/* Headline serif italic gold (allineato SPA) */
+.serif-italic {
+  color: var(--seal);
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+/* Table hover morbido */
+table tbody tr:hover {
+  background: var(--paper-2);
+}
+
+/* Feed timeline mark dorato invece che rosso */
+.feed-mark {
+  background: var(--seal) !important;
+}
+
+/* Link-seal (chiamate all'azione secondarie) */
+.link-seal, a.link-seal {
+  color: var(--seal);
+  font-weight: 500;
+  transition: color 150ms ease;
+}
+.link-seal:hover {
+  color: var(--seal-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Bordo sotto section head-row piu sottile */
+.head-row {
+  border-bottom: 1px solid var(--rule-2) !important;
+}
+
+/* Focus visible accessibile */
+*:focus-visible {
+  outline: 2px solid var(--seal);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* Rimuovi la grana pesante sul fondo carta (troppo editoriale per Mantine) */
+body::before { display: none !important; }
+body { background: var(--paper); }
+
+/* =========================================================
+   FINE OVERRIDE MANTINE
+   ========================================================= */
+
   text-overflow: ellipsis;
   max-width: 140px;
   color: var(--app-sidebar-ink);
