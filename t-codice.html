@@ -282,6 +282,29 @@
       return c.trim().toUpperCase();
     }
 
+    // QR dinamici (Loftware gap #2): pre-check per un target aggiornabile
+    // configurato dal produttore. Se attivo, reindirizziamo qui prima di
+    // caricare la verifica. Fallback silenzioso in caso di errori: la verifica
+    // standard resta la strada affidabile.
+    async function checkDynamicTarget(codice) {
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (SUPABASE_ANON_KEY) headers['apikey'] = SUPABASE_ANON_KEY;
+        const res = await fetch(
+          `${FUNCTIONS_BASE}/tag-qr-dynamic-serve?c=${encodeURIComponent(codice)}`,
+          { headers }
+        );
+        if (!res.ok) return null;
+        const json = await res.json();
+        if (json && json.success && json.has_target && typeof json.target_url === 'string') {
+          return json.target_url;
+        }
+      } catch (_e) {
+        // Fallback silenzioso — la verifica standard resta la fonte di verita'.
+      }
+      return null;
+    }
+
     async function verifica() {
       const codice = getCodiceFromUrl();
       if (!/^VLN-TAG-\d{4}-[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/.test(codice)) {
@@ -289,6 +312,12 @@
           'Codice non valido',
           'Il link non contiene un codice Veylon Tag valido. Riprova scansionando di nuovo il QR.',
           '?');
+        return;
+      }
+
+      const dynamicTarget = await checkDynamicTarget(codice);
+      if (dynamicTarget) {
+        window.location.replace(dynamicTarget);
         return;
       }
 
