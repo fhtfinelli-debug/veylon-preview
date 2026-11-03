@@ -130,6 +130,16 @@
               <span id="bcKoMsg"></span>
             </div>
 
+            <div id="bcProva" style="display:none; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--rule);">
+              <div class="eyebrow seal-c" style="letter-spacing: 0.16em; margin-bottom: 12px;">Verifica indipendente su Bitcoin</div>
+              <p class="prova-msg" style="font-family: var(--serif); font-size: 17px; margin: 0 0 8px;"></p>
+              <p class="prova-dett" style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin: 0 0 16px; word-break: break-all;"></p>
+              <div class="row row-gap prova-azioni" style="flex-wrap: wrap;"></div>
+              <p style="font-family: var(--serif); font-size: 14px; color: var(--ink-2); margin: 16px 0 0;">
+                Conservate il file <code>.ots</code> insieme al documento: si verifica con gli strumenti pubblici OpenTimestamps
+                (<code>ots verify</code> oppure opentimestamps.org) anche senza VEYLON.
+              </p>
+            </div>
             <div style="margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 11px; color: var(--ink-3);">
               <strong style="color: var(--ink);">Formula:</strong> combined_hash = SHA256( file_hash &Vert; activities_hash )
             </div>
@@ -187,7 +197,7 @@
               <h2 class="serif" style="font-size: 44px; line-height: 1; margin: 8px 0 6px;">
                 Documento <em class="serif-italic verify-c">autentico.</em>
               </h2>
-              <p class="lede" style="font-size: 18px; margin: 0;">
+              <p class="lede" id="okLede" style="font-size: 18px; margin: 0;">
                 L'impronta &egrave; inscritta nel registro pubblico Bitcoin alla data
                 indicata. L'integrit&agrave; del documento &egrave; confermata.
               </p>
@@ -223,6 +233,16 @@
               </div>
             </div>
 
+            <div id="okProva" style="display:none; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--rule);">
+              <div class="eyebrow seal-c" style="letter-spacing: 0.16em; margin-bottom: 12px;">Verifica indipendente su Bitcoin</div>
+              <p class="prova-msg" style="font-family: var(--serif); font-size: 17px; margin: 0 0 8px;"></p>
+              <p class="prova-dett" style="font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin: 0 0 16px; word-break: break-all;"></p>
+              <div class="row row-gap prova-azioni" style="flex-wrap: wrap;"></div>
+              <p style="font-family: var(--serif); font-size: 14px; color: var(--ink-2); margin: 16px 0 0;">
+                Conservate il file <code>.ots</code> insieme al documento: si verifica con gli strumenti pubblici OpenTimestamps
+                (<code>ots verify</code> oppure opentimestamps.org) anche senza VEYLON.
+              </p>
+            </div>
             <div class="row row-gap" style="margin-top: 36px; flex-wrap: wrap;">
               <button class="btn ghost" id="newVerify">Verifica un altro</button>
             </div>
@@ -548,7 +568,7 @@
           "apikey": SUPABASE_ANON_KEY,
           "Authorization": "Bearer " + SUPABASE_ANON_KEY,
         },
-        body: JSON.stringify({ sha256: hash }),
+        body: JSON.stringify({ sha256: hash, includi_prova: true }),
       });
       data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.success) {
@@ -577,7 +597,7 @@
       el("resultOk").style.display = "block";
       el("resultOk").classList.add("rise");
 
-      el("vDoc").textContent = data.doc_name || extra.docName || "(senza nome)";
+      el("vDoc").textContent = extra.docName || "non mostrato nella verifica pubblica";
       el("vHash").textContent = hash.match(/.{1,4}/g).join(" ");
       el("vOts").textContent = data.ots_status || "—";
       el("vDate").textContent = data.data_certa
@@ -587,6 +607,10 @@
         ? "# " + data.btc_block_height
         : (data.ancorato_su_bitcoin ? "confermato" : "in attesa di blocco");
       el("vNow").textContent = new Date().toLocaleString("it-IT", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      if (data.verifica_bitcoin && data.verifica_bitcoin.stato !== "confermata") {
+        el("okLede").textContent = "L'impronta e registrata nel registro VEYLON. " + (data.verifica_bitcoin.messaggio || "");
+      }
+      mostraProva("okProva", data, hash);
     } else {
       el("resultKo").style.display = "block";
       el("resultKo").classList.add("rise");
@@ -643,7 +667,8 @@
       return;
     }
 
-    el("bcDoc").textContent      = data.file?.doc_name || "(senza nome)";
+    el("bcDoc").textContent      = "non mostrato nella verifica pubblica";
+    if (data.file?.file_hash) caricaProva("bcProva", data.file.file_hash);
     el("bcAttoId").textContent   = data.file?.atto_id || "—";
     el("bcFileHash").textContent = data.file?.file_hash || "—";
     el("bcActHash").textContent  = data.activities_hash || "—";
@@ -691,6 +716,81 @@
         `;
         tbody.appendChild(tr);
       });
+    }
+  }
+
+  // ===========================================================================
+  // Prova scaricabile (.ots + ricevuta) e verifica reale su Bitcoin
+  // ===========================================================================
+  function scaricaFile(nome, contenuto, tipo) {
+    const url = URL.createObjectURL(new Blob([contenuto], { type: tipo }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = nome;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function base64InByte(b64) {
+    const bin = atob(b64);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function mostraProva(idBox, data, hash) {
+    const box = el(idBox);
+    if (!box) return;
+    const vb = data.verifica_bitcoin;
+    const msg = box.querySelector(".prova-msg");
+    const dett = box.querySelector(".prova-dett");
+    const azioni = box.querySelector(".prova-azioni");
+    msg.textContent = (vb && vb.messaggio) || "Stato della prova non disponibile.";
+    msg.style.color = vb && vb.stato === "confermata" ? "#2e7d32" : (vb && vb.stato === "non_valida" ? "#c62828" : "#ef6c00");
+    dett.textContent = vb && vb.merkle_root
+      ? "Merkle root del blocco " + vb.blocco + ": " + vb.merkle_root + " (fonte: " + (vb.esploratore || "esploratore pubblico") + ")"
+      : "";
+    azioni.innerHTML = "";
+    const prova = data.prova;
+    if (prova && prova.ots_base64) {
+      const bOts = document.createElement("button");
+      bOts.className = "btn seal";
+      bOts.textContent = "Scarica prova .ots";
+      bOts.addEventListener("click", () => scaricaFile(prova.nome_file || ("veylon-" + hash.slice(0, 16) + ".ots"), base64InByte(prova.ots_base64), "application/octet-stream"));
+      azioni.appendChild(bOts);
+    } else {
+      const nota = document.createElement("span");
+      nota.style.fontFamily = "var(--serif)";
+      nota.textContent = "Il file di prova sarà scaricabile appena disponibile.";
+      azioni.appendChild(nota);
+    }
+    if (prova && prova.ricevuta) {
+      const bJson = document.createElement("button");
+      bJson.className = "btn ghost";
+      bJson.textContent = "Scarica ricevuta JSON";
+      bJson.addEventListener("click", () => scaricaFile("veylon-" + hash.slice(0, 16) + "-ricevuta.json", JSON.stringify(prova.ricevuta, null, 2), "application/json"));
+      azioni.appendChild(bJson);
+    }
+    box.style.display = "block";
+  }
+
+  async function caricaProva(idBox, hash) {
+    const box = el(idBox);
+    try {
+      const res = await fetch(SUPABASE_URL + "/functions/v1/veylon-verifica", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON_KEY, "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+        body: JSON.stringify({ sha256: hash, includi_prova: true }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data || !data.success) throw new Error((data && data.error) || ("http_" + res.status));
+      mostraProva(idBox, data, hash);
+    } catch (err) {
+      if (!box) return;
+      box.querySelector(".prova-msg").textContent = "Verifica su Bitcoin non disponibile: " + ((err && err.message) || "errore");
+      box.style.display = "block";
     }
   }
 
