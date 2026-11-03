@@ -50,213 +50,590 @@
 
   <main class="legal-doc">
 <h1>Informativa sulla privacy</h1>
-<p><strong>Ultimo aggiornamento:</strong> 10 giugno 2026 <strong>Versione:</strong> 1.0 <strong>Lingua originale:</strong> italiano (versioni tradotte sono cortesia, in caso di divergenza prevale la versione italiana)</p>
-<hr/>
+<p><strong>Ultimo aggiornamento:</strong> 3 novembre 2026 &middot; <strong>Versione:</strong> 2.0 &middot; <strong>Lingua originale:</strong> italiano (versioni tradotte sono cortesia, in caso di divergenza prevale la versione italiana)</p>
+<hr>
 <h2>Premessa</h2>
-<p>La presente informativa è resa ai sensi degli articoli <strong>13 e 14 del Regolamento (UE) 2016/679 ("GDPR")</strong> e descrive le finalità, le modalità e le basi giuridiche del trattamento dei dati personali raccolti tramite la piattaforma <strong>Veylon</strong> (https://veylon.app, sottodomini e API associate).</p>
-<p>Veylon è una <strong>piattaforma di certificazione legale digitale</strong> organizzata in nove atti (Sigillo, Send, Mail, Garanzie, Registro, Tag, Cert, Firma, Onboarding KYC). Per il funzionamento del servizio è inevitabile trattare alcuni dati personali. Questa informativa spiega esattamente quali, perché, per quanto tempo, e quali diritti hai.</p>
-<hr/>
+<p>La presente informativa è resa ai sensi degli articoli <strong>13 e 14 del Regolamento (UE) 2016/679 (&quot;GDPR&quot;)</strong> e del D.Lgs. 196/2003 (&quot;Codice Privacy&quot;) e descrive le finalità, le modalità e le basi giuridiche del trattamento dei dati personali raccolti tramite la piattaforma <strong>Veylon</strong> (https://veylon.app, sottodomini — tra cui <code>atti.veylon.app</code> e <code>pdf.veylon.app</code> — e API associate).</p>
+<p>Veylon è un brand di <strong>Ferxia S.R.L.</strong> È una piattaforma di prove digitali (data certa, integrità dei documenti, invio e firma con evidenze), con strumenti per i PDF (<strong>Suite PDF</strong>) e strumenti per professionisti legali (<strong>Veylon Atti</strong>). Per il funzionamento del servizio è inevitabile trattare alcuni dati personali. Questa informativa spiega esattamente quali, perché, per quanto tempo, e quali diritti hai.</p>
+<hr>
 <h2>1. Titolare del trattamento</h2>
-<p><strong>Titolare:</strong> Veylon S.r.l. (in costituzione) — i dati definitivi (sede, codice fiscale, P.IVA, REA, capitale sociale) saranno pubblicati al perfezionamento della costituzione societaria, prevista entro Q3 2026.</p>
-<p>Nel frattempo, in regime di pre-costituzione, è responsabile del trattamento la persona fisica promotrice del progetto, raggiungibile ai contatti sotto.</p>
 <table>
-<thead><tr><th>Voce</th><th>Dettaglio</th></tr></thead>
+<thead>
+<tr>
+<th>Voce</th>
+<th>Dettaglio</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>Denominazione</td><td>Veylon S.r.l. (in costituzione)</td></tr>
-<tr><td>Sede legale</td><td>TBD (presumibilmente Padova, Italia)</td></tr>
-<tr><td>Email titolare</td><td><code>privacy@veylon.app</code></td></tr>
-<tr><td>Email DPO</td><td><code>dpo@veylon.app</code> (DPO da nominare; nel frattempo le richieste sono gestite dal titolare)</td></tr>
-<tr><td>Email sicurezza</td><td><code>security@veylon.app</code></td></tr>
-</tbody></table>
-<p>&gt; Aggiorneremo questa sezione entro 30 giorni dall'iscrizione al Registro Imprese. Se rilevi che la sezione è ancora marcata "TBD" oltre tale termine, segnalalo a <code>privacy@veylon.app</code>.</p>
-<hr/>
+<tr>
+<td>Denominazione</td>
+<td><strong>Ferxia S.R.L.</strong> (società unipersonale), titolare del brand Veylon</td>
+</tr>
+<tr>
+<td>Sede legale</td>
+<td>Viale Rismondo 7, 47838 Riccione (RN), Italia</td>
+</tr>
+<tr>
+<td>Codice fiscale e P.IVA</td>
+<td>04868980402</td>
+</tr>
+<tr>
+<td>Registro Imprese</td>
+<td>Romagna – Forlì-Cesena e Rimini, REA RN-447786</td>
+</tr>
+<tr>
+<td>PEC</td>
+<td><code>fexiasrl@pec.buffetti.it</code></td>
+</tr>
+<tr>
+<td>Email privacy</td>
+<td><code>privacy@veylon.app</code></td>
+</tr>
+<tr>
+<td>Email sicurezza</td>
+<td><code>security@veylon.app</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Responsabile della protezione dei dati (DPO):</strong> il titolare non ha designato un DPO ai sensi dell'art. 37 GDPR. Per qualsiasi questione relativa ai dati personali puoi scrivere a <code>privacy@veylon.app</code> o alla PEC sopra indicata.</p>
+<hr>
 <h2>2. Tipologie di dati raccolti</h2>
 <table>
-<thead><tr><th>Categoria</th><th>Esempi</th><th>Da chi</th></tr></thead>
+<thead>
+<tr>
+<th>Categoria</th>
+<th>Esempi</th>
+<th>Da chi</th>
+</tr>
+</thead>
 <tbody>
-<tr><td><strong>Dati identificativi base</strong></td><td>Email, nome, cognome (solo se forniti)</td><td>Utente registrato</td></tr>
-<tr><td><strong>Dati di contatto</strong></td><td>Email destinatario di Send / Mail / Firma</td><td>Utente mittente</td></tr>
-<tr><td><strong>Dati professionali</strong></td><td>Ragione sociale, P.IVA, codice fiscale, ruolo organizzazione</td><td>Utente Onboarding KYC, istituzioni Cert, produttori Tag</td></tr>
-<tr><td><strong>Identificativi tecnici</strong></td><td>IP (hashed), User Agent (hashed), session ID Supabase</td><td>Browser dell'utente</td></tr>
-<tr><td><strong>Hash di documenti</strong></td><td>SHA-256 dei file notarizzati (il documento originale non è trattato)</td><td>Atto i Sigillo</td></tr>
-<tr><td><strong>Chiavi pubbliche</strong></td><td>Chiave pubblica X25519 per Send</td><td>Utente Send</td></tr>
-<tr><td><strong>Dati telefonici</strong></td><td>Numero cellulare (E.164) per OTP firma</td><td>Utente Firma</td></tr>
-<tr><td><strong>Metadati email</strong></td><td>Mittente, destinatario, oggetto, hash del corpo email</td><td>Atto iii Mail</td></tr>
-<tr><td><strong>Codici di verifica pubblici</strong></td><td>Stringa alfabeto-safe pubblicata insieme al certificato</td><td>Sistema</td></tr>
-<tr><td><strong>Log applicativi</strong></td><td>Tipo evento, timestamp, esito, atto coinvolto</td><td>Sistema</td></tr>
-<tr><td><strong>Dati eventualmente sensibili</strong> (art. 9 GDPR)</td><td>Dati sanitari se l'istituzione Cert emette diplomi ECM o batch GMP</td><td>Istituzione cliente</td></tr>
-</tbody></table>
+<tr>
+<td><strong>Dati identificativi base</strong></td>
+<td>Email, nome, cognome (solo se forniti)</td>
+<td>Utente registrato</td>
+</tr>
+<tr>
+<td><strong>Dati di contatto</strong></td>
+<td>Email destinatario di Send / Mail / Firma</td>
+<td>Utente mittente</td>
+</tr>
+<tr>
+<td><strong>Dati professionali</strong></td>
+<td>Ragione sociale, P.IVA, codice fiscale, ruolo organizzazione</td>
+<td>Utente Onboarding KYC, istituzioni Cert, produttori Tag</td>
+</tr>
+<tr>
+<td><strong>Identificativi tecnici</strong></td>
+<td>IP (hashed), User Agent, session ID</td>
+<td>Browser dell'utente</td>
+</tr>
+<tr>
+<td><strong>Impronte di documenti</strong></td>
+<td>SHA-256 dei file sigillati, nome del documento</td>
+<td>Sigillo / prova di data e ora</td>
+</tr>
+<tr>
+<td><strong>Contenuto dei file</strong></td>
+<td>Contenuto completo dei PDF e dei file che carichi nella Suite PDF, in Send (caricamento di un nuovo file), nella firma PAdES, nell'archivio e nei fascicoli di Veylon Atti</td>
+<td>Utente</td>
+</tr>
+<tr>
+<td><strong>Testi e allegati inviati alle funzioni AI</strong></td>
+<td>Domande, bozze, contratti, appunti di riunione inviati all'assistente o agli strumenti AI di Veylon Atti e ai riepiloghi AI delle prove</td>
+<td>Utente (solo se usa una funzione AI)</td>
+</tr>
+<tr>
+<td><strong>Chiavi pubbliche</strong></td>
+<td>Chiave pubblica X25519 per Send</td>
+<td>Utente Send</td>
+</tr>
+<tr>
+<td><strong>Dati telefonici</strong></td>
+<td>Numero cellulare (E.164) per OTP firma</td>
+<td>Utente Firma</td>
+</tr>
+<tr>
+<td><strong>Metadati email</strong></td>
+<td>Mittente, destinatario, oggetto, hash del corpo email</td>
+<td>Servizio Mail</td>
+</tr>
+<tr>
+<td><strong>Codici di verifica pubblici</strong></td>
+<td>Stringa alfabeto-safe pubblicata insieme al certificato</td>
+<td>Sistema</td>
+</tr>
+<tr>
+<td><strong>Log applicativi</strong></td>
+<td>Tipo evento, timestamp, esito, dimensione del file elaborato</td>
+<td>Sistema</td>
+</tr>
+<tr>
+<td><strong>Dati degli utenti finali dei partner</strong></td>
+<td>Identificativo pseudonimo scelto dal partner, operazione, dimensione, esito, data e ora</td>
+<td>Partner che integrano Veylon via API (vedi §7)</td>
+</tr>
+<tr>
+<td><strong>Dati eventualmente sensibili</strong> (art. 9 GDPR)</td>
+<td>Dati sanitari se l'istituzione Cert emette diplomi ECM o batch GMP; dati contenuti nei file che l'utente sceglie di caricare</td>
+<td>Istituzione cliente / utente</td>
+</tr>
+</tbody>
+</table>
+<h3>Come trattiamo i file</h3>
+<ul>
+<li><strong>Sigillo (prova di data e ora)</strong>: l'impronta SHA-256 è calcolata di norma nel tuo browser; il file resta sul tuo dispositivo. Se il file viene inviato al server per calcolare l'impronta, è usato solo per quel calcolo e non viene salvato.</li>
+<li><strong>Suite PDF</strong>: per eseguire l'operazione richiesta (unire, comprimere, convertire, ecc.) il <strong>file completo</strong> viene trasmesso in modo cifrato (TLS) al nostro server di elaborazione in Germania. Il file è elaborato in memoria temporanea, restituito subito e <strong>non viene conservato</strong>: i file temporanei sono cancellati automaticamente dal sistema. Conserviamo solo un registro tecnico dell'operazione (tipo, dimensione, esito, data e ora), senza il contenuto. Limiti: 50 MB per file, 100 operazioni all'ora per utente.</li>
+<li><strong>Send</strong>: se invii un file già presente nel tuo archivio o ne carichi uno nuovo, il server riceve il file in chiaro per sigillarlo, apporre il timbro di verifica e cifrarlo (AES-GCM-256). Il file originale caricato viene salvato nel tuo archivio; la copia inviata è conservata solo in forma cifrata e la chiave di decifratura non è salvata da Veylon (viaggia nel link consegnato al destinatario).</li>
+<li><strong>Firma PAdES e archivio</strong>: i PDF firmati e i file che salvi nell'archivio o nei fascicoli di Veylon Atti sono conservati nello storage cifrato in UE fino a quando li elimini o chiudi l'account.</li>
+</ul>
 <h3>Cosa NON trattiamo</h3>
 <ul>
-<li><strong>Il contenuto dei documenti notarizzati</strong>: Sigillo lavora solo sull'hash. Il file resta sul dispositivo dell'utente.</li>
-<li><strong>Il contenuto dei file Send</strong>: cifrati end-to-end in browser, vediamo solo ciphertext opaco.</li>
-<li><strong>Dati biometrici</strong>: nessuna raccolta diretta da parte di Veylon.</li>
+<li><strong>Dati biometrici</strong>: nessuna raccolta.</li>
 <li><strong>Dati di minori</strong>: il servizio è riservato a maggiorenni o a soggetti professionali / istituzioni.</li>
-<li><strong>Trackers di profilazione</strong>: niente pixel pubblicitari, niente fingerprinting.</li>
+<li><strong>Tracker di profilazione</strong>: niente pixel pubblicitari, niente fingerprinting, nessun cookie di profilazione.</li>
 </ul>
-<hr/>
+<hr>
 <h2>3. Finalità e base giuridica del trattamento</h2>
 <table>
-<thead><tr><th>#</th><th>Finalità</th><th>Base giuridica</th><th>Dati impiegati</th></tr></thead>
+<thead>
+<tr>
+<th>#</th>
+<th>Finalità</th>
+<th>Base giuridica</th>
+<th>Dati impiegati</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>1</td><td>Registrazione e gestione account</td><td>Art. 6.1.b (esecuzione contratto)</td><td>Email, password hash</td></tr>
-<tr><td>2</td><td>Erogazione del servizio di certificazione (9 atti)</td><td>Art. 6.1.b (esecuzione contratto)</td><td>Tutti i dati operativi</td></tr>
-<tr><td>3</td><td>Notarizzazione documenti su Bitcoin (Sigillo)</td><td>Art. 6.1.b (esecuzione contratto)</td><td>SHA-256 documento, metadati</td></tr>
-<tr><td>4</td><td>Invio email certificate (Mail)</td><td>Art. 6.1.b (esecuzione contratto)</td><td>Mittente, destinatario, hash corpo</td></tr>
-<tr><td>5</td><td>Verifica pubblica certificati (codice → esito)</td><td>Art. 6.1.f (interesse legittimo: trasparenza e affidabilità del sistema)</td><td>Codice pubblico, esito, timestamp</td></tr>
-<tr><td>6</td><td>Adeguata verifica antiriciclaggio (KYC)</td><td>Art. 6.1.c (obbligo legale — D.Lgs. 231/2007)</td><td>P.IVA, dati impresa, eventuali documenti</td></tr>
-<tr><td>7</td><td>Conservazione documentale (CAD, eIDAS)</td><td>Art. 6.1.c (obbligo legale)</td><td>Hash + metadati + ancoraggio Bitcoin</td></tr>
-<tr><td>8</td><td>Sicurezza, prevenzione frodi, rate-limit, antiabuso</td><td>Art. 6.1.f (interesse legittimo)</td><td>IP hash, UA hash, log applicativi</td></tr>
-<tr><td>9</td><td>Assistenza clienti via email</td><td>Art. 6.1.b (esecuzione contratto)</td><td>Email, contenuto del ticket</td></tr>
-<tr><td>10</td><td>Fatturazione, contabilità, adempimenti fiscali</td><td>Art. 6.1.c (obbligo legale)</td><td>P.IVA, denominazione, indirizzo</td></tr>
-<tr><td>11</td><td>Comunicazioni di servizio (modifiche T&amp;C, security advisory)</td><td>Art. 6.1.b + 6.1.f</td><td>Email</td></tr>
-<tr><td>12</td><td>Comunicazioni di marketing diretto</td><td>Art. 6.1.a (consenso)</td><td>Email, opt-in registrato</td></tr>
-<tr><td>13</td><td>Trattamento dati particolari (sanitari/giudiziari) eventualmente caricati nei certificati Cert</td><td>Art. 9.2.a (consenso esplicito interessato) o 9.2.h (medicina del lavoro, su richiesta dell'istituzione)</td><td>Solo quanto necessario all'emissione</td></tr>
-</tbody></table>
-<p>Il rifiuto a fornire i dati indicati alle finalità 1-7 e 9-11 comporta l'impossibilità di erogare il servizio. Il rifiuto al consenso marketing (12) è sempre revocabile e non pregiudica il rapporto contrattuale.</p>
-<hr/>
+<tr>
+<td>1</td>
+<td>Registrazione e gestione account</td>
+<td>Art. 6.1.b (esecuzione contratto)</td>
+<td>Email, credenziali</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Erogazione dei servizi Veylon (sigillo, invio, firma, certificati, Tag, Veylon Atti)</td>
+<td>Art. 6.1.b (esecuzione contratto)</td>
+<td>Dati operativi necessari al servizio richiesto</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Prova di data e ora tramite OpenTimestamps / Bitcoin</td>
+<td>Art. 6.1.b (esecuzione contratto)</td>
+<td>Solo impronta SHA-256 pubblicata; metadati conservati da noi</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Elaborazione dei PDF nella Suite PDF</td>
+<td>Art. 6.1.b (esecuzione contratto)</td>
+<td>Contenuto del file (solo per il tempo dell'elaborazione), log tecnico</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Funzioni AI di Veylon Atti e riepiloghi AI delle prove</td>
+<td>Art. 6.1.b (esecuzione contratto, su tua richiesta)</td>
+<td>Testi e allegati che invii alla funzione</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Verifica pubblica certificati (codice → esito)</td>
+<td>Art. 6.1.f (interesse legittimo: trasparenza e affidabilità del sistema)</td>
+<td>Codice pubblico, esito, timestamp</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Adeguata verifica antiriciclaggio (KYC), ove applicabile</td>
+<td>Art. 6.1.c (obbligo legale — D.Lgs. 231/2007)</td>
+<td>P.IVA, dati impresa, eventuali documenti</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Sicurezza, prevenzione frodi, rate-limit, antiabuso</td>
+<td>Art. 6.1.f (interesse legittimo)</td>
+<td>IP hash, user agent, log applicativi</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Assistenza clienti via email</td>
+<td>Art. 6.1.b (esecuzione contratto)</td>
+<td>Email, contenuto della richiesta</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Fatturazione, contabilità, adempimenti fiscali</td>
+<td>Art. 6.1.c (obbligo legale)</td>
+<td>P.IVA, denominazione, indirizzo</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Comunicazioni di servizio (modifiche T&amp;C, avvisi di sicurezza)</td>
+<td>Art. 6.1.b + 6.1.f</td>
+<td>Email</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Comunicazioni di marketing diretto</td>
+<td>Art. 6.1.a (consenso)</td>
+<td>Email, opt-in registrato</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Statistiche aggregate di visita del sito, senza cookie</td>
+<td>Art. 6.1.f (interesse legittimo: migliorare il sito)</td>
+<td>Dati di navigazione aggregati e non identificativi</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Trattamento dati particolari (sanitari/giudiziari) eventualmente caricati nei certificati Cert</td>
+<td>Art. 9.2.a (consenso esplicito interessato) o altra base dell'art. 9.2 individuata dall'istituzione titolare</td>
+<td>Solo quanto necessario all'emissione</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Servizi resi per conto di partner B2B via API</td>
+<td>Il partner è titolare e individua la base giuridica; Veylon agisce come responsabile (art. 28)</td>
+<td>Vedi §7</td>
+</tr>
+</tbody>
+</table>
+<p>Il rifiuto a fornire i dati indicati alle finalità 1-11 comporta l'impossibilità di erogare il servizio. Il consenso marketing (12) è facoltativo, sempre revocabile e non pregiudica il rapporto contrattuale.</p>
+<hr>
 <h2>4. Modalità di trattamento</h2>
 <p>Il trattamento avviene con strumenti elettronici, in modo automatizzato per gran parte delle operazioni, con misure tecniche e organizzative adeguate ai sensi dell'art. 32 GDPR:</p>
 <ul>
-<li><strong>Crittografia in transito</strong>: TLS 1.2+ obbligatorio su tutti gli endpoint.</li>
-<li><strong>Crittografia a riposo</strong>: Supabase PostgreSQL EU Ireland con cifratura disk-level.</li>
-<li><strong>Crittografia end-to-end</strong> per il modulo Send: chiavi private mai sui server Veylon.</li>
-<li><strong>Pseudonimizzazione</strong>: IP e User Agent salvati sotto forma di hash SHA-256.</li>
-<li><strong>Row Level Security</strong> sul database con isolamento per <code>user_id</code>.</li>
-<li><strong>Webhook firmati HMAC</strong> su Mailgun / Twilio.</li>
-<li><strong>Rate-limit OTP</strong> + TTL 5 minuti + contatore tentativi.</li>
-<li><strong>Audit log immutabile</strong> su tabelle append-only.</li>
-<li><strong>Backup giornalieri</strong> automatici con retention 7 giorni (Supabase native).</li>
+<li><strong>Crittografia in transito</strong>: HTTPS/TLS su tutti gli endpoint.</li>
+<li><strong>Crittografia a riposo</strong>: database e storage Supabase nella regione UE (Irlanda) con cifratura del disco.</li>
+<li><strong>Suite PDF senza conservazione</strong>: file elaborati in memoria temporanea sul server in Germania e cancellati automaticamente; accesso al motore PDF solo tramite il nostro backend autenticato.</li>
+<li><strong>Send</strong>: la copia inviata è cifrata AES-GCM-256 e la chiave non è conservata da Veylon.</li>
+<li><strong>Pseudonimizzazione</strong>: gli indirizzi IP sono salvati sotto forma di hash SHA-256; per i partner riceviamo solo un identificativo pseudonimo dell'utente finale.</li>
+<li><strong>Row Level Security</strong> sul database con isolamento per utente.</li>
+<li><strong>Webhook firmati HMAC</strong> sulle integrazioni che li prevedono.</li>
+<li><strong>Rate-limit OTP</strong> + scadenza 5 minuti + contatore tentativi.</li>
+<li><strong>Registro delle attività (audit log)</strong> con accesso riservato.</li>
+<li><strong>Backup giornalieri</strong> automatici con conservazione di 7 giorni (Supabase).</li>
 </ul>
-<p>Non vengono adottati processi decisionali automatizzati ai sensi dell'art. 22 GDPR che producano effetti giuridici significativi sull'interessato.</p>
-<hr/>
+<p>Non vengono adottati processi decisionali automatizzati ai sensi dell'art. 22 GDPR che producano effetti giuridici significativi sull'interessato. Le risposte delle funzioni AI sono suggerimenti che l'utente valuta in autonomia.</p>
+<hr>
 <h2>5. Tempi di conservazione</h2>
 <p>I dati sono conservati per il periodo minimo necessario alla finalità, secondo i criteri sotto.</p>
 <table>
-<thead><tr><th>Tipo di dato</th><th>Tempo di conservazione</th><th>Riferimento normativo</th></tr></thead>
+<thead>
+<tr>
+<th>Tipo di dato</th>
+<th>Tempo di conservazione</th>
+<th>Riferimento</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>Hash documenti notarizzati (Sigillo)</td><td><strong>10 anni</strong> dall'apposizione</td><td>eIDAS art. 41 — efficacia probatoria duratura</td></tr>
-<tr><td>Certificati Mail (metadati + hash corpo)</td><td><strong>10 anni</strong> dall'invio</td><td>CAD art. 41 — documento informatico</td></tr>
-<tr><td>Trasmissioni Send (metadati, evidenze cifrate)</td><td><strong>10 anni</strong> dalla consegna; il ciphertext è eliminato dopo 90 giorni dalla conferma di ricezione</td><td>Bilanciamento eIDAS + minimizzazione</td></tr>
-<tr><td>Audit log applicativi</td><td><strong>5 anni</strong></td><td>CAD + art. 32 GDPR (sicurezza)</td></tr>
-<tr><td>Email di assistenza</td><td><strong>90 giorni</strong> in chiaro, poi hash permanente del thread</td><td>Minimizzazione GDPR</td></tr>
-<tr><td>Dati KYC + ROS (Onboarding)</td><td><strong>10 anni</strong> dalla cessazione del rapporto</td><td>D.Lgs. 231/2007 art. 31</td></tr>
-<tr><td>Dati di fatturazione</td><td><strong>10 anni</strong></td><td>art. 2220 c.c. + DPR 600/1973</td></tr>
-<tr><td>OTP SMS (codici)</td><td><strong>5 minuti</strong> (TTL) + hash dell'utilizzo</td><td>Minimizzazione</td></tr>
-<tr><td>Numero di telefono per OTP</td><td>Fino a revoca della firma o cancellazione account</td><td>Esecuzione contratto</td></tr>
-<tr><td>Codici pubblici di verifica</td><td><strong>Permanenti</strong></td><td>Trasparenza pubblica del sistema</td></tr>
-<tr><td>Dati account utente</td><td>Fino a chiusura account + 30 giorni di backup</td><td>Esecuzione contratto</td></tr>
-<tr><td>Dati di marketing (consenso)</td><td>Fino a revoca</td><td>Art. 7 GDPR</td></tr>
-<tr><td>IP hash / UA hash</td><td><strong>6 mesi</strong></td><td>Sicurezza + antifrode</td></tr>
-</tbody></table>
+<tr>
+<td>File elaborati nella Suite PDF</td>
+<td><strong>Nessuna conservazione</strong>: solo per il tempo dell'elaborazione (cancellazione automatica dei file temporanei)</td>
+<td>Minimizzazione</td>
+</tr>
+<tr>
+<td>Log tecnici della Suite PDF e delle API</td>
+<td><strong>5 anni</strong> (senza contenuto dei file)</td>
+<td>Sicurezza, art. 32 GDPR</td>
+</tr>
+<tr>
+<td>Impronte e metadati dei sigilli</td>
+<td><strong>10 anni</strong> dall'apposizione</td>
+<td>Efficacia probatoria (eIDAS, CAD)</td>
+</tr>
+<tr>
+<td>Certificati Mail (metadati + hash corpo)</td>
+<td><strong>10 anni</strong> dall'invio</td>
+<td>CAD — documento informatico</td>
+</tr>
+<tr>
+<td>File in archivio, PDF firmati, fascicoli Veylon Atti, copie cifrate Send</td>
+<td>Fino a cancellazione da parte dell'utente o chiusura dell'account (+ 30 giorni di backup)</td>
+<td>Esecuzione contratto</td>
+</tr>
+<tr>
+<td>Testi inviati alle funzioni AI</td>
+<td>Salvati in Veylon solo se l'utente li salva (es. bozza, fascicolo). Presso il fornitore AI: conservazione limitata (fino a 30 giorni) a fini di sicurezza, senza uso per l'addestramento dei modelli, secondo le condizioni API del fornitore</td>
+<td>Esecuzione contratto</td>
+</tr>
+<tr>
+<td>Audit log applicativi</td>
+<td><strong>5 anni</strong></td>
+<td>CAD + art. 32 GDPR</td>
+</tr>
+<tr>
+<td>Email di assistenza</td>
+<td><strong>90 giorni</strong> in chiaro, poi hash del thread</td>
+<td>Minimizzazione</td>
+</tr>
+<tr>
+<td>Dati KYC (Onboarding)</td>
+<td><strong>10 anni</strong> dalla cessazione del rapporto</td>
+<td>D.Lgs. 231/2007 art. 31</td>
+</tr>
+<tr>
+<td>Dati di fatturazione</td>
+<td><strong>10 anni</strong></td>
+<td>art. 2220 c.c. + DPR 600/1973</td>
+</tr>
+<tr>
+<td>OTP SMS (codici)</td>
+<td><strong>5 minuti</strong> (scadenza) + hash dell'utilizzo</td>
+<td>Minimizzazione</td>
+</tr>
+<tr>
+<td>Numero di telefono per OTP</td>
+<td>Fino a revoca della firma o cancellazione account</td>
+<td>Esecuzione contratto</td>
+</tr>
+<tr>
+<td>Codici pubblici di verifica</td>
+<td><strong>Permanenti</strong></td>
+<td>Trasparenza pubblica del sistema</td>
+</tr>
+<tr>
+<td>Dati account utente</td>
+<td>Fino a chiusura account + 30 giorni di backup</td>
+<td>Esecuzione contratto</td>
+</tr>
+<tr>
+<td>Dati per conto dei partner</td>
+<td>Per la durata del contratto con il partner, poi cancellati secondo le sue istruzioni (salvo obblighi di legge)</td>
+<td>Art. 28 GDPR</td>
+</tr>
+<tr>
+<td>Dati di marketing (consenso)</td>
+<td>Fino a revoca</td>
+<td>Art. 7 GDPR</td>
+</tr>
+<tr>
+<td>IP hash</td>
+<td><strong>6 mesi</strong></td>
+<td>Sicurezza + antifrode</td>
+</tr>
+</tbody>
+</table>
 <p>Al termine del periodo, i dati sono cancellati o anonimizzati in modo irreversibile.</p>
-<hr/>
-<h2>6. Destinatari e responsabili esterni (sub-processor)</h2>
-<p>I dati possono essere comunicati ai seguenti soggetti, tutti <strong>nominati responsabili del trattamento ex art. 28 GDPR</strong> con apposito Data Processing Agreement:</p>
+<hr>
+<h2>6. Destinatari e responsabili del trattamento (sub-responsabili)</h2>
+<p>I dati possono essere comunicati ai seguenti fornitori, che agiscono come <strong>responsabili del trattamento ex art. 28 GDPR</strong> in base ai rispettivi accordi sul trattamento dei dati (DPA):</p>
 <table>
-<thead><tr><th>Sub-processor</th><th>Servizio</th><th>Sede trattamento</th><th>Trasferimento extra-UE</th></tr></thead>
+<thead>
+<tr>
+<th>Fornitore</th>
+<th>Servizio</th>
+<th>Paese / luogo del trattamento</th>
+<th>Trasferimento extra-UE</th>
+</tr>
+</thead>
 <tbody>
-<tr><td><strong>Supabase Inc.</strong></td><td>Database PostgreSQL + storage + edge functions</td><td>EU Ireland (<code>eu-west-1</code>)</td><td>No (istanza self-contained in UE)</td></tr>
-<tr><td><strong>Mailgun Technologies (Sinch Email EU)</strong></td><td>Invio e ricezione email certificate</td><td>EU (Frankfurt)</td><td>No</td></tr>
-<tr><td><strong>Twilio Ireland Ltd.</strong></td><td>Invio SMS OTP</td><td>EU + carrier nazionali</td><td>No (delivery via operatore nazionale)</td></tr>
-<tr><td><strong>GitHub Inc.</strong></td><td>Hosting frontend statico (Pages) e codice sorgente</td><td>UE / USA</td><td>Possibili (SCC + Data Privacy Framework)</td></tr>
-<tr><td><strong>Lovable.dev</strong></td><td>Hosting frontend di produzione (futuro)</td><td>UE</td><td>Da verificare al momento dell'attivazione</td></tr>
-<tr><td><strong>Cloudflare Inc.</strong></td><td>DNS / CDN (futuro, opzionale)</td><td>Edge globale</td><td>SCC + Data Privacy Framework</td></tr>
-<tr><td><strong>Bitcoin / OpenTimestamps calendars</strong></td><td>Pubblicazione hash sulla blockchain pubblica</td><td>Globale, peer-to-peer</td><td>Sì (per natura: la blockchain è pubblica; pubblichiamo <strong>solo</strong> hash anonimi, non dati personali identificabili)</td></tr>
-</tbody></table>
-<p>Veylon <strong>non vende</strong> dati a terzi e non li condivide per finalità di marketing di soggetti terzi.</p>
-<hr/>
-<h2>7. Trasferimenti extra-UE</h2>
-<p>L'infrastruttura primaria è interamente situata nella regione <strong>EU Ireland</strong>. Nessun dato personale viene trasferito sistematicamente fuori dallo Spazio Economico Europeo.</p>
-<p>Eccezioni:</p>
-<p>1. <strong>Bitcoin/OpenTimestamps</strong>: pubblichiamo l'<strong>hash SHA-256</strong> del documento (non il documento, non l'autore) sui calendar pubblici. L'hash non costituisce dato personale ai sensi del considerando 26 GDPR (non riconducibile a una persona fisica identificabile senza informazioni aggiuntive non disponibili al pubblico). 2. <strong>GitHub Pages</strong>: il sito statico viene servito da CDN globale; il visitatore può connettersi a un edge node fuori UE. Il dato trasferito è limitato al solo IP della richiesta HTTP. GitHub aderisce alle clausole contrattuali tipo (SCC) e al Data Privacy Framework UE-USA.</p>
-<p>Per entrambe le ipotesi sono adottate le garanzie di cui all'art. 46 GDPR.</p>
-<hr/>
-<h2>8. Diritti dell'interessato (art. 15-22 GDPR)</h2>
+<tr>
+<td><strong>Supabase, Inc.</strong> (USA)</td>
+<td>Database, autenticazione ed email di accesso, storage dei file, funzioni server</td>
+<td>Dati ospitati nell'UE: Irlanda (regione <code>eu-west-1</code>)</td>
+<td>Dati in UE; eventuali accessi dagli USA per assistenza coperti da Clausole Contrattuali Standard (SCC) nel DPA del fornitore</td>
+</tr>
+<tr>
+<td><strong>Contabo GmbH</strong></td>
+<td>Server della Suite PDF (<code>pdf.veylon.app</code>): elaborazione dei file senza conservazione</td>
+<td>Germania (UE)</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>OpenAI</strong> (OpenAI Ireland Ltd; elaborazione da parte di OpenAI, L.L.C., USA)</td>
+<td>Funzioni AI di Veylon Atti e riepiloghi AI delle prove, solo quando l'utente le usa</td>
+<td>USA</td>
+<td>Sì: Data Privacy Framework UE-USA e/o SCC. I dati inviati via API non sono usati per addestrare i modelli</td>
+</tr>
+<tr>
+<td><strong>Twilio</strong> (Twilio Ireland Ltd / Twilio Inc., USA)</td>
+<td>Invio SMS con codice OTP per la firma</td>
+<td>UE e USA</td>
+<td>Sì: SCC e/o Data Privacy Framework</td>
+</tr>
+<tr>
+<td><strong>Cloudflare, Inc.</strong> (USA)</td>
+<td>Hosting dei siti (<code>veylon.app</code>, <code>atti.veylon.app</code>), DNS, CDN, certificati TLS</td>
+<td>Rete globale</td>
+<td>Sì: Data Privacy Framework e SCC</td>
+</tr>
+<tr>
+<td><strong>Plausible Insights OÜ</strong></td>
+<td>Statistiche di visita senza cookie sulle pagine del sito</td>
+<td>Estonia (UE), dati ospitati in UE</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Servizi caricati dal tuo browser.</strong> Alcune pagine caricano caratteri tipografici da <strong>Google Fonts</strong> (Google Ireland Ltd / Google LLC, USA) e da <strong>Fontshare</strong> (Indian Type Foundry, India). Per scaricare i caratteri il tuo browser comunica a questi servizi il tuo indirizzo IP e i dati tecnici della richiesta; non vengono inviati altri dati dell'account.</p>
+<p><strong>OpenTimestamps / Bitcoin.</strong> Per la prova di data e ora inviamo ai server pubblici di calendario OpenTimestamps e, tramite questi, alla blockchain Bitcoin <strong>solo l'impronta SHA-256</strong> del documento: nessun nome, nessun file, nessun dato dell'account. L'impronta da sola non consente di identificare una persona.</p>
+<p><strong>PEC in Veylon Atti.</strong> Se colleghi la tua casella PEC per inviare o ricevere depositi, i messaggi transitano dal gestore PEC che hai scelto tu, secondo il contratto che hai con lui.</p>
+<p>Veylon <strong>non vende</strong> dati a terzi e non li condivide per finalità di marketing di soggetti terzi. I dati possono essere comunicati alle autorità solo quando previsto dalla legge.</p>
+<hr>
+<h2>7. Trattamenti per conto di partner B2B (Veylon responsabile del trattamento)</h2>
+<p>Alcune piattaforme partner integrano i servizi Veylon via API (ad esempio la <strong>Suite PDF</strong> e la <strong>prova di data e ora</strong>) per offrirli ai propri utenti. In questi casi:</p>
+<ul>
+<li>il <strong>partner è titolare del trattamento</strong> dei dati dei suoi utenti e fornisce loro la propria informativa;</li>
+<li><strong>Ferxia S.R.L. (Veylon) agisce come responsabile del trattamento ex art. 28 GDPR</strong>, sulla base di un accordo sul trattamento dei dati firmato con il partner e solo secondo le sue istruzioni;</li>
+<li>Veylon riceve <strong>solo un identificativo pseudonimo</strong> dell'utente finale, scelto dal partner (mai email, nomi o codici fiscali), oltre al file da elaborare o all'impronta da sigillare;</li>
+<li>i file della Suite PDF sono elaborati e restituiti subito, senza conservazione; il registro d'uso contiene solo pseudonimo, operazione, dimensione, esito, data e ora;</li>
+<li>per questi servizi <strong>non vengono usati fornitori di intelligenza artificiale</strong>.</li>
+</ul>
+<p>Se sei utente di una piattaforma partner, per esercitare i tuoi diritti rivolgiti in primo luogo al partner; se ci scrivi, inoltreremo la richiesta al partner senza ritardo.</p>
+<hr>
+<h2>8. Trasferimenti extra-UE</h2>
+<p>Database, storage e server di elaborazione dei PDF si trovano nell'<strong>Unione Europea</strong> (Irlanda e Germania). Alcuni fornitori hanno sede negli USA o in altri paesi terzi (vedi §6): in questi casi il trasferimento avviene sulla base di una decisione di adeguatezza (<strong>Data Privacy Framework UE-USA</strong>, per i fornitori certificati) o delle <strong>Clausole Contrattuali Standard</strong> approvate dalla Commissione europea (art. 46 GDPR). Puoi chiedere informazioni sulle garanzie adottate scrivendo a <code>privacy@veylon.app</code>.</p>
+<p>L'impronta SHA-256 pubblicata tramite OpenTimestamps sulla blockchain Bitcoin (rete pubblica e globale) non è un dato personale ai sensi del considerando 26 GDPR, perché non è riconducibile a una persona senza informazioni aggiuntive non disponibili al pubblico.</p>
+<hr>
+<h2>9. Diritti dell'interessato (art. 15-22 GDPR)</h2>
 <p>Hai il diritto di:</p>
 <table>
-<thead><tr><th>Diritto</th><th>Cosa puoi fare</th></tr></thead>
+<thead>
+<tr>
+<th>Diritto</th>
+<th>Cosa puoi fare</th>
+</tr>
+</thead>
 <tbody>
-<tr><td><strong>Accesso</strong> (art. 15)</td><td>Sapere se trattiamo i tuoi dati, riceverne copia</td></tr>
-<tr><td><strong>Rettifica</strong> (art. 16)</td><td>Correggere dati inesatti o incompleti</td></tr>
-<tr><td><strong>Cancellazione "diritto all'oblio"</strong> (art. 17)</td><td>Cancellare i tuoi dati, salvo obblighi di conservazione legale</td></tr>
-<tr><td><strong>Limitazione</strong> (art. 18)</td><td>Sospendere il trattamento in casi specifici</td></tr>
-<tr><td><strong>Portabilità</strong> (art. 20)</td><td>Ricevere i tuoi dati in formato strutturato (JSON / CSV)</td></tr>
-<tr><td><strong>Opposizione</strong> (art. 21)</td><td>Opporti al trattamento basato su interesse legittimo</td></tr>
-<tr><td><strong>Revoca consenso</strong> (art. 7.3)</td><td>Ritirare il consenso a marketing in qualsiasi momento</td></tr>
-<tr><td><strong>Non essere sottoposto a decisioni automatizzate</strong> (art. 22)</td><td>Non applicabile (non profiliamo automaticamente)</td></tr>
-</tbody></table>
-<p><strong>Limite oggettivo</strong>: alcuni atti, una volta emessi (Sigillo Bitcoin, Mail consegnata, Tag attivato), sono per natura <strong>immutabili</strong>. La cancellazione del tuo account non rimuoverà l'hash già pubblicato sulla blockchain Bitcoin. Possiamo cancellare i metadati nostri ma non possiamo rimuovere l'hash da Bitcoin — è una caratteristica voluta del servizio (immutabilità = valore probatorio).</p>
+<tr>
+<td><strong>Accesso</strong> (art. 15)</td>
+<td>Sapere se trattiamo i tuoi dati, riceverne copia</td>
+</tr>
+<tr>
+<td><strong>Rettifica</strong> (art. 16)</td>
+<td>Correggere dati inesatti o incompleti</td>
+</tr>
+<tr>
+<td><strong>Cancellazione &quot;diritto all'oblio&quot;</strong> (art. 17)</td>
+<td>Cancellare i tuoi dati, salvo obblighi di conservazione legale</td>
+</tr>
+<tr>
+<td><strong>Limitazione</strong> (art. 18)</td>
+<td>Sospendere il trattamento in casi specifici</td>
+</tr>
+<tr>
+<td><strong>Portabilità</strong> (art. 20)</td>
+<td>Ricevere i tuoi dati in formato strutturato (JSON / CSV)</td>
+</tr>
+<tr>
+<td><strong>Opposizione</strong> (art. 21)</td>
+<td>Opporti al trattamento basato su interesse legittimo</td>
+</tr>
+<tr>
+<td><strong>Revoca consenso</strong> (art. 7.3)</td>
+<td>Ritirare il consenso a marketing in qualsiasi momento</td>
+</tr>
+<tr>
+<td><strong>Non essere sottoposto a decisioni automatizzate</strong> (art. 22)</td>
+<td>Non applicabile (non profiliamo automaticamente)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Limite oggettivo</strong>: alcuni atti, una volta emessi (sigillo su Bitcoin, Mail consegnata, Tag attivato), sono per natura <strong>immutabili</strong>. La cancellazione del tuo account non rimuoverà l'impronta già pubblicata sulla blockchain Bitcoin. Possiamo cancellare i nostri metadati ma non possiamo rimuovere l'impronta da Bitcoin — è una caratteristica voluta del servizio (immutabilità = valore probatorio).</p>
 <h3>Come esercitare i diritti</h3>
-<p>Scrivi a <code>privacy@veylon.app</code> indicando:</p>
+<p>Scrivi a <code>privacy@veylon.app</code> (o alla PEC <code>fexiasrl@pec.buffetti.it</code>) indicando:</p>
 <ul>
 <li>Il diritto che vuoi esercitare.</li>
 <li>L'email associata al tuo account Veylon (per autenticarti).</li>
-<li>Una copia di un documento d'identità (per richieste sensibili come cancellazione totale o portabilità).</li>
+<li>Se necessario per verificare la tua identità in richieste delicate (es. cancellazione totale o portabilità), ti chiederemo un elemento di identificazione proporzionato.</li>
 </ul>
-<p>Risponderemo entro <strong>30 giorni</strong> (prorogabili a 60 per richieste complesse, con comunicazione preventiva).</p>
+<p>Risponderemo entro <strong>un mese</strong> dalla richiesta (prorogabile di due mesi per richieste complesse, con comunicazione preventiva), come previsto dall'art. 12 GDPR.</p>
 <h3>Reclamo all'Autorità di controllo</h3>
-<p>In ultima istanza puoi rivolgerti al <strong>Garante per la protezione dei dati personali</strong>:</p>
+<p>Puoi rivolgerti al <strong>Garante per la protezione dei dati personali</strong>:</p>
 <ul>
 <li>Indirizzo: Piazza Venezia 11, 00187 Roma</li>
-<li>Email: <code>garante@gpdp.it</code></li>
+<li>Email: <code>protocollo@gpdp.it</code></li>
 <li>PEC: <code>protocollo@pec.gpdp.it</code></li>
 <li>Web: https://www.garanteprivacy.it/</li>
 </ul>
-<hr/>
-<h2>9. Cookie e tecnologie simili</h2>
+<hr>
+<h2>10. Cookie e tecnologie simili</h2>
 <p>Veylon <strong>non utilizza cookie di tracciamento o profilazione</strong>.</p>
 <p>Sono attivi esclusivamente:</p>
 <ul>
-<li><strong>Cookie tecnici di sessione</strong> strettamente necessari (autenticazione Supabase), con durata di sessione.</li>
-<li><strong>Local storage</strong> del browser per persistere lo stato del login e — nel modulo Send — la chiave privata X25519 dell'utente (mai trasmessa al server).</li>
+<li><strong>Strumenti tecnici di sessione</strong> strettamente necessari (autenticazione).</li>
+<li><strong>Local storage</strong> del browser per mantenere lo stato del login e — nel modulo Send — la chiave privata X25519 dell'utente (mai trasmessa al server).</li>
+<li><strong>Plausible Analytics</strong> sulle pagine del sito: statistiche aggregate <strong>senza cookie</strong> e senza identificare il visitatore.</li>
 </ul>
-<p>Per gli analytics utilizziamo (o utilizzeremo) <strong>Plausible Analytics</strong>, soluzione GDPR-compliant <strong>senza cookie</strong>.</p>
-<p>Vedi <a href="/cookies.html"><code>COOKIES.md</code></a> per il dettaglio.</p>
-<hr/>
-<h2>10. Comunicazioni di marketing</h2>
+<p>Vedi <a href="cookies.html">Cookie policy</a> per il dettaglio.</p>
+<hr>
+<h2>11. Comunicazioni di marketing</h2>
 <p>L'iscrizione alla newsletter è facoltativa e basata su consenso esplicito. Puoi disiscriverti in qualsiasi momento dal link presente in fondo a ogni email o scrivendo a <code>privacy@veylon.app</code>. Non utilizziamo i tuoi dati per profilarti a fini di marketing comportamentale.</p>
-<hr/>
-<h2>11. Sicurezza dei dati</h2>
-<p>Adottiamo le misure indicate al §4 e descritte in dettaglio in <a href="/security.html"><code>SECURITY.md</code></a>, includendo:</p>
+<hr>
+<h2>12. Sicurezza dei dati</h2>
+<p>Adottiamo le misure indicate al §4 e descritte in <a href="security.html">Security policy</a>, tra cui:</p>
 <ul>
-<li>Audit DB advisor su tutte le policy RLS.</li>
-<li>Vulnerability disclosure program attivo (<code>security@veylon.app</code>).</li>
-<li>Rotazione periodica dei secret.</li>
+<li>Controlli periodici delle regole di accesso al database (RLS).</li>
+<li>Canale per la segnalazione responsabile di vulnerabilità (<code>security@veylon.app</code>).</li>
+<li>Rotazione delle credenziali di servizio.</li>
 <li>Backup giornalieri.</li>
-<li>Penetration test esterni in pianificazione (post-MVP).</li>
 </ul>
-<p>In caso di <strong>data breach</strong> che possa comportare rischio per i diritti e le libertà degli interessati, notifichiamo il Garante entro 72 ore (art. 33 GDPR) e gli interessati senza ritardo (art. 34 GDPR).</p>
-<hr/>
-<h2>12. Minori</h2>
-<p>Il servizio è riservato a maggiorenni (18+) o a soggetti professionali (P.IVA / istituzioni). Non raccogliamo consapevolmente dati di minori di 16 anni ai sensi dell'art. 8 GDPR. Se ritieni che ciò sia avvenuto involontariamente, contattaci e procederemo all'immediata cancellazione.</p>
-<hr/>
-<h2>13. Modifiche all'informativa</h2>
-<p>Ci riserviamo di aggiornare questa informativa per riflettere modifiche al servizio o evoluzioni normative. La versione vigente è sempre disponibile a https://veylon.app/privacy. Comunicheremo le modifiche sostanziali via email agli utenti registrati con almeno <strong>30 giorni di preavviso</strong>.</p>
+<p>In caso di <strong>violazione dei dati personali</strong> (data breach) che possa comportare rischi per i diritti e le libertà degli interessati, notifichiamo il Garante entro 72 ore (art. 33 GDPR) e, quando il rischio è elevato, gli interessati senza ingiustificato ritardo (art. 34 GDPR). Per i trattamenti svolti per conto dei partner, avvisiamo il partner titolare nei tempi previsti dal relativo accordo.</p>
+<hr>
+<h2>13. Minori</h2>
+<p>Il servizio è riservato a maggiorenni (18+) o a soggetti professionali (P.IVA / istituzioni). Non raccogliamo consapevolmente dati di minori di 14 anni (art. 2-quinquies Codice Privacy). Se ritieni che ciò sia avvenuto involontariamente, contattaci e procederemo all'immediata cancellazione.</p>
+<hr>
+<h2>14. Modifiche all'informativa</h2>
+<p>Possiamo aggiornare questa informativa per riflettere modifiche al servizio o evoluzioni normative. La versione vigente è sempre disponibile a https://veylon.app/privacy.html. Comunicheremo le modifiche sostanziali via email agli utenti registrati.</p>
 <table>
-<thead><tr><th>Versione</th><th>Data</th><th>Modifica</th></tr></thead>
+<thead>
+<tr>
+<th>Versione</th>
+<th>Data</th>
+<th>Modifica</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>1.0</td><td>2026-06-10</td><td>Prima pubblicazione</td></tr>
-</tbody></table>
-<hr/>
-<h2>14. Contatti riassuntivi</h2>
+<tr>
+<td>1.0</td>
+<td>2026-06-10</td>
+<td>Prima pubblicazione</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2026-11-03</td>
+<td>Titolare Ferxia S.R.L.; elenco aggiornato dei fornitori (Contabo, OpenAI, Twilio, Cloudflare, Plausible); trattamento dei file nella Suite PDF e in Send; trattamenti per conto di partner B2B</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>15. Contatti riassuntivi</h2>
 <table>
-<thead><tr><th>Per</th><th>Email</th></tr></thead>
+<thead>
+<tr>
+<th>Per</th>
+<th>Contatto</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>Esercizio dei diritti privacy</td><td><code>privacy@veylon.app</code></td></tr>
-<tr><td>Segnalazioni di sicurezza</td><td><code>security@veylon.app</code></td></tr>
-<tr><td>DPO (al momento gestito dal titolare)</td><td><code>dpo@veylon.app</code></td></tr>
-<tr><td>Assistenza generica</td><td><code>support@veylon.app</code></td></tr>
-<tr><td>Questioni legali / NDA / contratti</td><td><code>legal@veylon.app</code></td></tr>
-</tbody></table>
-<hr/>
-<p><em>Veylon — il sigillo legale dell'era digitale.</em> <em>La nostra reputazione è la tua privacy.</em></p>
-
+<tr>
+<td>Esercizio dei diritti privacy</td>
+<td><code>privacy@veylon.app</code></td>
+</tr>
+<tr>
+<td>PEC del titolare</td>
+<td><code>fexiasrl@pec.buffetti.it</code></td>
+</tr>
+<tr>
+<td>Segnalazioni di sicurezza</td>
+<td><code>security@veylon.app</code></td>
+</tr>
+<tr>
+<td>Assistenza generica</td>
+<td><code>support@veylon.app</code></td>
+</tr>
+<tr>
+<td>Questioni legali / contratti</td>
+<td><code>legal@veylon.app</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><em>Veylon — brand di Ferxia S.R.L., Viale Rismondo 7, 47838 Riccione (RN) — P.IVA 04868980402.</em></p>
   </main>
 
   <footer class="footer">
     <div class="footer-base">
-      <span>&copy; MMXXVI &middot; Veylon S.r.l.</span>
+      <span>&copy; MMXXVI &middot; Veylon &middot; Ferxia S.R.L. &middot; P.IVA 04868980402</span>
       <span>Legali &middot; Privacy & GDPR</span>
     </div>
   </footer>
