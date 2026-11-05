@@ -40,7 +40,7 @@
     .sp-banner.is-ok { border-left-color: oklch(60% 0.16 145); }
     .sp-modal-back { position: fixed; inset: 0; background: rgba(20, 20, 20, 0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
     .sp-modal-back.is-open { display: flex; }
-    .sp-modal { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; max-width: 820px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 28px 28px 24px; }
+    .sp-modal { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; max-width: 1100px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 28px 28px 24px; }
     .sp-modal h3 { font-family: var(--serif); font-size: 22px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
     .sp-modal p.sp-modal-desc { font-size: 14px; color: var(--ink-2); margin: 0 0 16px; }
     .sp-modal label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-3); text-transform: uppercase; margin: 12px 0 4px; }
@@ -56,24 +56,29 @@
     /* Guida «Cosa fa / File accettati / Come si usa» sotto ogni strumento (stile iLovePDF) */
     .sp-guida { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--rule); }
     .sp-guida[hidden] { display: none; }
-    .sp-guida-card { border: 1px solid var(--rule); border-radius: 10px; background: var(--paper); padding: 16px 18px; min-width: 0; }
+    .sp-guida-card { border: 1px solid var(--rule); border-radius: 16px; background: var(--paper); padding: 20px 22px; min-width: 0; }
     .sp-guida-card.is-larga { grid-column: 1 / -1; }
-    .sp-guida-h { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); margin: 0 0 10px; }
-    .sp-guida-ico { width: 32px; height: 32px; border-radius: 8px; background: var(--ink); color: var(--paper); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sp-guida-h { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); margin: 0 0 14px; }
+    .sp-guida-ico { width: 36px; height: 36px; border-radius: 12px; background: var(--ink); color: var(--paper); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .sp-guida-ico svg { width: 18px; height: 18px; }
-    .sp-guida-card p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+    .sp-guida-card p { font-size: 15px; line-height: 1.55; color: var(--ink-2); margin: 0; }
     .sp-guida-formati { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
     .sp-guida-formati li { padding: 4px 10px; border-radius: 6px; background: oklch(95% 0.03 80); color: var(--ink); font-size: 12.5px; font-weight: 700; }
     .sp-guida-card p.sp-guida-nota { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
     .sp-guida-passi { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-    .sp-guida-passi li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
-    .sp-guida-num { width: 22px; height: 22px; border-radius: 50%; background: var(--seal); color: var(--paper); font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .sp-guida-passi li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+    .sp-guida-num { width: 24px; height: 24px; border-radius: 50%; background: var(--seal); color: var(--paper); font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
     @media (min-width: 640px) { .sp-guida { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1080px) { .sp-guida { grid-template-columns: 1.1fr 0.9fr 1.4fr; } .sp-guida-card.is-larga { grid-column: auto; } }
     /* Esito dei controlli Sì/No */
-    .sp-esito { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--rule); border-left: 4px solid; border-radius: 6px; font-size: 14px; line-height: 1.5; color: var(--ink); }
-    .sp-esito strong { display: block; font-family: var(--serif); font-size: 17px; font-weight: 500; margin-bottom: 2px; }
-    .sp-esito.is-si { border-left-color: oklch(60% 0.16 145); background: oklch(97% 0.03 145); }
-    .sp-esito.is-no { border-left-color: oklch(58% 0.22 25); background: oklch(97% 0.03 25); }
+    .sp-esito { margin-top: 18px; padding: 28px 20px 24px; border: 1px solid var(--rule); border-radius: 16px; background: var(--paper); text-align: center; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+    .sp-esito[hidden] { display: none; }
+    .sp-esito::before { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 50%; color: #fff; font-size: 28px; font-weight: 700; line-height: 1; box-shadow: 0 6px 16px oklch(0% 0 0 / 0.15); }
+    .sp-esito.is-si::before { content: "\2713"; background: oklch(60% 0.16 145); }
+    .sp-esito.is-no::before { content: "\2715"; background: oklch(58% 0.22 25); }
+    .sp-esito strong { display: block; font-family: var(--serif); font-size: clamp(20px, 4vw, 26px); font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .sp-esito-ricomincia { margin-top: 14px; background: none; border: 0; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink-3); cursor: pointer; padding: 6px 12px; border-radius: 999px; }
+    .sp-esito-ricomincia:hover, .sp-esito-ricomincia:focus-visible { color: var(--seal); outline: 2px solid transparent; text-decoration: underline; }
     @media (max-width: 640px) { .sp-grid { grid-template-columns: 1fr; } .sp-modal { padding: 20px; } }
   </style>
 </head>
@@ -378,6 +383,8 @@
 
     // ---- Modal ----
     const modalBack = document.getElementById("sp-modal-back");
+    // Fuori da <main>: la finestra larga deve stare sopra la barra laterale (altrimenti ne resta coperto il bordo sinistro)
+    document.body.appendChild(modalBack);
     const modalForm = document.getElementById("sp-modal-form");
     const modalFields = document.getElementById("sp-modal-fields");
     const modalTitle = document.getElementById("sp-modal-title");
@@ -406,9 +413,16 @@
     }
     function mostraEsito(si, testo) {
       modalEsito.className = "sp-esito " + (si ? "is-si" : "is-no");
-      modalEsito.innerHTML = "<strong>" + (si ? "Sì: il PDF rispetta la condizione" : "No: il PDF non rispetta la condizione") + "</strong>" + escapeHtml(testo);
+      modalEsito.innerHTML = "<strong>" + (si ? "Sì: il PDF rispetta la condizione" : "No: il PDF non rispetta la condizione") + "</strong>" + escapeHtml(testo) +
+        '<div><button type="button" class="sp-esito-ricomincia">↺ Ricomincia</button></div>';
       modalEsito.hidden = false;
     }
+    modalEsito.addEventListener("click", (e) => {
+      if (!e.target.closest(".sp-esito-ricomincia") || !currentTool) return;
+      const tool = currentTool;
+      modalForm.reset();
+      openModal(tool);
+    });
     let currentTool = null;
 
     document.getElementById("sp-modal-close").addEventListener("click", closeModal);
