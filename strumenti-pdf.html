@@ -160,6 +160,7 @@
     import { renderAppShell } from "./_shared/app-shell.js";
     // Catalogo GENERATO da apps/web/src/data/strumentiPdfCatalog.ts (npm run genera:catalogo-pdf): testi e guida inclusi.
     import { STRUMENTI, CATEGORIE, IN_PRIMO_PIANO, MAX_MB } from "./_shared/strumenti-pdf-catalogo.js";
+    import { tabellaDaPdf } from "./_shared/tabelle-pdf.js";
 
     const SUPABASE_URL = "https://hanxxxtgxofjkfdjegfe.supabase.co";
     const PROXY_PATH = "/functions/v1/pdf-stirling-proxy";
@@ -521,7 +522,10 @@
           return;
         }
 
-        const proxyUrl = `${SUPABASE_URL}${PROXY_PATH}?endpoint=${encodeURIComponent(currentTool.endpoint)}`;
+        // «PDF → Excel/CSV»: se il motore non trova tabelle con i bordi, la tabella si ricostruisce
+        // qui nel browser (tabelle=browser: il server non ci prova, niente limiti di CPU o pagine).
+        const formato = FORMATO_TABELLA[currentTool.endpoint] || null;
+        const proxyUrl = `${SUPABASE_URL}${PROXY_PATH}?endpoint=${encodeURIComponent(currentTool.endpoint)}${formato ? "&tabelle=browser" : ""}`;
         const resp = await fetch(proxyUrl, {
           method: "POST",
           headers: { "Authorization": "Bearer " + accessToken },
@@ -541,11 +545,25 @@
               : `Il motore PDF è molto occupato. Riprova ${quando}.`);
           return;
         }
+        if (resp.status === 204 && formato) {
+          const el = modalForm.elements.fileInput;
+          const file = el && el.files && el.files[0];
+          if (!file) { showResult(MSG_NESSUNA_TABELLA); return; }
+          modalProgress.hidden = false; modalProgress.textContent = "Ricostruisco la tabella dalle colonne del testo...";
+          const pagine = modalForm.elements.pageNumbers ? modalForm.elements.pageNumbers.value : null;
+          const ricostruita = await tabellaNelBrowser(file, formato, pagine || null);
+          if (!ricostruita) { showResult(MSG_NESSUNA_TABELLA); return; }
+          const blob = new Blob([ricostruita.bytes], { type: ricostruita.contentType });
+          scaricaBlob(blob, ricostruita.nomeFile);
+          showResult(`File pronto: ${ricostruita.nomeFile}\nDimensione: ${formatBytes(blob.size)}`);
+          try { if (window.plausible) window.plausible("strumento_pdf_ok", { props: { tool: currentTool.id } }); } catch(_) {}
+          return;
+        }
         if (resp.status === 204) {
           if (currentTool.controllo) {
             mostraEsito(false, `Il controllo «${currentTool.name}» ha dato esito negativo con le impostazioni che hai scelto. Puoi cambiarle e premere di nuovo «Esegui».`);
           } else {
-            showResult("Nessun risultato: il PDF non contiene elementi da estrarre (ad esempio nessuna tabella).");
+            showResult("Nessun risultato: il PDF non contiene elementi da estrarre.");
           }
           return;
         }
@@ -564,10 +582,7 @@
           // binary -> download
           const blob = await resp.blob();
           const fname = filenameFrom(resp.headers.get("content-disposition")) || suggestedFilename(currentTool);
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url; a.download = fname; document.body.appendChild(a); a.click();
-          setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 4000);
+          scaricaBlob(blob, fname);
           if (currentTool.controllo) mostraEsito(true, `Il PDF è stato scaricato: ${fname} (${formatBytes(blob.size)}).`);
           else showResult(`File pronto: ${fname}\nDimensione: ${formatBytes(blob.size)}`);
           try { if (window.plausible) window.plausible("strumento_pdf_ok", { props: { tool: currentTool.id } }); } catch(_) {}
@@ -581,6 +596,34 @@
         if (currentTool) modalGuida.hidden = false;
       }
     });
+
+    function scaricaBlob(blob, nome) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = nome; document.body.appendChild(a); a.click();
+      setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 4000);
+    }
+
+    // --- «PDF → Excel/CSV» con tabelle senza bordi: ricostruzione nel browser (tabelle-pdf.js) ---
+    const FORMATO_TABELLA = { "/api/v1/convert/pdf/xlsx": "xlsx", "/api/v1/convert/pdf/csv": "csv" };
+    const MSG_NESSUNA_TABELLA = "Nessuna tabella trovata. Se il PDF è una scansione (una foto delle pagine), passalo prima da «OCR (riconoscimento testo)» e poi riprova.";
+    // Stessa versione di pdf.js dell'area utente (firma grafica e PDF → Excel)
+    const PDFJS_ESM = "https://esm.sh/pdfjs-dist@4.7.76/legacy/build/pdf.mjs";
+    const PDFJS_WORKER = "https://esm.sh/pdfjs-dist@4.7.76/legacy/build/pdf.worker.mjs";
+    let pdfjsPronto = null;
+    function caricaPdfJs() {
+      if (!pdfjsPronto) {
+        pdfjsPronto = import(PDFJS_ESM).then((m) => { m.GlobalWorkerOptions.workerSrc = PDFJS_WORKER; return m; });
+        pdfjsPronto.catch(() => { pdfjsPronto = null; });
+      }
+      return pdfjsPronto;
+    }
+    async function tabellaNelBrowser(file, formato, pagine) {
+      const lib = await caricaPdfJs();
+      const pdf = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
+      try { return await tabellaDaPdf(pdf, formato, file.name, pagine); }
+      finally { try { await pdf.destroy(); } catch (_) {} }
+    }
 
     function showResult(text) {
       modalResult.hidden = false; modalResult.textContent = text;
