@@ -262,11 +262,93 @@ function creaFileTabella(t, formato, nomePdf) {
     nomeFile: nomeUscita(nomePdf, "xlsx")
   };
 }
-async function tabellaDaPdf(pdf, formato, nomePdf, pagine, maxPagine = Infinity) {
+async function tabellaDaPdf(pdf, formato, nomePdf, pagine, maxPagine = Infinity, fileMotore) {
   const numeri = pagineRichieste(pagine, pdf.numPages);
   if (numeri.length > maxPagine) return null;
   const tabella = tabellaDaTesto(await pagineDalPdf(pdf, numeri));
-  return tabellaUtile(tabella) ? creaFileTabella(tabella, formato, nomePdf) : null;
+  if (!tabellaUtile(tabella)) return null;
+  if (fileMotore && !await ricostruzioneMigliore(fileMotore, tabella)) return null;
+  return creaFileTabella(tabella, formato, nomePdf);
+}
+var QUOTA_MINIMA_MOTORE = 0.5;
+var MAX_TESTO_ZIP = 5e7;
+function caratteriUtili(s) {
+  const m = s.match(/[\p{L}\p{N}]/gu);
+  return m ? m.length : 0;
+}
+function caratteriDellaTabella(t) {
+  let n = 0;
+  for (const r of t) for (const v of r) n += caratteriUtili(typeof v === "number" ? String(v) : v);
+  return n;
+}
+async function ricostruzioneMigliore(fileMotore, ricostruita) {
+  const nostri = caratteriDellaTabella(ricostruita);
+  if (nostri === 0) return false;
+  return caratteriUtili(await testoDelFileMotore(fileMotore)) < nostri * QUOTA_MINIMA_MOTORE;
+}
+async function testoDelFileMotore(bytes) {
+  if (!(bytes[0] === 80 && bytes[1] === 75)) return new TextDecoder().decode(bytes);
+  let voci;
+  try {
+    voci = await vociZip(bytes);
+  } catch {
+    return "";
+  }
+  const condivisi = [];
+  for (const [nome, contenuto] of voci) {
+    if (!/sharedStrings\.xml$/i.test(nome)) continue;
+    for (const si of contenuto.matchAll(/<si\b[^>]*>([\s\S]*?)<\/si>/g)) {
+      condivisi.push([...si[1].matchAll(/<t\b[^>]*>([^<]*)<\/t>/g)].map((m) => m[1]).join(""));
+    }
+  }
+  const parti = [];
+  for (const [nome, contenuto] of voci) {
+    if (/\.csv$/i.test(nome)) parti.push(contenuto);
+    else if (/worksheets\/[^/]+\.xml$/i.test(nome)) {
+      for (const c of contenuto.matchAll(/<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)) {
+        if (!c[2]) continue;
+        if (/\bt="s"/.test(c[1])) {
+          const indice = c[2].match(/<v>(\d+)<\/v>/);
+          if (indice) parti.push(condivisi[Number(indice[1])] ?? "");
+          continue;
+        }
+        for (const x of c[2].matchAll(/<(t|v)\b[^>]*>([^<]*)<\/\1>/g)) parti.push(x[2]);
+      }
+    }
+  }
+  return parti.join(" ");
+}
+async function vociZip(bytes) {
+  const vista = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let fine = bytes.length - 22;
+  while (fine >= 0 && vista.getUint32(fine, true) !== 101010256) fine--;
+  if (fine < 0) return [];
+  const quante = vista.getUint16(fine + 10, true);
+  let p = vista.getUint32(fine + 16, true);
+  const dec = new TextDecoder();
+  const voci = [];
+  let totale = 0;
+  for (let i = 0; i < quante && p + 46 <= bytes.length; i++) {
+    if (vista.getUint32(p, true) !== 33639248) break;
+    const metodo = vista.getUint16(p + 10, true);
+    const compresso = vista.getUint32(p + 20, true);
+    const lungNome = vista.getUint16(p + 28, true);
+    const locale = vista.getUint32(p + 42, true);
+    const nome = dec.decode(bytes.subarray(p + 46, p + 46 + lungNome));
+    p += 46 + lungNome + vista.getUint16(p + 30, true) + vista.getUint16(p + 32, true);
+    if (!/\.(xml|csv)$/i.test(nome) || locale + 30 > bytes.length) continue;
+    const inizio = locale + 30 + vista.getUint16(locale + 26, true) + vista.getUint16(locale + 28, true);
+    const dati = bytes.slice(inizio, inizio + compresso);
+    let testo;
+    if (metodo === 0) testo = dec.decode(dati);
+    else if (metodo === 8) {
+      testo = await new Response(new Blob([dati.buffer]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text();
+    } else continue;
+    totale += testo.length;
+    if (totale > MAX_TESTO_ZIP) break;
+    voci.push([nome, testo]);
+  }
+  return voci;
 }
 function tabellaInCsv(t) {
   const campo = (v) => {
@@ -388,15 +470,19 @@ function zipSemplice(file) {
   return uscita;
 }
 export {
+  QUOTA_MINIMA_MOTORE,
+  caratteriDellaTabella,
   crc32,
   creaFileTabella,
   fileXlsx,
   nomeUscita,
   pagineDalPdf,
   pagineRichieste,
+  ricostruzioneMigliore,
   tabellaDaPdf,
   tabellaDaTesto,
   tabellaInCsv,
   tabellaUtile,
+  testoDelFileMotore,
   zipSemplice
 };

@@ -581,6 +581,24 @@
         } else {
           // binary -> download
           const blob = await resp.blob();
+          if (formato) {
+            // Il motore ha trovato riquadri con i bordi: se sono solo pezzi (es. i box di riepilogo
+            // di un computo) la ricostruzione dalle colonne del testo è più completa e si usa quella.
+            const el = modalForm.elements.fileInput;
+            const file = el && el.files && el.files[0];
+            if (file) {
+              modalProgress.hidden = false; modalProgress.textContent = "Controllo che la tabella sia completa...";
+              const pagine = modalForm.elements.pageNumbers ? modalForm.elements.pageNumbers.value : null;
+              const ricostruita = await tabellaNelBrowser(file, formato, pagine || null, new Uint8Array(await blob.arrayBuffer())).catch(() => null);
+              if (ricostruita) {
+                const migliore = new Blob([ricostruita.bytes], { type: ricostruita.contentType });
+                scaricaBlob(migliore, ricostruita.nomeFile);
+                showResult(`File pronto: ${ricostruita.nomeFile}\nDimensione: ${formatBytes(migliore.size)}`);
+                try { if (window.plausible) window.plausible("strumento_pdf_ok", { props: { tool: currentTool.id } }); } catch(_) {}
+                return;
+              }
+            }
+          }
           const fname = filenameFrom(resp.headers.get("content-disposition")) || suggestedFilename(currentTool);
           scaricaBlob(blob, fname);
           if (currentTool.controllo) mostraEsito(true, `Il PDF è stato scaricato: ${fname} (${formatBytes(blob.size)}).`);
@@ -618,10 +636,11 @@
       }
       return pdfjsPronto;
     }
-    async function tabellaNelBrowser(file, formato, pagine) {
+    // fileMotore: file già prodotto dal motore PDF; null = tienilo (la ricostruzione non è più completa)
+    async function tabellaNelBrowser(file, formato, pagine, fileMotore) {
       const lib = await caricaPdfJs();
       const pdf = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
-      try { return await tabellaDaPdf(pdf, formato, file.name, pagine); }
+      try { return await tabellaDaPdf(pdf, formato, file.name, pagine, Infinity, fileMotore); }
       finally { try { await pdf.destroy(); } catch (_) {} }
     }
 
