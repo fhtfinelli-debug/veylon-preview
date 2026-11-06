@@ -153,8 +153,7 @@ function tabellaDaTesto(pagine) {
       const riga = new Array(nColonne).fill("");
       for (const b of r.blocchi) {
         const c = colonnaDi(b, confini);
-        if (!riga[c] || soloSegni(riga[c])) riga[c] = soloSegni(b.testo) && riga[c] ? `${riga[c]} ${b.testo}` : b.testo;
-        else if (!soloSegni(b.testo)) riga[c] = `${riga[c]} ${b.testo}`;
+        riga[c] = unisciPezzo(riga[c], b.testo, " ");
       }
       return riga;
     });
@@ -169,12 +168,7 @@ function tabellaDaTesto(pagine) {
       const precedente = unite[unite.length - 1];
       const precedenteHaChiave = precedente && precedente.slice(0, colTesto).some((v) => v !== "");
       if (chiaviVuote && precedenteHaChiave) {
-        unite[unite.length - 1] = precedente.map((v, i) => {
-          if (!r[i]) return v;
-          if (!v || soloSegni(v) && !soloSegni(r[i])) return r[i];
-          return soloSegni(r[i]) ? v : `${v}
-${r[i]}`;
-        });
+        unite[unite.length - 1] = precedente.map((v, i) => unisciPezzo(v, r[i], "\n"));
       } else {
         unite.push(r);
       }
@@ -184,6 +178,15 @@ ${r[i]}`;
     for (const r of compatte) uscita.push(r.map((v) => numeroItaliano(v) ?? v));
   }
   return senzaIntestazioniRipetute(uscita, pagine.length);
+}
+var segnaposto = (v) => /^[\s\-–—€.…]+$/.test(v);
+function unisciPezzo(cella, pezzo, separatore) {
+  if (!pezzo) return cella;
+  if (!cella) return pezzo;
+  const numerico = (v) => numeroItaliano(v.replace(/\s*%$/, "")) !== null;
+  if (segnaposto(pezzo) && numerico(cella)) return cella;
+  if (segnaposto(cella) && numerico(pezzo)) return pezzo;
+  return `${cella}${separatore}${pezzo}`;
 }
 function unisciColonneComplementari(righe) {
   let tabella = righe;
@@ -195,7 +198,7 @@ function unisciColonneComplementari(righe) {
       c++;
       continue;
     }
-    const unita = (a, b) => !vuota(a) ? a : !vuota(b) ? b : [a, b].filter((v) => v !== "").join(" ");
+    const unita = (a, b) => segnaposto(a) && !vuota(b) ? b : segnaposto(b) && !vuota(a) ? a : unisciPezzo(a, b, " ");
     tabella = tabella.map((r) => [...r.slice(0, c), unita(r[c], r[c + 1]), ...r.slice(c + 2)]);
   }
   return tabella;
